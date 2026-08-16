@@ -105,7 +105,7 @@
         <li><strong>被叫去救 n8n 的 IT／DevOps</strong>——n8n 掛了、DB 爆了、想升級——需要知道每個 process 在做什麼、資料放哪、怎麼 backup。</li>
         <li><strong>想自己在家 self-host 一個 n8n 玩玩的技術控</strong>——需要知道 Docker 跑起來之後底下發生什麼。</li>
       </ul>
-      <div class="callout"><strong>觀念：</strong>n8n 是<strong>開源專案</strong>（Sustainable Use License）。你可以下載原始碼、看 GitHub 每一行怎麼寫的、自己 fork。它不是黑盒子——這也是為什麼有人可以自架、有人願意付錢用 Cloud，兩條路都通。</div>
+      <div class="callout"><strong>觀念：</strong>n8n 是<strong>原始碼公開（source-available）</strong>的軟體，用的是 <strong>Sustainable Use License（SUL）</strong>——不是 OSI 認可的 open source，而是官方所謂 <em>fair-code</em> 哲學的實作：可以看原始碼、可以自架、可以內部商用，但不可以「拿去做競品 SaaS」或「移除授權標記」。檔名含 <code>.ee.</code> 的模組屬 Enterprise，另需 license key 才能啟用。它不是黑盒子——這也是為什麼有人可以自架、有人願意付錢用 Cloud，兩條路都通。</div>
     </section>
 
     <section id="editions" data-nav="三個版本對照">
@@ -198,7 +198,7 @@
         </tbody>
       </table>
 
-      <div class="callout tip"><strong>提示：</strong>Cloud 版有 Starter / Pro / Enterprise 三個 tier，功能會依 tier 慢慢解鎖（例如 Pro 才有 admin dashboard、Enterprise Cloud 才有 SSO）。以官方定價頁為準：<code>n8n.io/pricing</code>。</div>
+      <div class="callout tip"><strong>提示：</strong>Cloud 有 Starter / Pro / Enterprise 三個 tier；<strong>self-host 這邊</strong>還多一個常被忽略的 <strong>Registered Community</strong>（免費註冊即可解鎖 folders、debug in editor、custom execution data 等小功能），再往上才是付費的 <strong>Business</strong>（含 SSO SAML/LDAP、環境切換、external secrets、log streaming）與 <strong>Enterprise</strong>（加 audit log、進階 scaling / governance）。以官方定價頁為準：<code>n8n.io/pricing</code>。</div>
     </section>
 
     <section id="woow-version" data-nav="Woow 走哪版">
@@ -516,9 +516,9 @@ QUEUE_BULL_REDIS_HOST=redis.internal
         </thead>
         <tbody>
           <tr>
-            <td><strong>Cron 打 <code>/healthz</code></strong></td>
+            <td><strong>Cron 打 <code>/healthz</code></strong>（進階可打 <code>/healthz/readiness</code>）</td>
             <td>任何 uptime 監控（UptimeRobot、cron + curl、Woow 內部 Uptime Kuma）</td>
-            <td>n8n 服務有沒有活著（HTTP 200 = OK）</td>
+            <td><code>/healthz</code> 只驗「process 活著」（HTTP 200）；<code>/healthz/readiness</code> 才會檢查 DB 有連上、migration 跑完。Queue mode 的 worker 預設沒開 healthz，要 <code>QUEUE_HEALTH_CHECK_ACTIVE=true</code>。</td>
           </tr>
           <tr>
             <td><strong>看 Executions 頁</strong></td>
@@ -531,13 +531,13 @@ QUEUE_BULL_REDIS_HOST=redis.internal
             <td>單條 workflow 掛就 Slack/Email 通知（<a href="ch17_error_handling.html">第 17 章</a>教過）</td>
           </tr>
           <tr>
-            <td><strong>Prometheus metrics</strong>（Enterprise 版）</td>
-            <td><code>N8N_METRICS=true</code>、Enterprise license</td>
-            <td>執行數、latency、queue length 等指標，接 Grafana</td>
+            <td><strong>Prometheus metrics</strong>（Community 也有）</td>
+            <td>環境變數 <code>N8N_METRICS=true</code>，不用 license</td>
+            <td>執行數、latency、queue length、event bus 等指標，接 Grafana 畫圖</td>
           </tr>
           <tr>
-            <td><strong>Log Streaming</strong>（Enterprise 版）</td>
-            <td>Enterprise 版功能</td>
+            <td><strong>Log Streaming</strong>（Business / Enterprise）</td>
+            <td>付費 plan 功能</td>
             <td>把所有 log 打到 Loki / Datadog / Splunk 集中分析</td>
           </tr>
         </tbody>
@@ -614,7 +614,7 @@ QUEUE_BULL_REDIS_HOST=redis.internal
 
       <details class="faq">
         <summary>n8n 支援 Kubernetes 嗎？</summary>
-        <div class="body">支援。<strong>官方有 Helm chart</strong>（<code>github.com/n8n-io/n8n-hosting/tree/main/kubernetes</code>），可以直接 <code>helm install</code>。生產環境建議走 Queue mode + Postgres + Redis，chart 都幫你 template 好了。這也是 Enterprise 客戶最常見的部署方式——multi-worker、autoscaling、跟公司 K8s 平台整合。單機 Docker Compose 是入門，K8s 是正式 scale。</div>
+        <div class="body">支援。<strong>官方 Helm chart</strong> 放在 <code>github.com/n8n-io/n8n-hosting</code> 的 <code>charts/n8n</code> 目錄，並發布到 GHCR OCI registry，可直接安裝：<code>helm install n8n oci://ghcr.io/n8n-io/n8n-helm-chart/n8n -f my-values.yaml</code>。同個 repo 也有 Docker Compose、Caddy reverse proxy、AWS CloudFormation（ECS Fargate + RDS + ElastiCache）等各種 template。生產環境建議走 Queue mode + Postgres + Redis，chart 都幫你 template 好了。單機 Docker Compose 是入門，K8s 是正式 scale。</div>
       </details>
 
       <details class="faq">
@@ -624,7 +624,7 @@ QUEUE_BULL_REDIS_HOST=redis.internal
 
       <details class="faq">
         <summary>Community 版跟 Enterprise 版的原始碼一樣嗎？</summary>
-        <div class="body">大部分一樣。n8n 是 <strong>fair-code / Sustainable Use License</strong>——原始碼公開、你可以改、可以 self-host、可以商用。Enterprise 額外的功能（SSO、audit log、log streaming、version control 等）是<em>閉源模組</em>，需要 license key 才能啟用。所以你 clone GitHub 拿到的是完整 Community 版；升級 Enterprise 是拿 key、不用換 image。這也是為什麼可以「先 Community 用、之後補買 Enterprise」——資料不用搬。</div>
+        <div class="body">大部分一樣，但要分清詞：<strong>fair-code</strong> 是官方講的<em>哲學</em>（原始碼公開、可自架、可內部商用、但禁止拿去做競品 SaaS），<strong>Sustainable Use License（SUL）</strong> 才是<em>實際的授權文件</em>。你可以改、可以 self-host、可以內部商用；不能移除授權標記、不能拿去掛牌賣 SaaS。<strong>Enterprise 額外功能</strong>（SSO、audit log、log streaming、version control、環境切換等）打包在檔名含 <code>.ee.</code> 的模組裡，需要 license key 才會啟用。你 clone GitHub 拿到的是完整 Community 版；升 Enterprise 是拿 key、不用換 image，資料也不用搬。</div>
       </details>
 
       <details class="faq">

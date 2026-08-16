@@ -186,7 +186,7 @@
           </tr>
           <tr>
             <td>社群 &amp; 模板</td>
-            <td>幾千個公開 workflow、開源</td>
+            <td>幾千個公開 workflow、原始碼公開（fair-code / Sustainable Use License）</td>
             <td>幾千個 Zap 模板</td>
             <td>模板較少</td>
             <td>企業 template 為主</td>
@@ -225,7 +225,7 @@
         </li>
         <li>
           <h3>節點種類最齊全</h3>
-          <p>n8n 官方 400+ 個整合節點，加上社群提供的節點，主流 SaaS 幾乎都有。沒有官方的，還有 <code>HTTP Request</code> 節點可以打任何 REST API（<a href="ch4_templates.html">第 4 章</a>會示範怎麼找）。</p>
+          <p>n8n 官方整合節點目前已經超過 2,000 個（官網 integrations 頁面即時顯示），加上社群 npm 上的 500+ 個 community node 套件，主流 SaaS 幾乎都有。沒有官方的，還有 <code>HTTP Request</code> 節點可以打任何 REST API（<a href="ch4_templates.html">第 4 章</a>會示範怎麼找）。</p>
         </li>
         <li>
           <h3>可以寫程式補洞</h3>
@@ -404,8 +404,8 @@
         <div class="body">
           <p>看版本：</p>
           <ul>
-            <li><strong>Community edition（社群版）</strong>：完全免費、開源、自架，我們公司走的是這條路。不限使用者、不限 workflow、不限執行次數。</li>
-            <li><strong>Cloud edition（雲端版）</strong>：n8n 官方託管，月費從 US$20 起，按每月 executions 數收費。你不想自架的話可以選。</li>
+            <li><strong>Community edition（社群版）</strong>：可自架、免費、原始碼公開（fair-code / Sustainable Use License，不是 OSI 定義的開源，商業轉售會受限，內部自用完全 OK），我們公司走的是這條路。不限使用者、不限 workflow、不限執行次數。</li>
+            <li><strong>Cloud edition（雲端版）</strong>：n8n 官方託管，Starter 方案 €20/月起（年繳，約 US$22 上下）含 2,500 executions；Pro €50/月含 10,000 executions。executions 是「整條 workflow 跑一次」不管幾個節點，跟 Zapier 按 task 計費是兩回事。你不想自架的話可以選。</li>
             <li><strong>Enterprise（企業版）</strong>：加 SSO、SAML、audit log、SLA 支援，價格談。</li>
           </ul>
           <p>Woow 用的是 Community 版自架在 <code>n8n.woowtech.io</code>，你完全不用擔心「用多了要不要加購」的問題。</p>
@@ -438,7 +438,7 @@
       <details class="faq">
         <summary>我的 workflow 資料會不會外流？</summary>
         <div class="body">
-          <p>Woow n8n 是自架的（就在公司自己的伺服器上），你的 workflow 定義、執行歷史、credentials 全都存在公司伺服器裡，沒有跟 n8n 官方或任何第三方分享。credentials 用 AES 加密存資料庫。要出公司的資料只有你自己在 workflow 裡明確叫它出去（例如打 Slack、寄 Gmail）才會出去。</p>
+          <p>Woow n8n 是自架的（就在公司自己的伺服器上），你的 workflow 定義、執行歷史、credentials 全都存在公司伺服器裡，沒有跟 n8n 官方或任何第三方分享。credentials 在資料庫裡是加密存放的（透過 <code>N8N_ENCRYPTION_KEY</code> 加密），要出公司的資料只有你自己在 workflow 裡明確叫它出去（例如打 Slack、寄 Gmail）才會出去。</p>
         </div>
       </details>
       <details class="faq">

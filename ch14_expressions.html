@@ -119,7 +119,7 @@
           <tr><td><strong>Expression（動態）</strong></td><td>用 <code>{{ }}</code> 包起來，裡面寫一小段 JavaScript。</td><td>n8n 執行到這個節點時，先算 <code>{{ }}</code> 裡的結果，再把值填回去。</td><td>欄位打 <code>{{ $json.name }}</code>，執行時若當前 item 的 <code>name</code> 是 <code>Elmo</code> → Slack 傳的變成 <code>Elmo</code>。</td></tr>
         </tbody>
       </table>
-      <p>切換方式：滑鼠移到欄位右上角，會看到一個 <strong>fx</strong>（或寫著「Expression」）的 toggle。<strong>關 = Fixed 模式、開 = Expression 模式</strong>。切到 Expression 模式後，欄位背景會變深色、還會多出下面的 preview 區塊——這是 Expression 模式的視覺標記，看到深色就是進到 code 世界了。</p>
+      <p>切換方式：對著欄位<strong>上方的欄位標籤（或欄位本體）</strong>會看到一個 <strong>Expression</strong>／<strong>Fixed</strong> 的 toggle（新版 UI 顯示為 <strong>fx</strong> 小圖示與 Expression tab）。<strong>左邊 = Fixed 模式、右邊 = Expression 模式</strong>。切到 Expression 模式後，欄位背景會變成有格線的 code 欄樣式、還會多出下面的 preview 區塊——這是 Expression 模式的視覺標記，看到格線背景就是進到 code 世界了。</p>
       <p>一個欄位還可以「靜態跟 Expression 混著寫」，例：欄位打 <code>新訂單 {{ $json.orderId }}</code>，靜態文字「新訂單 」照樣送，只有 <code>{{ }}</code> 那段會被替換掉。這是模板拼接最直覺的用法。</p>
       <div class="callout tip"><strong>提示：</strong>Expression 用的是 JavaScript 子集加 n8n 自訂變數。你會的 JS 語法（<code>+</code>、<code>.toUpperCase()</code>、三元運算子 <code>a ? b : c</code>）都能寫。但不建議在裡面跑重邏輯或呼叫 API——那是 <a href="ch20_code_node.html">Code node（第 20 章）</a>的工作。</div>
     </section>
@@ -147,7 +147,7 @@
           <tr>
             <td>3</td>
             <td><code>{{ $now }}</code></td>
-            <td>現在的時間（Luxon DateTime 物件，含時區）。</td>
+            <td>現在的時間（Luxon DateTime 物件，含 workflow 時區）。等價於 <code>DateTime.now()</code>。</td>
             <td>Gmail 主旨加日期、Sheet 新增列填時間戳、跟其他日期做加減。</td>
           </tr>
           <tr>
@@ -165,7 +165,7 @@
         </tbody>
       </table>
       <p>裡面 <code>$json</code>、<code>$now</code>、<code>$()</code> 這些是 n8n 幫你注入的<strong>內建變數</strong>。它們不是 JavaScript 原生的，是 n8n 自己準備好、你直接用就好。詳細清單在<a href="ch20_code_node.html">第 20 章</a>會展開，這章先熟這幾個。</p>
-      <div class="callout warn"><strong>注意：</strong><code>$('Google Sheets').item.json.field</code> 是<strong>新版寫法</strong>，同樣的東西舊版寫作 <code>$node['Google Sheets'].json.field</code>。兩種都還能跑（n8n 保留舊寫法向後相容），但新的短一點、也是官方主推。看到別人的 workflow 兩種混用是正常的。</div>
+      <div class="callout warn"><strong>注意：</strong><code>$('Google Sheets').item.json.field</code> 是<strong>新版寫法</strong>（0.190+ 版後主推），同樣的功能舊版寫作 <code>$node['Google Sheets'].json.field</code>。兩種都還能跑（n8n 保留舊寫法向後相容）。要留意兩者的<strong>對齊語意</strong>：<code>$('Node').item</code> 明確走 <strong>pairedItem</strong> 對齊當前 iteration；<code>$node['Node'].json</code> 也是抓當前 run 的對應 item，但寫法上少了 <code>.item</code> 那層，行為等價。實務看到別人的 workflow 兩種混用是正常的。</div>
     </section>
 
     <section id="drag" data-nav="拖拉建 Expression">
@@ -182,7 +182,7 @@
         </li>
         <li>
           <h3>把欄位切到 Expression 模式</h3>
-          <p>欄位右上角滑鼠移過去，會出現 <strong>fx</strong> 或 <strong>Expression</strong> 的 toggle，點一下開起來。欄位背景會變深色，代表切成功了。</p>
+          <p>欄位上方會有 <strong>Fixed / Expression</strong> 的 tab（或 <strong>fx</strong> 小圖示），點 Expression 那一邊。欄位背景會變成有格線的 code 樣式，代表切成功了。</p>
         </li>
         <li>
           <h3>從左邊 INPUT 面板把欄位拖進去</h3>
@@ -209,7 +209,7 @@
         </thead>
         <tbody>
           <tr><td><code>{{ $now }}</code></td><td>現在，Luxon DateTime 物件（含時區）。</td><td>時間戳、Gmail 主旨、記錄「這筆是什麼時候處理的」。</td></tr>
-          <tr><td><code>{{ $today }}</code></td><td>今天 00:00（等於 <code>$now.startOf('day')</code>）。</td><td>只要日期不要時間、篩「今天新增」的資料。</td></tr>
+          <tr><td><code>{{ $today }}</code></td><td>今天的日期，時間為 00:00（依 workflow timezone 決定，行為近似 <code>$now.startOf('day')</code>）。</td><td>只要日期不要時間、篩「今天新增」的資料。</td></tr>
           <tr><td><code>{{ $now.plus({ days: 3 }) }}</code></td><td>三天後的同一時刻。</td><td>設到期日、算「三天內未回覆就通知」。</td></tr>
           <tr><td><code>{{ $now.minus({ hours: 1 }) }}</code></td><td>一小時前。</td><td>API query 「近一小時新資料」。</td></tr>
           <tr><td><code>{{ $now.startOf('day') }}</code></td><td>今天 00:00:00。</td><td>抓「今天全部」的起點時間。</td></tr>
@@ -289,8 +289,8 @@
           </tr>
           <tr>
             <td>IF 節點條件：金額大於 1000</td>
-            <td>左邊值 <code>{{ $json.amount }}</code>，比較選 <code>&gt;</code>，右邊值 <code>1000</code></td>
-            <td>IF 節點兩邊都能寫 Expression，也可以整個條件寫在左邊 <code>{{ $json.amount &gt; 1000 }}</code>。</td>
+            <td>左邊值 <code>{{ $json.amount }}</code>，operator 選 <code>&gt;</code>，右邊值 <code>1000</code></td>
+            <td>IF 節點<strong>不吃 raw boolean</strong>——operator 一定要用它 UI 選；左右兩格才是 Expression 欄。要組合條件請用<strong>多個 condition + AND/OR</strong>，或前面接一個 Set 節點先算好 boolean 再用 IF 判斷。</td>
           </tr>
           <tr>
             <td>HTTP Request URL 動態</td>
@@ -365,8 +365,13 @@
           </tr>
           <tr>
             <td><code>$input.all()</code></td>
-            <td>當前節點吃到的<strong>全部 items 陣列</strong>。</td>
-            <td>Code node（<a href="ch20_code_node.html">第 20 章</a>）；一般節點很少用。</td>
+            <td>當前節點吃到的<strong>全部 items 陣列</strong>（每個元素含 <code>.json</code> 跟 <code>.binary</code>）。</td>
+            <td>要對整批做 aggregation（<code>$input.all().length</code>、<code>$input.all().map(i =&gt; i.json.amount).reduce(...)</code>），在 Expression 跟 Code node（<a href="ch20_code_node.html">第 20 章</a>）都能用。</td>
+          </tr>
+          <tr>
+            <td><code>$input.first()</code> / <code>$input.last()</code></td>
+            <td>當前節點吃到的<strong>第一個 / 最後一個 item</strong>。</td>
+            <td>取批次頭尾做 summary（例：報表節點只需要開始時間 <code>$input.first().json.startedAt</code>）。</td>
           </tr>
           <tr>
             <td><code>$('NodeName')</code></td>
@@ -380,18 +385,28 @@
           </tr>
           <tr>
             <td><code>$now</code> / <code>$today</code></td>
-            <td>現在時間 / 今天 00:00（Luxon）。</td>
-            <td>日期時間相關全部用它。</td>
+            <td>現在時間 / 今天 00:00（Luxon DateTime，含 workflow timezone）。</td>
+            <td>日期時間相關全部用它。也可寫 <code>DateTime.now()</code> 拿到同型別物件。</td>
+          </tr>
+          <tr>
+            <td><code>$itemIndex</code></td>
+            <td>當前 iteration 這個 item 在<strong>本節點輸入陣列裡的索引</strong>（從 0 開始）。</td>
+            <td>第一筆做開場、每 10 筆加分隔、要在訊息裡帶「第 N 筆」時：<code>{{ $itemIndex + 1 }}</code>。</td>
           </tr>
           <tr>
             <td><code>$workflow</code></td>
-            <td>當前 workflow 的資料（<code>.id</code>、<code>.name</code>）。</td>
+            <td>當前 workflow 的資料（<code>.id</code>、<code>.name</code>、<code>.active</code>）。</td>
             <td>錯誤通知裡放 workflow 名字方便追蹤。</td>
           </tr>
           <tr>
             <td><code>$execution</code></td>
-            <td>當前這次執行的資料（<code>.id</code>、<code>.mode</code>）。</td>
-            <td>錯誤訊息裡加 execution id 好回查。</td>
+            <td>當前這次執行的資料（<code>.id</code>、<code>.mode</code>、<code>.resumeUrl</code>）。</td>
+            <td>錯誤訊息裡加 execution id 好回查；Wait 節點恢復也靠 <code>.resumeUrl</code>。</td>
+          </tr>
+          <tr>
+            <td><code>$vars</code> / <code>$env</code></td>
+            <td>Workflow / Environment 變數（Cloud 全版；self-host Enterprise 才有 <code>$vars</code>；<code>$env</code> 需開 <code>N8N_BLOCK_ENV_ACCESS_IN_NODE=false</code>）。</td>
+            <td>把 API endpoint、閾值集中管理，不用每個 workflow 改寫。</td>
           </tr>
         </tbody>
       </table>
@@ -432,7 +447,7 @@
       <h2 data-icon="faq">常見問題</h2>
       <details class="faq">
         <summary>Expression 有完整的語法規範嗎？</summary>
-        <div class="body">有。Expression 執行時走的是 <strong>JavaScript 子集 + n8n 內建變數 + Luxon 日期函式庫</strong>。JS 部分幾乎全套語法（加減乘除、字串方法、陣列方法、三元運算子、optional chaining）都能用，但不能宣告 function、不能 <code>await</code>、不能 <code>require</code> 外部套件。日期時間走 Luxon（不是 Moment、不是原生 Date）。詳細參考官方文件 <code>docs.n8n.io/code/expressions/</code> 跟 <code>docs.n8n.io/code/builtin/</code>。</div>
+        <div class="body">有。Expression 執行時走的是 <strong>JavaScript 子集 + n8n 內建變數 + Luxon 日期函式庫</strong>。JS 部分幾乎全套<strong>單一運算式</strong>（加減乘除、字串方法、陣列方法、三元運算子、optional chaining、template literal）都能用；但不能宣告 <code>function</code>／<code>const</code>／<code>let</code>、不能 <code>await</code>、不能 <code>require</code> 外部套件、也不能寫 <code>if / for</code> 陳述句。日期時間走 Luxon（不是 Moment、不是原生 Date），可用 <code>$now</code>、<code>$today</code>、或全域 <code>DateTime</code> 建立物件（例：<code>DateTime.now()</code>、<code>DateTime.fromISO(...)</code>）。詳細參考官方文件 <code>docs.n8n.io/code/expressions/</code> 跟 <code>docs.n8n.io/code/builtin/</code>。</div>
       </details>
       <details class="faq">
         <summary>可以在 Expression 裡寫 for loop、if 嗎？</summary>

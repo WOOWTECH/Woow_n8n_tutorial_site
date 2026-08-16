@@ -116,7 +116,7 @@
           <tr><td><strong>credentials（帳號密碼、OAuth token、API key）</strong></td><td>節點頂端「Credential to connect with」下拉選單</td><td><strong>不會！</strong></td></tr>
         </tbody>
       </table>
-      <p>最關鍵一列在最後：<strong>credentials 不會跟著 JSON 走</strong>。分享 workflow 給別人不會不小心把你自己的 API key 洩出去；反過來，別人分享給你的 workflow，你也不會偷到他的帳號——你要自己接你的。這是 n8n 設計上就想清楚的事，安全這一關幫你把好了。</p>
+      <p>最關鍵一列在最後：<strong>credential 的機密內容（密碼、token、API key）不會跟著 JSON 走</strong>。分享 workflow 給別人不會不小心把你自己的 API key 洩出去；反過來，別人分享給你的 workflow，你也不會偷到他的帳號——你要自己接你的。JSON 裡通常只會殘留一小段像 <code>credentials: {"slackApi": {"id": "abc123", "name": "Slack account"}}</code> 的<em>引用資訊</em>，那個 id 是原作者環境裡的 ID，貼到你這邊會顯示「credential not found」紅字——這正是提醒你要接自己的那組。這是 n8n 設計上就想清楚的事，安全這一關幫你把好了。</p>
       <div class="callout tip"><strong>提示：</strong>「credential 不會跟著走」這件事，在<a href="ch13_credentials.html">第 13 章</a>會再深入講原理。目前你只要記住：<em>貼進來的 workflow，credential 一定要重接一次</em>。</div>
     </section>
 
@@ -186,8 +186,8 @@
           <p>就在 workflow 名字旁邊、Activate toggle 附近。點下去展開一個選單。</p>
         </li>
         <li>
-          <h3>選「Import from File」</h3>
-          <p>會跳出檔案選擇器。找到你下載的 <code>.json</code>，選好按開啟。</p>
+          <h3>選「Import from File...」</h3>
+          <p>會跳出檔案選擇器。找到你下載的 <code>.json</code>，選好按開啟。同一個選單裡還有 <strong>Import from URL...</strong>，如果 JSON 放在 GitHub Gist 的 raw URL、或某個 public 網址，貼網址進去比下載檔案更快。</p>
         </li>
         <li>
           <h3>節點會全部貼進來</h3>
@@ -261,7 +261,7 @@
           <tr>
             <td>整個 workflow 貼進來但畫面看起來只有一半</td>
             <td>節點位置遠在 canvas 的右下角視野外</td>
-            <td>按 canvas 左下角的「Fit to view」（<kbd>Shift</kbd>+<kbd>1</kbd>）縮到全畫面就看到全貌了</td>
+            <td>按 canvas 右下角控制列的「Fit to view」按鈕（放大鏡對準畫面那顆），或直接按數字鍵 <kbd>1</kbd> 縮到全畫面就看到全貌了</td>
           </tr>
         </tbody>
       </table>

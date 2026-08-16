@@ -194,7 +194,9 @@
         </tbody>
       </table>
 
-      <div class="callout warn"><strong>注意：</strong>Error Trigger 節點<em>只會</em>因為「別條 workflow 掛」而被觸發，你按 Execute Workflow 手動跑 Error workflow 是<em>不會</em>啟動 Error Trigger 節點的（因為沒有真的錯誤資料）。要測試 Error workflow，先在另一條 workflow 故意做個「一定會錯」的節點（例如 HTTP Request 打 <code>https://httpstat.us/500</code>），指定 Error workflow，跑一次讓它掛。</div>
+      <div class="callout warn"><strong>注意：</strong>Error Trigger 節點<em>只會</em>因為「別條 <strong>自動觸發</strong> workflow 掛」而被叫起（Schedule／Webhook／Event Trigger）；你按 Execute Workflow 手動跑 Error workflow、或手動跑的主 workflow 掛，都<em>不會</em>啟動 Error Trigger（官方明說「You can't test error workflows when running workflows manually」）。要測試，先把一條「一定會錯」的 workflow 設 Active + Schedule 讓它自動跑一次掛。</div>
+
+      <div class="callout tip"><strong>隱藏 default：</strong>官方文件補了一條容易忽略的行為——「If a workflow contains the Error Trigger node, by default, the workflow uses itself as the error workflow」。意思是：<em>含 Error Trigger 節點的 workflow，如果它自己也 Active 且會被自動觸發，它出錯時預設會呼叫自己</em>。所以你的 Error Handler workflow 不要再放 Schedule／Webhook Trigger（會造成 self-reference 混亂）——只留 Error Trigger 一個 trigger 就好。</div>
     </section>
 
     <section id="steps" data-nav="建 Error workflow">
@@ -375,7 +377,9 @@ Workflow: {{ $json.workflow.name }}
 
       <div class="callout"><strong>觀念：</strong>Wait 期間 workflow 是「掛著」的——不佔 CPU、只佔一點記憶體。所以 Wait 幾小時、幾天都不會爆你的伺服器。它跟「用 setTimeout 卡在 code 裡」不一樣，是 n8n 內建的 pause 機制。</div>
 
-      <div class="callout warn"><strong>注意（Community 版限制）：</strong>n8n Community / self-hosted 版本，Wait 節點的 <em>After Time Interval</em> 最長支援到 65 秒（來自 setTimeout 的 int32 上限限制）——超過 65 秒 n8n 會用不同機制處理（把 workflow 序列化存 DB、等時間到再喚醒）。如果你要等超過幾天／幾週，用 At Specified Time 模式或改成「另存資料到 DB，另一條 Schedule workflow 定時掃」比較穩。</div>
+      <div class="callout warn"><strong>釐清一個常見誤解（65 秒不是上限）：</strong>網路上有人講「Wait 最多 65 秒」——<em>錯的</em>。官方文件的原話是「wait times less than 65 seconds, the workflow doesn't offload execution data to the database」，意思是<strong>65 秒是「切換執行機制」的門檻，不是最大值</strong>：&lt; 65 秒 workflow 掛在記憶體、不寫 DB；≥ 65 秒 n8n 把 execution 序列化存進 DB，時間到再喚醒。Community 版一樣支援 Wait 幾小時、幾天，甚至 At Specified Time 等到下個月。<strong>唯一風險</strong>：超過 65 秒改走 DB 路徑後，如果 n8n 只用預設 SQLite，重啟或 DB 損毀會遺失待喚醒 execution——長 Wait 建議搭配 Postgres／MySQL 外部 DB。</div>
+
+      <div class="callout tip"><strong>補充第四個模式：</strong>Wait 節點還有一個 <strong>On Form Submitted</strong> 模式——workflow 停在這裡等使用者送出 n8n 產生的表單才繼續（審核／收集資料場景）。上表列的是最常用三個，Form 屬進階，熟 Webhook 後再學。</div>
     </section>
 
     <section id="records" data-nav="Executions 紀錄與 debug">
@@ -496,8 +500,8 @@ Workflow: {{ $json.workflow.name }}
           </tr>
           <tr>
             <td>Wait 節點 workflow 一直停不動</td>
-            <td>(1) After Time Interval 設超過 Community 版限制、(2) On Webhook Call 模式但對方沒打 URL 回來</td>
-            <td>把 Wait 改用 At Specified Time；或者檢查你給對方的 webhook URL 是否正確、對方端有沒有真的觸發 callback</td>
+            <td>(1) On Webhook Call 模式但對方沒打 URL 回來、(2) 超過 65 秒 Wait 用 SQLite 遇到重啟遺失了、(3) At Specified Time 時區設錯（跟 workflow Settings 的 Timezone 差 8 小時）</td>
+            <td>檢查給對方的 webhook URL 是否正確、對方端有沒有真的觸發 callback；長 Wait 換 Postgres 外部 DB；At Specified Time 對照 Settings → Timezone</td>
           </tr>
           <tr>
             <td>Executions 頁看不到剛剛跑的紀錄</td>
@@ -563,7 +567,7 @@ Workflow: {{ $json.workflow.name }}
 
       <details class="faq">
         <summary>Error workflow 只在 Active workflow 觸發嗎？我手動 Execute Workflow 掛也算嗎？</summary>
-        <div class="body">n8n 預設情況下，Error workflow 只在<strong>「自動觸發」的 workflow 執行</strong>（Schedule / Webhook / Event Trigger）出錯時觸發；你手動按 Execute Workflow 掛的、Manual Trigger 的執行，通常<em>不會</em>觸發 Error workflow（因為你人就在 canvas 前面盯著，看得到）。這是刻意設計——避免開發時每次測試都轟炸 Slack。想在手動測試時也觸發，可以在 Error workflow 裡直接放一個 IF 節點判斷 <code>$json.execution.mode</code> 值來過濾。</div>
+        <div class="body">官方文件講得很直接：「<strong>You can't test error workflows when running workflows manually. The Error Trigger only runs when an automatic workflow errors.</strong>」——手動 Execute Workflow 掛<em>絕對不會</em>觸發 Error Trigger，這不是選項、是硬規則。所以要測試 Error workflow，一定要：(1) 把主 workflow 設成 Active、(2) 用 Schedule／Webhook／Event Trigger 讓它「自動」跑起來、(3) 讓它真的失敗。這是刻意設計避免開發時被 Slack 轟炸，但也代表你沒辦法在 canvas 上按按鈕測 Error workflow——只能靠一條真的會錯的 Active workflow 觸發它。</div>
       </details>
 
       <details class="faq">

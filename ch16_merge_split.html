@@ -68,9 +68,9 @@
       <h2>本章</h2>
       <a href="#why">為什麼要學這三個</a>
       <a href="#concept">三個節點的分工</a>
-      <a href="#merge_modes">Merge 三種模式</a>
-      <a href="#split_batches">Split In Batches</a>
-      <a href="#item_lists">Item Lists 拆陣列</a>
+      <a href="#merge_modes">Merge 四種模式</a>
+      <a href="#split_batches">Loop Over Items</a>
+      <a href="#item_lists">Split Out / Aggregate</a>
       <a href="#example_sheet_slack">實例 · Sheet 逐列通知</a>
       <a href="#example_api_split">實例 · API 陣列拆開</a>
       <a href="#combos">常見組合技</a>
@@ -88,8 +88,8 @@
   <main class="content">
     <div class="chapter-header">
       <div class="kicker">第 16 章</div>
-      <h1>Merge / Split / Item Lists：處理多筆資料</h1>
-      <p class="lead">上一章 <a href="ch15_if_switch.html">IF / Switch</a> 講的是分岔——一條路走成兩條。這章反過來：把兩條合成一條、把一次跑 500 筆改成一次跑 5 筆、把 API 回來的一大包陣列拆開變多筆。這三個節點是 n8n 的水管工，每個實戰 workflow 幾乎都用得上。</p>
+      <h1>Merge / Loop Over Items / Split Out / Aggregate：處理多筆資料</h1>
+      <p class="lead">上一章 <a href="ch15_if_switch.html">IF / Switch</a> 講的是分岔——一條路走成兩條。這章反過來：把兩條合成一條、把一次跑 500 筆改成一次跑 5 筆、把 API 回來的一大包陣列拆開變多筆。這些節點是 n8n 的水管工，每個實戰 workflow 幾乎都用得上。<strong>用語提醒：</strong>本章沿用官方最新命名，舊版的 <code>Split In Batches</code> 已改名為 <strong>Loop Over Items</strong>（節點介面顯示為「Loop Over Items (Split in Batches)」），舊版的 <strong>Item Lists</strong> 已拆成獨立節點 <strong>Split Out</strong>、<strong>Aggregate</strong>、<strong>Sort</strong>、<strong>Limit</strong>、<strong>Remove Duplicates</strong>、<strong>Summarize</strong>——搜尋節點時記得用新名字。</p>
     </div>
 
     <section id="why" data-nav="為什麼要學這三個">
@@ -101,13 +101,13 @@
         <li><strong>API 回來一個 item 裡有個 <code>results</code> 陣列，下游拿不到。</strong> 你在 <a href="ch9_item_data_flow.html">第 9 章</a>看過這個坑——<code>{ total: 5, items: [...] }</code> 整包被當成 1 個 item，下游 Slack 只傳 1 次不是 5 次。</li>
         <li><strong>兩個 API 各回一半資料，要 join 才完整。</strong> 一邊是客戶基本資料、一邊是訂單金額，同一個 <code>customer_id</code>，你要湊起來變一份 report。</li>
       </ul>
-      <p>這四個問題分別由三個節點解掉：<strong>Merge</strong>（合流）、<strong>Split In Batches</strong>（分批處理）、<strong>Item Lists</strong>（陣列拆開 / 合回去）。學會這三個，你的 workflow 從「只會做玩具」進化到「可以扛正式業務」。</p>
-      <div class="callout"><strong>本章目標：</strong>讀完你能分清楚三個節點各自的職責、知道 Merge 三種模式差在哪、會用 Split In Batches 配 Wait 節點避開 rate limit、會用 Item Lists 的 Split Out 把陣列展開成多個 item。動手範例會做兩個小 workflow，都能直接抄改自用。</div>
+      <p>這四個問題由這幾個節點解掉：<strong>Merge</strong>（合流）、<strong>Loop Over Items</strong>（前身 Split In Batches，分批處理）、<strong>Split Out</strong>（陣列拆多筆 item）與 <strong>Aggregate</strong>（多筆 item 合回陣列）——後兩個以前叫 Item Lists，現在是各自獨立的節點。學會這幾個，你的 workflow 從「只會做玩具」進化到「可以扛正式業務」。</p>
+      <div class="callout"><strong>本章目標：</strong>讀完你能分清楚各節點的職責、知道 Merge 四種模式（Append / Combine / SQL Query / Choose Branch）差在哪、會用 Loop Over Items 配 Wait 節點避開 rate limit、會用 Split Out 把陣列展開成多個 item、會用 Aggregate 把多筆 item 收成一份 summary。動手範例會做兩個小 workflow，都能直接抄改自用。</div>
     </section>
 
     <section id="concept" data-nav="三個節點的分工">
-      <h2 data-icon="concept">三個節點的分工一張表看完</h2>
-      <p>先把三個節點各自的位子擺清楚，之後看到情境就知道要挑哪一個：</p>
+      <h2 data-icon="concept">節點分工一張表看完</h2>
+      <p>先把幾個節點各自的位子擺清楚，之後看到情境就知道要挑哪一個：</p>
       <table class="data-table">
         <thead>
           <tr><th>節點</th><th>解決什麼</th><th>Input</th><th>Output</th><th>經典場景</th></tr>
@@ -115,74 +115,118 @@
         <tbody>
           <tr>
             <td><strong>Merge</strong></td>
-            <td>把兩條分支合成一條。</td>
+            <td>把兩條分支合成一條，或依 key join。</td>
             <td>兩個（Input 1 / Input 2）</td>
             <td>一條 items 陣列</td>
             <td>IF 分岔處理完要合回來繼續、兩個 API 資料 join。</td>
           </tr>
           <tr>
-            <td><strong>Split In Batches</strong></td>
+            <td><strong>Loop Over Items</strong><br><span style="font-size:0.85em;opacity:0.7">（前身 Split In Batches）</span></td>
             <td>把一次 N 筆改成一輪 M 筆分幾輪跑。</td>
             <td>一個（大量 items）</td>
-            <td>兩個：<code>done</code>（已處理完）／<code>loop</code>（下一輪）</td>
+            <td>兩個：<code>loop</code>（本輪要處理）／<code>done</code>（全部跑完）</td>
             <td>API rate limit、記憶體吃不下、想加進度條分批通知。</td>
           </tr>
           <tr>
-            <td><strong>Item Lists</strong></td>
-            <td>陣列拆多筆 item、或多筆 item 合回一個陣列。</td>
+            <td><strong>Split Out</strong><br><span style="font-size:0.85em;opacity:0.7">（前 Item Lists · Split Out Items）</span></td>
+            <td>把 item 裡的陣列欄位展開成多筆 item。</td>
             <td>一個</td>
+            <td>多筆（陣列展平）</td>
+            <td>API 回 <code>{ items: [...] }</code>、Gmail 附件陣列。</td>
+          </tr>
+          <tr>
+            <td><strong>Aggregate</strong><br><span style="font-size:0.85em;opacity:0.7">（前 Item Lists · Aggregate Items）</span></td>
+            <td>多筆 item 合成單一 item 內的陣列。</td>
+            <td>多筆</td>
             <td>一個</td>
-            <td>API 回 <code>{ items: [...] }</code>、Gmail 附件陣列、報表要聚合。</td>
+            <td>報表聚合、只寄一封 daily summary。</td>
+          </tr>
+          <tr>
+            <td><strong>Sort / Limit / Remove Duplicates / Summarize</strong></td>
+            <td>排序 / 取前 N / 去重 / 統計。</td>
+            <td>多筆</td>
+            <td>多筆或一個</td>
+            <td>舊 Item Lists 的其他操作，現在各自獨立節點。</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>提示：</strong>如果你會 SQL：Merge Combine by Key 就是 <code>JOIN</code>、Merge Append 就是 <code>UNION ALL</code>、Item Lists Split Out 就是 <code>UNNEST</code>、Item Lists Aggregate 就是 <code>GROUP BY</code> 收成 array。名字換而已，心智模型一樣。</div>
+      <div class="callout tip"><strong>提示：</strong>如果你會 SQL：Merge 的 <em>Combine → Matching Fields</em> 就是 <code>JOIN</code>、Merge <em>Append</em> 就是 <code>UNION ALL</code>、<strong>Split Out</strong> 就是 <code>UNNEST</code>、<strong>Aggregate</strong> 就是 <code>GROUP BY</code> 收成 array、<strong>Summarize</strong> 是 <code>GROUP BY</code> 配聚合函數。名字換而已，心智模型一樣。</div>
     </section>
 
-    <section id="merge_modes" data-nav="Merge 三種模式">
-      <h2 data-icon="modes">Merge 節點：三種模式各自幹嘛</h2>
-      <p>Merge 節點<strong>一定要有兩個 input</strong>（拖線的時候會看到兩個接點），實務上最常用的是這三種模式：</p>
+    <section id="merge_modes" data-nav="Merge 四種模式">
+      <h2 data-icon="modes">Merge 節點：Mode 有四種，Combine 底下再三選一</h2>
+      <p>Merge 節點<strong>一定要有兩個 input</strong>（拖線的時候會看到兩個接點）。<strong>Mode</strong> 這個下拉有四個選項——是官方 2024 年之後改過的結構，跟舊教學文常見的「三種模式」不同：</p>
       <table class="data-table">
         <thead>
-          <tr><th>模式</th><th>做什麼</th><th>Input 1</th><th>Input 2</th><th>Output</th></tr>
+          <tr><th>Mode</th><th>做什麼</th><th>備註</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Append</strong>（附加）</td>
-            <td>把 Input 2 接在 Input 1 後面。像 Excel 上下貼。</td>
-            <td>3 個 items</td>
-            <td>2 個 items</td>
-            <td>5 個 items（順序：1、2、3、4、5）</td>
+            <td><strong>Append</strong></td>
+            <td>Keep data from all inputs：把兩邊 items 依序上下疊起來。</td>
+            <td>Input 1 = 3 筆、Input 2 = 2 筆，output = 5 筆。像 Excel 上下貼。</td>
           </tr>
           <tr>
-            <td><strong>Combine by Position</strong>（位置對齊）</td>
-            <td>以列的位置對齊拼欄位。像 Excel 左右貼。</td>
+            <td><strong>Combine</strong></td>
+            <td>Combine data from two inputs：把兩邊欄位左右拼起來，底下再選 <em>Combine By</em> 三選一（見下表）。</td>
+            <td>這是最常用的合併模式，取代舊版直接列出的 Combine by Position / by Key / Multiplex。</td>
+          </tr>
+          <tr>
+            <td><strong>SQL Query</strong></td>
+            <td>寫一段 SQL（<code>SELECT ... FROM input1 JOIN input2 ...</code>）自定義合併規則。</td>
+            <td>複雜 JOIN、複雜 WHERE 用得到，UI 拉不出來的都寫這裡。</td>
+          </tr>
+          <tr>
+            <td><strong>Choose Branch</strong></td>
+            <td>只保留其中一邊：像「兩條分支中挑一條的資料繼續往下」。</td>
+            <td>不是合併，是二選一。取代早期用兩個 IF 湊出來的寫法。</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>選了 <strong>Combine</strong> 之後 <em>Combine By</em> 底下的三個策略：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Combine By</th><th>做什麼</th><th>Input 1</th><th>Input 2</th><th>Output</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Matching Fields</strong></td>
+            <td>Compare items by field values：以 key 值配對，等於 SQL JOIN。</td>
+            <td>客戶資料（用 <code>id</code>）</td>
+            <td>訂單資料（用 <code>customer_id</code>）</td>
+            <td>依 Output Type 決定要不要留沒 match 的</td>
+          </tr>
+          <tr>
+            <td><strong>Position</strong></td>
+            <td>Combine items based on their order：以陣列位置對齊拼欄位。</td>
             <td><code>[{a:1},{a:2},{a:3}]</code></td>
             <td><code>[{b:x},{b:y},{b:z}]</code></td>
             <td><code>[{a:1,b:x},{a:2,b:y},{a:3,b:z}]</code></td>
           </tr>
           <tr>
-            <td><strong>Combine by Matching Fields</strong>（Key 對齊）</td>
-            <td>以某個 key 值配對，等於 SQL JOIN。</td>
-            <td>客戶資料（用 <code>id</code>）</td>
-            <td>訂單資料（用 <code>customer_id</code>）</td>
-            <td>對得起來的 items 才 output</td>
+            <td><strong>All Possible Combinations</strong></td>
+            <td>Output all possible item combinations：笛卡兒積（cross join / multiplex）。</td>
+            <td>3 筆</td>
+            <td>2 筆</td>
+            <td>3 × 2 = 6 筆</td>
           </tr>
         </tbody>
       </table>
-      <p>選 <strong>Combine by Matching Fields</strong> 時還要選 join 類型：</p>
+      <p>選 <strong>Matching Fields</strong> 時 <em>Output Type</em> 決定 join 種類（官方五個都給齊）：</p>
       <ul>
-        <li><strong>Keep matches</strong> —— 兩邊都有匹配才 output（inner join）。</li>
-        <li><strong>Keep non-matches</strong> —— 沒配對到才 output（找差集用，例：「哪些客戶沒下過單」）。</li>
-        <li><strong>Keep everything</strong> —— 全部保留，沒配對到的欄位是 <code>null</code>（full outer join）。</li>
+        <li><strong>Keep Matches</strong> —— 兩邊都有匹配才 output（inner join）。</li>
+        <li><strong>Keep Non-Matches</strong> —— 沒配對到才 output（找差集用，例：「哪些客戶沒下過單」）。</li>
+        <li><strong>Keep Everything</strong> —— 全部保留，沒配對到的欄位是 <code>null</code>（full outer join）。</li>
         <li><strong>Enrich Input 1</strong> —— 以 Input 1 為主，把 Input 2 對得起來的欄位貼上（left join）。</li>
+        <li><strong>Enrich Input 2</strong> —— 以 Input 2 為主，把 Input 1 對得起來的欄位貼上（right join）。</li>
       </ul>
-      <div class="callout"><strong>觀念：</strong>Merge 節點<strong>兩個 input 都要有東西進去節點才會跑</strong>。所以做 IF 分岔的合流時，兩條路都要接到 Merge 的兩個 input。如果一條路是「什麼都不做」，也要串一個 <em>NoOp</em>（No Operation）節點再進 Merge，不然 Merge 會等到永遠。</div>
+      <div class="callout"><strong>觀念：</strong>Merge 節點<strong>兩個 input 都要有東西進去節點才會跑</strong>。所以做 IF 分岔的合流時，兩條路都要接到 Merge 的兩個 input。如果一條路是「什麼都不做」，也要串一個 <em>No Operation, do nothing</em> 節點再進 Merge，不然 Merge 會等到永遠。</div>
     </section>
 
-    <section id="split_batches" data-nav="Split In Batches">
-      <h2 data-icon="modes">Split In Batches：分批處理避開 rate limit</h2>
-      <p>情境：Airtable 官方 API 每秒最多 5 個 request，你的 Google Sheet 有 500 列客戶要寫進 Airtable。直接拉線一次餵，跑到第 5 筆之後就會開始收 <code>429</code>，剩下 495 筆全掛。這時候 <strong>Split In Batches</strong> 上場。</p>
+    <section id="split_batches" data-nav="Loop Over Items">
+      <h2 data-icon="modes">Loop Over Items（前身 Split In Batches）：分批處理避開 rate limit</h2>
+      <p>情境：Airtable 官方 API 每秒最多 5 個 request，你的 Google Sheet 有 500 列客戶要寫進 Airtable。直接拉線一次餵，跑到第 5 筆之後就會開始收 <code>429</code>，剩下 495 筆全掛。這時候 <strong>Loop Over Items</strong> 上場。</p>
+      <div class="callout"><strong>命名一次講清楚：</strong>這個節點以前叫 <code>Split In Batches</code>，官方 2024 年之後在編輯器裡顯示為 <strong>Loop Over Items (Split in Batches)</strong>——搜尋 <em>Loop</em>、<em>Split</em>、<em>batches</em> 三個關鍵字都能找到，用起來完全一樣。舊 workflow JSON 裡的 <code>splitInBatches</code> type 相容不用改。</div>
       <p>它的行為有點特別，第一次看會困惑——它是<strong>自己形成 loop</strong> 的節點。</p>
       <table class="data-table">
         <thead>
@@ -195,22 +239,22 @@
           <tr><td>Output: <code>done</code></td><td>全部跑完之後才會走這條，只跑一次。</td><td>接「全部完成」的通知或彙總。</td></tr>
         </tbody>
       </table>
-      <p>畫在 canvas 上會長成這樣（<strong>loop 那邊的節點跑完要拉線回來接回 Split In Batches</strong>，形成迴圈）：</p>
+      <p>畫在 canvas 上會長成這樣（<strong>loop 那邊的節點跑完要拉線回來接回 Loop Over Items 節點</strong>，形成迴圈）：</p>
       <pre class="code-block"><code>Google Sheets (500 items)
   ↓
-Split In Batches (Batch Size = 5)
+Loop Over Items (Batch Size = 5)
   ├─ loop → Airtable Create → Wait 1 second ──┐
   │                                            │
-  │←──────────────── 回接 Split In Batches ────┘
+  │←──────────── 回接 Loop Over Items 節點 ────┘
   │
   └─ done → Slack "500 筆處理完了"</code></pre>
       <div class="callout warn"><strong>注意：</strong>Wait 節點是搭配神器。API 每秒 5 次，Batch Size 設 5，Wait 設 1 秒，就是穩穩貼著 rate limit 跑。<strong>不加 Wait 節點</strong>雖然分批了，但每一批之間沒有停頓，5×N 次 request 幾乎瞬間送完，還是會炸。</div>
-      <p>Split In Batches 本身不會產生「進度條」訊息，但每一輪 loop 都會經過同一批節點——想在半路報進度，就在 loop 分支上加個 Slack 節點傳「第 N 批處理完，還剩 M 批」。</p>
+      <p>Loop Over Items 本身不會產生「進度條」訊息，但每一輪 loop 都會經過同一批節點——想在半路報進度，就在 loop 分支上加個 Slack 節點傳「第 N 批處理完，還剩 M 批」。</p>
     </section>
 
-    <section id="item_lists" data-nav="Item Lists 拆陣列">
-      <h2 data-icon="tabs">Item Lists：一個 item 內的陣列拆成多個 item</h2>
-      <p>Item Lists 節點有兩個主要操作，一個把陣列<strong>拆開</strong>、一個把 items <strong>合成陣列</strong>——完全對稱。</p>
+    <section id="item_lists" data-nav="Split Out / Aggregate">
+      <h2 data-icon="tabs">Split Out / Aggregate：把陣列展平、把 items 收成陣列</h2>
+      <div class="callout"><strong>命名一次講清楚：</strong>過去 n8n 有個「Item Lists」節點，一個節點內含 Split Out Items / Aggregate Items / Sort / Limit / Remove Duplicates / Summarize 六個 operation。現在官方已把它<strong>拆成六個獨立節點</strong>，各自叫 <strong>Split Out</strong>、<strong>Aggregate</strong>、<strong>Sort</strong>、<strong>Limit</strong>、<strong>Remove Duplicates</strong>、<strong>Summarize</strong>。搜尋節點時直接輸入新名字就好；舊 workflow 匯入還是可以跑，但新版 UI 已看不到 Item Lists。</div>
       <p><strong>Split Out：一個 item 內的陣列 → 多個 items</strong></p>
       <p>經典場景：Gmail 節點收到一封信，binary 或 json 裡有個 <code>attachments</code> 陣列，有 5 個附件。整包被當成 1 個 item，你想對「每個附件」跑一次上傳到 Google Drive。</p>
       <table class="data-table">
@@ -218,26 +262,25 @@ Split In Batches (Batch Size = 5)
           <tr><th>設定</th><th>值</th><th>意義</th></tr>
         </thead>
         <tbody>
-          <tr><td>Operation</td><td>Split Out Items</td><td>就是拆開的意思。</td></tr>
-          <tr><td>Field To Split Out</td><td><code>attachments</code>（或該陣列的路徑）</td><td>指定要拆的陣列在哪個欄位。</td></tr>
-          <tr><td>Include</td><td>Selected Other Fields / All Other Fields</td><td>拆出來的每筆 item 要不要帶原本 item 的其他欄位（例：郵件主旨）。</td></tr>
+          <tr><td>Fields To Split Out</td><td><code>attachments</code>（或該陣列的路徑，逗號分隔可多個）</td><td>指定要拆的陣列在哪個欄位。</td></tr>
+          <tr><td>Include</td><td>No Other Fields / All Other Fields / Selected Other Fields</td><td>拆出來的每筆 item 要不要帶原本 item 的其他欄位（例：郵件主旨）。</td></tr>
           <tr><td>Options → Destination Field Name</td><td>可留空，或指定新欄位名</td><td>拆出來的每筆內容要放到哪個 key 底下。留空就是打平。</td></tr>
+          <tr><td>Options → Disable Dot Notation</td><td>預設關</td><td>欄位名本身就含 <code>.</code> 時要開，避免被誤解成巢狀路徑。</td></tr>
         </tbody>
       </table>
       <p>拆完 output 從 1 個 item 變成 5 個 items，下游每個節點自動被跑 5 次。這就是<a href="ch9_item_data_flow.html">第 9 章</a>裡那個「n8n 的 items 跟 JSON 裡叫 items 的欄位是兩件事」的解法——用 Split Out 把 JSON 陣列變成 n8n items。</p>
       <p><strong>Aggregate：多個 items → 合成一個 item 內的陣列</strong></p>
-      <p>反過來的操作。5 個 items 處理完，你想合成一份 daily summary 只發一次 email。Operation 選 <strong>Aggregate Items</strong>，指定要聚合哪個欄位（或全部），output 就變回 1 個 item，欄位是個陣列。</p>
-      <p>Aggregate 還有其他有用選項：</p>
+      <p>反過來的操作。5 個 items 處理完，你想合成一份 daily summary 只發一次 email。加入 <strong>Aggregate</strong> 節點，Aggregate 選項二選一：</p>
       <ul>
-        <li><strong>All Item Data (Into a Single List)</strong> —— 把每個 item 的完整 json 塞成一個大 array。</li>
-        <li><strong>Individual Fields</strong> —— 只聚合指定的幾個欄位，可設 <em>Rename Field</em> 換名字。</li>
+        <li><strong>Individual Fields</strong> —— 只聚合指定的幾個欄位，可設 <em>Rename Field</em> 換名字，並可開 <em>Merge Lists</em> 把子陣列打平。</li>
+        <li><strong>All Item Data (Into a Single List)</strong> —— 把每個 item 的完整 json 塞成一個大 array，可指定 Include / Exclude 白名單黑名單。</li>
       </ul>
-      <p>另外 Item Lists 節點還有 <strong>Sort</strong>（排序）、<strong>Limit</strong>（取前 N 筆）、<strong>Remove Duplicates</strong>（去重）三個操作——想像成 SQL 的 <code>ORDER BY</code> / <code>LIMIT</code> / <code>DISTINCT</code>，會 SQL 的話一秒就懂。</p>
+      <p>另外 <strong>Sort</strong>（排序，SQL <code>ORDER BY</code>）、<strong>Limit</strong>（取前 N 筆，SQL <code>LIMIT</code>）、<strong>Remove Duplicates</strong>（去重，SQL <code>DISTINCT</code>）、<strong>Summarize</strong>（分組統計，SQL <code>GROUP BY</code> + 聚合函數）現在也是各自獨立的節點——需要哪個就搜尋哪個。</p>
     </section>
 
     <section id="example_sheet_slack" data-nav="實例 · Sheet 逐列通知">
       <h2 data-icon="steps">實例：Google Sheet 每一列都發一則 Slack 提醒</h2>
-      <p>這個 workflow 展示的是「item 天然被展開，根本不用 Split In Batches」——因為 Google Sheets Read 本身就是把每一列變一個 item。當作暖身。</p>
+      <p>這個 workflow 展示的是「item 天然被展開，根本不用 Loop Over Items」——因為 Google Sheets Read 本身就是把每一列變一個 item。當作暖身。</p>
       <ol class="steps">
         <li>
           <h3>加 Manual Trigger</h3>
@@ -265,12 +308,12 @@ Split In Batches (Batch Size = 5)
           <p>右上 <strong>Save</strong>。之後任何時候按 Execute Workflow 都會重新發一輪。要排程每月 1 號自動發，把 Manual Trigger 換成 Schedule Trigger（<a href="ch10_triggers.html">第 10 章</a>）。</p>
         </li>
       </ol>
-      <div class="callout tip"><strong>提示：</strong>這個範例整個沒用到本章任何三個節點——因為 Google Sheets Read 天然就把 10 列變 10 個 items 了。「天然多筆」跟「陣列裡多筆」是兩件事，下一個範例就是後者。</div>
+      <div class="callout tip"><strong>提示：</strong>這個範例整個沒用到本章任何節點——因為 Google Sheets Read 天然就把 10 列變 10 個 items 了。「天然多筆」跟「陣列裡多筆」是兩件事，下一個範例就是後者。</div>
     </section>
 
     <section id="example_api_split" data-nav="實例 · API 陣列拆開">
       <h2 data-icon="steps">實例：API 回一包陣列，拆開對每一筆做事</h2>
-      <p>這才是 Item Lists 的主場。我們打一個公開 API（例：<code>https://jsonplaceholder.typicode.com/users</code>），它會回 10 個使用者的<strong>一整包陣列</strong>——n8n 收到的是 1 個 item，欄位是陣列。要對每個使用者發 Slack 通知，就要 Split Out。</p>
+      <p>這才是 Split Out 的主場。我們打一個公開 API（例：<code>https://jsonplaceholder.typicode.com/users</code>），它會回 10 個使用者的<strong>一整包陣列</strong>——n8n 收到的是 1 個 item，欄位是陣列。要對每個使用者發 Slack 通知，就要 Split Out。</p>
       <ol class="steps">
         <li>
           <h3>Manual Trigger + HTTP Request</h3>
@@ -281,12 +324,12 @@ Split In Batches (Batch Size = 5)
           <p>Output 面板頂端會顯示 <strong>1 item</strong>（不是 10）。切 JSON 檢視展開，會看到整個回應是個 array。這時下游任何節點只會跑 1 次——不對，我們要跑 10 次。</p>
         </li>
         <li>
-          <h3>加 Item Lists 節點做 Split Out</h3>
-          <p>接一個 <strong>Item Lists</strong> 節點。Operation 選 <em>Split Out Items</em>。<em>Field To Split Out</em> 填該陣列所在的欄位——如果 HTTP Request 直接把整個陣列放在 <code>data</code> 或根層，就用對應路徑（實測時看 output 面板實際路徑填）。</p>
+          <h3>加 Split Out 節點</h3>
+          <p>接一個 <strong>Split Out</strong> 節點（搜尋「split out」直接找到，舊教學文的「Item Lists → Split Out Items」現在就是這個獨立節點）。<em>Fields To Split Out</em> 填該陣列所在的欄位——如果 HTTP Request 直接把整個陣列放在 <code>data</code> 或根層，就用對應路徑（實測時看 output 面板實際路徑填）。</p>
         </li>
         <li>
           <h3>Execute step 確認變成 10 個 items</h3>
-          <p>對 Item Lists 節點按 Execute step。Output 面板頂端顯示 <strong>10 items</strong>——每個使用者一列。切 Table 檢視看 <code>name</code>、<code>email</code> 都有值。</p>
+          <p>對 Split Out 節點按 Execute step。Output 面板頂端顯示 <strong>10 items</strong>——每個使用者一列。切 Table 檢視看 <code>name</code>、<code>email</code> 都有值。</p>
         </li>
         <li>
           <h3>接 Slack 節點對每筆通知</h3>
@@ -294,10 +337,10 @@ Split In Batches (Batch Size = 5)
         </li>
         <li>
           <h3>（進階）Aggregate 合回一份總結</h3>
-          <p>在 Slack 節點<strong>後面</strong>再加一個 <strong>Item Lists</strong> 節點，Operation 選 <em>Aggregate Items</em>，Field 選 <code>name</code>。Output 變回 1 個 item，欄位是 10 個名字的陣列。再接 Gmail 節點寄「今天處理了這 10 位使用者：{{ $json.name.join('、') }}」——只寄 1 封 summary，不會被 10 個提醒淹沒信箱。</p>
+          <p>在 Slack 節點<strong>後面</strong>再加一個 <strong>Aggregate</strong> 節點，Aggregate 選 <em>Individual Fields</em>，Field To Aggregate 選 <code>name</code>（可 Rename 成 <code>names</code>）。Output 變回 1 個 item，欄位是 10 個名字的陣列。再接 Gmail 節點寄「今天處理了這 10 位使用者：{{ $json.names.join('、') }}」——只寄 1 封 summary，不會被 10 個提醒淹沒信箱。</p>
         </li>
       </ol>
-      <div class="callout warn"><strong>注意：</strong><em>Field To Split Out</em> 一定要填「陣列本身的欄位路徑」，不是陣列裡面某個欄位。填錯是最常見的坑——output 會跟 input 一樣是 1 個 item，看起來像節點沒動作。切 Schema 檢視上游看清楚路徑再填。</div>
+      <div class="callout warn"><strong>注意：</strong><em>Fields To Split Out</em> 一定要填「陣列本身的欄位路徑」，不是陣列裡面某個欄位。填錯是最常見的坑——output 會跟 input 一樣是 1 個 item，看起來像節點沒動作。切 Schema 檢視上游看清楚路徑再填。</div>
     </section>
 
     <section id="combos" data-nav="常見組合技">
@@ -314,19 +357,19 @@ Split In Batches (Batch Size = 5)
             <td>IF → true 分支 (Set A) &amp; false 分支 (Set B) → Merge (Append) → Slack</td>
           </tr>
           <tr>
-            <td><strong>Split In Batches + Wait</strong></td>
+            <td><strong>Loop Over Items + Wait</strong></td>
             <td>分批處理配停頓避開 rate limit。</td>
-            <td>Split In Batches → HTTP Request → Wait 1s → 回接 Split In Batches</td>
+            <td>Loop Over Items → HTTP Request → Wait 1s → 回接 Loop Over Items</td>
           </tr>
           <tr>
             <td><strong>Split Out + 處理 + Aggregate</strong></td>
             <td>API 一大包陣列 → 對每筆各做事 → 合成一份 summary。</td>
-            <td>HTTP Request → Item Lists (Split Out) → 處理節點 → Item Lists (Aggregate) → Email</td>
+            <td>HTTP Request → Split Out → 處理節點 → Aggregate → Email</td>
           </tr>
           <tr>
-            <td><strong>Merge Combine by Key</strong></td>
+            <td><strong>Merge Combine · Matching Fields</strong></td>
             <td>兩個資料來源用 key join 成完整資料。</td>
-            <td>HTTP A → &nbsp;&nbsp;&nbsp;&nbsp;↓<br>HTTP B → Merge (Combine by Matching Fields, id ↔ customer_id) → 下游</td>
+            <td>HTTP A → &nbsp;&nbsp;&nbsp;&nbsp;↓<br>HTTP B → Merge (Mode = Combine, Combine By = Matching Fields, id ↔ customer_id) → 下游</td>
           </tr>
         </tbody>
       </table>
@@ -337,27 +380,27 @@ Split In Batches (Batch Size = 5)
       <h2 data-icon="troubleshoot">常見卡關</h2>
       <ol class="steps">
         <li>
-          <h3>Merge Combine by Position 少了一半資料</h3>
-          <p>Combine by Position 是「以位置對齊」——Input 1 有 3 個、Input 2 有 5 個，output 只會有 <strong>3 個</strong>（以短的為準），後面 2 個直接被丟掉。要保留全部改用 <em>Combine by Matching Fields</em> 配 <em>Keep Everything</em>，或改用 <em>Append</em> 上下貼再處理。</p>
+          <h3>Merge Combine · Position 少了一半資料</h3>
+          <p>Combine By = Position 是「以位置對齊」——Input 1 有 3 個、Input 2 有 5 個，output 只會有 <strong>3 個</strong>（以短的為準），後面 2 個直接被丟掉。要保留全部改用 <em>Combine By = Matching Fields</em> 配 Output Type <em>Keep Everything</em>，或改用 <em>Append</em> mode 上下貼再處理。</p>
         </li>
         <li>
-          <h3>Split In Batches 停不下來、無限跑</h3>
-          <p>兩個常見原因：（a）loop 分支的節點<strong>沒接回 Split In Batches</strong>——loop 只跑一輪，後面資料被丟掉，但整體不會炸；如果反過來接錯線接到 done 分支就會奇怪；（b）Options → <strong>Reset</strong> 開了，而上游一直有新 items 進來（例：Webhook 觸發），每次都當作新一輪。除非做長駐服務不然關掉。</p>
+          <h3>Loop Over Items 停不下來、無限跑</h3>
+          <p>兩個常見原因：（a）loop 分支的節點<strong>沒接回 Loop Over Items 節點</strong>——loop 只跑一輪，後面資料被丟掉，但整體不會炸；如果反過來接錯線接到 done 分支就會奇怪；（b）Options → <strong>Reset</strong> 開了，而上游一直有新 items 進來（例：Webhook 觸發），每次都當作新一輪。除非做長駐服務不然關掉。</p>
         </li>
         <li>
-          <h3>Item Lists Split Out 拆完 output 一模一樣</h3>
-          <p>八成是 <em>Field To Split Out</em> 填錯：（a）欄位名打錯（大小寫、單複數）；（b）填了陣列裡的<strong>某個欄位</strong>而不是陣列本身；（c）該欄位根本不是陣列而是物件。切 Schema 檢視上游節點，找型別是 <code>array</code> 的那個欄位，把完整路徑（例：<code>data.results</code>）貼進來。</p>
+          <h3>Split Out 拆完 output 一模一樣</h3>
+          <p>八成是 <em>Fields To Split Out</em> 填錯：（a）欄位名打錯（大小寫、單複數）；（b）填了陣列裡的<strong>某個欄位</strong>而不是陣列本身；（c）該欄位根本不是陣列而是物件。切 Schema 檢視上游節點，找型別是 <code>array</code> 的那個欄位，把完整路徑（例：<code>data.results</code>）貼進來。</p>
         </li>
         <li>
           <h3>Merge 完 items 順序跑掉</h3>
-          <p>三種模式順序規則不一樣：<strong>Append</strong> 保證 Input 1 全部在前、Input 2 全部在後；<strong>Combine by Position</strong> 保證同 index 對齊；<strong>Combine by Matching Fields</strong> 順序<strong>依 Input 1 的 key 出現順序</strong>——你想要特定順序，用 Item Lists 的 <em>Sort</em> 操作在 Merge 前後排一下。</p>
+          <p>不同 mode 的順序規則不一樣：<strong>Append</strong> 保證 Input 1 全部在前、Input 2 全部在後；<strong>Combine · Position</strong> 保證同 index 對齊；<strong>Combine · Matching Fields</strong> 順序<strong>依 Input 1 的 key 出現順序</strong>——你想要特定順序，用 <strong>Sort</strong> 節點在 Merge 前後排一下。</p>
         </li>
         <li>
           <h3>Merge 節點卡住不執行</h3>
-          <p>Merge 一定要<strong>兩個 input 都有資料才會跑</strong>。IF 分岔時如果 true 分支沒有任何 item 走過去（條件全部 false），Merge 會等到永遠。解法：在空分支上串個 <em>NoOp</em> 節點（不改資料只轉線）或用 IF 節點的 <em>Fallback Output</em> 保證兩邊都有東西進 Merge。</p>
+          <p>Merge 一定要<strong>兩個 input 都有資料才會跑</strong>。IF 分岔時如果 true 分支沒有任何 item 走過去（條件全部 false），Merge 會等到永遠。解法：在空分支上串個 <em>No Operation, do nothing</em> 節點（不改資料只轉線）或用 IF 節點的 <em>Fallback Output</em> 保證兩邊都有東西進 Merge。</p>
         </li>
         <li>
-          <h3>Split In Batches 配 Wait 但 Wait 時間沒被遵守</h3>
+          <h3>Loop Over Items 配 Wait 但 Wait 時間沒被遵守</h3>
           <p>Wait 節點的秒數是「這個 item 到這裡等 N 秒才走」——Batch Size = 5 表示同一批 5 個 items 幾乎同時抵達 Wait，然後<strong>各自等 5 秒</strong>（不是這一批等 1 次 5 秒）。想要「每批間隔 5 秒」，Batch Size 保持 5、Wait 設 5，實測看清楚實際 request 送出的時間戳。</p>
         </li>
       </ol>
@@ -370,28 +413,32 @@ Split In Batches (Batch Size = 5)
         <div class="body">預設是兩個。想合三個以上，最直接的做法是<strong>串接兩個 Merge</strong>——A、B 先進第一個 Merge，output 再跟 C 進第二個 Merge，以此類推。Merge 節點本身不支援直接三個以上的 input 接口。</div>
       </details>
       <details class="faq">
-        <summary>Split In Batches 一次能設多大 Batch Size？</summary>
-        <div class="body">技術上沒硬性上限，實務上建議 <strong>100～500</strong>。太小（例：1）節點被跑幾百輪整個 workflow 慢；太大（例：5000）失去分批意義而且吃記憶體。準則：<em>剛好貼著下游 API 的 rate limit 或 batch API 的一批上限</em>。Airtable batch endpoint 一次最多 10 筆，Batch Size 就設 10。</div>
+        <summary>Loop Over Items 一次能設多大 Batch Size？</summary>
+        <div class="body">技術上沒硬性上限，實務上建議 <strong>10～50</strong> 起跳，最多不超過 500。太小（例：1）節點被跑幾百輪整個 workflow 慢；太大（例：5000）失去分批意義而且吃記憶體。準則：<em>剛好貼著下游 API 的 rate limit 或 batch API 的一批上限</em>。Airtable batch endpoint 一次最多 10 筆，Batch Size 就設 10。</div>
       </details>
       <details class="faq">
-        <summary>Item Lists 跟 Code node 拆陣列，哪個好？</summary>
-        <div class="body">純粹「把某欄位的陣列展開成多筆」用 <strong>Item Lists</strong> 就好，不用寫程式。要拆的過程需要條件判斷、轉型、過濾、算欄位，或者陣列結構很怪（陣列裡還有陣列）就用 <strong>Code node</strong>（<a href="ch20_code_node.html">第 20 章</a>）。原則：<em>能不寫程式就不寫，內建節點永遠優先</em>。</div>
+        <summary>Split Out 跟 Code node 拆陣列，哪個好？</summary>
+        <div class="body">純粹「把某欄位的陣列展開成多筆」用 <strong>Split Out</strong> 就好，不用寫程式。要拆的過程需要條件判斷、轉型、過濾、算欄位，或者陣列結構很怪（陣列裡還有陣列）就用 <strong>Code node</strong>（<a href="ch20_code_node.html">第 20 章</a>）。原則：<em>能不寫程式就不寫，內建節點永遠優先</em>。</div>
       </details>
       <details class="faq">
         <summary>n8n workflow 有多執行緒嗎，能同時處理多筆嗎？</summary>
-        <div class="body">單一 workflow execution 內部是<strong>循序處理 items</strong>——一個節點對 100 個 items 是「跑 100 次」不是「同時 100 個 thread」。想要「不要等前一筆跑完」的並行效果，兩條路：（a）用 Split In Batches 把工作切小塊分開跑；（b）self-host n8n 開多個 worker（<code>EXECUTIONS_MODE=queue</code>）讓多個 workflow execution 同時跑。單一 execution 內部的並行不是 n8n 的設計方向。</div>
+        <div class="body">單一 workflow execution 內部是<strong>循序處理 items</strong>——一個節點對 100 個 items 是「跑 100 次」不是「同時 100 個 thread」。想要「不要等前一筆跑完」的並行效果，兩條路：（a）用 Loop Over Items 把工作切小塊分開跑；（b）self-host n8n 開多個 worker（<code>EXECUTIONS_MODE=queue</code>）讓多個 workflow execution 同時跑。單一 execution 內部的並行不是 n8n 的設計方向。</div>
       </details>
       <details class="faq">
         <summary>如果我只想在 500 筆裡處理前 10 筆試看看，怎麼做？</summary>
-        <div class="body">最簡單：在資料源後面接一個 <strong>Item Lists</strong> 節點，Operation 選 <em>Limit</em>，Max Items 設 10。上線前把 Limit 節點停用（節點右鍵 <em>Deactivate</em>）或直接刪掉。這是開發階段的好習慣，避免測試時真的 send 500 封 email 出去。</div>
+        <div class="body">最簡單：在資料源後面接一個 <strong>Limit</strong> 節點（前身是 Item Lists 的 Limit operation，現在獨立成節點），Max Items 設 10。上線前把 Limit 節點停用（節點右鍵 <em>Deactivate</em>）或直接刪掉。這是開發階段的好習慣，避免測試時真的 send 500 封 email 出去。</div>
       </details>
       <details class="faq">
-        <summary>Merge Combine by Key 對得起來的規則是什麼？大小寫敏感嗎？</summary>
-        <div class="body">n8n 用嚴格相等比對（同型別同值才算 match）。<strong>字串大小寫敏感</strong>——<code>"Alice"</code> 跟 <code>"alice"</code> 不會 match。<strong>型別敏感</strong>——字串 <code>"123"</code> 跟數字 <code>123</code> 也不會 match。碰到型別不一致，先用 <a href="ch18_set_function.html">Set 節點</a>統一型別（轉字串或轉數字）再進 Merge。</div>
+        <summary>Merge Combine · Matching Fields 對得起來的規則是什麼？大小寫敏感嗎？</summary>
+        <div class="body">n8n 用嚴格相等比對（同型別同值才算 match）。<strong>字串大小寫敏感</strong>——<code>"Alice"</code> 跟 <code>"alice"</code> 不會 match。<strong>型別敏感</strong>——字串 <code>"123"</code> 跟數字 <code>123</code> 也不會 match。碰到型別不一致，先用 <a href="ch18_set_function.html">Set 節點</a>統一型別（轉字串或轉數字）再進 Merge；或用 Merge 的 <em>SQL Query</em> mode 寫 <code>CAST</code>。</div>
       </details>
       <details class="faq">
-        <summary>Split In Batches 跑到一半失敗會怎樣，前面已處理的資料會回滾嗎？</summary>
+        <summary>Loop Over Items 跑到一半失敗會怎樣，前面已處理的資料會回滾嗎？</summary>
         <div class="body"><strong>不會回滾</strong>——n8n 沒有 transaction 概念。已經寫進 Airtable / Slack 的資料就是寫進去了，第 N 批失敗只影響 N 之後。做法：（a）在 loop 分支加 <a href="ch17_error_handling.html">Error Trigger / continueOnFail</a>（第 17 章），單筆失敗只 log 不中斷；（b）處理前先 dedupe，這樣重跑不會產生重複資料。</div>
+      </details>
+      <details class="faq">
+        <summary>Merge 的 SQL Query mode 什麼時候該用？</summary>
+        <div class="body">當 UI 的 Combine By 三個策略滿足不了需求就開 <strong>SQL Query</strong>，例如：多欄位條件 join（<code>ON a.id = b.customer_id AND a.region = b.region</code>）、需要 <code>CASE WHEN</code>、需要 <code>UNION</code> 加 <code>WHERE</code> 篩選、需要 subquery。n8n 在背後用 alasql 執行，兩個 input 對應資料表 <code>input1</code> / <code>input2</code>。單純 append / 位置對齊 / 單欄位 join 就用普通 mode，不用刻意搬到 SQL。</div>
       </details>
       <details class="faq">
         <summary>Aggregate 完的陣列在 Expression 裡怎麼用？</summary>

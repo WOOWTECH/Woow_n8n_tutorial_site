@@ -143,7 +143,7 @@
             <td><strong>Test URL</strong></td>
             <td>你按下節點裡的 <em>Listen for test event</em> 按鈕之後才活。</td>
             <td>開發時測試——按下按鈕、去打一次、看資料進來的樣子。</td>
-            <td>最多 <strong>約 120 秒</strong>（收到一次事件就停）；重按可延長。</td>
+            <td>按下按鈕後開始 listen，收到一次事件就自動關掉；沒事件時官方沒明講超時，實務上約兩分鐘會停，重按可再開一次。</td>
           </tr>
           <tr>
             <td><strong>Production URL</strong></td>
@@ -183,7 +183,7 @@ Production URL: https://n8n.woowtech.io/webhook/form-contact</code></pre>
         </li>
         <li>
           <h3>按 Listen for test event，跟 curl 打一次</h3>
-          <p>Webhook 節點右上角按 <strong>Listen for test event</strong>——節點會進入等待狀態（大約 120 秒）。開一個 terminal，用 <code>curl</code> 打 Test URL 送假資料：</p>
+          <p>Webhook 節點右上角按 <strong>Listen for test event</strong>——節點會進入等待狀態（收到第一次事件就自動結束，若一直沒事件實務上約兩分鐘停）。開一個 terminal，用 <code>curl</code> 打 Test URL 送假資料：</p>
           <pre class="code-block"><code>curl -X POST https://n8n.woowtech.io/webhook-test/form-contact \
   -H "Content-Type: application/json" \
   -d '{"name":"王小明","email":"ming@example.com","message":"想詢問報價"}'</code></pre>
@@ -277,7 +277,7 @@ received_at   →  {{ $now.toISO() }}</code></pre>
             <td>對方只在乎「收到沒」不看內容；workflow 跑很久（如 AI Agent 生成 30 秒）不想讓對方等；Stripe / GitHub 這種要「3 秒內回」的 webhook。</td>
           </tr>
           <tr>
-            <td><strong>When last node finishes</strong></td>
+            <td><strong>When Last Node Finishes</strong></td>
             <td>整個 workflow 跑完，把<strong>最後一個節點的 output</strong>當作 response 回傳。</td>
             <td>對方想要拿到 workflow 處理後的結果（例：Line Bot 收訊息、n8n 處理完直接把回覆傳回 Line）。workflow 要在幾秒內跑完。</td>
           </tr>
@@ -286,14 +286,20 @@ received_at   →  {{ $now.toISO() }}</code></pre>
             <td>由你在 workflow 中間某個節點指定「這裡回覆」——把 <em>Respond to Webhook</em> 節點插在你想回應的位置。</td>
             <td>要客製回應——回什麼 status code、什麼 header、什麼 body、什麼 content type，都自己決定。做 API 給別人用時的正確選擇。</td>
           </tr>
+          <tr>
+            <td><strong>Streaming Response</strong></td>
+            <td>以串流方式一段一段回，多半配合 AI Agent 這種會產生 chunked 內容的節點。</td>
+            <td>要做 ChatGPT 風格的即時逐字輸出前端，或串接支援 SSE / streaming 的下游。</td>
+          </tr>
         </tbody>
       </table>
       <p><strong>Respond to Webhook 節點</strong>是搭配第三種模式的關鍵——把它插在 workflow 你想回應的節點後面（不一定要在最後），可以指定：</p>
       <ul>
-        <li><strong>Response Code</strong>——<code>200</code>（成功）、<code>201</code>（Created）、<code>400</code>（客戶端錯）、<code>500</code>（伺服器錯）。</li>
-        <li><strong>Response Data</strong>——回傳的 body。可以是固定文字、JSON、或用 Expression 拿 workflow 中間某個節點的資料。</li>
+        <li><strong>Respond With</strong>——選回什麼形態：<em>JSON</em>、<em>Text</em>、<em>Binary File</em>、<em>Redirect</em>、<em>JWT Token</em>、<em>No Data</em>、<em>All Incoming Items</em>、<em>First Incoming Item</em>。</li>
+        <li><strong>Response Code</strong>——自己填數字。常見：<code>200</code>（成功）、<code>201</code>（Created）、<code>400</code>（客戶端錯）、<code>500</code>（伺服器錯）。</li>
         <li><strong>Response Headers</strong>——例：<code>Content-Type: application/json</code>、CORS 相關 header。</li>
       </ul>
+      <p><strong>要注意</strong>：Respond to Webhook 節點只處理<strong>第一筆 incoming item</strong>；就算前面節點吐出很多筆，也只有第一筆會被拿來回覆。同一個 workflow 若跑到第二個 Respond to Webhook 節點會被忽略；若整個 workflow 跑完都沒經過任何 Respond to Webhook 節點，n8n 會自動回一個標準的 200；若中途錯誤未經該節點，會回 500。</p>
       <div class="callout tip"><strong>提示：</strong>不確定選哪個？—— <strong>對方是 SaaS webhook（Stripe / GitHub / Slack event）選 Immediately</strong>；<strong>對方是 Line / 表單想要看回覆選 When last node finishes</strong>；<strong>要蓋自己的 REST API 選 Using Respond to Webhook Node</strong>。</div>
     </section>
 
@@ -444,7 +450,7 @@ received_at   →  {{ $now.toISO() }}</code></pre>
       <ol class="steps">
         <li>
           <h3>Test URL 打完沒反應、n8n 沒收到</h3>
-          <p>兩個原因：（a）沒按 <strong>Listen for test event</strong>——Test URL 只在 listen mode 存活；（b）Listen session <strong>過期</strong>了（約 120 秒無事件會結束）——重按一次就好。另外要看 URL 有沒有選對——複製時務必看清楚是 <code>/webhook-test/</code> 那條。</p>
+          <p>兩個原因：（a）沒按 <strong>Listen for test event</strong>——Test URL 只在 listen mode 存活；（b）Listen session <strong>過期</strong>了（收到一次事件會結束、久沒事件實務上也會停）——重按一次就好。另外要看 URL 有沒有選對——複製時務必看清楚是 <code>/webhook-test/</code> 那條。</p>
         </li>
         <li>
           <h3>Production URL 打了回 404 Not Found</h3>
@@ -452,7 +458,7 @@ received_at   →  {{ $now.toISO() }}</code></pre>
         </li>
         <li>
           <h3>Webhook 有收到但 body 是空的</h3>
-          <p>對方的 request 沒設 <code>Content-Type</code>，或者設成 <code>text/plain</code> 而不是 <code>application/json</code>——n8n 不會自動 parse。要對方在打時加 header <code>Content-Type: application/json</code>；或者 Webhook 節點 <em>Options</em> → <em>Raw Body</em> 打開，用 Code 節點自己 parse。</p>
+          <p>對方的 request 沒設 <code>Content-Type</code>，或者設成 <code>text/plain</code> 而不是 <code>application/json</code>——n8n 不會自動 parse。要對方在打時加 header <code>Content-Type: application/json</code>；或者 Webhook 節點 <em>Options</em> → <em>Raw Body</em> 打開，用 Code 節點自己 parse。另外注意 n8n Webhook 節點<strong>單次 payload 最大 16MB</strong>——超過會直接被擋掉，大檔案要走 upload URL 或分段丟。</p>
         </li>
         <li>
           <h3>回 405 Method Not Allowed</h3>

@@ -207,7 +207,9 @@
 
       <h3>最常用的兩種設定範例</h3>
       <p><strong>每天早上 8:00 跑</strong>：Trigger Interval 選 <code>Days</code>、Days Between Triggers 填 <code>1</code>、Trigger at Hour 填 <code>8</code>、Trigger at Minute 填 <code>0</code>。</p>
-      <p><strong>週一到週五 9:30 跑</strong>：Trigger Interval 選 <code>Weeks</code>、Weeks Between Triggers 填 <code>1</code>、Trigger on Weekdays 勾 Mon/Tue/Wed/Thu/Fri、Trigger at Hour <code>9</code>、Trigger at Minute <code>30</code>。或直接走 <code>Custom (Cron)</code> 填 <code>30 9 * * 1-5</code>，一行搞定。</p>
+      <p><strong>週一到週五 9:30 跑</strong>：Trigger Interval 選 <code>Weeks</code>、Weeks Between Triggers 填 <code>1</code>、Trigger on Weekdays 勾 Mon/Tue/Wed/Thu/Fri、Trigger at Hour <code>9</code>、Trigger at Minute <code>30</code>。或直接走 <code>Custom (Cron)</code> 填 <code>0 30 9 * * 1-5</code>（六欄位：秒 分 時 日 月 週），一行搞定。</p>
+
+      <div class="callout warn"><strong>注意（Cron 欄位數）：</strong>n8n Schedule Trigger 的 Custom Cron 是<strong>六個欄位</strong>，最前面多一個「秒」——不是傳統 Linux crontab 的五欄位。順序是：<code>秒 分 時 日 月 週</code>。到處抄來的 <code>0 8 * * *</code>（五欄位）貼進 n8n 會被當成不同意思，甚至直接報錯。要記得補一個秒欄，例如「每天 8:00」應該寫 <code>0 0 8 * * *</code>。</div>
 
       <div class="callout danger"><strong>危險（時區大坑）：</strong>Schedule Trigger 判斷「幾點」用的是 <strong>workflow 的 timezone 設定</strong>，預設是 UTC。台灣是 UTC+8，意思是你設「8:00」如果沒改時區，實際會在<em>台灣時間下午 4:00</em> 才跑。這是 n8n 新手第一名踩雷。改設定的方法看下一節。</div>
     </section>
@@ -229,7 +231,7 @@
           <tr>
             <td><strong>Instance 層</strong>（整台 n8n 全域）</td>
             <td>整台 n8n 上所有沒特別設 workflow 層時區的 workflow 都吃這個</td>
-            <td>環境變數 <code>GENERIC_TIMEZONE=Asia/Taipei</code>（要動 server 設定，一般人請找 IT）</td>
+            <td>環境變數 <code>GENERIC_TIMEZONE=Asia/Taipei</code>；同時建議把 Node.js 的 <code>TZ=Asia/Taipei</code> 也一起設，兩者要一致，否則 <code>new Date()</code> 之類的顯示會跟排程判斷差 8 小時（要動 server 設定，一般人請找 IT）</td>
           </tr>
         </tbody>
       </table>
@@ -419,7 +421,7 @@
           </tr>
           <tr>
             <td>Webhook Trigger URL 被打了但沒動</td>
-            <td>你拿的是 <strong>Test URL</strong>；Test URL 只在你按「Listen for test event」的期間活，關掉就死</td>
+            <td>你拿的是 <strong>Test URL</strong>；Test URL 只在你按「Listen for test event」的期間、或在 workflow 未 Active 時執行過一次的當下才活，關掉 canvas 就死</td>
             <td>用 <strong>Production URL</strong>（Webhook 節點面板可切換），並確保 workflow 是 Active。細節看<a href="ch22_webhook.html">第 22 章</a>。</td>
           </tr>
           <tr>
@@ -476,7 +478,7 @@
 
       <details class="faq">
         <summary>Schedule Trigger 跟排程系統的 Cron 是同一個東西嗎？</summary>
-        <div class="body">是同一套語法。Schedule Trigger 選 <code>Custom (Cron)</code> 模式後可以直接寫 Cron 表達式，格式是「分 時 日 月 週」五個欄位。常用範例：<code>0 8 * * *</code>（每天 8:00）、<code>0 8 * * 1-5</code>（週一到週五 8:00）、<code>*/15 * * * *</code>（每 15 分鐘）、<code>0 9 1 * *</code>（每月 1 號 9:00）。看不懂 Cron 表達式就用 UI 選單設，或找 <code>crontab.guru</code> 這種線上翻譯工具。</div>
+        <div class="body">語法很像但<strong>欄位數不同</strong>。傳統 Linux crontab 是五欄位（分 時 日 月 週），n8n Schedule Trigger 的 <code>Custom (Cron)</code> 是<strong>六欄位</strong>：<code>秒 分 時 日 月 週</code>——最前面多一個「秒」。常用範例（記得補秒）：<code>0 0 8 * * *</code>（每天 8:00）、<code>0 0 8 * * 1-5</code>（週一到週五 8:00）、<code>0 */15 * * * *</code>（每 15 分鐘）、<code>0 0 9 1 * *</code>（每月 1 號 9:00）。從 <code>crontab.guru</code> 抄五欄位表達式時，記得<em>前面補一個 <code>0</code></em>，否則語意會整個跑掉或報錯。</div>
       </details>
 
       <details class="faq">

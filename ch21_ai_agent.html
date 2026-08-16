@@ -147,7 +147,7 @@
 
     <section id="node_family" data-nav="LangChain 節點家族">
       <h2 data-icon="tabs">n8n AI Agent 節點家族（LangChain 系列）</h2>
-      <p>打開節點抽屜搜「AI」或「LangChain」，你會看到一整排藍紫色圖示的節點。它們全部屬於 n8n 的 <strong>LangChain 節點包</strong>（節點名字前綴通常是 <code>@n8n/n8n-nodes-langchain</code>）。這些節點分成「主節點」跟「子節點」兩層，會像積木一樣拼接：</p>
+      <p>打開節點抽屜搜「AI」或「LangChain」，你會看到一整排藍紫色圖示的節點。它們全部屬於 n8n 的 <strong>LangChain 節點包</strong>（節點技術名稱前綴是 <code>@n8n/n8n-nodes-langchain</code>，例如主節點 <code>@n8n/n8n-nodes-langchain.agent</code>、Chat Trigger 是 <code>@n8n/n8n-nodes-langchain.chatTrigger</code>——這些名稱只有 export workflow JSON 時才會看到，一般 UI 上顯示為 <strong>AI Agent</strong>、<strong>Chat Trigger</strong>）。這些節點分成「主節點」跟「子節點」兩層，會像積木一樣拼接：</p>
       <table class="data-table">
         <thead>
           <tr><th>類型</th><th>節點</th><th>用途</th></tr>
@@ -170,8 +170,8 @@
           </tr>
           <tr>
             <td>子節點：Memory</td>
-            <td><strong>Simple Memory (Window Buffer)</strong>、<strong>Postgres Chat Memory</strong>、<strong>Redis Chat Memory</strong>、<strong>MongoDB Chat Memory</strong></td>
-            <td>存對話歷史。Simple Memory 存在 workflow 記憶體、重啟會消失；Postgres/Redis 存資料庫、正式環境用。</td>
+            <td><strong>Simple Memory</strong>（底層是 LangChain 的 BufferWindowMemory，故舊文件常寫 Window Buffer）、<strong>Postgres Chat Memory</strong>、<strong>Redis Chat Memory</strong>、<strong>MongoDB Chat Memory</strong>、<strong>Zep</strong>、<strong>Xata</strong>、<strong>Motorhead</strong></td>
+            <td>存對話歷史。Simple Memory 存在 workflow 記憶體、重啟會消失；Postgres/Redis/MongoDB 落地資料庫、正式環境用。</td>
           </tr>
           <tr>
             <td>子節點：Tools</td>
@@ -195,7 +195,7 @@
       <ol class="steps">
         <li>
           <h3>建新 workflow，選 Chat Trigger</h3>
-          <p>從側欄 <strong>Workflows → New</strong>。畫布出現 <strong>Add first step...</strong> 節點，點開它，在 trigger 清單搜 <code>Chat Trigger</code>（或 <code>Chat</code>）。選 <strong>On chat message</strong>（來自 LangChain 節點包）。加進來後打開設定面板，其他先不動，看到最上方會顯示兩個 URL：<strong>Test URL</strong> 跟 <strong>Production URL</strong>——這就是等下要打開來聊天的網址。</p>
+          <p>從側欄 <strong>Workflows → New</strong>。畫布出現 <strong>Add first step...</strong> 節點，點開它，在 trigger 清單搜 <code>Chat Trigger</code>（或 <code>Chat</code>）。選 <strong>Chat Trigger</strong>（來自 LangChain 節點包）。加進來後打開設定面板：預設是內部測試模式，把 <strong>Make Chat Publicly Available</strong> 打開，才會出現 <strong>Mode</strong> 選項（<code>Hosted Chat</code>／<code>Embedded Chat</code>）跟一個 <strong>Chat URL</strong> Webhook 網址——這就是等下要打開來聊天的網址。開發時可直接用節點下方的 <strong>Chat</strong> 按鈕開內建對話面板測試，不用 Activate。</p>
         </li>
         <li>
           <h3>加 AI Agent 節點</h3>
@@ -207,11 +207,11 @@
         </li>
         <li>
           <h3>掛 Memory（記憶）</h3>
-          <p>點 AI Agent 下方 <strong>Memory</strong> 接點 → 選 <strong>Simple Memory</strong>（英文有時顯示為 <em>Window Buffer Memory</em>）。這個把最近 N 輪對話存在 workflow 記憶體。設定裡 <strong>Context Window Length</strong> 保持預設 5（記得最近 5 輪）就夠，chatbot 通常不用更多。</p>
+          <p>點 AI Agent 下方 <strong>Memory</strong> 接點 → 選 <strong>Simple Memory</strong>（技術上是 LangChain 的 BufferWindowMemory 包裝，UI 上一律顯示 Simple Memory）。這個把最近 N 輪對話存在 workflow 記憶體。設定裡 <strong>Context Window Length</strong> 保持預設 5（記得最近 5 輪）就夠，chatbot 通常不用更多。</p>
         </li>
         <li>
           <h3>寫 System Prompt</h3>
-          <p>回 AI Agent 節點主設定。找到 <strong>Options → System Message</strong>（或在某些版本叫 <strong>Prompt</strong> 區塊），把系統指示寫進去，例如：</p>
+          <p>回 AI Agent 節點主設定。展開最下方 <strong>Options</strong> 區塊 → 點 <strong>Add Option</strong> → 選 <strong>System Message</strong>，把系統指示寫進去（預設是 <code>You are a helpful assistant</code>，覆寫成你要的），例如：</p>
           <pre class="code-block"><code>你是 Woow 公司的客服助理，只用繁體中文（台灣用語）回覆。
 用戶問的問題如果跟公司產品有關，用「查詢產品」工具查了再答。
 如果查不到或不確定答案，就說「我幫你轉真人客服，稍後聯絡你」——不要亂編。
@@ -219,11 +219,11 @@
         </li>
         <li>
           <h3>存檔 + Activate</h3>
-          <p>右上角 <strong>Save</strong>，再點旁邊的 <strong>Inactive</strong> toggle 切成 <strong>Active</strong>。<strong>Chat Trigger 的 Production URL 只有在 Activate 之後才會生效</strong>——沒 Activate 你打開 URL 只會看到 404。</p>
+          <p>右上角 <strong>Save</strong>，再點旁邊的 <strong>Inactive</strong> toggle 切成 <strong>Active</strong>。<strong>Chat Trigger 的公開 Chat URL 只有在 Activate 之後才會生效</strong>——沒 Activate 你打開 URL 只會看到 404（不過節點內附的測試 chat 按鈕不用 Activate 就能用）。</p>
         </li>
         <li>
           <h3>打開 Chat URL 開始聊</h3>
-          <p>回 Chat Trigger 節點，複製 <strong>Chat URL</strong>（或直接點旁邊的 <strong>Open chat</strong>），瀏覽器會開一個乾淨的聊天介面。打「你好，你們有賣什麼？」進去——第一則回覆會慢個一兩秒（agent 在想 + 打 LLM API），之後越聊越順。同時在 n8n 那邊會看到 workflow 的 execution 一筆一筆冒出來，點進去可以看 agent 每一輪的「想什麼、call 什麼 tool、回什麼」。</p>
+          <p>回 Chat Trigger 節點，複製 <strong>Chat URL</strong>，瀏覽器會開一個乾淨的聊天介面。打「你好，你們有賣什麼？」進去——第一則回覆會慢個一兩秒（agent 在想 + 打 LLM API），之後越聊越順。同時在 n8n 那邊會看到 workflow 的 execution 一筆一筆冒出來，點進去可以看 agent 每一輪的「想什麼、call 什麼 tool、回什麼」。</p>
         </li>
       </ol>
       <div class="callout tip"><strong>提示：</strong>Chat Trigger 有兩個模式：<strong>Hosted Chat</strong>（n8n 幫你 host 一個對話網頁，就是上面用的）跟 <strong>Embedded Chat</strong>（拿一段 <code>&lt;script&gt;</code> 貼到你自家網站，chatbot 就變成右下角的浮動視窗）。內部測試用 Hosted、要對外上線就用 Embedded。設定裡的 <strong>Mode</strong> 切一下就好。</div>
@@ -238,14 +238,14 @@
         </thead>
         <tbody>
           <tr>
-            <td><strong>Agent Type</strong></td>
-            <td>選 agent 用的推理框架。<code>Tools Agent</code>（預設）用新版 model 原生 tool calling，最穩；<code>Conversational</code> 是舊的、只給簡單問答用；<code>ReAct</code> 是老式 prompt 引導，model 不支援 tool calling 才用。</td>
-            <td>用預設 <code>Tools Agent</code>。</td>
+            <td><strong>Agent 框架（歷史包袱）</strong></td>
+            <td>n8n 1.82.0 以前有 <code>Tools Agent</code>／<code>Conversational</code>／<code>ReAct</code>／<code>OpenAI Functions</code> 等下拉；<strong>1.82.0 之後全部移除</strong>，AI Agent 一律走 Tools Agent（原生 tool calling）。你在新版介面已經看不到這個欄位。</td>
+            <td>不用選、不用管，選對 model 就好。</td>
           </tr>
           <tr>
-            <td><strong>Prompt / Text</strong></td>
-            <td>使用者這輪要傳給 agent 的訊息。從 Chat Trigger 過來的話，直接拉 <code>{{ $json.chatInput }}</code>；從 email 或 webhook 過來的話，拉那個節點的訊息欄位。</td>
-            <td>Chat Trigger 場景就用預設「Take from previous node」。</td>
+            <td><strong>Source for Prompt (User Message)</strong></td>
+            <td>使用者這輪要傳給 agent 的訊息從哪來。預設 <code>Connected Chat Trigger Node</code>（讀上游 Chat Trigger 的 <code>chatInput</code> 欄位）；選 <code>Define below</code> 則自己填一段字串或 expression（例如從 email／webhook 拉 <code>{{ $json.subject }}</code>）。</td>
+            <td>Chat Trigger 場景保留預設；其他 trigger 選 Define below。</td>
           </tr>
           <tr>
             <td><strong>System Message</strong></td>
@@ -253,9 +253,9 @@
             <td>越明確越好，寫清角色、任務邊界、拒答策略。</td>
           </tr>
           <tr>
-            <td><strong>Session ID</strong></td>
-            <td>多人共用時區分「這是哪個使用者的對話」，Memory 靠它決定要撈誰的歷史。</td>
-            <td>Chat Trigger 有內建 session（每個 chat URL 訪客一個 ID）。若從 Slack/Line 觸發，用 <code>{{ $json.channelId }}</code> 或 <code>{{ $json.userId }}</code>。</td>
+            <td><strong>Session ID</strong>（在 Memory 子節點裡）</td>
+            <td>多人共用時區分「這是哪個使用者的對話」，Memory 靠它決定要撈誰的歷史。注意這個欄位在 <em>Memory 子節點</em>裡設，不在 AI Agent 主節點裡。</td>
+            <td>Chat Trigger 場景保留預設 <code>Connected Chat Trigger Node</code>（每個 chat 訪客一個 sessionId）。若從 Slack/Line 觸發，改 Custom Key 拉 <code>{{ $json.channelId }}</code> 或 <code>{{ $json.userId }}</code>。</td>
           </tr>
           <tr>
             <td><strong>Max Iterations</strong></td>
@@ -296,7 +296,7 @@
         </li>
         <li>
           <h3>設 Tool 的 Query 用 Expression 抓 agent 的參數</h3>
-          <p>Sheet Tool 的 <strong>Filter → Query</strong> 或 <strong>Lookup value</strong> 欄位，切成 Expression 模式（<a href="ch14_expressions.html">第 14 章</a>教過），寫 <code>{{ $fromAI('product_query') }}</code>——這個 <code>$fromAI()</code> 是 Tool 節點專用的變數，agent 呼叫這個 tool 時會把它決定的參數塞進來。</p>
+          <p>Sheet Tool 的 <strong>Filter → Lookup Value</strong> 欄位，切成 Expression 模式（<a href="ch14_expressions.html">第 14 章</a>教過），寫 <code>{{ $fromAI('product_query', '使用者提到的產品關鍵字', 'string') }}</code>——這個 <code>$fromAI()</code> 是 Tool 節點專用函式，簽名是 <code>$fromAI(key, description, type, defaultValue)</code>；<strong>description 一定要寫</strong>，agent 就是靠它決定要塞什麼字串進來。agent 呼叫這個 tool 時就會把它決定的參數塞到 <code>product_query</code> 位置。</p>
         </li>
         <li>
           <h3>回聊天視窗測試</h3>
@@ -411,7 +411,7 @@
       <ol class="steps">
         <li>
           <h3>Agent 一直不用我掛的 tool</h3>
-          <p>90% 是 <strong>Tool 的 Description 寫太模糊</strong>——agent 就是靠 description 決定「這個問題該不該用這個工具」。改成具體：寫清楚「什麼情況用我、輸入是什麼、輸出是什麼、什麼情況<strong>不要</strong>用我」。剩下 10% 是 Agent Type 選錯——確認用 <code>Tools Agent</code> 不是 <code>Conversational</code>（後者不支援 tool calling）。</p>
+          <p>90% 是 <strong>Tool 的 Description 寫太模糊</strong>——agent 就是靠 description 決定「這個問題該不該用這個工具」。改成具體：寫清楚「什麼情況用我、輸入是什麼、輸出是什麼、什麼情況<strong>不要</strong>用我」。剩下 10% 是<strong>掛的 Chat Model 不支援 tool calling</strong>（例如某些老舊 Ollama 模型）——換成 GPT-4o-mini／Claude／Gemini 這類原生支援 function calling 的 model。</p>
         </li>
         <li>
           <h3>回應變不聰明、答非所問</h3>
@@ -419,7 +419,7 @@
         </li>
         <li>
           <h3>打開 Chat URL 顯示 404</h3>
-          <p>workflow <strong>沒 Activate</strong>。Chat Trigger 的 Production URL 只有 workflow 是 Active 狀態才會生效。回畫布右上角 toggle 切成 Active 再刷新 URL。</p>
+          <p>workflow <strong>沒 Activate</strong>。Chat Trigger 的公開 Chat URL 只有在 Active 狀態才會回應；未 Activate 打開會 404。回畫布右上角 toggle 切成 Active 再刷新。開發時想快速試打字，用節點下方的內建 <strong>Chat</strong> 面板即可，不用 Activate。</p>
         </li>
         <li>
           <h3>費用暴衝，一天燒掉一杯手搖</h3>

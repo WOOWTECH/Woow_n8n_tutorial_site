@@ -378,7 +378,7 @@ Wait (1 second)
     ↓
 (回到 Split In Batches 下一批)</code></pre>
 
-      <div class="callout"><strong>觀念：</strong>不同 SaaS 的 rate limit 差很多——Slack 每分鐘 1 條/頻道對 tier 1、Notion 每秒 3 個 request、Gmail 每秒 250 quota units。<em>不知道對方限速就先假設 1 req/sec</em>，跑順了再加速。</div>
+      <div class="callout"><strong>觀念：</strong>不同 SaaS 的 rate limit 差很多——Slack tier 1 method 每分鐘約 1 次、Notion 平均每秒 3 個 request、Gmail 每秒 250 quota units。<em>不知道對方限速就先假設 1 req/sec</em>，跑順了再加速。另外對方 429 回應常帶 <code>Retry-After</code> header（秒數或 HTTP date）——HTTP Request 節點可以在 Error output 讀 <code>$response.headers['retry-after']</code> 動態決定 Wait 多久，比死等一個固定秒數精準。</div>
     </section>
 
     <section id="restore" data-nav="5xx / Timeout">
@@ -437,8 +437,8 @@ Wait (1 second)
     </section>
 
     <section id="remote" data-nav="Webhook 收不到">
-      <h2 data-icon="remote">症狀 9：Webhook 收不到</h2>
-      <p><strong>症狀</strong>：外部系統打 <a href="ch22_webhook.html">Webhook</a> URL 但 workflow 沒動——Executions 頁沒新紀錄、Slack 沒發、什麼都沒發生。</p>
+      <h2 data-icon="remote">症狀 7：Webhook 收不到 / Webhook not found</h2>
+      <p><strong>症狀</strong>：外部系統打 <a href="ch22_webhook.html">Webhook</a> URL 但 workflow 沒動——Executions 頁沒新紀錄、Slack 沒發、什麼都沒發生。或對方 HTTP client 直接收到 <code>404 Webhook not registered</code> / <code>The requested webhook is not registered</code> 錯誤訊息。</p>
 
       <p><strong>三種常見原因</strong>：</p>
 
@@ -454,8 +454,8 @@ Wait (1 second)
           </tr>
           <tr>
             <td>對方打的是 Test URL 不是 Production URL</td>
-            <td>Webhook 節點顯示的 URL 有兩個：Test URL 只在你按 <strong>Listen for Test Event</strong> 時有效；Production URL 才是 Active 後永久生效的</td>
-            <td>把 <em>Production URL</em> 交給對方（節點面板下方複製）</td>
+            <td>Test URL 路徑含 <code>/webhook-test/</code>、Production URL 路徑是 <code>/webhook/</code>；對方拿到含 <code>-test</code> 的網址就會遇到「聽一次就失效」</td>
+            <td>把 <em>Production URL</em> 交給對方（節點面板上方切到 Production URL 分頁複製）</td>
           </tr>
           <tr>
             <td>網路／防火牆擋掉</td>
@@ -469,7 +469,7 @@ Wait (1 second)
       <ol class="steps">
         <li>
           <h3>Webhook 節點 → 複製 Production URL</h3>
-          <p>不是 Test URL！Test URL 尾巴通常沒有 <code>-test</code>——但只有你按 Listen 時才收，Active 後就失效。</p>
+          <p>不是 Test URL！差別在路徑：Test URL 是 <code>/webhook-test/xxx</code>、Production URL 是 <code>/webhook/xxx</code>。Test URL 只有你按 <strong>Listen for Test Event</strong> 時才收；workflow 設 Active 之後就只認 Production URL。</p>
         </li>
         <li>
           <h3>從<em>外部網路</em>用 curl 打一次</h3>
@@ -485,12 +485,13 @@ Wait (1 second)
         </li>
       </ol>
 
-      <div class="callout warn"><strong>注意：</strong>Test URL 只有你在 canvas 上按了 <strong>Listen for Test Event</strong> 才會 alive，聽一次或幾秒後自動關。給外部系統設定 URL 時<em>一定要用 Production URL</em>，不然過幾分鐘就打不進來。這是 Webhook 節點的第一名踩雷。</div>
+      <div class="callout warn"><strong>注意：</strong>Test URL 只有你在 canvas 上按了 <strong>Listen for Test Event</strong> 才會 alive，聽一次或約 120 秒後自動關；再打一次就會回 <code>Webhook not registered</code>。給外部系統設定 URL 時<em>一定要用 Production URL</em>（路徑 <code>/webhook/</code> 沒 <code>-test</code>），且 workflow 必須 Active。這是 Webhook 節點的第一名踩雷。</div>
     </section>
 
     <section id="integration" data-nav="Sub-workflow 找不到">
-      <h2 data-icon="integration">症狀 10：Sub-workflow 找不到</h2>
-      <p><strong>症狀</strong>：<a href="ch19_subworkflow.html">Execute Workflow 節點</a>報錯 <code>Workflow not found</code>、<code>Sub-workflow does not exist</code>、<code>Workflow with ID xxx not found</code>。</p>
+      <h2 data-icon="integration">症狀 8：Sub-workflow 找不到 / Sub-workflow 內部錯誤</h2>
+      <p><strong>症狀 A（找不到）</strong>：<a href="ch19_subworkflow.html">Execute Workflow 節點</a>報錯 <code>Workflow not found</code>、<code>Could not find workflow with ID</code>。</p>
+      <p><strong>症狀 B（內部炸但 parent 分不清是誰）</strong>：sub-workflow 裡某節點掛了，parent 的 Execute Workflow 節點統一顯示 <code>Error executing sub-workflow</code> 或 <code>Problem in sub-workflow</code>——你看不到是哪個節點爆的，得回 Executions 找 sub-workflow 那筆單獨看。</p>
 
       <p><strong>意思</strong>：這個 Execute Workflow 節點原本指定的 sub-workflow，現在找不到——被刪、被搬 workspace、或 workflow ID 換了。</p>
 
@@ -520,11 +521,15 @@ Wait (1 second)
           <h3>環境搬遷的話，import 後全掃一次</h3>
           <p>從 A export 的 workflow 匯到 B 之後，所有 Execute Workflow 節點都要人工重選一次；n8n 不會自動對應 ID。</p>
         </li>
+        <li>
+          <h3>症狀 B：sub 的錯誤要進 sub 的 Executions 看</h3>
+          <p>Execute Workflow 節點的錯誤訊息只是 wrapper——真正原因在 sub-workflow 自己的 Executions 那筆。Executions 頁最上方切到 sub-workflow 名稱，找同時間戳那筆進去看。sub-workflow 錯誤預設會<em>往上冒</em>讓 parent 也失敗；如果不希望 parent 也掛，把 sub-workflow 的 Error workflow 設好，或 parent 端 Execute Workflow 節點 Settings 開 <strong>Continue On Fail</strong>——sub 錯了但 parent 繼續跑。</p>
+        </li>
       </ol>
     </section>
 
     <section id="labels" data-nav="Expression undefined">
-      <h2 data-icon="labels">症狀 11：Expression 跑出 <code>undefined</code></h2>
+      <h2 data-icon="labels">症狀 9：Expression 跑出 <code>undefined</code></h2>
       <p><strong>症狀</strong>：Slack 訊息或 email 內文出現 <code>undefined</code>、<code>[object Object]</code>、或空字串——workflow 沒錯，就是資料塞進去長歪。</p>
 
       <p><strong>意思</strong>：你在 <a href="ch14_expressions.html">Expression</a> 抓的欄位路徑，實際 <code>$json</code> 裡不存在。三個典型錯法：</p>
@@ -577,7 +582,7 @@ Wait (1 second)
 
     <section id="troubleshoot" data-nav="其他常見卡關">
       <h2 data-icon="troubleshoot">其他常見卡關</h2>
-      <p>上面 11 種是「有明確錯誤訊息」的症狀。剩下這幾種是「沒明顯錯訊但不對勁」——判斷方式跟修法：</p>
+      <p>上面 9 種是「有明確錯誤訊息」的症狀。剩下這幾種是「沒明顯錯訊但不對勁」——判斷方式跟修法：</p>
 
       <table class="data-table">
         <thead>
@@ -591,8 +596,8 @@ Wait (1 second)
           </tr>
           <tr>
             <td>Executions 頁空白</td>
-            <td>(1) workflow 從沒真的跑過；(2) 保留天數（<code>EXECUTIONS_DATA_MAX_AGE</code>）已過期舊紀錄被清；(3) 篩選器把記錄擋住了</td>
-            <td>手動 Execute Workflow 觸發一次；清掉頂部的 filter；找 IT 看 retention 設定</td>
+            <td>(1) workflow 從沒真的跑過；(2) 保留期限（<code>EXECUTIONS_DATA_MAX_AGE</code>，單位<em>小時</em>、預設 336 = 14 天）已過期舊紀錄被清；(3) 篩選器把記錄擋住了；(4) <code>EXECUTIONS_DATA_SAVE_ON_SUCCESS</code> / <code>_ON_ERROR</code> 被關掉，成功／失敗那類不留</td>
+            <td>手動 Execute Workflow 觸發一次；清掉頂部的 filter；找 IT 看 retention 設定與 save 政策</td>
           </tr>
           <tr>
             <td>兩個人同時改同一 workflow，改的東西不見了</td>

@@ -142,6 +142,7 @@
       <p>Slack 是 n8n 最常被用來「通知人」的節點。無論是老闆要盯業績、開發要盯 CI、行政要盯訂單，Slack 節點都是最快速把訊息推到大家眼前的方式。</p>
 
       <h3>最常用的 Resource / Operation 組合</h3>
+      <p>Slack 節點在 n8n v1 的 Resource 完整清單有 <strong>Channel、File、Message、Reaction、Star、User、User Group</strong> 七種。日常最常用的組合：</p>
       <table class="data-table">
         <thead>
           <tr><th>Resource</th><th>Operation</th><th>什麼時候用</th></tr>
@@ -152,6 +153,8 @@
           <tr><td>Message</td><td>Update</td><td>編輯已經送出的訊息（例：把「處理中」改成「完成」）</td></tr>
           <tr><td>User</td><td>Get</td><td>用 email 反查 Slack user ID，才能在訊息裡 <code>@</code> 對方</td></tr>
           <tr><td>Channel</td><td>Create</td><td>自動幫每個新客戶開一個專屬 channel</td></tr>
+          <tr><td>File</td><td>Upload</td><td>把 binary 檔案傳到某頻道</td></tr>
+          <tr><td>Reaction</td><td>Add</td><td>對訊息加 emoji 反應（例：處理完自動打勾）</td></tr>
         </tbody>
       </table>
 
@@ -162,17 +165,18 @@
         </thead>
         <tbody>
           <tr>
-            <td><strong>Slack API</strong>（Bot Token）</td>
-            <td>中：要先去 Slack 建一個 App、產生 Bot Token 貼進來</td>
-            <td>你有 workspace 管理權、想要固定機器人身分發訊息</td>
+            <td><strong>Slack API</strong>（Access Token）</td>
+            <td>中：要先去 Slack 建一個 App、拿到 Bot User OAuth Token（<code>xoxb-…</code>）或 User OAuth Token（<code>xoxp-…</code>）貼進 Access Token 欄</td>
+            <td>你有 workspace 管理權、想要固定機器人身分發訊息（用 <code>xoxb-</code>）；或想用真人身分發訊息（用 <code>xoxp-</code>）</td>
           </tr>
           <tr>
-            <td><strong>Slack OAuth2</strong></td>
+            <td><strong>Slack OAuth2 API</strong></td>
             <td>低：點一下跳出授權頁，登入你的帳號就好</td>
             <td>你是 workspace 一般成員，想用「自己身分」發訊息</td>
           </tr>
         </tbody>
       </table>
+      <p class="hint">兩種在節點裡的 <em>Authentication</em> 下拉分別叫 <code>Access Token</code> 跟 <code>OAuth2</code>。同一個 Slack 節點可以任意切換。</p>
 
       <h3>Text 欄位可以打的東西</h3>
       <p>Message → Send 的 Text 欄位不只是純文字，Slack 有它自己的 markdown 語法：</p>
@@ -192,7 +196,7 @@
       </table>
 
       <h3>要附檔案怎麼辦</h3>
-      <p>Message → Send 節點下方有個 <strong>Binary Data</strong> 開關，打開後填入 property name（預設是 <code>data</code>），上一個節點吐出的 binary（例：Google Drive Download 的檔案）就會當附件一起發過去。這在後面的實例會實際跑一次。</p>
+      <p>Slack 的 <em>Message → Send</em> 本身不接 binary 附件。要傳檔案要另開一個 <strong>Slack → File → Upload</strong> 節點，Channel 選要傳的頻道、Input Data Field Name 填 <code>data</code>（對上上一個節點的 binary property），上傳完會產生一則帶檔案的訊息。想同時發文字＋檔案就把 Message Send 跟 File Upload 兩個節點串起來。</p>
 
       <div class="callout warn"><strong>注意：</strong>Channel 欄位有兩種寫法：<code>#general</code>（頻道名，加井字號）或 <code>C01XYZ123</code>（channel ID，Slack 頻道右鍵複製連結拿得到）。channel 名字改過或有中文字時，用 ID 才穩。</div>
     </section>
@@ -209,9 +213,10 @@
         <tbody>
           <tr><td>Message</td><td>Send</td><td>寄一封新信（最常用）</td></tr>
           <tr><td>Message</td><td>Reply</td><td>回覆已存在的信（保留 thread）</td></tr>
-          <tr><td>Message</td><td>Get Many</td><td>抓收件匣的信，配 filter 找特定寄件人／主旨</td></tr>
+          <tr><td>Message</td><td>Get Many</td><td>抓收件匣的信，配 Search 找特定寄件人／主旨</td></tr>
+          <tr><td>Message</td><td>Add Label</td><td>自動幫某封信貼標籤分類（Label 是掛在 Message 上的動作）</td></tr>
           <tr><td>Draft</td><td>Create</td><td>建草稿讓真人再確認一次才寄（審核流程用）</td></tr>
-          <tr><td>Label</td><td>Add</td><td>自動貼標籤分類</td></tr>
+          <tr><td>Label</td><td>Create</td><td>建立一個新標籤（Label resource 只有 Create/Delete/Get/Get Many，本身沒有 Add）</td></tr>
         </tbody>
       </table>
 
@@ -227,10 +232,10 @@
       </ul>
 
       <h3>抓信：Google 的搜尋語法你都能用</h3>
-      <p>Message → Get Many 的 <strong>Filter</strong> 欄位用的就是 Gmail 網頁版那條搜尋列的語法，一模一樣：</p>
+      <p>Message → Get Many 底下的 Filters 區塊有個 <strong>Search</strong> 欄位（不是叫 Filter，別找錯），用的就是 Gmail 網頁版那條搜尋列的語法，一模一樣：</p>
       <table class="data-table">
         <thead>
-          <tr><th>Filter 值</th><th>意思</th></tr>
+          <tr><th>Search 值</th><th>意思</th></tr>
         </thead>
         <tbody>
           <tr><td><code>is:unread</code></td><td>只抓未讀</td></tr>
@@ -243,7 +248,7 @@
       </table>
 
       <h3>Trigger 版：Gmail Trigger 節點</h3>
-      <p>另一個節點叫 <strong>Gmail Trigger</strong>（不是 Gmail），這是 trigger 節點，可以設「有新信就跑 workflow」。它是<em>輪詢式</em>，預設每 15 分鐘去 poll 一次 Gmail 有沒有新信。要即時的話要縮短 poll 間隔，但太密會被 Google API 限速。</p>
+      <p>另一個節點叫 <strong>Gmail Trigger</strong>（不是 Gmail），這是 trigger 節點，可以設「有新信就跑 workflow」。它是<em>輪詢式</em>，Poll Times 下拉可以選 Every Minute / Every Hour / Every Day 等；預設一次拉 <strong>10 封</strong>（Options → Limit 可調到 50）。要即時就選 Every Minute，但太密加上大帳號會被 Google API 限速。</p>
 
       <div class="callout warn"><strong>注意：</strong>Google 一般帳號一天 <strong>500 封</strong>寄送額度，Workspace 帳號是 2000 封。做群發自動化前先估量，超過會被 Google 暫時鎖帳號。</div>
     </section>
@@ -258,11 +263,12 @@
           <tr><th>Resource</th><th>Operation</th><th>什麼時候用</th></tr>
         </thead>
         <tbody>
-          <tr><td>Sheet Within Document</td><td>Append</td><td>新增一列（最常用：新客戶進 Sheets、log 一筆事件）</td></tr>
-          <tr><td>Sheet Within Document</td><td>Append or Update</td><td>如果指定 key 已存在就 update，不存在就 append（upsert）</td></tr>
-          <tr><td>Sheet Within Document</td><td>Read</td><td>把整張表或某範圍讀出來</td></tr>
-          <tr><td>Sheet Within Document</td><td>Update</td><td>用 Column to Match 找到某一列去更新它</td></tr>
-          <tr><td>Sheet Within Document</td><td>Delete Rows</td><td>刪掉指定的列（少用，破壞性）</td></tr>
+          <tr><td>Sheet Within Document</td><td>Append Row</td><td>新增一列（最常用：新客戶進 Sheets、log 一筆事件）</td></tr>
+          <tr><td>Sheet Within Document</td><td>Append or Update Row</td><td>如果指定 key 已存在就 update，不存在就 append（upsert）</td></tr>
+          <tr><td>Sheet Within Document</td><td>Get Row(s)</td><td>把整張表或符合條件的列讀出來（<em>不是「Read」</em>，是 Get Row(s)）</td></tr>
+          <tr><td>Sheet Within Document</td><td>Update Row</td><td>用 Column to Match On 找到某一列去更新它</td></tr>
+          <tr><td>Sheet Within Document</td><td>Delete Rows or Columns</td><td>刪掉指定的列或欄（少用，破壞性）</td></tr>
+          <tr><td>Sheet Within Document</td><td>Clear</td><td>清空指定範圍的內容但保留欄框</td></tr>
         </tbody>
       </table>
 
@@ -283,8 +289,8 @@
         </tbody>
       </table>
 
-      <h3>Append：新增一列</h3>
-      <p>Append 是最常用的動作。設定重點：</p>
+      <h3>Append Row：新增一列</h3>
+      <p>Append Row 是最常用的動作。設定重點：</p>
       <ol class="steps">
         <li>
           <h3>選 Document</h3>
@@ -295,8 +301,8 @@
           <p>一個 Sheets 檔案裡可能有好幾個分頁，選對那一個 tab。</p>
         </li>
         <li>
-          <h3>Data Mode 選手動 Map 每個欄位</h3>
-          <p>Data Mode 下拉有 <strong>Auto-Map Input Data</strong>（自動對應）和 <strong>Map Each Column Below</strong>（手動）。<em>推薦手動</em>——Auto-map 常常會把上一個節點的欄位名跟你 Sheets 的 header 對錯。</p>
+          <h3>Mapping Column Mode 選手動</h3>
+          <p>Mapping Column Mode 下拉有三個選項：<strong>Map Automatically</strong>（自動對應，只要 upstream JSON 的 key 跟 Sheets header 完全一致就自動塞）、<strong>Map Each Column Manually</strong>（手動，一格一格填 expression）、<strong>Nothing</strong>。<em>沒把握對齊時推薦手動</em>——自動模式只要有一個 key 名不同，那欄就會漏。</p>
         </li>
         <li>
           <h3>逐欄填 expression</h3>
@@ -322,10 +328,13 @@
         <tbody>
           <tr><td>File</td><td>Upload</td><td>把上一節點的 binary 存進 Drive</td></tr>
           <tr><td>File</td><td>Download</td><td>拿 file ID 抓檔案內容（吐 binary 給下一節點）</td></tr>
-          <tr><td>File</td><td>Search</td><td>用檔名／MIME type 找檔案</td></tr>
           <tr><td>File</td><td>Copy</td><td>複製一份到其他資料夾</td></tr>
+          <tr><td>File</td><td>Move</td><td>把檔案搬到另一個資料夾</td></tr>
           <tr><td>File</td><td>Share</td><td>建立分享權限（例：給某 email 讀取）</td></tr>
-          <tr><td>Folder</td><td>Create</td><td>建新資料夾</td></tr>
+          <tr><td>File</td><td>Create from Text</td><td>直接用一段字串當內容生一個檔案（例：把 JSON 存成 .txt）</td></tr>
+          <tr><td>File/Folder</td><td>Search</td><td>用檔名／MIME type 找檔案或資料夾（Search 屬於 <em>File/Folder</em> 這個複合 resource，不是 File）</td></tr>
+          <tr><td>Folder</td><td>Create / Delete / Share</td><td>資料夾也有自己的 CRUD 動作</td></tr>
+          <tr><td>Shared Drive</td><td>Create / Get / Get Many / Update / Delete</td><td>操作共用雲端硬碟本身（不是裡面的檔案）</td></tr>
         </tbody>
       </table>
 
@@ -339,16 +348,25 @@
           <tr><th>欄位</th><th>要填什麼</th></tr>
         </thead>
         <tbody>
-          <tr><td>Input Binary Field</td><td>上一節點吐出來的 binary property name（通常是 <code>data</code>）</td></tr>
+          <tr><td>Input Data Field Name</td><td>上一節點吐出來的 binary property name（通常是 <code>data</code>）</td></tr>
           <tr><td>File Name</td><td>存進去以後要叫什麼名字（可用 expression 動態拼）</td></tr>
-          <tr><td>Parent Folder</td><td>要存到哪個資料夾——<strong>要填 Folder ID，不是資料夾名字</strong></td></tr>
+          <tr><td>Parent（Drive + Folder）</td><td>要存到哪個磁碟／資料夾——這是 <em>Resource Locator</em> 欄位，有三種模式可切</td></tr>
         </tbody>
       </table>
 
-      <h3>Folder ID 怎麼拿？從網址抓</h3>
-      <p>打開 Drive 網頁版，進到那個資料夾裡，網址會長這樣：</p>
-      <pre class="code-block"><code>https://drive.google.com/drive/folders/1aBcDeFgHiJkLmNoPqRsTuVwXyZ</code></pre>
-      <p><code>folders/</code> 後面那一串就是 Folder ID，複製整串貼進 Parent Folder 欄位。</p>
+      <h3>Parent 欄位的三種選法（Resource Locator）</h3>
+      <p>n8n v1 之後，Google Drive 節點的 Drive 跟 Folder 欄位都是 <strong>Resource Locator（RLC）</strong>——同一個欄位裡有三個切換模式：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>模式</th><th>要填什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>From list</strong></td><td>下拉列出你 Drive 裡所有資料夾／磁碟，直接點</td></tr>
+          <tr><td><strong>By URL</strong></td><td>貼資料夾網址，例：<code>https://drive.google.com/drive/folders/1aBcDeFg…</code>，n8n 自己抽 ID</td></tr>
+          <tr><td><strong>By ID</strong></td><td>直接貼 Folder ID（<code>folders/</code> 後面那串）</td></tr>
+        </tbody>
+      </table>
+      <p>三種都能達到同樣結果。<em>不能</em>填「資料夾名字」——名字不通，非 ID／URL／list 選擇一律拒收。</p>
 
       <h3>Download：從 Drive 抓檔案</h3>
       <p>Download 只需要一個 <strong>File ID</strong>。File ID 通常是上一個節點（例：Drive Search 或 Trigger）給的，或者你自己從檔案的分享連結抓：連結 <code>drive.google.com/file/d/1xxx/view</code> 中間那串就是 file ID。抓完會吐 binary 給下游用，例如接 Slack 節點當附件、或接 Gmail 節點當寄信附件。</p>
@@ -363,7 +381,7 @@
       <ol class="steps">
         <li>
           <h3>Trigger：Google Forms Trigger 或 Google Sheets Trigger</h3>
-          <p>拉一個 <strong>Google Sheets Trigger</strong>（大部分 Google Form 都會自動把回覆寫進一個 Sheets），設定「有新列出現就觸發」。Resource 選 <code>Sheet Within Document</code>、Event 選 <code>Row Added</code>，指到那個表單回覆的 Sheets。輪詢間隔 1 分鐘就好。</p>
+          <p>拉一個 <strong>Google Sheets Trigger</strong>（大部分 Google Form 都會自動把回覆寫進一個 Sheets），設定「有新列出現就觸發」。Trigger On 選 <code>Row Added</code>，Document 跟 Sheet 用 RLC 挑到那個表單回覆的 Sheets。Poll Times 選 Every Minute 就好。</p>
         </li>
         <li>
           <h3>Google Drive Download：抓客戶上傳的檔案</h3>
@@ -371,7 +389,7 @@
         </li>
         <li>
           <h3>Gmail Send：寄感謝信給填表人</h3>
-          <p>加 <strong>Gmail → Message → Send</strong> 節點。To 欄填 <code>{{ $('Google Sheets Trigger').item.json["Email"] }}</code>（引用第一步表單裡的 Email 欄），Subject 打「感謝您填寫表單 - {{ $('Google Sheets Trigger').item.json["姓名"] }} 您好」，Body 打感謝內容。<strong>Attach Files 開 Binary Data，property name 打 <code>data</code></strong>——就會把上一步 Drive 下載的檔案一起寄出去。</p>
+          <p>加 <strong>Gmail → Message → Send</strong> 節點。To 欄填 <code>{{ $('Google Sheets Trigger').item.json["Email"] }}</code>（引用第一步表單裡的 Email 欄），Subject 打「感謝您填寫表單 - {{ $('Google Sheets Trigger').item.json["姓名"] }} 您好」，Message 打感謝內容。展開 <em>Options</em> → <strong>Attachments</strong>，Property Name（Binary）填 <code>data</code>——就會把上一步 Drive 下載的檔案一起寄出去。</p>
         </li>
         <li>
           <h3>Slack Message Send：通知業務群</h3>
@@ -440,9 +458,9 @@
             <td>把 expression 加上型別轉換：<code>{{ String($json.id) }}</code>，或反過來把 Sheets 那欄先改成純文字格式</td>
           </tr>
           <tr>
-            <td>Drive Upload 成功但檔案不在指定資料夾</td>
-            <td>Parent Folder 欄位填了資料夾<em>名字</em>而不是 <em>Folder ID</em></td>
-            <td>從網址 <code>folders/</code> 後面那一串複製 ID 貼進去。名字是不通的</td>
+            <td>Drive Upload 成功但檔案落在「My Drive」根目錄而不是指定資料夾</td>
+            <td>Parent 欄位模式選錯——留在 <em>By ID</em> 卻貼了資料夾網址，或反過來留在 <em>By URL</em> 卻貼了純 ID</td>
+            <td>把 RLC 切成 <em>From list</em> 從下拉挑最保險；或改成 <em>By URL</em> 貼完整 <code>drive.google.com/drive/folders/…</code>；ID 模式只能貼 ID</td>
           </tr>
           <tr>
             <td>Drive 節點看不到共用硬碟（Shared Drive）的檔案</td>
@@ -451,8 +469,8 @@
           </tr>
           <tr>
             <td>Gmail Trigger 明明有新信但 workflow 沒觸發</td>
-            <td>Poll interval 太長（預設 15 分鐘），或 Filter 條件把新信過濾掉了</td>
-            <td>先把 Filter 清空、Poll interval 縮到 1 分鐘測試，確定 trigger 有反應以後再慢慢加 filter</td>
+            <td>Poll Times 選了 Every Hour/Day 要等太久，或 Filters 區塊（Sender、Label IDs、Read Status、Search）把新信過濾掉了</td>
+            <td>先把 Filters 清空、Poll Times 切成 Every Minute 測試，確定 trigger 有反應以後再慢慢加 filter</td>
           </tr>
           <tr>
             <td>執行看似成功但下游節點抓不到欄位（<code>undefined</code>）</td>

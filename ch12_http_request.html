@@ -252,9 +252,9 @@
       <ul>
         <li><code>None</code>——公開 API 不用 auth</li>
         <li><code>Predefined Credential Type</code>——n8n 有預設幫你設定好的，選對應的服務就好（例如 <code>OpenAI</code>、<code>Notion</code>、<code>HubSpot</code>）</li>
-        <li><code>Generic Credential Type</code>——自己指定認證方式（<code>HTTP Header Auth</code>、<code>HTTP Query Auth</code>、<code>HTTP Basic Auth</code>、<code>OAuth2 API</code>）</li>
+        <li><code>Generic Credential Type</code>——自己指定認證方式，下拉出現 <code>Basic Auth</code>、<code>Custom Auth</code>、<code>Digest Auth</code>、<code>Header Auth</code>、<code>OAuth1 API</code>、<code>OAuth2 API</code>、<code>Query Auth</code> 七種（有些版本另有 <code>Simplified Custom Auth</code>）</li>
       </ul>
-      <div class="callout"><strong>觀念：</strong>選 <code>Generic Credential Type</code> 後，再選 <code>HTTP Header Auth</code>，會請你建立一組 credential——填 Name（例：<code>Authorization</code>）跟 Value（例：<code>Bearer sk-xxxxx</code>）。存起來後，任何節點都可以引用這組 credential，不用把 token 到處貼。<a href="ch13_credentials.html">第 13 章</a>會專門講 credential 管理。</div>
+      <div class="callout"><strong>觀念：</strong>選 <code>Generic Credential Type</code> 後，再選 <code>Header Auth</code>，會請你建立一組 credential——填 Name（例：<code>Authorization</code>）跟 Value（例：<code>Bearer sk-xxxxx</code>）。存起來後，任何節點都可以引用這組 credential，不用把 token 到處貼。<a href="ch13_credentials.html">第 13 章</a>會專門講 credential 管理。</div>
       <div class="callout warn"><strong>注意：</strong><strong>不要把 token 直接貼在 URL 或 Header 欄位</strong>。要用 credential 存——存進去 n8n 會加密，也不會出現在 workflow 匯出的 JSON。硬貼在欄位裡的話，同事 export 你 workflow 就會拿到你的 token。</div>
     </section>
 
@@ -272,7 +272,7 @@
         </li>
         <li>
           <h3>Authentication 設好</h3>
-          <p>依對方要求選——多數是 <code>Generic Credential Type</code> → <code>HTTP Header Auth</code>，填一組 <code>Authorization: Bearer &lt;你的 token&gt;</code>。</p>
+          <p>依對方要求選——多數是 <code>Generic Credential Type</code> → <code>Header Auth</code>，填一組 <code>Authorization: Bearer &lt;你的 token&gt;</code>。</p>
         </li>
         <li>
           <h3>Send Body 打勾</h3>
@@ -280,7 +280,7 @@
         </li>
         <li>
           <h3>Body Content Type 選 <code>JSON</code></h3>
-          <p>會出現 <strong>Body Content Type</strong> 選單。多數現代 API 都用 JSON，選 <code>JSON</code>。（少數老 API 用 <code>Form-Data</code> 或 <code>x-www-form-urlencoded</code>，看對方文件說什麼就選什麼。）</p>
+          <p>會出現 <strong>Body Content Type</strong> 選單，n8n 提供五個選項：<code>JSON</code>、<code>Form URLencoded</code>、<code>Form-Data</code>、<code>n8n Binary File</code>、<code>Raw</code>。多數現代 API 都用 <code>JSON</code>；上傳檔案的表單用 <code>Form-Data</code>；上傳純二進位（例如 PDF 直傳）用 <code>n8n Binary File</code>；對方要 XML 或自訂 MIME 用 <code>Raw</code>。看對方文件說什麼就選什麼。</p>
         </li>
         <li>
           <h3>Specify Body 選 <code>Using JSON</code>，貼入 payload</h3>
@@ -366,8 +366,8 @@
           </ul>
         </li>
         <li>
-          <h3>設 <code>Stop condition</code>（什麼時候停）</h3>
-          <p>常見停止條件：<code>Response Is Empty</code>（回空陣列就停）、<code>Receive Specific Status Code</code>、或設 <code>Max Requests</code>（例：最多 20 次，防呆）。</p>
+          <h3>設 <code>Complete Expression</code>（什麼時候停）</h3>
+          <p>n8n 用一個布林 Expression 判斷是否停止——欄位叫 <strong>Complete Expression</strong>，填類似 <code>{{ $response.body.results.length === 0 }}</code>（回空陣列就停）或 <code>{{ !$response.body.next_page }}</code>（沒下一頁就停）。另可設 <strong>Limit Pages Fetched</strong> 給一個上限頁數當防呆（例：最多 20 頁）。</p>
         </li>
         <li>
           <h3>執行，看 output</h3>
@@ -387,15 +387,15 @@
           <p>左側主導覽選 <strong>Credentials</strong>，右上角按 <strong>Create Credential</strong>（或第一次建立的引導按鈕）。</p>
         </li>
         <li>
-          <h3>搜尋 <code>HTTP Header Auth</code></h3>
-          <p>credential 類型清單搜 <code>header</code>，選 <strong>HTTP Header Auth</strong>。這是最通用的一種（Bearer Token、X-API-Key 都用這個）。</p>
+          <h3>搜尋 <code>Header Auth</code></h3>
+          <p>credential 類型清單搜 <code>header</code>，選 <strong>Header Auth</strong>（舊版介面顯示為 <code>HTTP Header Auth</code>，同一個東西）。這是最通用的一種（Bearer Token、X-API-Key 都用這個）。</p>
         </li>
         <li>
           <h3>Name 填 <code>Authorization</code>，Value 填 <code>Bearer &lt;你的 token&gt;</code></h3>
           <p>Name 是 header 欄位名稱，Value 是欄位值。整組存下來給這組 credential 取個好記的名字，例如 <code>MyCompany CRM Bearer</code>。</p>
         </li>
         <li>
-          <h3>回節點，Authentication 選 <code>Generic Credential Type</code> → <code>HTTP Header Auth</code> → 選剛建的那組</h3>
+          <h3>回節點，Authentication 選 <code>Generic Credential Type</code> → <code>Header Auth</code> → 選剛建的那組</h3>
           <p>之後這個節點打的每一次 request 都會自動帶那個 header。多個節點都選同一組 credential，改 token 只要改一個地方。</p>
         </li>
       </ol>
@@ -412,8 +412,8 @@
         <tbody>
           <tr>
             <td><code>Response &gt; Response Format</code></td>
-            <td>指定回應要當 JSON、字串、還是檔案（binary）處理</td>
-            <td>下載 PDF、圖片、CSV 時要選 <code>File</code></td>
+            <td>指定回應解析方式，選項有 <code>Autodetect</code>（預設）、<code>JSON</code>、<code>Text</code>、<code>File</code></td>
+            <td>下載 PDF、圖片、CSV 時要選 <code>File</code>；對方回純字串時選 <code>Text</code></td>
           </tr>
           <tr>
             <td><code>Response &gt; Full Response</code></td>
@@ -427,7 +427,7 @@
           </tr>
           <tr>
             <td><code>Timeout</code></td>
-            <td>等對方回應的最長秒數（預設 300 秒）</td>
+            <td>等對方回應的最長毫秒數（不填就用 n8n 內建預設，通常是 300000 ms）</td>
             <td>對方 API 慢或不穩、或你想快速失敗</td>
           </tr>
           <tr>
@@ -484,7 +484,7 @@
         </li>
         <li>
           <h3>SSL 憑證錯誤</h3>
-          <p>公司內部 API 常常用自簽 SSL 憑證。<code>Options → SSL/TLS → Ignore SSL Issues</code> 打開能繞過驗證。<strong>只有內部服務才這樣做</strong>——打公網 API 千萬不要關 SSL 驗證，會被中間人攻擊。</p>
+          <p>公司內部 API 常常用自簽 SSL 憑證。到節點 <code>Options → Add Option → Ignore SSL Issues (Insecure)</code> 打開能繞過驗證。<strong>只有內部服務才這樣做</strong>——打公網 API 千萬不要關 SSL 驗證，會被中間人攻擊。</p>
         </li>
       </ol>
       <div class="callout danger"><strong>危險：</strong>不要把 token 貼在 <strong>Query Parameter</strong> 而不是 <strong>Header</strong>（除非 API 明確要求）。Query 會被記在對方 access log 裡，token 曝光風險比 Header 高。多數現代 API 都建議用 <code>Authorization: Bearer</code> 走 Header。</div>
@@ -501,7 +501,7 @@
       <details class="faq">
         <summary>我手上有一段 curl 指令，怎麼轉成 n8n 節點？</summary>
         <div class="body">
-          <p>三招：<strong>（1）</strong>用 Postman——貼 curl 進 Postman 的 Import 就會拆成 Method、URL、Header、Body 四塊，對照填進 n8n。<strong>（2）</strong>手動對照——curl 的 <code>-X</code> 是 Method、<code>-H</code> 是 Header、<code>-d</code> 是 Body、URL 就是 URL。<strong>（3）</strong>n8n 節點本身有 <strong>Import cURL</strong> 按鈕（在 URL 欄位旁邊的三點選單），貼 curl 進去它會自動填四塊——最快。</p>
+          <p>三招：<strong>（1）</strong>用 Postman——貼 curl 進 Postman 的 Import 就會拆成 Method、URL、Header、Body 四塊，對照填進 n8n。<strong>（2）</strong>手動對照——curl 的 <code>-X</code> 是 Method、<code>-H</code> 是 Header、<code>-d</code> 是 Body、URL 就是 URL。<strong>（3）</strong>n8n 節點本身有 <strong>Import cURL</strong> 按鈕（在節點 <em>Parameters</em> 分頁的最上方），貼 curl 進去它會自動填四塊——最快。</p>
         </div>
       </details>
       <details class="faq">

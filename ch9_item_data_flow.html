@@ -276,7 +276,7 @@
         </li>
         <li>
           <h3>Merge 節點吐出來筆數對不上</h3>
-          <p>Merge 有多個 mode，選錯結果差很多：<strong>Append</strong>（頭接尾，A 3 個+B 2 個=5 個）、<strong>Combine → Merge by Position</strong>（同 index 湊一對，靠 pairedItem 對齊）、<strong>Combine → Multiplex</strong>（笛卡兒積，A 3 個×B 2 個=6 個）。用之前先想清楚要哪一種，<a href="ch16_merge_split.html">第 16 章</a>會拆更細。</p>
+          <p>Merge 有四個 mode，選錯結果差很多：<strong>Append</strong>（頭接尾，A 3 個+B 2 個=5 個）、<strong>Combine</strong>（再切三個子選項：<em>Matching Fields</em> 靠欄位值比對像 SQL join、<em>Position</em> 同 index 湊一對、<em>All Possible Combinations</em> 笛卡兒積 A 3 個×B 2 個=6 個）、<strong>SQL Query</strong>（1.49.0+，直接寫 SQL 湊）、<strong>Choose Branch</strong>（只挑一邊的資料吐出）。<em>舊版文件把 All Possible Combinations 叫 Multiplex，新版已經改名，看到別人 workflow 用舊稱不用慌</em>。用之前先想清楚要哪一種，<a href="ch16_merge_split.html">第 16 章</a>會拆更細。</p>
         </li>
         <li>
           <h3>節點吃到 0 個 item 直接被跳過</h3>
@@ -317,7 +317,7 @@
       </details>
       <details class="faq">
         <summary>$json 跟 $input.all() 差在哪？</summary>
-        <div class="body">在一般節點的 Expression 欄位裡，<code>$json</code> 是「當前這一輪 iteration 的那個 item 的 json」——因為節點被連跑 N 次，每次的 <code>$json</code> 都指不同的 item。<code>$input.all()</code> 拿的是「這一個節點吃到的全部 items 的 array」，主要在 <strong>Code node</strong> 裡用（<a href="ch20_code_node.html">第 20 章</a>），因為 Code node 通常設成一次處理全部。</div>
+        <div class="body">在一般節點的 Expression 欄位裡，<code>$json</code> 是「當前這一輪 iteration 的那個 item 的 json」——因為節點被連跑 N 次，每次的 <code>$json</code> 都指不同的 item。<code>$input.all()</code> 拿的是「這一個節點吃到的全部 items 的 array」（回傳 Array，各成員是完整 item，含 <code>.json</code> / <code>.binary</code>）。Expression 也能呼叫，但實務上最常在 <strong>Code node</strong>（<a href="ch20_code_node.html">第 20 章</a>）用——因為 Code node 通常設成一次處理全部。相關姊妹：<code>$input.first()</code>、<code>$input.last()</code>、<code>$input.item</code>。</div>
       </details>
     </section>
 

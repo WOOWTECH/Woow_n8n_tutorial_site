@@ -118,12 +118,12 @@
         <tbody>
           <tr>
             <td><strong>呼叫方</strong>（Parent workflow）</td>
-            <td><code>Execute Workflow</code>（Action 類節點）</td>
+            <td><code>Execute Sub-workflow</code>（Action 類節點；舊版介面顯示為 <code>Execute Workflow</code>）</td>
             <td>拉這節點、選要呼叫的 workflow、丟 items 進去、等結果回來（或不等）</td>
           </tr>
           <tr>
             <td><strong>被呼叫方</strong>（Sub-workflow）</td>
-            <td><code>Execute Workflow Trigger</code>（Trigger 類節點，當 workflow 開頭）</td>
+            <td><code>Execute Sub-workflow Trigger</code>（Trigger 類節點，當 workflow 開頭；舊版介面顯示為 <code>Execute Workflow Trigger</code>）</td>
             <td>接住上面丟進來的 items 當作 input，跑完後 workflow 的最後一個節點的 output 就是回傳值</td>
           </tr>
         </tbody>
@@ -199,14 +199,14 @@
           <p>畫布上按 <kbd>Tab</kbd> 或點 <strong>+</strong> 打開節點抽屜，搜尋 <code>Execute Workflow Trigger</code>（在 Trigger 類）拉進來。這個節點的角色就是「當我被別人呼叫時，我從這裡開始」。沒有它，別人的 <code>Execute Workflow</code> 節點會找不到入口。</p>
         </li>
         <li>
-          <h3>設 Input Data Mode = <code>Define using JSON Example</code></h3>
-          <p>點開 Execute Workflow Trigger 節點，找到 <strong>Input Data Mode</strong> 下拉，選 <code>Define using JSON Example</code>。這是在告訴呼叫方「你要傳什麼結構給我」。貼上這段當範例：</p>
+          <h3>設 Input Data Mode = <code>Define using JSON example</code></h3>
+          <p>點開 Execute Sub-workflow Trigger 節點，找到 <strong>Input data mode</strong> 下拉，官方共三個選項：<code>Define using fields below</code>（一欄一欄敲名字＋型別）、<code>Define using JSON example</code>（貼一段範例 JSON、n8n 幫你推 schema）、<code>Accept all data</code>（不驗證、來什麼收什麼）。這裡選 <code>Define using JSON example</code>，貼上：</p>
           <pre class="code-block"><code>{
   "severity": "error",
   "message": "資料庫連線失敗",
   "source": "backup-daily"
 }</code></pre>
-          <p>好處：呼叫方在他的 Execute Workflow 節點裡會看到這個 schema 提示，直接依樣拼資料傳進來。省掉「我到底要傳什麼」的溝通成本。</p>
+          <p>好處：呼叫方在他的 Execute Sub-workflow 節點裡會看到這個 schema 提示，直接依樣拼資料傳進來。省掉「我到底要傳什麼」的溝通成本。想要「介面契約先行」的團隊選 <code>Define using fields below</code>；想「先跑再說什麼都收」的選 <code>Accept all data</code>。</p>
         </li>
         <li>
           <h3>加 IF 節點：判斷 severity</h3>
@@ -245,20 +245,20 @@
           <p>把原本自己的 IF/Set/Slack 那些節點刪光。從節點抽屜搜尋 <code>Execute Workflow</code>（Action 類，別跟 Trigger 版搞混了），拉進來接在 IF 節點後面。</p>
         </li>
         <li>
-          <h3>Workflow 下拉選 <code>[Sub] Slack Alert</code></h3>
-          <p>節點打開，<strong>Workflow</strong> 那個下拉會列出你所有已存在的 workflow，找 <code>[Sub] Slack Alert</code> 選下去。找不到就切成 <strong>By ID</strong> 模式手動貼 workflow ID。</p>
+          <h3>Source 選 <code>Database</code>，Workflow 下拉選 <code>[Sub] Slack Alert</code></h3>
+          <p>節點打開，<strong>Source</strong> 有四個模式：<code>Database</code>（從 workspace 現有 workflow 挑，最常用）、<code>Local File</code>（讀本機 JSON 檔）、<code>Parameter</code>（把整段 workflow JSON 貼進節點）、<code>URL</code>（指定 workflow URL）。保留預設 <code>Database</code>，下拉找 <code>[Sub] Slack Alert</code>；找不到再切別的模式手動指定。</p>
         </li>
         <li>
-          <h3><strong>Wait for Sub-workflow Completion</strong> 打勾</h3>
-          <p>這個選項預設是打勾的，別關掉——它決定「我要等 sub-workflow 跑完拿到回傳值再繼續嗎」。打勾＝等；不勾＝呼叫完就繼續往下（fire-and-forget，適合純通知不 care 結果）。想用 sub-workflow 的回傳資料繼續處理的話一定要打勾。</p>
+          <h3>檢查 <strong>Wait for Sub-workflow Completion</strong></h3>
+          <p>這個 toggle 決定「我要等 sub-workflow 跑完拿到回傳值再繼續嗎」。打勾＝等；不勾＝呼叫完就繼續往下（fire-and-forget，適合純通知不 care 結果）。想用 sub-workflow 的回傳資料繼續處理的話一定要打勾。官方文件沒明說預設值，實務上建 Execute Sub-workflow 節點時是打勾的，不放心請自己確認一次。</p>
         </li>
         <li>
           <h3>Mode 選 <code>Run once with all items</code></h3>
           <p><strong>Mode</strong> 有兩個選項：<code>Run once with all items</code>（把上游全部 items 一次丟進 sub-workflow，sub-workflow 跑一次）或 <code>Run once for each item</code>（每筆 item 各觸發一次 sub-workflow，跑 N 次）。通知這種一次一筆的情境選 <em>Run once with all items</em> 就好。</p>
         </li>
         <li>
-          <h3>設要傳的 items：用 expression 動態組</h3>
-          <p>Execute Workflow 節點會把上游來的 items 原封不動當作要傳給 sub-workflow 的 input。想要組不同的結構，先加一個 <a href="ch18_set_function.html">Set/Edit Fields</a> 節點把資料整成 sub-workflow 期待的 <code>{ severity, message, source }</code> 結構，再接 Execute Workflow。或者直接在 Execute Workflow 前面用 Set 寫：</p>
+          <h3>設要傳的 items：用 <strong>Workflow Inputs</strong> 或 Set 節點預整形</h3>
+          <p>Sub-workflow 若在 Trigger 端定義了 schema（<code>Define using fields below</code> 或 <code>Define using JSON example</code>），Execute Sub-workflow 節點會自動顯示 <strong>Workflow Inputs</strong> 表格讓你逐欄填 expression、還有一個 <strong>Attempt to convert types</strong> toggle 幫忙做型別轉換。如果 sub-workflow 是 <code>Accept all data</code>，這區塊不會出現，上游 items 原封不動就是 input。想大幅改結構的話，先加一個 <a href="ch18_set_function.html">Set/Edit Fields</a> 節點整成 <code>{ severity, message, source }</code> 再接：</p>
           <pre class="code-block"><code>severity: error
 message: {{ $json.error_message }}
 source: backup-daily</code></pre>
@@ -446,14 +446,14 @@ source: backup-daily</code></pre>
         </thead>
         <tbody>
           <tr>
-            <td>Execute Workflow 節點的 Workflow 下拉找不到目標</td>
+            <td>Execute Sub-workflow 節點的 Workflow 下拉找不到目標</td>
             <td>Workflow ID 錯了、Sub-workflow 被刪了、或你在別的 workspace</td>
-            <td>先去 Workflows 頁確認 sub-workflow 還在。切成 <strong>By ID</strong> 模式手動貼 workflow ID（從網址列 <code>/workflow/xxx</code> 抓）</td>
+            <td>先去 Workflows 頁確認 sub-workflow 還在。或把 <strong>Source</strong> 從 <code>Database</code> 切成 <code>URL</code>／<code>Local File</code>／<code>Parameter</code> 手動指定目標 workflow</td>
           </tr>
           <tr>
             <td>執行時報 <code>Sub-workflow could not be started</code></td>
-            <td>Sub-workflow 的 Trigger 節點不是 <code>Execute Workflow Trigger</code>（是別的 Trigger 例如 Manual、Schedule）</td>
-            <td>回 sub-workflow 把開頭改成 <code>Execute Workflow Trigger</code> 節點。這是 sub-workflow 專用的入口</td>
+            <td>Sub-workflow 的 Trigger 節點不是 <code>Execute Sub-workflow Trigger</code>（是別的 Trigger 例如 Manual、Schedule）</td>
+            <td>回 sub-workflow 把開頭改成 <code>Execute Sub-workflow Trigger</code> 節點。這是 sub-workflow 專用的入口</td>
           </tr>
           <tr>
             <td>呼叫方傳了 items 但 sub-workflow 收到空的</td>
@@ -473,12 +473,12 @@ source: backup-daily</code></pre>
           <tr>
             <td>改了 sub-workflow 之後其中一個呼叫方壞掉</td>
             <td>你動到了 sub-workflow 期待的 input schema（改了欄位名、加了必填），但那個呼叫方沒跟著更新</td>
-            <td>Sub-workflow 的 <code>Execute Workflow Trigger</code> 節點的 JSON Example 是介面契約，改介面前要盤點所有呼叫方一起更新；破壞性改動建議另建 <code>[Sub] Slack Alert v2</code> 併行過渡</td>
+            <td>Sub-workflow 的 <code>Execute Sub-workflow Trigger</code> 節點的 Input Data Mode（fields/JSON example）就是介面契約，改介面前要盤點所有呼叫方一起更新；破壞性改動建議另建 <code>[Sub] Slack Alert v2</code> 併行過渡</td>
           </tr>
           <tr>
             <td>出錯不知道在 sub-workflow 還是呼叫方</td>
-            <td>Executions 頁兩邊各自列，不會串起來</td>
-            <td>呼叫方 execution 點進去看 Execute Workflow 節點的 output 裡有 <code>subExecutionId</code>，或到 Executions 頁按時間交叉比對；或設 <a href="ch17_error_handling.html">Error workflow</a> 統一收</td>
+            <td>Executions 頁把呼叫方跟被呼叫方兩筆分開列，不會自動串起來</td>
+            <td>從呼叫方 execution 點進 Execute Sub-workflow 節點，回傳 output 通常帶對應的 sub-execution 連結／ID，或直接到 Executions 頁按時間交叉比對；不放心就設 <a href="ch17_error_handling.html">Error workflow</a> 統一收</td>
           </tr>
           <tr>
             <td>Sub-workflow 有回傳但呼叫方看到 items 是空的</td>

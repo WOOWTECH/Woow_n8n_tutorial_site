@@ -67,9 +67,9 @@
     <div class="toc-in-chapter">
       <h2>本章</h2>
       <a href="#why">為什麼要先抄</a>
-      <a href="#concept">兩個入口</a>
+      <a href="#concept">Templates 在哪裡</a>
       <a href="#pick">怎麼挑好模板</a>
-      <a href="#steps-builtin">從內建 Templates 裝</a>
+      <a href="#steps-sidebar">從側欄 Templates 進去</a>
       <a href="#steps-json">貼 JSON 進來</a>
       <a href="#post-install">裝完該做三件事</a>
       <a href="#modify-ok">能不能改</a>
@@ -104,34 +104,33 @@
       <div class="callout tip"><strong>提示：</strong>這章的目標是「一小時內把別人的 workflow 跑起來」。真正從零手拉的第一個 workflow 留到<a href="ch8_first_workflow.html">第 8 章</a>——那時你已經看過 5、6 個別人的成品，手感完全不一樣。</div>
     </section>
 
-    <section id="concept" data-nav="兩個入口">
-      <h2 data-icon="concept">Templates 有兩個入口</h2>
-      <p>n8n 的模板分兩池，內容有重疊但不完全一樣，兩邊都值得看：</p>
+    <section id="concept" data-nav="Templates 在哪裡">
+      <h2 data-icon="concept">Templates 其實就一池：n8n.io/workflows</h2>
+      <p>先破一個常見誤解：n8n 本體<strong>沒有內建一個「離線」的模板 gallery</strong>。你以為的「兩個入口」，實際上通往同一個地方——公開的 <code>n8n.io/workflows/</code>。</p>
       <table class="data-table">
         <thead>
           <tr>
-            <th>入口</th>
-            <th>在哪裡</th>
-            <th>特色</th>
-            <th>怎麼用</th>
+            <th>你以為</th>
+            <th>實際上</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>n8n 內建 Templates</strong></td>
-            <td>Woow n8n 左側欄的 Templates 分頁</td>
-            <td>官方 curate、跟你的版本相容性高、一鍵匯入</td>
-            <td>直接在 workspace 裡瀏覽 → 「Use workflow」</td>
+            <td>側欄的 Templates 是 n8n 官方 curate、離線內建的池</td>
+            <td>按下去會把你帶去瀏覽器的 <code>n8n.io/workflows/</code>（除非公司有配置 <em>custom templates library</em>）</td>
           </tr>
           <tr>
-            <td><strong>n8n.io/workflows</strong></td>
-            <td>瀏覽器打開 <code>https://n8n.io/workflows/</code></td>
-            <td>社群完整 gallery、幾千個、有安裝次數與作者資訊</td>
-            <td>找到 → 「Use for free」 → 拿到 JSON 貼回 workspace</td>
+            <td>兩邊模板不一樣，可以互補</td>
+            <td>是同一個公開池——內容一樣，只是入口不同</td>
+          </tr>
+          <tr>
+            <td>模板頁面有安裝次數 / 星星評分讓你排序</td>
+            <td>官方 gallery 目前<strong>沒有</strong>公開的安裝次數、星等或評分——只有分類、關鍵字、服務 icon</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout"><strong>觀念：</strong>兩邊都是「起點」不是「終點」。抄過來只是骨架，一定要換 credential、改欄位才會變成你的。改的部分下一章 (<a href="ch6_modify_workflow.html">ch6</a>) 專門講。</div>
+      <div class="callout"><strong>觀念：</strong>「Templates 在哪裡」的答案是：<strong>都在 <code>n8n.io/workflows/</code></strong>。差別只在你要從側欄按鈕跳過去，還是直接在瀏覽器打開網址。抄過來的模板只是骨架，一定要換 credential、改欄位才會變成你的（<a href="ch6_modify_workflow.html">ch6</a>）。</div>
+      <div class="callout tip"><strong>提示：</strong>如果貴公司自架 n8n 有配 <code>N8N_TEMPLATES_HOST</code> 指向內部模板庫，那才會出現真正的「app 內瀏覽」體驗，內容也可能只有你們公司的模板。Woow n8n 目前用官方預設，所以按 Templates 就是連出去 n8n.io。</div>
     </section>
 
     <section id="pick" data-nav="怎麼挑好模板">
@@ -152,13 +151,13 @@
             <td>超過 15 個節點，光讀就頭暈——新手先跳過</td>
           </tr>
           <tr>
-            <td>安裝次數（n8n.io 才有）</td>
-            <td>四位數以上，代表很多人跑過</td>
-            <td>個位數，可能還沒被驗證過</td>
+            <td>作者</td>
+            <td>是 n8n 官方帳號或 Verified Creator（頭像旁有勾勾）</td>
+            <td>沒名字的匿名帳號、又只上傳過 1 個——先觀望</td>
           </tr>
           <tr>
             <td>更新日期</td>
-            <td>一年內</td>
+            <td>一年內（點進詳情頁看 Last update）</td>
             <td>兩年沒動——節點 API 可能已改，跑不起來</td>
           </tr>
           <tr>
@@ -176,45 +175,46 @@
       <div class="callout tip"><strong>提示：</strong>第一次挑，直接找節點數 &lt; 5、又有 Slack / Gmail / Google Sheets 之類你天天用的服務的模板。跑起來的機率最高，成就感最強。</div>
     </section>
 
-    <section id="steps-builtin" data-nav="從內建 Templates 裝">
-      <h2 data-icon="steps">Steps 甲：從 n8n 內建 Templates 裝</h2>
-      <p>這是新手最推的路。整個過程都在 Woow n8n 裡完成，不用開新分頁。</p>
+    <section id="steps-sidebar" data-nav="從側欄 Templates 進去">
+      <h2 data-icon="steps">Steps 甲：從側欄 Templates 進去（跳到 n8n.io）</h2>
+      <p>這是「懶得記網址」的走法。整個過程還是會離開 n8n app 去 n8n.io，但至少入口在你熟悉的側欄。</p>
       <ol class="steps">
         <li>
           <h3>左側欄按「Templates」</h3>
-          <p>登入 Woow n8n 後，左側欄除了 Workflows、Executions、Credentials 之外還有一個 Templates。點進去會看到官方 curate 的模板列表，可以照類別（AI、Sales、IT Ops、Marketing⋯⋯）或關鍵字篩選。</p>
-          <p>如果側欄看不到，先看<a href="ch3_workspace_tour.html">第 3 章</a>把介面認熟。</p>
+          <p>登入 Woow n8n 後，左側欄除了 Workflows、Executions、Credentials 之外還有一個 Templates。按下去<strong>會另開一個瀏覽器分頁</strong>連到 <code>n8n.io/workflows/</code>——這是官方的行為，不是 bug。</p>
+          <p>如果側欄看不到 Templates，先看<a href="ch3_workspace_tour.html">第 3 章</a>把介面認熟。</p>
         </li>
         <li>
-          <h3>用關鍵字找一個貼近你需求的</h3>
-          <p>例：搜尋 <code>slack</code>、<code>gmail</code>、<code>google sheets</code>。找一個描述看得懂的，例如「Save new Gmail attachments to Google Drive」（自動把 Gmail 附件存到 Google Drive）。</p>
+          <h3>在 n8n.io/workflows 找一個貼近你需求的</h3>
+          <p>用左側分類（AI、Sales、IT Ops、Marketing、Document Ops、Support）或關鍵字。找一個描述看得懂的，例如「Save new Gmail attachments to Google Drive」。</p>
         </li>
         <li>
-          <h3>點進去看預覽</h3>
-          <p>右側會顯示這個模板的 canvas 縮圖：有幾個節點、怎麼串、需要哪些外部服務（Gmail、Drive⋯⋯）。這一步就在<strong>做「挑模板五個判斷點」</strong>——如果縮圖看起來一大堆節點、你認不得，就 back 出來換一個。</p>
+          <h3>點進去看 canvas 預覽與節點列表</h3>
+          <p>詳情頁會顯示這個模板的節點縮圖、用到哪些服務（Gmail、Drive⋯⋯）、作者、Last update。這一步就在<strong>做「挑模板五個判斷點」</strong>——縮圖看起來一大堆節點、你認不得，就 back 出來換。</p>
         </li>
         <li>
-          <h3>按「Use workflow」（有些版本寫 Use this template）</h3>
-          <p>模板詳情頁右上角會有一個按鈕，點下去就會複製一份到你的 workspace，變成一個新的 workflow，名字通常是模板原名。你會被自動跳到編輯畫面。</p>
+          <h3>按「Use for free」</h3>
+          <p>詳情頁右上角橘色按鈕。按下去會出現一個小視窗，主要提供：<strong>Copy template to clipboard</strong>（複製 JSON）或跳到 n8n Cloud 試玩。我們選 <strong>Copy</strong>——資料要留在 Woow n8n。</p>
+          <div class="callout warn"><strong>注意：</strong>不要按「Try it on n8n Cloud」——那會建立官方雲端的 workflow，不是我們公司這台。</div>
+        </li>
+        <li>
+          <h3>回 Woow n8n，開新 workflow，Ctrl+V 貼上</h3>
+          <p>Workflows 頁 → <strong>+ Add workflow</strong> 開個空白的 → 在 canvas 空白處按 <kbd>Ctrl</kbd>+<kbd>V</kbd>（Mac <kbd>Cmd</kbd>+<kbd>V</kbd>）。節點刷一下就進來、連線也保留。</p>
         </li>
         <li>
           <h3>綁 credential、填欄位</h3>
-          <p>剛匯入的模板，節點大多是紅色的驚嘆號——因為它還沒接上你的帳號。點紅色節點 → 選 Credential → 選你之前建過的、或按 <strong>Create New</strong> 建一個。細節在<a href="ch13_credentials.html">第 13 章</a>。</p>
+          <p>剛貼進來的節點大多有紅色驚嘆號——沒接你的帳號。點紅節點 → 選 Credential → 選現成的或 <strong>Create New</strong>。細節在<a href="ch13_credentials.html">第 13 章</a>。</p>
         </li>
         <li>
-          <h3>按 Execute workflow 手動跑一次</h3>
-          <p>右下角的紫色按鈕。跑成功每個節點會變綠打勾；有紅色錯誤就點進去看訊息（通常是欄位空著或 credential 沒接對）。</p>
-        </li>
-        <li>
-          <h3>確認 OK 再把 Active 打開</h3>
-          <p>右上角的 Active 開關。打開後排程 / Webhook 才會真的自動觸發。<strong>沒手動跑成功之前不要開</strong>，會半夜掛你一堆錯誤 log。</p>
+          <h3>按 Execute workflow 手動跑一次，OK 再開 Active</h3>
+          <p>右下角紫色按鈕手動跑。全綠才代表通了。<strong>沒手動跑成功之前，右上角的 Active 開關不要打開</strong>——會半夜掛你一堆錯誤 log。</p>
         </li>
       </ol>
     </section>
 
     <section id="steps-json" data-nav="貼 JSON 進來">
-      <h2 data-icon="steps">Steps 乙：從 n8n.io 貼 JSON 進來</h2>
-      <p>內建 Templates 池比較小，如果沒找到你要的，就去社群完整 gallery 挖。這條路多兩三步，但寶藏多。</p>
+      <h2 data-icon="steps">Steps 乙：直接開 n8n.io/workflows 貼 JSON</h2>
+      <p>其實就是 Steps 甲，只是跳過「按側欄」那一步——直接在瀏覽器輸入網址。老手都走這條，省一次點擊。</p>
       <ol class="steps">
         <li>
           <h3>瀏覽器打開 <code>https://n8n.io/workflows/</code></h3>
@@ -242,7 +242,7 @@
           <p>左上角 workflow 名字通常是 <code>My workflow</code> 之類的預設，直接點下去改成看得懂的（例：「RSS 早報摘要」）。按右上角 Save 或 <kbd>Ctrl</kbd>+<kbd>S</kbd>。</p>
         </li>
       </ol>
-      <div class="callout"><strong>觀念：</strong>貼進來之後，接下來的動作跟從內建 Templates 匯入的模板一模一樣——綁 credential、手動跑一次、確認 OK 再開 Active。</div>
+      <div class="callout"><strong>觀念：</strong>貼進來之後，接下來的動作跟 Steps 甲一樣——綁 credential、手動跑一次、確認 OK 再開 Active。</div>
     </section>
 
     <section id="post-install" data-nav="裝完該做三件事">
@@ -282,8 +282,8 @@
       <h2 data-icon="troubleshoot">常見卡關</h2>
       <ol class="steps">
         <li>
-          <h3>側欄的 Templates 頁面點進去空空的</h3>
-          <p>可能是你的 workspace 權限沒開 Templates，或網路擋了外部 template 服務（n8n 內建 Templates 是從 n8n.io 拉的）。先重整頁面看看；還是空的就找 IT 或看<a href="ch2_login.html">第 2 章</a>確認登入正確。</p>
+          <h3>按側欄 Templates 沒反應 / 分頁打不開</h3>
+          <p>按下去應該會另開瀏覽器分頁連 <code>n8n.io/workflows/</code>。如果沒反應：（a）瀏覽器擋了 popup——點網址列右邊的 popup 提示放行；（b）公司網路擋 <code>n8n.io</code>——直接在瀏覽器輸入網址測；（c）真的被 IT 擋了那就走「拿別人下載好的 JSON 檔案匯入」（<a href="ch5_import_workflow.html">ch5</a>）。</p>
         </li>
         <li>
           <h3>從 n8n.io 貼 JSON，貼不上去</h3>
@@ -316,7 +316,7 @@
       </details>
       <details class="faq">
         <summary>別人的 template 有沒有病毒 / 惡意程式碼？</summary>
-        <div class="body">n8n template 不會執行任意程式（它只是節點的組合定義）。但要注意：模板可能包含 <code>Code node</code>，裡面有 JavaScript / Python。匯入前把每個 Code node 點開看一下程式碼在做什麼，尤其是有「呼叫外部網址」或「發送資料到不明地方」的要警覺。官方 curate 的內建 Templates 相對安全，社群 gallery 就要多留一分心。</div>
+        <div class="body">n8n template 不會執行任意程式（它只是節點的組合定義）。但要注意：模板可能包含 <code>Code node</code>，裡面有 JavaScript / Python。匯入前把每個 Code node 點開看一下程式碼在做什麼，尤其是有「呼叫外部網址」或「發送資料到不明地方」的要警覺。挑作者旁邊有 <strong>Verified Creator</strong> 勾勾的、或 n8n 官方帳號的，相對安全。</div>
       </details>
       <details class="faq">
         <summary>Template 都免費嗎？會不會用一用要收費？</summary>

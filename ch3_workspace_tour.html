@@ -120,7 +120,7 @@
           <tr><td><strong>Credentials</strong></td><td>金鑰、OAuth 授權、API token 的集中儲存。</td><td>要串新的 SaaS 服務時、要跟同事分享共用帳號時（<a href="ch13_credentials.html">第 13 章</a>詳講）。</td></tr>
           <tr><td><strong>Executions</strong></td><td>整個 workspace 跑過的每一次 workflow 紀錄。</td><td>Debug 的黃金頁——workflow 半夜壞了、想看昨天到底跑了幾筆。</td></tr>
           <tr><td><strong>Insights</strong></td><td>企業版才有的用量統計、成功率報表。</td><td>Woow 目前用不到，看到灰灰的就對了。</td></tr>
-          <tr><td><strong>Help</strong> / <strong>Settings</strong> / <strong>頭像</strong></td><td>側欄最下方：說明文件連結、個人與 workspace 設定、你的登入頭像（點開可以登出）。</td><td>調語言、換主題、登出。</td></tr>
+          <tr><td>側欄最下方：<strong>What's new</strong>（鈴鐺）／<strong>Help</strong>（問號，連文件與社群）／<strong>頭像</strong>（點開才進 <strong>Settings</strong> 與登出）</td><td>版本公告、外部說明文件連結、個人與 workspace 設定入口都在這裡。<strong>Settings</strong> 不是獨立側欄項目，要從頭像進去。</td><td>調語言、換主題、看新版功能、登出。</td></tr>
         </tbody>
       </table>
       <div class="callout tip"><strong>提示：</strong>把滑鼠移到任何一個側欄圖示上會跳出中文（或英文）名稱。如果側欄是「收起」狀態（只看得到圖示沒有文字），點側欄底部那個 <code>«</code> / <code>»</code> 箭頭可以展開。</div>
@@ -137,13 +137,13 @@
         <tbody>
           <tr><td>最頂端左邊</td><td>Workflow 名字（點一下可以改名）</td><td>會出現在瀏覽器分頁跟 Workflows 清單。</td></tr>
           <tr><td>最頂端中間</td><td>三個分頁：<strong>Editor</strong> / <strong>Executions</strong> / <strong>Evaluations</strong></td><td>切換視角——編輯、看跑過的紀錄、看評測（進階）。</td></tr>
-          <tr><td>最頂端右邊</td><td><strong>Active</strong> 開關 + <strong>Save</strong> + <strong>Execute Workflow</strong></td><td>啟用排程／webhook、存檔、手動跑一次測試。</td></tr>
+          <tr><td>最頂端右邊</td><td><strong>Save</strong> + <strong>Execute Workflow</strong> + <strong>Publish / Unpublish</strong></td><td>存草稿、手動跑一次測試、把當前草稿發佈上線（讓排程／Webhook／事件觸發器真的開始接收事件）。</td></tr>
           <tr><td>畫面中央</td><td><strong>Canvas（畫布）</strong></td><td>所有節點跟連線放在這裡，可以縮放拖動。</td></tr>
           <tr><td>右下角</td><td>一排小工具：Zoom in／Zoom out／Fit view／Tidy up／Mini-map</td><td>畫布縮放與整理。</td></tr>
           <tr><td>Canvas 右邊或空白處</td><td><strong>+ Add first step</strong>（新 workflow）或 <strong>+</strong> 按鈕（節點之間）</td><td>叫出節點抽屜（Node panel）加新節點。</td></tr>
         </tbody>
       </table>
-      <div class="callout"><strong>觀念：</strong><strong>Active</strong> 是<strong>整個 workflow 的總開關</strong>——關著的時候排程 / webhook / 訊息事件都不會觸發，只有「Execute Workflow」手動按鈕能跑。你在改的時候通常先讓它關著；上線那一刻再打開。詳細會在<a href="ch10_triggers.html">第 10 章</a>講。</div>
+      <div class="callout"><strong>觀念：</strong>n8n 2.0 之後把過去的「Active 開關」換成<strong>Publish / Unpublish（發佈 / 取消發佈）</strong>模型：你在編輯的一直是<strong>草稿（draft）</strong>，按 <strong>Publish</strong> 才會把當前這個版本推上線，排程 / Webhook / 訊息事件開始接收；沒 Publish 之前只有「Execute Workflow」手動按鈕能跑。這個改動就是為了避免手滑把改一半的 workflow 直接開啟。Woow 這台已經是 n8n 2.x，所以你在畫面右上角看到的會是 <strong>Publish</strong> 而不是 Active 開關。細節在<a href="ch10_triggers.html">第 10 章</a>。</div>
     </section>
 
     <section id="node_shape" data-nav="節點長什麼樣">
@@ -264,7 +264,7 @@
           <tr><td><strong>Mini-map</strong>（縮圖）</td><td>—</td><td>展開右下角的小地圖，大 workflow（20+ 節點）想快速跳到另一區。</td></tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>提示：</strong>按 <kbd>?</kbd>（問號鍵）會叫出<strong>快捷鍵 cheat sheet</strong>，把常用快捷鍵一次列給你。學會 <kbd>Tab</kbd>（開節點抽屜）、<kbd>Ctrl+S</kbd>（存檔）、<kbd>Ctrl+A</kbd>（全選節點）三個就已經比大部分同事快了。</div>
+      <div class="callout tip"><strong>提示：</strong>n8n 目前<strong>沒有全域的「? 快捷鍵 cheat sheet」浮窗</strong>，官方文件本身就把快捷鍵一頁列出來（搜尋 <em>n8n keyboard shortcuts</em>）。實務上先記住 <kbd>Tab</kbd>（在節點旁按會叫出節點抽屜）、<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>S</kbd>（存草稿）、<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>A</kbd>（框選全部節點）、拖曳時按住 <kbd>Shift</kbd>（貼齊格線）就夠用了。</div>
     </section>
 
     <section id="troubleshoot" data-nav="常見卡關">
@@ -288,7 +288,7 @@
         </li>
         <li>
           <h3>Canvas 縮到看不見自己在哪</h3>
-          <p>右下角 <strong>Fit view</strong> 按下去，整個 workflow 會自動縮回剛好塞滿畫面。或按 <kbd>0</kbd>（有些版本）reset zoom。</p>
+          <p>右下角 <strong>Fit view</strong>（田字圖示）按下去，整個 workflow 會自動縮回剛好塞滿畫面。這是找不到節點時的第一招，比任何快捷鍵都直覺。</p>
         </li>
       </ol>
     </section>
@@ -305,7 +305,7 @@
       </details>
       <details class="faq">
         <summary>有沒有快捷鍵一覽？</summary>
-        <div class="body">有。在 Canvas 上按 <kbd>?</kbd>（不用按 Shift，就是問號鍵）會跳出快捷鍵 cheat sheet，把加節點、存檔、複製貼上、縮放的快捷鍵一次列給你。</div>
+        <div class="body">n8n 目前<strong>沒有在 App 內建的 ? 快捷鍵浮窗</strong>（很多舊教學會這樣寫，但實測按 <kbd>?</kbd> 不會跳）。官方把快捷鍵列在文件的 <em>Keyboard shortcuts</em> 頁面，Google 搜「n8n keyboard shortcuts」就找得到。實務上背 <kbd>Tab</kbd>（節點旁叫抽屜）、<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>S</kbd>（存草稿）、<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Enter</kbd>（Execute Workflow）、拖曳按 <kbd>Shift</kbd>（貼齊）就夠。</div>
       </details>
       <details class="faq">
         <summary>Canvas 上節點亂成一團怎麼辦？</summary>

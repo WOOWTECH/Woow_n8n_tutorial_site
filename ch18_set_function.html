@@ -71,7 +71,7 @@
       <a href="#modes">兩種模式</a>
       <a href="#steps">加一個 full_name 欄位</a>
       <a href="#tips">常見用途速查</a>
-      <a href="#warning">Include Other Fields 這 toggle</a>
+      <a href="#warning">Include Other Input Fields 這 toggle</a>
       <a href="#advanced">JSON 模式</a>
       <a href="#records">實例：API 回應整成 Sheet 一列</a>
       <a href="#compare">Set vs Function vs Code</a>
@@ -183,8 +183,8 @@
           <p>Value 欄位右上角有個 <strong>Expression</strong> 切換鈕，切到 Expression 模式後貼上這串。Expression 語法看 <a href="ch14_expressions.html">第 14 章</a>——<code>$json</code> 就是「當前這一筆 item 的 JSON」。</p>
         </li>
         <li>
-          <h3>Include Other Fields 打勾</h3>
-          <p>節點下面有一個很重要的 toggle：<strong>Include Other Fields</strong>（舊版叫 <em>Keep Only Set</em> 反向邏輯）。打勾＝保留原本的所有欄位、再加上你設的 full_name。不打勾＝只留你設的欄位（其他丟掉）。這裡打勾。</p>
+          <h3>Include Other Input Fields 打勾</h3>
+          <p>節點下面有一個很重要的 toggle：<strong>Include Other Input Fields</strong>（v1 UI 實際字樣，官方 docs 頁還寫舊字 <em>Keep Only Set Fields</em>，邏輯是反的）。打勾＝保留原本的所有欄位、再加上你設的 full_name。不打勾＝只留你設的欄位（其他丟掉）。這裡打勾。</p>
         </li>
         <li>
           <h3>Execute Node 看結果</h3>
@@ -209,7 +209,7 @@
           </tr>
           <tr>
             <td><strong>改欄位名</strong>（rename）</td>
-            <td>Add Field 新名字、Value 用 <code>{{ $json.舊欄位 }}</code> 引舊值；再把 Include Other Fields <em>關掉</em> 或明列所有要留的欄位</td>
+            <td>Add Field 新名字、Value 用 <code>{{ $json.舊欄位 }}</code> 引舊值；再把 Include Other Input Fields <em>關掉</em> 或明列所有要留的欄位</td>
             <td>Name = <code>customer_email</code>, Value = <code>{{ $json.email }}</code></td>
           </tr>
           <tr>
@@ -233,8 +233,8 @@
       <div class="callout tip"><strong>提示：</strong>Value 欄位除了打 expression，還可以拖曳——把左邊 input 面板的欄位直接拖到 Value 輸入框裡，n8n 會自動幫你貼上 <code>{{ $json.xxx }}</code>。新手用這招最省事。</div>
     </section>
 
-    <section id="warning" data-nav="Include Other Fields 這 toggle">
-      <h2 data-icon="warning">Include Other Fields：新手最常踩雷的 toggle</h2>
+    <section id="warning" data-nav="Include Other Input Fields 這 toggle">
+      <h2 data-icon="warning">Include Other Input Fields：新手最常踩雷的 toggle</h2>
       <p>這個 toggle 是 Set 節點最容易搞混的地方，值得單獨拎出來講。</p>
       <table class="data-table">
         <thead>
@@ -242,12 +242,12 @@
         </thead>
         <tbody>
           <tr>
-            <td><strong>Include Other Fields 打勾</strong></td>
+            <td><strong>Include Other Input Fields 打勾</strong></td>
             <td>保留 input 原本所有欄位，你設的 fields 會覆蓋（同名）或加上（新名）</td>
             <td>原本 5 個欄位 + 你新加的 2 個 = 7 個欄位</td>
           </tr>
           <tr>
-            <td><strong>Include Other Fields 關掉</strong></td>
+            <td><strong>Include Other Input Fields 關掉</strong></td>
             <td>只留你在 Fields to Set 裡明列的欄位，其他全丟掉</td>
             <td>你設 2 個欄位 = 只有 2 個欄位</td>
           </tr>
@@ -259,8 +259,8 @@
         <li><strong>大清洗</strong>——只想留三個欄位丟給下游 → <em>關掉</em>，然後在 Fields to Set 明列你要的三個欄位。</li>
         <li><strong>安全考量</strong>——上游 API 回應裡有敏感欄位（token、password_hash），不想帶到下游 → <em>關掉</em>，只挑安全的欄位放行。</li>
       </ul>
-      <div class="callout warn"><strong>注意：</strong>如果你關掉這個 toggle 但忘了在 Fields to Set 裡加 <code>email</code>，那你的下游節點就永遠拿不到 email——這是新手最常見的「欄位不見」bug。輸出面板看到欄位少了，第一個先檢查這個 toggle。</div>
-      <p>舊版介面這個 toggle 叫 <strong>Keep Only Set</strong>（保留邏輯剛好相反：打勾＝只留 set 的），新版改叫 <strong>Include Other Fields</strong>（打勾＝保留其他），語意直覺很多。文件或教學看到舊名的話，記得邏輯是反過來的。</p>
+      <div class="callout warn"><strong>注意：</strong>如果你關掉這個 toggle 但忘了在 Fields to Set 裡加 <code>email</code>，那你的下游節點就永遠拿不到 email——這是新手最常見的「欄位不見」bug。輸出面板看到欄位少了，第一個先檢查這個 toggle。另外一個常見誤解：這個 toggle 只保留「當前 input item」的欄位；如果你想引用<em>更早前</em>幾個節點的 payload，還是要用 <code>{{ $('節點名').item.json.xxx }}</code>（見 FAQ 最後一題）。</div>
+      <p>舊版介面這個 toggle 叫 <strong>Keep Only Set Fields</strong>（保留邏輯剛好相反：打勾＝只留 set 的），v1 之後改叫 <strong>Include Other Input Fields</strong>（打勾＝保留其他），語意直覺很多。注意 n8n 官方 docs 頁到今天仍寫舊字 Keep Only Set Fields，跟你在 UI 看到的字對不起來很正常；以 UI 字樣為準。</p>
     </section>
 
     <section id="advanced" data-nav="JSON 模式">
@@ -300,7 +300,7 @@
           <p>字串類的值要用引號包（<code>"{{ ... }}"</code>），布林／數字類不用引號（<code>{{ $json.amount &gt; 1000 }}</code> 直接是 <code>true</code> 或 <code>false</code>）。</p>
         </li>
         <li>
-          <h3>Include Other Fields 決定要不要保留原欄位</h3>
+          <h3>Include Other Input Fields 決定要不要保留原欄位</h3>
           <p>JSON 模式一樣有這個 toggle。多數情況下你貼 JSON 就是要重新規劃結構，所以會 <em>關掉</em>——只留 JSON template 裡定義的欄位。</p>
         </li>
         <li>
@@ -338,7 +338,7 @@
           <p>因為要對應 Sheets 的固定欄位，一欄一欄設最清楚。</p>
         </li>
         <li>
-          <h3>Include Other Fields 關掉</h3>
+          <h3>Include Other Input Fields 關掉</h3>
           <p>原本的巢狀結構帶到 Sheets 沒意義，關掉 toggle 只留下面設的六個欄位。</p>
         </li>
         <li>
@@ -386,10 +386,10 @@
             <td>90% 的資料整形。優先選這個，能不寫程式就不寫</td>
           </tr>
           <tr>
-            <td><strong>Function</strong>（已淘汰）</td>
+            <td><strong>Function</strong>（已於 v0.198.0 合併進 Code）</td>
             <td>要寫 JavaScript</td>
             <td>能 loop、能呼叫少數 helper、比 Set 靈活但受限</td>
-            <td>不要用了。新版介面已經找不到，功能合併進 Code 節點</td>
+            <td>不要用了。v0.198.0（2022 年年中）起被 Code 節點取代；新拉節點面板已找不到，只有 import 舊 workflow 才看得到</td>
           </tr>
           <tr>
             <td><strong>Code</strong>（新版）</td>
@@ -400,7 +400,7 @@
         </tbody>
       </table>
       <p><strong>怎麼選？</strong>先問自己：「這件事 Set 能做嗎？」能就用 Set，不能才升級 Code。Set 節點視覺化、看得懂、不易寫錯、執行快；Code 節點強大但要寫程式、要處理錯誤、非工程師接手比較痛苦。</p>
-      <div class="callout warn"><strong>注意：</strong>Function 節點在新版（2023 年之後）已經被官方標記淘汰，功能合併進 Code 節點。如果你 import 舊 workflow 看到 Function 節點還能跑，但編輯欄裡會提示要遷移到 Code 節點。有新需求一律用 Code，不要新開 Function。</div>
+      <div class="callout warn"><strong>注意：</strong>Function 節點在 <strong>v0.198.0（2022 年 6 月釋出）</strong>已經被 Code 節點取代，官方文件明確寫「Code node replaces Function and Function Item nodes」。舊 workflow 裡的 Function 節點目前還能跑（向後相容），但新拉節點面板搜「function」拉不到——只能拉到 Code。有新需求一律用 Code，不要想辦法把 Function 找回來用。</div>
     </section>
 
     <section id="pro_tips" data-nav="進階小技巧">
@@ -421,9 +421,9 @@
       <p>Set 節點右上角 <strong>Settings</strong> 齒輪裡有 <strong>Continue On Fail</strong>。某一筆 item 的 expression 執行失敗（例：某欄位不存在導致 <code>undefined.foo</code>）時，如果沒開這個，整條 workflow 直接紅字停下。開了以後那筆 item 會標成 error 但流繼續跑，你可以在 output 看哪幾筆壞掉、其他繼續往下游走。</p>
 
       <h3>4. Set 節點也可以放在流程開頭當「假資料產生器」</h3>
-      <p>還沒有真實 trigger、想先測後面幾個節點的邏輯？拉一個 Manual Trigger + Set 節點，Set 節點 Mode 選 JSON、貼一段假資料 JSON、Include Other Fields 關掉——這樣按 Execute Workflow 就會有一筆假資料流下去。debug 神器。</p>
+      <p>還沒有真實 trigger、想先測後面幾個節點的邏輯？拉一個 Manual Trigger + Set 節點，Set 節點 Mode 選 JSON、貼一段假資料 JSON、Include Other Input Fields 關掉——這樣按 Execute Workflow 就會有一筆假資料流下去。debug 神器。</p>
 
-      <div class="callout tip"><strong>提示：</strong>如果你想「刪掉某個欄位」，Manual Mapping 沒有明確的 delete 動作。作法：Include Other Fields 打勾、Add Field 一個同名的欄位、Value 留空、Type 選什麼都行——欄位會變成空值。真的要移除欄位（key 都不留）就得用 Code 節點寫 <code>delete item.json.欄位名</code>。</p>
+      <div class="callout tip"><strong>提示：</strong>如果你想「刪掉某個欄位」，Manual Mapping 沒有明確的 delete 動作。作法：Include Other Input Fields 打勾、Add Field 一個同名的欄位、Value 留空、Type 選什麼都行——欄位會變成空值。真的要移除欄位（key 都不留）就得用 Code 節點寫 <code>delete item.json.欄位名</code>。</p>
       </div>
     </section>
 
@@ -436,8 +436,8 @@
         <tbody>
           <tr>
             <td><strong>Set 完欄位不見了</strong>（原本有 email，下游拿不到）</td>
-            <td>Include Other Fields 沒打勾（或舊版 Keep Only Set 開了），你也沒在 Fields to Set 明列 email</td>
-            <td>打開 Include Other Fields toggle，或把要留的欄位都手動 Add Field 一遍</td>
+            <td>Include Other Input Fields 沒打勾（或舊版 Keep Only Set Fields 開了），你也沒在 Fields to Set 明列 email</td>
+            <td>打開 Include Other Input Fields toggle，或把要留的欄位都手動 Add Field 一遍</td>
           </tr>
           <tr>
             <td><strong>Expression 拿到 <code>undefined</code></strong></td>
@@ -498,7 +498,7 @@
 
       <details class="faq">
         <summary>新版介面為什麼把 Set 改名叫 Edit Fields？</summary>
-        <div class="body">因為「Set」對非工程師來說不夠直覺——programmer 才會把「設定某個值」叫 set；一般人看到「Set」會想成「一組」或搞不清楚是動詞還是名詞。改叫 <strong>Edit Fields</strong> 意圖直白得多：「編輯欄位」。這是 n8n 2023 年左右的介面翻修一環，同時期他們也把「Service」改成「Action」、把 Function 節點合併到 Code 節點——都是為了降低新手學習曲線。舊 workflow 裡的 Set 節點自動視為 Edit Fields，功能完全一樣，不用擔心相容性。</div>
+        <div class="body">因為「Set」對非工程師來說不夠直覺——programmer 才會把「設定某個值」叫 set；一般人看到「Set」會想成「一組」或搞不清楚是動詞還是名詞。改叫 <strong>Edit Fields (Set)</strong> 意圖直白得多：「編輯欄位」（括號還留 Set 讓老用戶認得）。這是 n8n 大約在 v1 前後（2023 上下）的介面翻修一環；Function 節點合併到 Code 是更早的 v0.198.0（2022 年 6 月）就發生的另一件事，兩者不是同一波。舊 workflow 裡的 Set 節點自動視為 Edit Fields (Set)，功能完全一樣，不用擔心相容性。</div>
       </details>
 
       <details class="faq">
@@ -512,7 +512,7 @@
       </details>
 
       <details class="faq">
-        <summary>Include Other Fields 打勾時，如果我 set 的欄位名跟原欄位撞名，會發生什麼事？</summary>
+        <summary>Include Other Input Fields 打勾時，如果我 set 的欄位名跟原欄位撞名，會發生什麼事？</summary>
         <div class="body">你 set 的值會<strong>覆蓋</strong>原本的。例：input 有 <code>email: "a@b.com"</code>，你在 Set 節點加一個 Field，Name = <code>email</code>、Value = <code>「已隱藏」</code>——output 的 email 就是「已隱藏」。這是很方便的「就地改值」用法，例如把敏感欄位遮蔽、或把某欄的值標準化（<code>{{ $json.email.toLowerCase() }}</code>）。撞名時 <strong>set 值永遠贏</strong>，不會出錯也不會警告，直接覆蓋。</div>
       </details>
 

@@ -96,10 +96,10 @@
       <h2 data-icon="why">為什麼要有一份速查</h2>
       <p>n8n 的設定其實不多，但問題出在<strong>分了很多層</strong>——你以為改了個開關，結果那個開關只影響你自己一個人；又或者你在自己 Settings 找半天，其實那個東西只有 admin 或環境變數能改。真實遇過的狀況：</p>
       <ul>
-        <li><strong>「幫我把介面切成中文」</strong> —— 這是 Personal，右上頭像 → Settings，30 秒。</li>
+        <li><strong>「幫我把介面切成中文」</strong> —— 這其實不是 Personal 能改的，n8n community 沒有 UI 語言下拉；要靠 instance 的 <code>N8N_DEFAULT_LOCALE</code> env var，找 IT。</li>
         <li><strong>「幫我把 Schedule 節點改成台北時間」</strong> —— 這是 workflow 級的 Settings tab，或者叫 IT 改 <code>GENERIC_TIMEZONE</code>。</li>
         <li><strong>「我上禮拜跑的 execution 不見了！」</strong> —— 這是 instance 級的 <code>EXECUTIONS_DATA_MAX_AGE</code>，預設 336 小時（14 天）就 auto purge，你沒權限改，找 IT。</li>
-        <li><strong>「我按了 Manual Execute 但 Executions 頁沒紀錄」</strong> —— 這是 workflow Settings 的 <em>Save Manual Executions</em>，預設關（community 版）。</li>
+        <li><strong>「我按了 Manual Execute 但 Executions 頁沒紀錄」</strong> —— 這是 workflow Settings 的 <em>Save manual executions</em>；n8n 官方 instance 預設其實是<strong>開</strong>（<code>EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS=true</code>），但很多公司 IT 為了省 DB 會關掉，所以你這台看不到不代表壞掉，是被覆蓋。</li>
       </ul>
       <p>這附錄按「你能不能改 / 影響誰」分兩大類——<strong>Personal</strong>（自己畫面，隨時改）跟 <strong>Workspace / Instance</strong>（全公司共用，只有 admin 或 env vars）。搞懂這層分工，之後遇到 90% 的設定問題都知道去哪找、找誰改。</p>
       <div class="callout"><strong>觀念：</strong>n8n 的 workflow 跟 credentials 會被 backup 帶走，但 <strong>instance 的環境變數不會</strong>——換機器搬 workflow 之前記得另外備份 <code>.env</code> 或 docker-compose 檔，不然新機器行為會完全不一樣。</div>
@@ -140,41 +140,39 @@
     </section>
 
     <section id="personal" data-nav="Personal 設定">
-      <h2 data-icon="profile">Personal 設定：只影響你自己的畫面</h2>
-      <p>登入後右上角點頭像 → <em>Settings</em>（或直接 <code>/settings/personal</code>）就會看到。這些改完只影響你自己的瀏覽器體驗，跟同事無關。</p>
+      <h2 data-icon="profile">Personal 設定：只影響你自己的帳號</h2>
+      <p>左下角三個點旁邊點頭像 → <em>Settings</em>，n8n 開啟 <em>Personal settings</em> 頁。這些設定綁在你的帳號上（存在 n8n DB），跟同事無關。</p>
       <table class="data-table">
         <thead>
-          <tr><th>選項</th><th>可選值</th><th>意義 / 備註</th></tr>
+          <tr><th>選項</th><th>可設</th><th>意義 / 備註</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Language</strong>（介面語言）</td>
-            <td>English / 简体中文 / 日本語 / 한국어 等</td>
-            <td>n8n 官方 community 沒繁體中文——選「简体中文」是你目前最接近的選項，切完 F5 重整才會生效。</td>
-          </tr>
-          <tr>
-            <td><strong>Theme</strong>（主題）</td>
-            <td>Light / Dark / System（跟系統走）</td>
-            <td>System 會跟著你 OS 的深淺模式切。長時間看畫面建議 Dark。</td>
-          </tr>
-          <tr>
-            <td><strong>Notification Preferences</strong>（郵件通知）</td>
-            <td>Workflow error 通知的頻率 / 開關</td>
-            <td>你 own 的 workflow 出錯時要不要寄 email 給你、寄的頻率。Community 版有基本開關；Cloud / Enterprise 有更細的選項。</td>
-          </tr>
-          <tr>
-            <td><strong>Personal Access Token</strong> / API Key</td>
-            <td>產生 / 撤銷</td>
-            <td>API 呼叫 n8n REST API 用的（例：CI/CD 自動 import workflow）。跟 credentials 是兩件事。撤銷後所有用這 key 的自動化都會 401。</td>
+            <td><strong>Personal 資料</strong></td>
+            <td>First name / Last name / Email</td>
+            <td>Email 也是登入用；owner 由環境變數管的話會被鎖成 read-only。</td>
           </tr>
           <tr>
             <td><strong>Password</strong></td>
             <td>修改</td>
-            <td>就是你的登入密碼。有裝 SSO / SAML 的公司這欄可能被停用。</td>
+            <td>就是你的登入密碼。有裝 SSO / SAML / LDAP 的公司這欄可能被停用。</td>
+          </tr>
+          <tr>
+            <td><strong>Two-factor authentication</strong>（2FA）</td>
+            <td>啟用 / 停用</td>
+            <td>Instance 有開 2FA 才會出現此區塊。啟用後綁 TOTP app（Google Authenticator 等）。</td>
+          </tr>
+          <tr>
+            <td><strong>API Keys</strong></td>
+            <td>產生 / 撤銷</td>
+            <td>呼叫 n8n REST API 用（例：CI/CD 自動 import workflow）。跟 credentials 是兩件事。撤銷後所有用這 key 的自動化都會 401。</td>
+          </tr>
+          <tr>
+            <td colspan="3"><strong>沒有的東西：</strong>Personal Settings <strong>不含 Language 下拉、也不含 Theme / 通知偏好開關</strong>——這幾樣在 community 版根本不在這頁。UI 語言由 instance 的 <code>N8N_DEFAULT_LOCALE</code> 決定（見下 Instance 級設定）；深淺模式跟 OS 或瀏覽器走，不是 n8n 選項。</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout warn"><strong>注意：</strong>切換 Language 之後<strong>必須 F5 重整</strong>整個頁面才會真的換語言——只按 Save 頁面不會自己重載，很多人以為壞了。也不會影響 workflow 內部的節點名稱（那些是英文寫死的）。</div>
+      <div class="callout warn"><strong>注意：</strong>坊間教學常寫「Personal → Language 選中文」——那是舊版介面截圖或第三方 fork，官方 n8n community <strong>目前沒有 UI 語言選擇下拉</strong>。要換語言得請 IT 設 <code>N8N_DEFAULT_LOCALE</code>（見下），改完整台 instance 一起換，不能個人切。</div>
     </section>
 
     <section id="workflow_settings" data-nav="Workflow 設定">
@@ -186,9 +184,14 @@
         </thead>
         <tbody>
           <tr>
+            <td><strong>Execution order</strong></td>
+            <td>v1（推薦）/ v0（legacy）</td>
+            <td>新 workflow 一律 v1，跑多分支時每個節點確保只被觸發一次。老 workflow 從 v0 升上來時才會需要動這個。</td>
+          </tr>
+          <tr>
             <td><strong>Timezone</strong></td>
-            <td>跟 instance 走（多半是 UTC）</td>
-            <td><strong>用 Schedule 或 Cron 節點的 workflow 一定要設</strong>——設 <code>Asia/Taipei</code>，不然 <a href="ch10_triggers.html">第 10 章</a>那個「每天早上 9 點」會變成 UTC 9 點（台灣 17 點）。</td>
+            <td>跟 instance 走（<code>GENERIC_TIMEZONE</code>，預設 <code>America/New_York</code>）</td>
+            <td><strong>用 Schedule 或 Cron 節點的 workflow 一定要設</strong>——選 <code>Asia/Taipei</code>，不然 <a href="ch10_triggers.html">第 10 章</a>那個「每天早上 9 點」會變成 New York 9 點（台灣 21 或 22 點，看夏令）。</td>
           </tr>
           <tr>
             <td><strong>Error Workflow</strong></td>
@@ -196,34 +199,39 @@
             <td>指定一個「錯誤處理 workflow」——這個 workflow 出錯時會自動觸發那個。做集中通知或補償邏輯用，詳見 <a href="ch17_error_handling.html">第 17 章</a>。</td>
           </tr>
           <tr>
-            <td><strong>Save Manual Executions</strong></td>
-            <td>關（community 版）</td>
-            <td>開發階段建議<strong>打開</strong>——這樣你按 Execute Workflow 之後 Executions 頁會看到紀錄可以回頭 debug。上線後可關掉省 DB 空間。</td>
+            <td><strong>This workflow can be called by</strong>（俗稱 caller policy）</td>
+            <td>Any workflow / Workflows in same project / Only workflows I own / Only specified workflows</td>
+            <td>哪些其他 workflow 可以用 <em>Execute Workflow</em> 節點呼叫這一個。管團隊複用 sub-workflow 時會用到。</td>
           </tr>
           <tr>
-            <td><strong>Save Data on Success</strong></td>
-            <td>All / None（依 instance 預設）</td>
-            <td>成功的 execution 要不要存節點的 input/output data。存了才能在 Executions 頁看每個節點的資料；不存只會有結果摘要。</td>
+            <td><strong>Save failed production executions</strong></td>
+            <td>Default (Save)</td>
+            <td>Instance 預設是 <code>all</code>。<strong>強烈建議保持</strong>——不存的話錯誤發生時你看不到節點 input，debug 很痛苦。</td>
           </tr>
           <tr>
-            <td><strong>Save Data on Error</strong></td>
-            <td>All（預設）</td>
-            <td>失敗的 execution 存不存資料。<strong>強烈建議保持 All</strong>——不存的話錯誤發生時你看不到節點 input，debug 很痛苦。</td>
+            <td><strong>Save successful production executions</strong></td>
+            <td>Default (Save)</td>
+            <td>Instance 預設是 <code>all</code>。存了才能在 Executions 頁看每個節點的資料；不存只會有結果摘要。DB 吃緊時單獨這條可以關。</td>
           </tr>
           <tr>
-            <td><strong>Save Execution Progress</strong></td>
-            <td>關</td>
+            <td><strong>Save manual executions</strong></td>
+            <td>Default (Save)</td>
+            <td>官方 instance 預設 <code>true</code>——按 Execute Workflow 後 Executions 頁會有紀錄可 debug。有些公司 IT 為省 DB 會把 instance 預設改 <code>false</code>；此開關可覆蓋。</td>
+          </tr>
+          <tr>
+            <td><strong>Save execution progress</strong></td>
+            <td>Default (Do not save)</td>
             <td>每一步都存進 DB。跑很長很重的 workflow 可以開，中間掛掉能從斷點繼續；但寫入頻繁會拖慢執行。</td>
           </tr>
           <tr>
-            <td><strong>Timeout</strong></td>
-            <td>無（吃 instance 預設）</td>
-            <td>單次 execution 最多可以跑幾秒。防呆用——workflow 卡死不會無限吃資源。設 3600（1 小時）算保守。</td>
+            <td><strong>Timeout Workflow / Timeout After</strong></td>
+            <td>關（吃 instance <code>EXECUTIONS_TIMEOUT</code>，預設 <code>-1</code> 無 timeout）</td>
+            <td>開啟後填時 / 分 / 秒。單次 execution 超時會被取消。防呆用——workflow 卡死不會無限吃資源。設 1 小時算保守。</td>
           </tr>
           <tr>
-            <td><strong>Caller Policy</strong></td>
-            <td>Workflows on same owner</td>
-            <td>哪些其他 workflow 可以用 <em>Execute Workflow</em> 節點呼叫這一個。管團隊複用 sub-workflow 時會用到。</td>
+            <td><strong>Redact production / manual execution data</strong></td>
+            <td>關</td>
+            <td>存 execution 時把節點 input/output 遮掉。處理 PII / 病歷 / 金流的 workflow 開這個，Executions 頁看得到有跑過、但看不到內容。</td>
           </tr>
         </tbody>
       </table>
@@ -270,13 +278,18 @@
           </tr>
           <tr>
             <td><code>EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS</code></td>
-            <td><code>false</code></td>
-            <td>Instance 預設：手動按 Execute Workflow 的紀錄要不要進 Executions 頁。開發階段建議 <code>true</code>。</td>
+            <td><code>true</code></td>
+            <td>Instance 預設：手動按 Execute Workflow 的紀錄要不要進 Executions 頁。官方預設是<strong>開</strong>；有些公司為省 DB 會關成 <code>false</code>。單一 workflow 可覆蓋。</td>
+          </tr>
+          <tr>
+            <td><code>EXECUTIONS_TIMEOUT</code></td>
+            <td><code>-1</code>（秒；<code>-1</code> 表示不 timeout）</td>
+            <td>Instance 預設的單次 execution 上限秒數。單一 workflow 可在 Settings 覆蓋。設 3600 表示全 instance 最多 1 小時。</td>
           </tr>
           <tr>
             <td><code>N8N_LOG_LEVEL</code></td>
             <td><code>info</code></td>
-            <td>n8n 服務本身的 log 詳細度：<code>error</code> / <code>warn</code> / <code>info</code> / <code>debug</code> / <code>verbose</code>。查怪 bug 時 IT 會臨時開 <code>debug</code>。</td>
+            <td>n8n 服務本身的 log 詳細度，僅四個合法值：<code>error</code> / <code>warn</code> / <code>info</code> / <code>debug</code>。查怪 bug 時 IT 會臨時開 <code>debug</code>。<strong>沒有 <code>verbose</code> 或 <code>silent</code>——填了會被當非法值。</strong></td>
           </tr>
           <tr>
             <td><code>N8N_HOST</code> / <code>N8N_PORT</code> / <code>N8N_PROTOCOL</code></td>
@@ -291,7 +304,7 @@
           <tr>
             <td><code>N8N_DEFAULT_LOCALE</code></td>
             <td><code>en</code></td>
-            <td>新使用者第一次登入時的介面語言預設。個別使用者可自己改。</td>
+            <td>整台 instance 的 UI 語言。<strong>只吃基本 tag（<code>en</code> / <code>de</code> / <code>zh</code>），不吃 <code>zh-Hant</code> / <code>zh-TW</code> / <code>de-AT</code> 這種 regional identifier</strong>——填了會 fallback 回 <code>en</code>。且個別使用者沒有 UI 可自己改；改這個等於全公司一起換。</td>
           </tr>
           <tr>
             <td><code>EXECUTIONS_MODE</code></td>
@@ -358,7 +371,7 @@
           </tr>
         </tbody>
       </table>
-      <p>都沒設就是 <code>UTC</code>——n8n 預設 base image 是 UTC，Docker 起來的 instance 大部分也是 UTC。所以「新裝的 n8n 跑 Schedule 都比預期晚 8 小時」在台灣是必然。</p>
+      <p>都沒設就是 <code>America/New_York</code>——這是 n8n 官方 <code>GENERIC_TIMEZONE</code> 的預設值（不是 UTC，很多人以為是 UTC）。所以「新裝的 n8n 跑 Schedule 時間對不上」在台灣是必然，差 12～13 小時（看紐約當時是不是夏令）。<code>TZ</code>（Node.js 進程時區）則吃 base image 預設，Docker 官方 image 是 UTC——兩個變數會有落差，log 時間跟 workflow 時間可能對不起來，所以實務上 <code>GENERIC_TIMEZONE</code> 跟 <code>TZ</code> 建議設成一樣。</p>
       <p>推薦做法：</p>
       <ol class="steps">
         <li>
@@ -381,17 +394,18 @@
       <p>照身份分三份 checklist——照著跑一遍，90% 的日常問題都不會發生。</p>
       <p><strong>新使用者第一天（自己就能做）：</strong></p>
       <ul>
-        <li>右上頭像 → Settings → <strong>Language</strong> 選「简体中文」（目前最接近繁中）</li>
-        <li><strong>Theme</strong> 選 System 或 Dark</li>
-        <li>如果會用 API：產一個 <strong>Personal Access Token</strong> 存好</li>
+        <li>Personal settings → 檢查 First name / Last name / Email 填對</li>
+        <li>如果會用 API：Personal settings → <strong>API Keys</strong> 產一個存好</li>
         <li>密碼建議打開 <strong>2FA</strong>（如果 instance 有開啟這功能，見 <a href="ch2_login.html">第 2 章</a>）</li>
+        <li>想要中文介面 → 這個<strong>自己改不了</strong>，找 IT 設 instance 級 <code>N8N_DEFAULT_LOCALE</code></li>
       </ul>
       <p><strong>建新 workflow 每次都做（3 分鐘）：</strong></p>
       <ul>
-        <li>Settings tab → <strong>Timezone</strong> 選 <code>Asia/Taipei</code></li>
+        <li>Settings tab → <strong>Timezone</strong> 選 <code>Asia/Taipei</code>（不然吃 <code>America/New_York</code>）</li>
         <li><strong>Error Workflow</strong> 指定你的 handler workflow（沒有就先做一個，見 <a href="ch17_error_handling.html">第 17 章</a>）</li>
-        <li>開發階段 <strong>Save Manual Executions</strong> 打開</li>
-        <li>會跑很久的加 <strong>Timeout</strong>（例：3600 秒 = 1 小時）</li>
+        <li>開發階段確認 <strong>Save manual executions</strong> 是 <em>Save</em>（若 IT 把 instance 預設關了要在這裡強制打開）</li>
+        <li>會跑很久的開 <strong>Timeout Workflow</strong>（例：1 小時）</li>
+        <li>處理 PII / 金流的加 <strong>Redact production execution data</strong></li>
       </ul>
       <p><strong>IT / Admin 部署前要決定（做一次）：</strong></p>
       <ul>
@@ -409,7 +423,7 @@
       <ol class="steps">
         <li>
           <h3>Schedule / Cron 節點跑錯時間</h3>
-          <p>99% 是 workflow 的 Timezone 沒設，跑成 UTC。開這個 workflow → Settings tab → Timezone 選 <code>Asia/Taipei</code> → Save。Instance 若也沒設 <code>GENERIC_TIMEZONE</code>，順便請 IT 加。改完下次觸發才會用新時區，上一次已排定的還是舊時間。</p>
+          <p>99% 是 workflow 的 Timezone 沒設，跑成 instance 預設（官方預設是 <code>America/New_York</code>，不是 UTC）。開這個 workflow → Settings tab → Timezone 選 <code>Asia/Taipei</code> → Save。Instance 若也沒設 <code>GENERIC_TIMEZONE</code>，順便請 IT 加。改完下次觸發才會用新時區，上一次已排定的還是舊時間。</p>
         </li>
         <li>
           <h3>Executions 頁上禮拜的紀錄不見了</h3>
@@ -420,12 +434,12 @@
           <p>Instance 設定在 UI 上本來就大部分沒得改，都在環境變數。你在 UI 找不到不是你權限問題，是它根本不在 UI。有些 admin 專用頁（例：Users 管理）只有 owner / admin 角色看得到——找 IT 或當初開這個 instance 的人。</p>
         </li>
         <li>
-          <h3>Personal → Language 改了但沒立刻換</h3>
-          <p>Save 之後<strong>按 F5 重整整個頁面</strong>才會生效——n8n 不會自己 reload。切了還是英文八成是沒重整。順便清一下瀏覽器 cache 更保險。</p>
+          <h3>找不到「Personal → Language」下拉</h3>
+          <p>官方 n8n community <strong>Personal settings 沒有 UI 語言選擇下拉</strong>——你不是眼瞎，是它根本不存在。UI 語言由 instance 的 <code>N8N_DEFAULT_LOCALE</code> env var 決定（且只吃 <code>en</code> / <code>zh</code> 這種基本 tag，不吃 <code>zh-TW</code> / <code>zh-Hant</code>），改完得重啟整台 n8n，會影響全公司。網路上寫「切成简体中文」的教學多半是舊版截圖或第三方 fork。</p>
         </li>
         <li>
           <h3>改了 workflow Settings 但 Executions 還是沒存資料</h3>
-          <p>兩個檢查點：（a）workflow Settings 的 Save 選項有沒有真的按 <strong>Save</strong>（不是只切開關就走）；（b）你按的是 <em>Execute Workflow</em>（Manual）還是外部觸發？Manual 要另外開 <strong>Save Manual Executions</strong>，這個開關跟一般 Save 是分開的。</p>
+          <p>三個檢查點：（a）workflow Settings 的 Save 選項有沒有真的按 <strong>Save</strong>（不是只切開關就走）；（b）你按的是 <em>Execute Workflow</em>（Manual）還是外部觸發？Manual 走 <strong>Save manual executions</strong>，Production 走 <strong>Save successful / failed production executions</strong>，是三個獨立開關；（c）workflow Settings 若選「Default」就是吃 instance 的 <code>EXECUTIONS_DATA_SAVE_*</code> env var，如果 IT 把 instance 預設關了，選 Default 就等於關。想強制存要在 workflow Settings 明確選 <em>Save</em>。</p>
         </li>
         <li>
           <h3>Webhook 節點給我的 URL 是 <code>localhost</code>，外部叫不到</h3>
@@ -463,6 +477,10 @@
       <details class="faq">
         <summary>免費的 Community 版跟 Cloud / Enterprise 設定選項有差嗎？</summary>
         <div class="body">有。Community 是最基本；<strong>Cloud</strong>（n8n 官方 SaaS）幫你 host 所以 instance 設定看不到、不能改，官方幫你處理；<strong>Enterprise</strong> 多了 SSO / SAML、更細的權限（RBAC）、External Secrets、Log Streaming、Audit Log 等。介面看到有選項但灰掉的通常是要付費版才有。本附錄講的都是 Community 有的、跟業務同仁最相關的部分。</div>
+      </details>
+      <details class="faq">
+        <summary>我想把介面切成中文，Personal Settings 為什麼找不到 Language？</summary>
+        <div class="body">因為 n8n 官方 community 版<strong>沒有</strong>個人層級的 UI 語言切換。整台 instance 的介面語言由 <code>N8N_DEFAULT_LOCALE</code> env var 控制（預設 <code>en</code>），改了會影響<strong>全公司</strong>——所以要協調 IT。而且 n8n 只吃基本 tag（<code>en</code> / <code>de</code> / <code>zh</code> ...），<strong>不吃 regional code</strong>（<code>zh-Hant</code> / <code>zh-TW</code> / <code>de-AT</code>），填了會 fallback 回 <code>en</code>。另外 n8n 官方 GitHub master 目前只 ship 英文 locale 檔，其他語系是靠 Crowdin 社群翻譯——所以就算你設 <code>zh</code>，未翻譯字串還是會顯示英文。這也是為什麼很多用戶乾脆維持英文。</div>
       </details>
       <details class="faq">
         <summary>我要 workflow 一段時間才跑一次，可以在 UI 排「每個月 15 號」嗎？</summary>

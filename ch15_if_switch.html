@@ -117,7 +117,7 @@
           <tr>
             <td>幾個 output</td>
             <td><strong>固定兩個</strong>：true（上）、false（下）</td>
-            <td><strong>可自訂多個</strong>（實務上最多 4 個 rule，Expression 模式無上限）</td>
+            <td><strong>可自訂多個</strong>（Rules 模式官方沒硬性上限，實務常見 3–10 條；Expression 模式由 <code>Number of Outputs</code> 決定）</td>
           </tr>
           <tr>
             <td>回答的問題</td>
@@ -159,7 +159,7 @@
           <p>雙擊 IF 節點打開右邊面板。你會看到一個 <strong>Conditions</strong> 區塊，預設有一列空的比較。三個欄位由左到右填：</p>
           <ul>
             <li><strong>Value 1</strong>（左值）：點欄位進入 Expression 模式，寫 <code>{{ $json.amount }}</code>——這是從上游拿 <code>amount</code> 欄位。</li>
-            <li><strong>Operator</strong>（中間）：先在下拉左邊選型別 <code>Number</code>，右邊再選 <code>is greater than</code>（有些版本寫 <code>larger</code>）。</li>
+            <li><strong>Operator</strong>（中間）：先在下拉左邊選型別 <code>Number</code>，右邊再選 <code>is greater than</code>（官方 v2 IF 節點的正式名稱，不是 <code>larger</code>）。</li>
             <li><strong>Value 2</strong>（右值）：填 <code>1000</code>（純數字，不用引號）。</li>
           </ul>
         </li>
@@ -193,39 +193,39 @@
         <tbody>
           <tr>
             <td><strong>String</strong>（字串）</td>
-            <td>equals / not equals / contains / does not contain / starts with / ends with / matches regex</td>
+            <td>exists / does not exist / is empty / is not empty / is equal to / is not equal to / contains / does not contain / starts with / does not start with / ends with / does not end with / matches regex / does not match regex</td>
             <td>字串（可含 Expression）</td>
-            <td>Value 1 <code>{{ $json.status }}</code>、Operator <code>equals</code>、Value 2 <code>paid</code></td>
+            <td>Value 1 <code>{{ $json.status }}</code>、Operator <code>is equal to</code>、Value 2 <code>paid</code></td>
           </tr>
           <tr>
             <td><strong>Number</strong>（數字）</td>
-            <td>equals / not equals / is greater than / is less than / is greater than or equal / is less than or equal</td>
+            <td>exists / does not exist / is empty / is not empty / is equal to / is not equal to / is greater than / is less than / is greater than or equal to / is less than or equal to</td>
             <td>純數字（不加引號）</td>
             <td>Value 1 <code>{{ $json.amount }}</code>、Operator <code>is greater than</code>、Value 2 <code>1000</code></td>
           </tr>
           <tr>
             <td><strong>Boolean</strong>（布林）</td>
-            <td>is true / is false / equals / not equals</td>
-            <td>對 is true / is false 不用填；equals 填 <code>true</code> 或 <code>false</code></td>
+            <td>exists / does not exist / is empty / is not empty / is true / is false / is equal to / is not equal to</td>
+            <td>對 is true / is false 不用填；is equal to 填 <code>true</code> 或 <code>false</code></td>
             <td>Value 1 <code>{{ $json.consent }}</code>、Operator <code>is true</code></td>
           </tr>
           <tr>
             <td><strong>Date &amp; Time</strong>（日期）</td>
-            <td>is after / is before / is equal / is between</td>
+            <td>exists / does not exist / is empty / is not empty / is equal to / is not equal to / is after / is before / is after or equal to / is before or equal to</td>
             <td>ISO 日期字串或 Expression（例：<code>{{ $now }}</code>）</td>
             <td>Value 1 <code>{{ $json.createdAt }}</code>、Operator <code>is after</code>、Value 2 <code>2026-01-01</code></td>
           </tr>
         </tbody>
       </table>
 
-      <p>另外還有 <strong>Array</strong>（陣列，例 <code>contains</code>、<code>length equals</code>）跟 <strong>Object</strong>（物件），比較少用，這裡先跳過。</p>
+      <p>另外還有 <strong>Array</strong>（陣列，例 <code>contains</code>、<code>length equal to</code>、<code>length greater than</code>）跟 <strong>Object</strong>（物件，僅 <code>exists</code> / <code>does not exist</code> / <code>is empty</code> / <code>is not empty</code>），比較少用，這裡先跳過。注意 <strong>Date &amp; Time 沒有 <code>is between</code> 這個 operator</strong>——要判「在兩個時間之間」得寫兩個 condition（<code>is after</code> A 且 <code>is before</code> B）再用 AND 組合。</p>
 
       <div class="callout warn"><strong>注意（第一名踩雷）：</strong>資料明明是字串 <code>"1500"</code>，你選了 <code>Number → is greater than → 1000</code>——結果永遠是 false。因為<em>字串 1500</em> 不是<em>數字 1500</em>，n8n 不會幫你自動轉。修法：Value 1 改成 <code>{{ Number($json.amount) }}</code> 強制轉型，或者上游用 <a href="ch14_expressions.html">Expression</a> / <a href="ch18_set_function.html">Set 節點</a>先轉好。看到「條件應該對卻走 false」，八成就是這個坑。</div>
     </section>
 
     <section id="advanced" data-nav="多條件 AND / OR">
       <h2 data-icon="advanced">多條件組合：AND / OR</h2>
-      <p>一個 IF 節點裡可以放<strong>好幾個 condition</strong>，然後決定它們的組合方式。面板下面有一個 <strong>Combine</strong>（或叫 <strong>Combinator</strong>）下拉，兩個選項：</p>
+      <p>一個 IF 節點裡可以放<strong>好幾個 condition</strong>，然後決定它們的組合方式。當你加第二列 condition 後，兩列<strong>之間</strong>會出現一個 <strong>AND / OR</strong> 下拉（官方 UI 就直接叫 AND / OR，沒有 <em>Combinator</em> 這個 label），兩個選項：</p>
 
       <table class="data-table">
         <thead>
@@ -234,12 +234,12 @@
         <tbody>
           <tr>
             <td><strong>AND</strong>（且）</td>
-            <td>所有 condition 都要為 true，整個 IF 才算 true</td>
+            <td>官方說法：「Keep data when it meets all conditions」——所有 condition 都要為 true 才算 true</td>
             <td>「金額大 <em>而且</em> 付款狀態是 paid 才通知」</td>
           </tr>
           <tr>
             <td><strong>OR</strong>（或）</td>
-            <td>只要有一個 condition 為 true，整個 IF 就算 true</td>
+            <td>官方說法：「Keep data when it meets any of the conditions」——任一 condition 為 true 就算 true</td>
             <td>「客戶是 VIP <em>或</em> 訂單超過 5,000 都要通知經理」</td>
           </tr>
         </tbody>
@@ -278,7 +278,8 @@
         <li>Rule 1：Value 1 <code>{{ $json.tier }}</code>、Operator <code>String equals</code>、Value 2 <code>silver</code> → output 1 接「寄折扣券」</li>
         <li>Rule 2：Value 1 <code>{{ $json.tier }}</code>、Operator <code>String equals</code>、Value 2 <code>bronze</code> → output 2 接「寄一般歡迎信」</li>
       </ul>
-      <p>Rules 之外可以打開 <strong>Fallback Output</strong>（在 Options 底下），沒對到任何 rule 的 item 會走這條路——很好用，通常接一個「未分類」的 log 或告警節點。</p>
+      <p>Rules 底下有一個 <strong>Fallback Output</strong> 下拉，官方三個選項：<code>None</code>（預設，未對到就直接丟掉）、<code>Extra Output</td>（多開一條 output 專收未對到的 item，最常用）、<code>Output 0</code>（未對到就走跟第一條 Rule 一樣的 output）。想要有「未分類」下游，選 <code>Extra Output</code>。</p>
+      <p>另外還有一個 <strong>Send data to all matching outputs</strong> 開關（預設關）：關的時候一筆 item 只會走<em>第一條</em>對到的 Rule；打開的話同時對到兩條 Rule 就會兩條都送——選這個要小心 items 被複製走多條分支的效果。</p>
 
       <h3>Mode 2：Expression（表達式模式，進階）</h3>
       <p>直接寫一個 Expression 回傳<strong>要走 output 幾號</strong>（從 0 開始數）。這比 Rules 模式簡潔，但需要你會用 Expression。</p>
@@ -308,7 +309,7 @@
           <tr>
             <td>訂單金額分級通知：&lt;1000 助理、1000-5000 組長、&gt;5000 經理</td>
             <td>Switch（Rules）</td>
-            <td>Rule 0 <code>amount &lt; 1000</code>、Rule 1 <code>amount is between 1000, 5000</code>、Rule 2 <code>amount &gt; 5000</code></td>
+            <td>Rule 0 <code>amount &lt; 1000</code>、Rule 1 兩個 condition AND：<code>amount &gt;= 1000</code> 且 <code>amount &lt;= 5000</code>、Rule 2 <code>amount &gt; 5000</code>（Number operator 沒有 <code>is between</code>，得拆成兩條）</td>
             <td>各接一個 Slack 節點，target 頻道不同</td>
           </tr>
           <tr>
@@ -383,7 +384,7 @@
           <tr>
             <td>「Switch 有些 item 消失了」</td>
             <td>那些 item 沒對到任何 Rule，且你沒開 Fallback Output——n8n 就把它們丟掉了</td>
-            <td>面板 Options → 打開 <strong>Fallback Output</strong>，多出一條 output，接一個「未分類」節點（例：Slack 通知你、Sheet 記一筆）</td>
+            <td>面板 <strong>Fallback Output</strong> 下拉從 <code>None</code> 改成 <code>Extra Output</code>，節點會多長一條 output，接一個「未分類」節點（例：Slack 通知你、Sheet 記一筆）</td>
           </tr>
           <tr>
             <td>「分支之後想合起來，讓下游只寫一遍」</td>
@@ -439,7 +440,7 @@
 
       <details class="faq">
         <summary>Switch 最多能有幾個 output？IF 能有三個 output 嗎？</summary>
-        <div class="body">Switch 節點 Rules 模式的 UI 通常限制在 <strong>4 個 Rule</strong>（加上一個 Fallback 就是 5 條 output）；Expression 模式的 <strong>Number of Outputs</strong> 可以設更大（實務上 10 個以上就該考慮抽 sub-workflow 了）。IF 節點<strong>永遠只有 2 個 output</strong>（true / false），這是設計上的定義——想要三條路就直接用 Switch，不要用「IF 接 IF」硬湊，會很亂。</div>
+        <div class="body">官方文件<strong>沒有</strong>對 Switch 的 Rule 數量寫死上限——按 <strong>Add Routing Rule</strong> 可以一直加，實務上 3–10 條都很常見（加上 Fallback 就是 4–11 條 output）。Expression 模式的 <strong>Number of Outputs</strong> 你自己填，也沒有官方硬性上限，但 10 個以上通常就該考慮抽 sub-workflow 了。IF 節點<strong>永遠只有 2 個 output</strong>（true / false），這是設計上的定義——想要三條路就直接用 Switch，不要用「IF 接 IF」硬湊，會很亂。</div>
       </details>
 
       <details class="faq">
@@ -449,7 +450,7 @@
 
       <details class="faq">
         <summary>Switch 的 Rules 從上到下順序有影響嗎？</summary>
-        <div class="body">有——當一筆 item <strong>同時滿足多個 Rule</strong> 時（例：Rule 0 是「amount &gt; 100」、Rule 1 是「amount &gt; 1000」，一筆 amount=5000 兩個都符合），n8n 會走<strong>第一個對到的 Rule</strong>（依 UI 上從上到下的順序）。所以寫多個 Rule 時，把「最嚴格」的條件放上面、「最寬鬆」的放下面，才不會被寬鬆的那條先撈走。或者把每個 Rule 寫成互斥的（例：<code>amount is between 100, 999</code> / <code>amount is between 1000, 4999</code> / <code>amount &gt;= 5000</code>），根本不會撞到，順序也就無所謂。</div>
+        <div class="body">預設<strong>有影響</strong>——當一筆 item 同時滿足多個 Rule，Switch 依 UI 上從上到下的順序走<strong>第一個對到的 Rule</strong>，其他跳過。所以把「最嚴格」放上面、「最寬鬆」放下面，才不會被寬鬆的先撈走。<br><br>但 Switch 節點有一個 <strong>Send data to all matching outputs</strong> 開關（Options 底下，預設關）：打開後同一筆 item 只要對到就送，多條 Rule 都會拿到——這時順序就不影響「有沒有走到」，但仍影響 output 編號的視覺。若要徹底不用管順序，把每條 Rule 寫成互斥（例：<code>amount &gt;= 100 AND amount &lt; 1000</code>、<code>amount &gt;= 1000 AND amount &lt; 5000</code>、<code>amount &gt;= 5000</code>，用兩個 condition + AND 拼出區間；Number 沒有 <code>is between</code> operator）。</div>
       </details>
 
       <details class="faq">

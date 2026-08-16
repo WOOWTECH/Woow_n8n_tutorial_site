@@ -123,12 +123,12 @@
           <tr>
             <td><strong>要拿什麼資料？</strong></td>
             <td>中間的 SaaS 節點</td>
-            <td>今天的行事曆 → <strong>Google Calendar</strong> 節點的 <em>Get Many Events</em></td>
+            <td>今天的行事曆 → <strong>Google Calendar</strong> 節點的 <em>Get Many</em>（Resource=Event、Operation=Get Many）</td>
           </tr>
           <tr>
             <td><strong>要做什麼事？</strong></td>
             <td>最後一個 action 節點</td>
-            <td>推訊息給我自己 → <strong>Slack</strong> 節點的 <em>Send Message</em></td>
+            <td>推訊息給我自己 → <strong>Slack</strong> 節點的 <em>Send Message</em>（Resource=Message、Operation=Send Message）</td>
           </tr>
         </tbody>
       </table>
@@ -141,7 +141,7 @@
       <p>用最白話的方式畫出來：</p>
       <pre class="code-block"><code>[⏰ 每天 08:00]  →  [📅 讀今天行事曆]  →  [💬 傳給 Slack]
    Schedule           Google Calendar           Slack
-   Trigger            Get Many Events          Send Message</code></pre>
+   Trigger            Event · Get Many         Message · Send Message</code></pre>
       <p>三個節點、兩條連線。就這樣。等下你就要一步一步把它做出來。</p>
     </section>
 
@@ -167,17 +167,17 @@
           <h3>設定 Schedule：Every Day，08:00</h3>
           <p>雙擊剛加的節點打開設定面板：</p>
           <ul>
-            <li><strong>Trigger Interval</strong>：從下拉選 <code>Days</code>（有些版本叫 <code>Every Day</code>）。</li>
+            <li><strong>Trigger Interval</strong>：從下拉選 <code>Days</code>（下拉裡就寫 <em>Days</em>，沒有「Every Day」這個選項，別找）。</li>
             <li><strong>Days Between Triggers</strong>：<code>1</code>（每天）。</li>
-            <li><strong>Trigger at Hour</strong>：<code>8</code>（早上 8 點）。</li>
-            <li><strong>Trigger at Minute</strong>：<code>0</code>。</li>
+            <li><strong>Trigger at Hour</strong>：從下拉選 <code>8am</code>（這欄是 dropdown 不是輸入數字，選項寫 <em>Midnight / 1am / 2am / ... / Noon / 1pm ...</em>，直接挑 <em>8am</em>）。</li>
+            <li><strong>Trigger at Minute</strong>：<code>0</code>（這欄才是輸入數字，0–59）。</li>
           </ul>
-          <p>設好按面板右上角的 <strong>Back to canvas</strong>（有些版本是 <kbd>×</kbd>）關閉。節點下方會出現排程摘要，例如 <em>Every day at 08:00</em>。</p>
+          <p>設好點面板左上角 <strong>← Back to canvas</strong> 關閉（或按 <kbd>Esc</kbd>）。節點下方會出現排程摘要，例如 <em>Every day at 8:00 am</em>。</p>
         </li>
         <li>
           <h3>Trigger 節點右邊按 +，找 Google Calendar</h3>
           <p>把滑鼠移到 Schedule Trigger 節點右邊，會冒出一個小小的 <strong>+</strong>。點它，右邊再彈節點清單，搜尋框打 <code>google calendar</code>。點選出現的 <strong>Google Calendar</strong> 節點。</p>
-          <p>面板打開後，<strong>Resource</strong> 選 <code>Event</code>，<strong>Operation</strong> 選 <code>Get Many</code>（有些版本顯示為 <em>Get Many Events</em>）。這個組合的意思是「拿多筆行事曆事件」。</p>
+          <p>面板打開後，<strong>Resource</strong> 選 <code>Event</code>，<strong>Operation</strong> 選 <code>Get Many</code>（下拉裡的字就是 <em>Get Many</em>，「Events」是 resource 名，n8n UI 不會拼成 <em>Get Many Events</em>）。這個組合的意思是「拿多筆行事曆事件」。</p>
         </li>
         <li>
           <h3>綁 Google credential（第一次會跳 OAuth 授權）</h3>
@@ -188,41 +188,47 @@
           <h3>Calendar 選你自己的、Time Min/Max 填今天範圍</h3>
           <p>回到 Google Calendar 節點面板，繼續填：</p>
           <ul>
-            <li><strong>Calendar</strong>：從下拉選你自己的（通常顯示成你的 email 或 <em>Primary</em>）。</li>
-            <li><strong>Return All</strong>：<em>ON</em>（或設一個大一點的 Limit，例如 50）。</li>
-            <li><strong>Options</strong> → <strong>Time Min</strong>：切成 <em>Expression</em> 模式（欄位右邊那顆小小 <em>fx</em> 或 <em>Expression</em> tab），填 <code>{{ $now.startOf('day') }}</code>。</li>
-            <li><strong>Options</strong> → <strong>Time Max</strong>：一樣切 Expression，填 <code>{{ $now.endOf('day') }}</code>。</li>
+            <li><strong>Calendar</strong>：從下拉選你自己的（通常顯示成你的 email 或 <em>Primary</em>）。這欄是 resource locator，可以切 <em>From list</em>（下拉挑）或 <em>By ID</em>（貼 calendar ID）。</li>
+            <li><strong>Return All</strong>：<em>ON</em>（或關掉改設 Limit，例如 50）。</li>
+            <li><strong>After</strong>：這欄<strong>直接躺在面板上、不在 Options 裡</strong>，切成 <em>Expression</em> 模式（欄位右邊有一個小 <em>fx</em> 圖示），填 <code>{{ $now.startOf('day') }}</code>。（欄位預設值是 <code>{{ $now }}</code>，內部叫 <code>timeMin</code>，但 UI 顯示的字就是 <strong>After</strong>。）</li>
+            <li><strong>Before</strong>：同樣直接在面板上，切 Expression，填 <code>{{ $now.endOf('day') }}</code>。（內部叫 <code>timeMax</code>。）</li>
           </ul>
-          <p>這兩個 expression 的意思是「今天凌晨 00:00 到今天晚上 23:59:59」。Expression 是 n8n 的動態表達式，詳細寫法<a href="ch14_expressions.html">第 14 章</a>會拆。</p>
+          <p>這兩個 expression 的意思是「今天凌晨 00:00 到今天 23:59:59.999」。Expression 是 n8n 的動態表達式，詳細寫法<a href="ch14_expressions.html">第 14 章</a>會拆。</p>
+          <div class="callout warn"><strong>注意：</strong>不少舊教學（包括早期版本的 n8n 官方文件）把這兩欄叫 <em>Time Min / Time Max</em>，那是 Google Calendar API 底層的名字。n8n 目前 UI 顯示的<strong>就是 After / Before</strong>，找不到「Time Min」是正常的，不要在 Options 裡挖。</div>
         </li>
         <li>
           <h3>按 Execute Node，先看看今天到底有沒有行程</h3>
-          <p>Google Calendar 節點面板右上角有一顆 <strong>Execute Node</strong>（或 <em>Test step</em>）按鈕，按下去。這個按鈕只跑「這一顆節點」，不會執行整個 workflow。</p>
-          <p>右邊的 <strong>OUTPUT</strong> 面板會出現一份 JSON，展開後你會看到 <code>items</code> 陣列，每個元素是一個事件，有 <code>summary</code>（標題）、<code>start.dateTime</code>（開始時間）、<code>end.dateTime</code>（結束時間）等欄位。看到這個就代表資料拉成功了。</p>
-          <div class="callout"><strong>觀念：</strong>OUTPUT 欄的 JSON 結構「今天長什麼樣」<strong>非常關鍵</strong>，因為下一步的 Slack 訊息要靠它拼字串。看不到 <code>items</code> 但看到 <code>summary</code> 直接躺在最上面的話（每個事件變獨立一筆），那個「怎麼拿」的寫法就會不一樣。<a href="ch9_item_data_flow.html">第 9 章</a>會把 items 資料流講透。</div>
+          <p>Google Calendar 節點面板右上角有一顆 <strong>Execute step</strong>（有些版本寫 <em>Test step</em> 或 <em>Execute Node</em>）按鈕，按下去。這個按鈕只跑「這一顆節點」，不會執行整個 workflow。</p>
+          <p>右邊的 <strong>OUTPUT</strong> 面板會列出<strong>每個事件一筆 n8n item</strong>（今天 5 個行程 → 5 筆）。每一筆的頂層有 <code>summary</code>（標題）、<code>start.dateTime</code>（開始時間）、<code>end.dateTime</code>（結束時間）等欄位——所以在 Slack 節點裡，<code>$json.summary</code> 拿的是「目前這一筆」的標題，不是全部。看到列表就代表資料拉成功了。</p>
+          <div class="callout"><strong>觀念：</strong>這裡的關鍵是<strong>「n8n 把每筆事件展成獨立 item」</strong>而不是「塞成一個 <code>items</code> 陣列讓下一顆自己 map」。這個差別很重要，因為下一步 Slack 要「把所有事件拼成一則訊息」，不能寫 <code>$json.items</code>（那個欄位不存在），得用 <code>$input.all()</code> 或加一顆 Aggregate 節點先把 N 筆合成 1 筆。<a href="ch9_item_data_flow.html">第 9 章</a>會把 items 資料流講透。</div>
         </li>
         <li>
           <h3>加 Slack 節點：Send Message</h3>
-          <p>Google Calendar 節點右邊 <strong>+</strong> → 搜 <code>slack</code> → 點 <strong>Slack</strong>。<strong>Resource</strong> 選 <code>Message</code>、<strong>Operation</strong> 選 <code>Send</code>。</p>
+          <p>Google Calendar 節點右邊 <strong>+</strong> → 搜 <code>slack</code> → 點 <strong>Slack</strong>。<strong>Resource</strong> 選 <code>Message</code>、<strong>Operation</strong> 選 <code>Send Message</code>（下拉裡就寫 <em>Send Message</em>）。</p>
           <p>Credential 一樣：第一次要點 <em>Create new credential</em>，跑一次 OAuth 授權你的 Slack workspace。授權完回到節點面板繼續填。</p>
+          <div class="callout tip"><strong>提示：</strong>在直接接 Slack 之前，強烈建議<strong>在 Google Calendar 和 Slack 之間先插一顆 <em>Aggregate</em> 節點</strong>（Fields to Aggregate 填 <code>summary</code>），把「N 筆事件」壓成「1 筆 items 陣列」。這樣下面 Slack 就只會發<strong>一則</strong>訊息，不會每個行程各發一則把 Slack 洗版。下面步驟 10 假設你有加 Aggregate；沒加的話 Slack 會照 n8n 預設「每個 item 各執行一次」機制發 N 則訊息。</div>
         </li>
         <li>
           <h3>Channel 選你自己的頻道，Text 用 Expression 拼字串</h3>
           <p>Slack 節點的欄位：</p>
           <ul>
-            <li><strong>Send Message To</strong>：<code>Channel</code>。</li>
-            <li><strong>Channel</strong>：從下拉選一個「只有你看得到」的頻道測試，例如 <code>#daily-me</code>，或直接選 DM 給自己的私訊。<strong>不要一開始就選 <code>#general</code></strong>，測試訊息會發到全公司。</li>
-            <li><strong>Text</strong>：切 Expression 模式，貼下面這段：</li>
+            <li><strong>Send Message To</strong>：<code>Channel</code>（下拉裡也有 <em>User</em> 可以選，等下 FAQ 會提）。</li>
+            <li><strong>Channel</strong>：resource locator，可切 <em>From list</em> 從下拉挑，或 <em>By name</em> 打 <code>#daily-me</code>、<em>By ID</em> 貼 <code>C0XXXXXXX</code>。挑一個「只有你看得到」的頻道測試，或選 DM 給自己（<em>Send Message To</em> 改 <em>User</em> 再挑自己）。<strong>不要一開始就選 <code>#general</code></strong>，測試訊息會發到全公司。</li>
+            <li><strong>Message Text</strong>（有些舊版寫 <em>Text</em>）：切 Expression 模式（欄位右邊那顆小 <em>fx</em>），貼下面這段（假設你按前一步的 tip 加了 <em>Aggregate</em> 節點，Fields to Aggregate 填 <code>summary</code>）：</li>
           </ul>
-          <pre class="code-block"><code>早安！今天有 {{ $json.items.length }} 個行程：
-{{ $json.items.map(e =&gt; e.summary).join('、') }}</code></pre>
-          <p>意思是「印出事件數量，然後把所有事件標題用『、』串起來」。</p>
-          <p>按 <strong>Execute Node</strong> 手動測一次，切到你的 Slack 應該就會看到那則訊息。</p>
+          <pre class="code-block"><code>早安！今天有 {{ $json.summary.length }} 個行程：
+{{ $json.summary.join('、') }}</code></pre>
+          <p>意思是「Aggregate 之後 <code>summary</code> 已經是一個陣列，直接算長度、直接 join」。</p>
+          <p><strong>沒加 Aggregate</strong> 的替代寫法（讓 Slack 節點自己看整批 upstream items）：</p>
+          <pre class="code-block"><code>早安！今天有 {{ $input.all().length }} 個行程：
+{{ $input.all().map(i =&gt; i.json.summary).join('、') }}</code></pre>
+          <p>差別：<code>$json.xxx</code> 只看「目前這一筆」，<code>$input.all()</code> 才能拿到全部 upstream items。<strong>絕對不要寫 <code>$json.items.map(...)</code></strong>——Google Calendar 節點的 output 裡根本沒有 <code>items</code> 這個欄位，那是 raw Google API 的 shape，n8n 已經把它拆平了。</p>
+          <p>按 <strong>Execute step</strong> 手動測一次，切到你的 Slack 應該就會看到那則訊息。</p>
         </li>
         <li>
-          <h3>Save，然後把右上 Active toggle 打開</h3>
-          <p>整個 workflow 完成了。按 <strong>Save</strong>（或 <kbd>Ctrl</kbd>+<kbd>S</kbd>）存檔。<strong>然後最重要的一步——把畫面右上角的 <em>Active</em> 開關切成 ON</strong>。這個開關沒開的話，Schedule Trigger 是「睡眠狀態」，時間到了不會自動觸發，你只能手動按 Execute Workflow 才會跑。</p>
-          <div class="callout warn"><strong>注意：</strong>90% 新手第一次踩的坑就是「奇怪我明明設好 8:00 了為什麼隔天沒收到訊息」——十次有九次就是 <strong>Active 忘了打開</strong>。存檔跟啟用是兩件事。</div>
+          <h3>Save，然後把右上 Inactive toggle 切成 Active</h3>
+          <p>整個 workflow 完成了。按 <strong>Save</strong>（或 <kbd>Ctrl</kbd>+<kbd>S</kbd>）存檔。<strong>然後最重要的一步——切畫面右上角的 <em>Inactive / Active</em> 開關到 Active</strong>（就在 Save 按鈕旁邊、workflow 名稱那一條 header 的右邊）。這個開關沒切的話，Schedule Trigger 是「睡眠狀態」，時間到了不會自動觸發，你只能手動按 Execute Workflow 才會跑。</p>
+          <div class="callout warn"><strong>注意：</strong>90% 新手第一次踩的坑就是「奇怪我明明設好 8:00 了為什麼隔天沒收到訊息」——十次有九次就是 <strong>Inactive 忘了切成 Active</strong>。存檔跟啟用是兩件事，開關就在右上角 Save 旁邊，不會躲。</div>
         </li>
       </ol>
 
@@ -230,27 +236,27 @@
     </section>
 
     <section id="slack-text" data-nav="Slack 訊息三種寫法">
-      <h2 data-icon="advanced">Slack Text 進階：三種常見版型</h2>
-      <p>上面步驟 10 用的是最簡版。訊息想寫得漂亮一點，Slack 支援它自己一套 markdown 語法（叫 mrkdwn），加上 emoji 可以讓早上那則通知看起來像個東西，不像 log。三種常見版型：</p>
+      <h2 data-icon="advanced">Slack Message Text 進階：三種常見版型</h2>
+      <p>上面步驟 10 用的是最簡版。訊息想寫得漂亮一點，Slack 支援它自己一套 markdown 語法（叫 mrkdwn），加上 emoji 可以讓早上那則通知看起來像個東西，不像 log。三種常見版型（<strong>都假設你前面有加 Aggregate 節點</strong>，Fields to Aggregate 填 <code>summary, start</code>；沒加就把 <code>$json.summary</code> 改成 <code>$input.all().map(i =&gt; i.json.summary)</code>）：</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>版型</th><th>Text 欄位寫法</th><th>什麼時候用</th></tr>
+          <tr><th>版型</th><th>Message Text 欄位寫法</th><th>什麼時候用</th></tr>
         </thead>
         <tbody>
           <tr>
             <td>極簡版</td>
-            <td><code>今天 {{ $json.items.length }} 個行程</code></td>
+            <td><code>今天 {{ $json.summary.length }} 個行程</code></td>
             <td>只想知道數字、不想看細節；用在很多會的日子避免 Slack 被撐爆</td>
           </tr>
           <tr>
             <td>條列版</td>
-            <td><code>今天行程：\n{{ $json.items.map(e =&gt; '• ' + e.summary + ' @ ' + e.start.dateTime).join('\n') }}</code></td>
+            <td><code>今天行程：\n{{ $json.summary.map((s, i) =&gt; '• ' + s + ' @ ' + $json.start[i].dateTime).join('\n') }}</code></td>
             <td>要看清楚每一場什麼時間；日常主力版型</td>
           </tr>
           <tr>
             <td>Markdown 版</td>
-            <td><code>*今天行程* :calendar:\n&gt; {{ $json.items.map(e =&gt; e.summary + ' (' + e.start.dateTime + ')').join('\n&gt; ') }}</code></td>
+            <td><code>*今天行程* :calendar:\n&gt; {{ $json.summary.map((s, i) =&gt; s + ' (' + $json.start[i].dateTime + ')').join('\n&gt; ') }}</code></td>
             <td>訊息夠正式、方便長按引用；跟同事分享時看起來比較體面</td>
           </tr>
         </tbody>
@@ -403,7 +409,7 @@
         </li>
         <li>
           <h3>Schedule Trigger 隔天早上沒自動跑</h3>
-          <p>90% 的原因：右上 <strong>Active toggle 沒開</strong>。回去打開就好。其他可能：（1）workflow 存檔前忘了 save，Schedule 沒生效；（2）時區設錯，你以為 08:00 是台北時間，但實例跑的是 UTC，實際是台北時間下午 4 點才跑（Personal settings 改 timezone，或 Schedule 節點裡指定）；（3）Trigger 節點 disable（節點右鍵可以 Disable，會變灰色，整條 workflow 都不會跑）。</p>
+          <p>90% 的原因：右上 <strong>Active toggle 沒切成 Active</strong>。回去切就好。其他可能：（1）workflow 存檔前忘了 save，Schedule 沒生效；（2）時區設錯，你以為 08:00 是台北時間，但 self-hosted n8n 預設是 <code>America/New_York</code>（不是 UTC，也不是台北），實際會晚 13 小時才跑。改法：Workflow settings → Timezone 選 <code>Asia/Taipei</code>，或改整個實例的 <code>GENERIC_TIMEZONE</code> 環境變數；（3）Trigger 節點被 deactivate（節點右鍵可以 Deactivate，會變灰色，整條 workflow 都不會跑）。</p>
         </li>
         <li>
           <h3>Executions 頁面完全沒紀錄</h3>
@@ -411,11 +417,11 @@
         </li>
         <li>
           <h3>Slack 收到訊息，但內容變成 <code>{{ $json.items.length }}</code> 這串字</h3>
-          <p>Text 欄位<strong>沒切成 Expression 模式</strong>。欄位右邊有一顆小小的 <em>fx</em> 圖示或 <em>Expression</em> tab，切過去才會執行 <code>{{...}}</code>，不切的話就會被當成純文字。切完之後 <code>{{ $json.items.length }}</code> 應該會即時預覽成數字。</p>
+          <p>Message Text 欄位<strong>沒切成 Expression 模式</strong>。欄位右邊有一顆小小的 <em>fx</em> 圖示，切過去才會執行 <code>{{...}}</code>，不切的話就會被當成純文字。切完之後 <code>{{ $json.summary.length }}</code> 應該會即時預覽成數字。</p>
         </li>
         <li>
           <h3>訊息推出去了但事件標題顯示 <code>undefined</code></h3>
-          <p>Google Calendar API 有時候會回沒有 <code>summary</code> 欄位的事件（例如全天空白事件、或某些日曆的隱私設定）。解法：把 expression 改成 <code>{{ $json.items.map(e =&gt; e.summary || '（無標題事件）').join('、') }}</code>，用 <code>||</code> 給一個 fallback 字串就不會 undefined。</p>
+          <p>Google Calendar API 有時候會回沒有 <code>summary</code> 欄位的事件（例如全天空白事件、或某些日曆的隱私設定）。解法：把 expression 改成 <code>{{ $input.all().map(i =&gt; i.json.summary || '（無標題事件）').join('、') }}</code>，用 <code>||</code> 給一個 fallback 字串就不會 undefined。（有加 Aggregate 的話寫 <code>{{ $json.summary.map(s =&gt; s || '（無標題事件）').join('、') }}</code>。）</p>
         </li>
       </ol>
 
@@ -449,7 +455,7 @@
       <details class="faq">
         <summary>Time Min / Time Max 用 <code>$now.startOf('day')</code> 是哪個時區？</summary>
         <div class="body">
-          <p>用的是<strong>執行 workflow 時 n8n 實例的時區</strong>。Woow 的 n8n 預設應該是 <code>Asia/Taipei</code>，所以 <code>startOf('day')</code> 就是台北時間 00:00。想確認：Personal settings → Timezone 那格顯示的就是你目前的時區。想更保險可以在 Schedule Trigger 節點裡也明確指定 timezone，兩邊對上不會出錯。時區的細節在<a href="ch14_expressions.html">第 14 章</a>會補充。</p>
+          <p>用的是<strong>該 workflow 設定的時區，沒設就 fallback 到 n8n 實例的時區</strong>。<strong>self-hosted n8n 預設是 <code>America/New_York</code>（不是 UTC，也不是台北時間）</strong>，一定要主動改過。兩個地方可以設：Workflow settings → Timezone 選 <code>Asia/Taipei</code>（只影響這個 workflow），或改實例的 <code>GENERIC_TIMEZONE</code> 環境變數（全部 workflow 都套用）。Woow 版通常已經預設 Taipei，但新拉的 workflow 建議還是自己確認一次。時區細節在<a href="ch14_expressions.html">第 14 章</a>會補充。</p>
         </div>
       </details>
 

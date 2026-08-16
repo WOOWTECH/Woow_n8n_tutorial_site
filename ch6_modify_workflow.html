@@ -178,7 +178,7 @@
         </li>
         <li>
           <h3>右上角按 <kbd>Save</kbd> 存起來</h3>
-          <p>畫布右上角有個 <strong>Save</strong> 按鈕（或 <kbd>Ctrl</kbd>+<kbd>S</kbd>）。按下去、看到按鈕右邊出現 <strong>Saved</strong> 字樣才算真的存了。沒按 Save 就切頁面，改的東西會消失。</p>
+          <p>畫布右上角有個 <strong>Save</strong> 按鈕（或 <kbd>Ctrl</kbd>+<kbd>S</kbd> / <kbd>Cmd</kbd>+<kbd>S</kbd>）。按下去按鈕會由亮藍色 <strong>Save</strong> 變成灰色反白（有些版本會在標題旁短暫顯示綠色 saved 提示）——按鈕失去強調色就代表已存。若你直接切頁面，n8n 會跳一個「有未儲存變更」的確認框，別按錯就好。</p>
         </li>
       </ol>
       <div class="callout warn"><strong>注意：</strong>credential 換完不會自動 propagate。同一個 workflow 裡有三個 Slack 節點，你要一個一個節點都去換 credential。這是最常見的「改一半」錯誤。</div>
@@ -258,7 +258,7 @@ Email：{{ $json.email }}
         </li>
         <li>
           <h3>按 Save，別忘了</h3>
-          <p>加節點跟改參數一樣要 Save。右上角看到 Saved 字樣才算存了。</p>
+          <p>加節點跟改參數一樣要 Save。右上角 Save 按鈕變灰、切頁面時沒跳「Unsaved changes」，才算存了。</p>
         </li>
       </ol>
       <div class="callout tip"><strong>提示：</strong>IF 節點很萬用，你之後會一直用到。詳細用法（多條件、AND/OR、Switch 三分支以上）看 <a href="ch15_if_switch.html">第 15 章</a>。</div>
@@ -294,8 +294,8 @@ Email：{{ $json.email }}
       <p>改動存好之後、把 workflow 打開 Active 之前，這三件事一定要做。跳過就等於埋雷。</p>
       <ol class="steps">
         <li>
-          <h3>按 Save，確認右上角出現「Saved」</h3>
-          <p>Save 按下去畫面會閃一下，右上角出現一個灰色小字 <strong>Saved</strong>。沒看到這行字就是沒存到——最常見的原因是你剛在某個節點欄位裡打字，還沒點空白處、Save 按鈕被「未 commit 的編輯」擋住。點一下畫布空白處再按 Save。</p>
+          <h3>按 Save，確認 Save 按鈕變灰</h3>
+          <p>Save 按下去，右上角的藍色 <strong>Save</strong> 按鈕會變灰、失去強調色——這代表沒有未儲存變更。如果按鈕還是亮藍、或試著切頁面時 n8n 跳出「Unsaved changes」對話框，就是沒存到。最常見的原因是你剛在某個節點欄位裡打字、還沒點空白處讓值 commit。點一下畫布空白處再按 Save。</p>
         </li>
         <li>
           <h3>按 Execute Workflow 手動跑一次全流程</h3>
@@ -349,8 +349,8 @@ Email：{{ $json.email }}
           </tr>
           <tr>
             <td>Save 按了但重新開又變回原樣</td>
-            <td>你按 Save 時右上角沒出現「Saved」——很可能點空白處之前就切頁面了。</td>
-            <td>點空白處、再按 Save、確認出現 Saved 字樣、才切走。</td>
+            <td>Save 時 Save 按鈕沒真的變灰——很可能還在欄位裡有未 commit 的編輯，或點空白處之前就切頁面了。</td>
+            <td>點空白處讓欄位失焦、再按 Save、確認按鈕變灰、才切走。</td>
           </tr>
           <tr>
             <td>IF 分支永遠只走 false</td>
@@ -366,11 +366,11 @@ Email：{{ $json.email }}
       <ol class="steps">
         <li>
           <h3>「我不小心刪了一個節點」</h3>
-          <p>先按 <kbd>Ctrl</kbd>+<kbd>Z</kbd>（Mac 是 <kbd>Cmd</kbd>+<kbd>Z</kbd>）撤銷——n8n 的 Canvas 有 undo/redo 支援。如果已經 Save 過、撤銷回不去，去左側 <strong>Executions</strong> 頁找一個之前的成功執行，右上角有選項可以看那時候的 workflow 快照，可以照著手動還原。</p>
+          <p>先按 <kbd>Ctrl</kbd>+<kbd>Z</kbd>（Mac 是 <kbd>Cmd</kbd>+<kbd>Z</kbd>）撤銷——n8n 的 Canvas 支援 undo/redo（前提是你還沒重新整理頁面；重整後 undo stack 會清空）。如果已經按 Save 又 reload、撤銷回不去，就要靠下一段的 <strong>Workflow History</strong>：workflow 列表點 workflow → 右上角 <strong>⋮</strong> → <strong>Workflow history</strong>（自架版預設有開，Cloud 依方案不同保留天數）就能看到過去的版本並還原。</p>
         </li>
         <li>
           <h3>「Save 按了但重開又沒 save 到」</h3>
-          <p>Save 按鈕按下去要看到右邊出現 <strong>Saved</strong> 灰字才算成功。沒看到的原因通常是「還在編輯欄位」——先點一下畫布空白處把游標移出欄位、再按 Save。或按 <kbd>Ctrl</kbd>+<kbd>S</kbd> 快捷鍵也可以。</p>
+          <p>Save 按鈕按完要「變灰」才算成功——按鈕若還是亮藍色，就是還有未 commit 的欄位編輯。先點一下畫布空白處把游標移出欄位、再按 Save，或用 <kbd>Ctrl</kbd>+<kbd>S</kbd>（Mac <kbd>Cmd</kbd>+<kbd>S</kbd>）快捷鍵。</p>
         </li>
         <li>
           <h3>「我想從一個 template 開兩個版本測試」</h3>
@@ -382,7 +382,7 @@ Email：{{ $json.email }}
         </li>
         <li>
           <h3>「我想比對修改前後的差異」</h3>
-          <p>n8n Enterprise 版有 workflow diff 工具，Community 版目前沒有內建的 diff。變通做法：改之前先 Duplicate 一份、或把 workflow 匯出成 JSON（<strong>⋮</strong> → <strong>Download</strong>）存檔、之後用 VS Code 之類的工具比對兩個 JSON 檔的差異。</p>
+          <p>n8n 沒有畫布內的視覺化 diff 工具。<strong>Workflow History</strong>（自架 Community 版也有，用環境變數 <code>N8N_WORKFLOW_HISTORY_PRUNE_TIME</code> 控保留時間；Cloud 依方案給 5–無限天）可以並排看兩版並還原，但看的是「哪個節點被改到」而不是逐字 diff。要逐行比對，最實用是把 workflow 匯出成 JSON（<strong>⋮</strong> → <strong>Download</strong>）存檔，用 VS Code 比對兩個 JSON。Enterprise 的 Source Control 則是把整個 instance 綁 Git 做 pull request 級的 review，不是「單條 workflow diff 按鈕」。</p>
         </li>
         <li>
           <h3>「改完後 Webhook URL 打不通」</h3>
@@ -406,12 +406,13 @@ Email：{{ $json.email }}
       <details class="faq">
         <summary>Save 有版本歷史嗎？可以看昨天的版本嗎？</summary>
         <div class="body">
-          <p>Community 版<strong>沒有內建的 workflow 版本歷史</strong>——按了 Save 就覆蓋掉，之前的版本沒了。有兩個間接的辦法：</p>
+          <p>有——n8n <strong>內建 Workflow History</strong>，Community 自架版也有（不是 Enterprise 才有）。位置在 workflow 編輯畫面右上角 <strong>⋮</strong> → <strong>Workflow history</strong>，會列出每次 Save 的快照，可以預覽、還原、或 clone 成新 workflow。</p>
           <ul>
-            <li><strong>Executions 頁的 workflow 快照</strong>：每次執行時 n8n 會記錄當下的 workflow 定義，翻執行歷史可以看到「這一次跑用的是哪個版本」，可以照著手動還原。</li>
-            <li><strong>自己定期匯出 JSON 備份</strong>：重要 workflow 改完就 <strong>⋮</strong> → <strong>Download</strong> 存一份 JSON 檔到你自己的雲端或 Git，這是 Community 版最踏實的版本控管方式。</li>
+            <li><strong>自架 Community</strong>：預設保留無限筆，用環境變數 <code>N8N_WORKFLOW_HISTORY_PRUNE_TIME</code>（小時）控制刪除週期。</li>
+            <li><strong>n8n Cloud</strong>：Starter 通常沒有、Pro 給 5 天、Enterprise 更長——依方案而異，以 <a href="https://n8n.io/pricing/" rel="noopener">pricing 頁</a>為準。</li>
+            <li><strong>Enterprise 加碼</strong>：Source Control 把整個 instance 綁 Git，可以做 branch/PR 級別的版本控管，不只是單條 workflow 歷史。</li>
+            <li><strong>最踏實的個人備份</strong>：重要 workflow 改完就 <strong>⋮</strong> → <strong>Download</strong> 存一份 JSON 到自己的 Git。</li>
           </ul>
-          <p>Enterprise 版才有 Git-based 的正式版本管理。</p>
         </div>
       </details>
       <details class="faq">
@@ -427,7 +428,7 @@ Email：{{ $json.email }}
       <details class="faq">
         <summary>改到一半想暫時「不上線」怎麼做？</summary>
         <div class="body">
-          <p>畫布右上角的 <strong>Active</strong> toggle 關掉就是 Draft 狀態——workflow 不會被排程或 Webhook 觸發，只有你手動按 Execute Workflow 才會跑。這就是 n8n 的「Draft mode」，你想改多久都可以，直到你按下 Active 才真的上線。</p>
+          <p>畫布右上角的 <strong>Active</strong> toggle 關掉——workflow 不會被排程或 Webhook 觸發，只有你手動按 Execute Workflow 才會跑。這是 n8n 傳統的「Inactive」狀態，功能上等同「草稿」，但介面上並沒有一個叫做 <em>Draft mode</em> 的按鈕（新版某些方案陸續加了 draft/publish 分離的流程，但 UI 標籤仍是 Active/Inactive）。想改多久都可以，直到你按下 Active 才真的上線。</p>
         </div>
       </details>
       <details class="faq">

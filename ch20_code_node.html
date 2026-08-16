@@ -166,26 +166,26 @@
         <tbody>
           <tr>
             <td><strong>JavaScript</strong>（預設）</td>
-            <td>n8n 用內建 <em>vm2</em> sandbox 跑，安全隔離、速度接近原生 Node。</td>
+            <td>透過 n8n 內建 sandbox 執行；自架時也可切到<strong>task runners</strong>（獨立子行程，較新的官方推薦架構）。</td>
             <td>官方主打；helper API 完整；範例最多；跑得快。</td>
-            <td>沙盒不能 <code>require</code> 外部 npm 套件（Community 版）。</td>
+            <td>預設 sandbox 不能 <code>require</code> 外部 npm 套件（要開 <code>NODE_FUNCTION_ALLOW_EXTERNAL</code>）。</td>
             <td><strong>預設選這個。</strong>沒有特別理由就用 JS。</td>
           </tr>
           <tr>
             <td><strong>Python</strong></td>
-            <td>n8n 靠 <em>Pyodide</em>（WebAssembly 版 Python）跑，跟 JS 一樣沙盒化。</td>
-            <td>有 Python 現成套件想借（例：某個特定字串處理、簡單資料分析）。</td>
-            <td>Pyodide 首次載入慢；不是所有 Python 套件都相容；helper API 沒 JS 完整；社群範例少。</td>
+            <td>n8n 2 起改用 <strong>native Python task runner</strong>（1.111.0 引進、n8n 2 stable）；早期用的 <em>Pyodide</em>（WebAssembly）已標為 legacy、n8n 2 <strong>不再支援</strong>。</td>
+            <td>有 Python 現成邏輯要搬；能 <code>pip install</code> 標準庫 + 第三方套件（自架設好 task runner 才行）。</td>
+            <td>native Python 只吃<strong>括號存取</strong>（<code>_input.item['json']</code>，不能寫 <code>.json</code>）；Cloud 版是否啟用要看方案；社群範例仍以 JS 為主。</td>
             <td>只在<strong>有現成 Python 邏輯要移植</strong>時才選。純粹「我比較會 Python」不是好理由——因為社群跟範例都在 JS 那邊。</td>
           </tr>
         </tbody>
       </table>
-      <p>本章接下來所有範例都用 JavaScript。Python 的 API 大同小異（<code>_input.all()</code> 底線開頭、其他一樣），需要時參考官方文件 <code>docs.n8n.io/code/code-node/</code>。</p>
+      <p>本章接下來所有範例都用 JavaScript。Python 語法差在：變數改成底線開頭（<code>_input</code>、<code>_json</code>），而且 native Python runner 只吃<strong>括號存取</strong>（<code>_input.item['json']['amount']</code>）——舊 Pyodide 允許的 <code>_input.item.json.amount</code> 點語法已不能用。需要時參考官方文件 <code>docs.n8n.io/build/code-in-n8n/using-the-code-node/</code>。</p>
     </section>
 
     <section id="two_modes" data-nav="兩種執行模式">
       <h2 data-icon="modes">兩種執行模式：一次全部 vs 逐筆</h2>
-      <p>Code node 面板左下有一個 <strong>Mode</strong> 下拉，兩個選項差很大，選錯會造成資料重複或漏掉。</p>
+      <p>打開 Code node，右側 <strong>Parameters</strong> 面板最上方（在 Language 選項旁）有一個 <strong>Mode</strong> 下拉——官方文件的原話是「Choose a mode」。兩個選項差很大，選錯會造成資料重複或漏掉。</p>
       <table class="data-table">
         <thead>
           <tr><th>Mode</th><th>行為</th><th>什麼時候用</th><th>常見場景</th></tr>
@@ -309,7 +309,7 @@ const response = await this.helpers.httpRequest({
 
 return [{ json: response }];</code></pre>
       <p><code>this.helpers.httpRequest(...)</code> 是 n8n 內建的 helper，等同 HTTP Request 節點但寫在 code 裡。<strong>使用時機：</strong>要在同一段邏輯裡連續呼叫 N 個 API、或依照某筆資料的欄位動態決定要不要打 API。純粹「呼叫一次 API」的話拉個 HTTP Request 節點就好。</p>
-      <div class="callout tip"><strong>提示：</strong>Community 版 sandbox 有限制，不是所有 Node.js API 都能用。<code>this.helpers.httpRequest</code>、<code>crypto</code>（部分）、內建陣列/字串／JSON 方法都可以；<code>fs</code>、外部 <code>require</code>、直接 <code>fetch</code> 通常不行。要用 npm 套件請看官方文件的環境變數 <code>NODE_FUNCTION_ALLOW_EXTERNAL</code>。</div>
+      <div class="callout tip"><strong>提示：</strong>Code node sandbox 有限制，不是所有 Node.js API 都能用。<code>this.helpers.httpRequest</code>（跟其他 <code>this.helpers.*</code> 例如 <code>getBinaryDataBuffer</code>）、<code>crypto</code>（部分）、內建陣列/字串／JSON 方法都可以；<code>fs</code>、外部 <code>require</code>、直接 <code>fetch</code> 預設不行。要用 npm 套件請看官方文件的環境變數 <code>NODE_FUNCTION_ALLOW_EXTERNAL</code>（僅 self-host 有效，Cloud 無法）。</div>
     </section>
 
     <section id="helpers" data-nav="常用 helper API">
@@ -442,7 +442,7 @@ return [{ json: response }];</code></pre>
       </details>
       <details class="faq">
         <summary>Python 好還是 JavaScript 好？</summary>
-        <div class="body"><strong>優先 JavaScript</strong>。理由：（a）官方主打 JS，helper API 最完整；（b）社群範例 90% 以上是 JS；（c）JS 直接跑在 Node，Python 靠 Pyodide（WASM）多一層轉換、首次載入慢；（d）Pyodide 不是所有 Python 套件都相容。<strong>什麼時候用 Python：</strong>你有現成 Python 邏輯（例：某個字串處理 function、公司內部工具的 Python 片段）要直接搬過來。純粹「我比較會 Python」不是好理由，因為之後遇到問題查資料會很痛苦。</div>
+        <div class="body"><strong>優先 JavaScript</strong>。理由：（a）官方主打 JS，helper API 最完整；（b）社群範例 90% 以上是 JS；（c）n8n 2 起 Python 走 <strong>native task runner</strong>（自架要另外開 runner；先前的 Pyodide/WASM 版本在 n8n 2 已 legacy／不再支援）；（d）native Python 只吃括號存取（<code>_input.item['json']['x']</code>），從 JS 範例改寫要注意。<strong>什麼時候用 Python：</strong>你有現成 Python 邏輯（例：某個字串處理 function、公司內部工具的 Python 片段）要直接搬過來、又能 <code>pip install</code> 需要的套件。純粹「我比較會 Python」不是好理由。</div>
       </details>
       <details class="faq">
         <summary>Code node 可以用 npm 套件（例：<code>lodash</code>、<code>axios</code>）嗎？</summary>
