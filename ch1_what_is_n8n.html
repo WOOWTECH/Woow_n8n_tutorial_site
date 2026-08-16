@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第 1 章 · 什麼是 n8n？跟 Zapier/Make 差在哪 · Woow n8n 入住指南</title>
+  <meta name="description" content="n8n 是什麼、跟 Zapier/Make/Power Automate 的差別、Woow 為什麼選 n8n，以及它適合／不適合的場景。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://woowtech.github.io/Woow_n8n_tutorial_site/ch1_what_is_n8n.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="第 1 章 · 什麼是 n8n？跟 Zapier/Make 差在哪 · Woow n8n 入住指南" />
+  <meta property="og:description" content="n8n 是什麼、跟 Zapier/Make/Power Automate 的差別、Woow 為什麼選 n8n，以及它適合／不適合的場景。" />
+  <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch1_what_is_n8n.html" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="第 1 章 · 什麼是 n8n？跟 Zapier/Make 差在哪 · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="n8n 是什麼、跟 Zapier/Make/Power Automate 的差別、Woow 為什麼選 n8n，以及它適合／不適合的場景。" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <h2>章節</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li><a href="ch1_what_is_n8n.html" class="active">什麼是 n8n</a></li>
+      <li><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li><a href="ch7_node_types.html">三種節點</a></li>
+      <li><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li><a href="ch18_set_function.html">資料整形</a></li>
+      <li><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li><a href="ch20_code_node.html">Code node</a></li>
+      <li><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>本章</h2>
+      <a href="#why">為什麼要學這個</a>
+      <a href="#concept">拼樂高的自動化</a>
+      <a href="#what">能幫你做什麼</a>
+      <a href="#compare">跟 Zapier/Make 比</a>
+      <a href="#tips">Woow 為什麼選 n8n</a>
+      <a href="#advanced">適合的場景</a>
+      <a href="#warning">不適合的場景</a>
+      <a href="#plan">這本書怎麼讀</a>
+      <a href="#troubleshoot">常見疑慮</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>附錄</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="chapter-header">
+      <div class="kicker">第 1 章</div>
+      <h1>什麼是 n8n？跟 Zapier/Make 差在哪</h1>
+      <p class="lead">你每天在做的那些重複勞動——早上把行事曆貼進 Slack、把表單收件抄進試算表、看到某封信就轉發、月底統計上個月銷售——其實都可以外包給一個叫 n8n 的自動化工具。這章不用你動手，帶你認識它是什麼、跟你可能聽過的 Zapier / Make / Power Automate 差在哪，還有 Woow 為什麼選它。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼要學這個">
+      <h2 data-icon="why">為什麼要學這個</h2>
+      <p>你先想一下今天上班到現在做了幾件「其實電腦可以自己做」的事：</p>
+      <ul>
+        <li>早上打開 Slack，把今天要開的會議一條一條貼在部門頻道，讓大家知道你人跑哪去了。</li>
+        <li>客戶填完 Google 表單，你打開試算表把資料抄過去，順便寫一封確認信給對方。</li>
+        <li>信箱裡出現某位 VIP 客戶的來信，你趕快轉發給業務主管，怕漏掉。</li>
+        <li>月底了，你打開三家平台的後台，抓上個月銷售數字，貼進報表 Excel，再截圖給老闆。</li>
+      </ul>
+      <p>這四件事有個共通點：<strong>規則是死的、資料是活的</strong>。步驟每次都一樣，只有裡面的內容在變。這種事情就是自動化（Automation）工具最擅長的——你把「規則」告訴它一次，之後它每天自己跑，不會漏、不會忘、也不會請病假。</p>
+      <div class="callout"><strong>觀念：</strong>自動化不是取代你，是把你從「複製貼上」裡救出來。省下來的時間，你才有力氣去想真正需要人判斷的事——談客戶、寫提案、想新產品。</div>
+      <p>公司這次選的自動化工具叫 <strong>n8n</strong>（唸 "n-eight-n"，是 "nodemation" 的縮寫）。這章讓你先認識它是什麼、後面 21 章帶你動手做出真的會跑的流程。</p>
+    </section>
+
+    <section id="concept" data-nav="拼樂高的自動化">
+      <h2 data-icon="concept">n8n 是「拼樂高的自動化」</h2>
+      <p>如果要用一句話講 n8n，那就是——<strong>拼樂高的自動化工具</strong>。</p>
+      <p>樂高每一塊積木都有固定形狀跟凸點，你把它們拼起來就是一台車、一棟房子。n8n 也一樣：它預先準備好幾百塊叫「節點（Node）」的積木，每一塊會做一件事——</p>
+      <ul>
+        <li>有一塊叫 <code>Gmail</code>，會讀你收到的信；</li>
+        <li>有一塊叫 <code>Google Sheets</code>，會寫一列進試算表；</li>
+        <li>有一塊叫 <code>Slack</code>，會傳一則訊息到你指定的頻道；</li>
+        <li>有一塊叫 <code>Schedule Trigger</code>，會每天早上 8:00 自動戳一下。</li>
+      </ul>
+      <p>你要做的事就是——<strong>在畫面上把積木拉出來、用線接起來</strong>。線是資料流的方向：Gmail 讀到的信會沿著線流到下一塊積木。</p>
+      <div class="callout tip"><strong>提示：</strong>這個「畫面上拉節點、拉線接起來」的畫布，n8n 叫它 <strong>Canvas</strong>（畫布）。你 90% 的操作都在這裡完成，不用寫任何程式碼。到<a href="ch8_first_workflow.html">第 8 章</a>你就會第一次拉出這樣的流程。</div>
+      <p>那跟寫程式差在哪？寫程式的話，你得自己想「怎麼用 Gmail API 拿信、要傳什麼 header、拿到 JSON 之後怎麼 parse」；n8n 已經幫你把這些細節通通包在那塊 <code>Gmail</code> 積木裡了。你只要在旁邊填「用哪個帳號」「抓最近幾封」「要不要限定寄件人」就好。</p>
+      <div class="callout"><strong>觀念：</strong>99% 的積木都準備好了，你只是選要用哪一塊、怎麼接。真的沒現成的（機率很低），也可以用 <a href="ch20_code_node.html">Code node（第 20 章）</a>寫幾行程式補洞——但前 15 章你完全不用碰程式。</div>
+    </section>
+
+    <section id="what" data-nav="能幫你做什麼">
+      <h2 data-icon="what">具體來說，它能幫你做什麼</h2>
+      <p>用剛才「早上貼行事曆到 Slack」當例子，翻譯成 n8n 積木就是：</p>
+      <ol class="steps">
+        <li>
+          <h3>Schedule Trigger 積木：每天早上 8:00 戳一下</h3>
+          <p>這是流程的起點。它的工作只有一個——時間到了就發動下游。你可以設每小時、每天固定時間、每週一 9:00、每月 1 號等等。</p>
+        </li>
+        <li>
+          <h3>Google Calendar 積木：抓今天所有事件</h3>
+          <p>用你的 Google 帳號連上，跟它說「幫我抓今天 00:00 到 23:59 的所有事件」。它會沿著線把一筆一筆事件（名稱、時間、地點）送給下一塊。</p>
+        </li>
+        <li>
+          <h3>Slack 積木：把清單傳到指定頻道</h3>
+          <p>接住上一塊送來的事件清單，組成一則訊息，貼到你 Slack 的某個頻道（或私訊給你自己）。</p>
+        </li>
+      </ol>
+      <p>三塊積木、兩條線，就搞定「每天早上自動貼行事曆」這件事。這個具體怎麼做，我們會在<a href="ch8_first_workflow.html">第 8 章</a>手把手帶你拉一次。這裡先讓你有個感覺：一條 workflow 通常就三到七塊積木，長不到哪去。</p>
+    </section>
+
+    <section id="compare" data-nav="跟 Zapier/Make 比">
+      <h2 data-icon="compare">n8n vs Zapier vs Make vs Power Automate</h2>
+      <p>市面上做這類事的工具不只 n8n。你可能聽過或用過其中一家。這張表把四家一起攤開比：</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>比較項目</th>
+            <th>n8n</th>
+            <th>Zapier</th>
+            <th>Make（原 Integromat）</th>
+            <th>Power Automate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>畫面型態</td>
+            <td>Node graph 節點圖（左右流）</td>
+            <td>Multi-step 上下步驟表</td>
+            <td>Scenarios 圓點連線</td>
+            <td>Flow 直式流程</td>
+          </tr>
+          <tr>
+            <td>費用模式</td>
+            <td>Community 版<strong>自架完全免費</strong>；Cloud 版月費</td>
+            <td>每個 task 計費（每執行一個節點就扣一次）</td>
+            <td>每個 operation 計費（比 Zapier 便宜）</td>
+            <td>按 flow 數 + 使用者授權</td>
+          </tr>
+          <tr>
+            <td>可自訂程度</td>
+            <td>有 <strong>Code node</strong>（JS/Python），什麼都能改</td>
+            <td>有限，只有 Code by Zapier 附加功能</td>
+            <td>有 Functions 模組，但受限</td>
+            <td>受限，需要靠 Power Fx 表達式</td>
+          </tr>
+          <tr>
+            <td>資料視覺化</td>
+            <td>每個節點都能點開看 JSON 進出</td>
+            <td>只顯示欄位對照</td>
+            <td>Bundle 視覺化不錯</td>
+            <td>需要 debug 模式</td>
+          </tr>
+          <tr>
+            <td>社群 &amp; 模板</td>
+            <td>幾千個公開 workflow、開源</td>
+            <td>幾千個 Zap 模板</td>
+            <td>模板較少</td>
+            <td>企業 template 為主</td>
+          </tr>
+          <tr>
+            <td>資料儲存位置</td>
+            <td>自架時<strong>資料都在自己伺服器</strong></td>
+            <td>Zapier 雲端</td>
+            <td>Make 雲端</td>
+            <td>微軟雲端</td>
+          </tr>
+          <tr>
+            <td>適合誰</td>
+            <td>技術友善公司、要客製、要省錢</td>
+            <td>個人使用者、小團隊、只用主流 SaaS</td>
+            <td>SMB、想要視覺漂亮</td>
+            <td>已經用 Microsoft 365 的企業</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout warn"><strong>注意：</strong>Zapier 好用，但每執行一個節點都在算錢。一條有 5 個節點的 workflow 每天跑 100 次，一個月就 15,000 tasks，很快超過免費額度。n8n Community 版自架的話，這條 workflow 一天跑 100 萬次都是 0 元。</div>
+      <p>簡單記結論：<strong>個人偶爾串一下用 Zapier、公司要大量跑用 n8n</strong>。你今天在公司之所以會看到這本手冊，就是這個理由。</p>
+    </section>
+
+    <section id="tips" data-nav="Woow 為什麼選 n8n">
+      <h2 data-icon="tips">Woow 為什麼選 n8n</h2>
+      <p>公司評估過 Zapier、Make、Power Automate 之後，最後決定用 n8n。理由不外乎這幾個：</p>
+      <ol class="steps">
+        <li>
+          <h3>資料留家裡</h3>
+          <p>我們選的是 Community edition（社群版）自架，n8n 跑在自己的伺服器上。客戶資料、內部訊息、報表都不會流到別家公司的雲端。這對接觸客戶名單、財務數字的工作很重要。</p>
+        </li>
+        <li>
+          <h3>費用可控</h3>
+          <p>Community 版<strong>完全免費</strong>、不限使用者、不限 workflow 數、不限執行次數。伺服器成本就是我們原本 IT 費用的一小部分，跟 Zapier / Make 每月幾百到幾千美元比起來省很多。</p>
+        </li>
+        <li>
+          <h3>節點種類最齊全</h3>
+          <p>n8n 官方 400+ 個整合節點，加上社群提供的節點，主流 SaaS 幾乎都有。沒有官方的，還有 <code>HTTP Request</code> 節點可以打任何 REST API（<a href="ch4_templates.html">第 4 章</a>會示範怎麼找）。</p>
+        </li>
+        <li>
+          <h3>可以寫程式補洞</h3>
+          <p>複雜到現成節點做不到的資料處理，可以放一個 <a href="ch20_code_node.html">Code node（第 20 章）</a>寫幾行 JavaScript 或 Python。這個「逃生口」是 Zapier / Power Automate 給不了的自由度。</p>
+        </li>
+        <li>
+          <h3>AI Agent 節點原生支援</h3>
+          <p>n8n 內建 LangChain 系列的 <a href="ch21_ai_agent.html">AI Agent（第 21 章）</a>節點——直接把 GPT / Claude 塞進 workflow 當一個「會判斷」的節點，做客服前哨、資料分類、報表摘要都好用。而且是走公司 LiteLLM gateway 統一管理，AI 費用集中一個地方看。</p>
+        </li>
+        <li>
+          <h3>跟公司既有生態合得來</h3>
+          <p>Woow 有 Home Assistant、有 Podman、有 k3s。n8n 用 Docker/Podman 一行指令就跑起來，還能透過 Webhook 跟 HA 互相打招呼（<a href="ch22_webhook.html">第 22 章</a>）——例如 HA 偵測到會議室有人就叫 n8n 幫忙開 Meet。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="advanced" data-nav="適合的場景">
+      <h2 data-icon="advanced">它適合的場景</h2>
+      <p>n8n 特別擅長這幾類任務。如果你手邊有類似需求，可以直接對號入座：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>場景</th><th>典型長相</th><th>會用到哪些節點</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>每日／每週彙整報告</td>
+            <td>每天 9:00 抓昨天的訂單、客服 ticket，整理成一張表 Slack 給主管。</td>
+            <td>Schedule Trigger、資料來源節點、Set、Slack</td>
+          </tr>
+          <tr>
+            <td>客戶通知自動化</td>
+            <td>客戶填完表單→自動寄確認信→自動加進 CRM→自動通知業務。</td>
+            <td>Form Trigger、Gmail、HubSpot、Slack</td>
+          </tr>
+          <tr>
+            <td>跨系統資料同步</td>
+            <td>Google Sheet 的新一列→自動同步到 Notion database 和 Airtable。</td>
+            <td>Google Sheets Trigger、Notion、Airtable</td>
+          </tr>
+          <tr>
+            <td>API 串接沒官方整合</td>
+            <td>你們用某個小眾的物流系統，n8n 沒現成節點——用 HTTP Request 節點自己打。</td>
+            <td>HTTP Request、Expression、Set</td>
+          </tr>
+          <tr>
+            <td>AI 客服前哨</td>
+            <td>網站聊天訊息進來→AI Agent 先分類、簡單問題直接答、複雜的轉真人。</td>
+            <td>Webhook、AI Agent、Slack</td>
+          </tr>
+          <tr>
+            <td>內部工具自動化</td>
+            <td>員工離職→自動關 Slack、Google Workspace、GitHub、Notion 帳號。</td>
+            <td>Webhook、各家 SaaS 節點</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="warning" data-nav="不適合的場景">
+      <h2 data-icon="warning">它不適合的場景</h2>
+      <p>誠實講，n8n 也不是萬能。以下情境你硬要用 n8n，會踩雷：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>不適合的場景</th><th>為什麼</th><th>該用什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>高頻交易（每秒幾百次）</td>
+            <td>n8n 一次執行有啟動成本，不是做即時毫秒級運算的引擎。</td>
+            <td>寫成專屬服務（Go / Node.js）</td>
+          </tr>
+          <tr>
+            <td>需要 SLA 99.99% 的關鍵營運流程</td>
+            <td>Community 自架版沒有官方保障。掛掉靠公司 IT 修。</td>
+            <td>Enterprise 版或商用 iPaaS</td>
+          </tr>
+          <tr>
+            <td>大量 CPU / 資料運算</td>
+            <td>n8n 的 Code node 適合輕度處理，不是拿來跑 ETL 幾千萬列的引擎。</td>
+            <td>Airflow、Dagster、dbt</td>
+          </tr>
+          <tr>
+            <td>非常複雜的商業邏輯</td>
+            <td>一條 workflow 超過 30 個節點、有多層巢狀分支就會失控。</td>
+            <td>該寫成正式應用程式了</td>
+          </tr>
+          <tr>
+            <td>面向終端使用者的 App</td>
+            <td>n8n 是後台自動化，不是給客戶點的前端介面。</td>
+            <td>Retool、AppSmith、自己刻</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>觀念：</strong>會不會「所有東西都用 n8n 做」？——不會，也不該。它是<strong>膠水</strong>，把你已經在用的工具接起來；它不是用來取代那些工具本身。</div>
+    </section>
+
+    <section id="plan" data-nav="這本書怎麼讀">
+      <h2 data-icon="plan">這本書怎麼讀</h2>
+      <p>22 章分成 7 個部分，你可以照順序讀，也可以挑要的看。</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>部分</th><th>章節</th><th>你會拿到什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. 起步認識</td>
+            <td>ch1 – ch3</td>
+            <td>知道 n8n 是什麼、登入 Woow n8n、認得工作區每一塊區域。</td>
+          </tr>
+          <tr>
+            <td>2. 從別人做好的起步</td>
+            <td>ch4 – ch6</td>
+            <td>用 Templates gallery、匯入 JSON、動一動別人做好的 workflow。這是最快看到成果的路線。</td>
+          </tr>
+          <tr>
+            <td>3. 動手做第一個</td>
+            <td>ch7 – ch10</td>
+            <td>從零拉一條 workflow：早上把行事曆推 Slack。認識三種節點、三種觸發時機、item 資料流。</td>
+          </tr>
+          <tr>
+            <td>4. 常用整合</td>
+            <td>ch11 – ch14</td>
+            <td>Slack、Gmail、Google 表格、HTTP Request、Credentials 管理、Expression 抓資料。</td>
+          </tr>
+          <tr>
+            <td>5. 流程控制</td>
+            <td>ch15 – ch17</td>
+            <td>IF/Switch 分支、Merge/Split 多筆處理、錯誤處理與 Retry。</td>
+          </tr>
+          <tr>
+            <td>6. 資料整形與重用</td>
+            <td>ch18 – ch19</td>
+            <td>Set/Edit Fields 節點、把常用邏輯抽成 Sub-workflow。</td>
+          </tr>
+          <tr>
+            <td>7. 拔高進階</td>
+            <td>ch20 – ch22</td>
+            <td>Code node 寫幾行 JS、AI Agent、Webhook 讓外部打進來。</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout tip"><strong>提示：</strong>趕時間就 <strong>ch1 → ch2 → ch4 → ch8 → ch10</strong> 這條最小可用路徑，一個下午能讓你做出第一條會跑的 workflow。愛研究就一路讀，還可以看附錄 C 的底層架構。</div>
+    </section>
+
+    <section id="troubleshoot" data-nav="常見疑慮">
+      <h2 data-icon="troubleshoot">常見疑慮（開始前想清楚）</h2>
+      <p>還沒動手之前，可能你腦裡有這些問號。先在這裡回答，免得你邊做邊分心。</p>
+      <ol class="steps">
+        <li>
+          <h3>公司想給我 Zapier 帳號比較好吧？</h3>
+          <p>Zapier UX 更手把手沒錯，但一個常見的行銷團隊 use case（每天處理 500 筆表單 × 每筆 3 個 task = 45,000 tasks/月）Zapier 起碼 Team 方案月費幾百美元起跳。Woow n8n 自架版跑同樣的量是 0 元。學 n8n 對你個人來說也是履歷上的加分——它是目前市面上最紅的開源自動化平台。</p>
+        </li>
+        <li>
+          <h3>我完全沒寫過程式，我行嗎？</h3>
+          <p>行。<strong>本書前 15 章不用寫任何程式</strong>。你只要會用滑鼠拖節點、在欄位填字。第 20 章的 Code node 是進階選項，就算你永遠不用也能做出 80% 的自動化。</p>
+        </li>
+        <li>
+          <h3>n8n 掛了誰負責？</h3>
+          <p>IT 部門負責平台運維（伺服器、備份、升級）。你負責的是「workflow 內容」——就跟你不用管 Google Docs 的伺服器一樣，你只要專心把文件寫好。真的掛了就開 IT 單。</p>
+        </li>
+        <li>
+          <h3>別的部門會看到我的 workflow 嗎？</h3>
+          <p>看你放哪裡：放 <strong>Personal folder</strong>（個人資料夾）只有你自己看得到；放 <strong>Workspace</strong>（工作區）就是團隊共用，同 workspace 成員都能看和編輯。存放位置和權限的細節在<a href="ch13_credentials.html">第 13 章</a>會講。</p>
+        </li>
+        <li>
+          <h3>我做壞了會不會弄爆線上系統？</h3>
+          <p>n8n 有 <strong>Manual 執行</strong>（手動觸發）跟 <strong>Active/Inactive 開關</strong>兩層保護。你在 Inactive 狀態下想試幾百次都行，只有你按 Activate 才會開始按排程或 Webhook 觸發跑。第一次上線建議先 Manual 跑幾次確認，再打開 Active。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>n8n 是免費的嗎？</summary>
+        <div class="body">
+          <p>看版本：</p>
+          <ul>
+            <li><strong>Community edition（社群版）</strong>：完全免費、開源、自架，我們公司走的是這條路。不限使用者、不限 workflow、不限執行次數。</li>
+            <li><strong>Cloud edition（雲端版）</strong>：n8n 官方託管，月費從 US$20 起，按每月 executions 數收費。你不想自架的話可以選。</li>
+            <li><strong>Enterprise（企業版）</strong>：加 SSO、SAML、audit log、SLA 支援，價格談。</li>
+          </ul>
+          <p>Woow 用的是 Community 版自架在 <code>n8n.woowtech.io</code>，你完全不用擔心「用多了要不要加購」的問題。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>那跟 IFTTT 一樣嗎？</summary>
+        <div class="body">
+          <p>方向類似但等級差很多。IFTTT（"If This Then That"）是消費者取向的迷你自動化——「太陽下山開燈」「按讚就存到 Pocket」，一條規則只有一個觸發、一個動作。n8n 是專業級的：一條 workflow 可以有幾十個節點、分支、迴圈、錯誤處理、AI 判斷。IFTTT 是玩具、n8n 是工具。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>我一定要學程式嗎？</summary>
+        <div class="body">
+          <p>不用。本書前 15 章教的所有東西都是「拖節點、填欄位」的層級，你點滑鼠就行。到<a href="ch14_expressions.html">第 14 章 Expression</a>會出現一點點類似 <code>{{ $json.email }}</code> 這種語法，但那也是照著範例套。真的想深入的話再看<a href="ch20_code_node.html">第 20 章 Code node</a>。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>AI 節點是不是要另外付錢？</summary>
+        <div class="body">
+          <p>n8n 節點本身免費，但你叫 AI 幫你想事情的時候，模型（OpenAI GPT、Claude、Gemini 等）是外部服務、要付 API 費用。Woow 這邊統一走公司內部的 LiteLLM gateway，所有 AI 呼叫集中計費、集中管理，你在 <a href="ch21_ai_agent.html">AI Agent（第 21 章）</a>裡選 Woow LiteLLM 的 credential 就好，不用自己申請 OpenAI 帳號。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>n8n 跟 Make 都是視覺化拖節點的，長得有像嗎？</summary>
+        <div class="body">
+          <p>畫面風格接近但邏輯不同。Make 是圓點連線、資料是一包一包的 bundles；n8n 是節點左右流、資料是 items 陣列，可以在節點上直接點開看每一筆 JSON。用過 Make 的人會覺得 n8n 更好 debug——因為每個節點的輸入輸出都攤在眼前。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>我的 workflow 資料會不會外流？</summary>
+        <div class="body">
+          <p>Woow n8n 是自架的（就在公司自己的伺服器上），你的 workflow 定義、執行歷史、credentials 全都存在公司伺服器裡，沒有跟 n8n 官方或任何第三方分享。credentials 用 AES 加密存資料庫。要出公司的資料只有你自己在 workflow 裡明確叫它出去（例如打 Slack、寄 Gmail）才會出去。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>下一步做什麼？</summary>
+        <div class="body">
+          <p>去<a href="ch2_login.html">第 2 章</a>登入 <code>n8n.woowtech.io</code>，拿到你自己的帳號、看看主頁長什麼樣。這章讀完你腦裡有輪廓就夠了——n8n 是「拼樂高的自動化」，公司選它是因為便宜、資料留家裡、可擴充。剩下的都是動手時的事。</p>
+        </div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev disabled" href="index.html">
+        <span class="label">← 上一章</span>
+        <span class="title">回目錄</span>
+      </a>
+      <a class="next" href="ch2_login.html">
+        <span class="label">下一章 →</span>
+        <span class="title">02 · 打開 Woow n8n</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>《Woow n8n 入住指南》由 <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer>
+  </main>
+</div>
+<script src="assets/js/toc.js"></script>
+</body>
+</html>

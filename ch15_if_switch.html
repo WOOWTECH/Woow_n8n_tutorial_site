@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第 15 章 · IF / Switch：條件分支 · Woow n8n 入住指南</title>
+  <meta name="description" content="n8n 條件分支節點：IF（二分）／Switch（多分）、比較運算子、多條件組合、每個分支接不同下游。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://woowtech.github.io/Woow_n8n_tutorial_site/ch15_if_switch.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="第 15 章 · IF / Switch：條件分支 · Woow n8n 入住指南" />
+  <meta property="og:description" content="n8n 條件分支節點：IF（二分）／Switch（多分）、比較運算子、多條件組合、每個分支接不同下游。" />
+  <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch15_if_switch.html" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="第 15 章 · IF / Switch：條件分支 · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="n8n 條件分支節點：IF（二分）／Switch（多分）、比較運算子、多條件組合、每個分支接不同下游。" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <h2>章節</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li><a href="ch7_node_types.html">三種節點</a></li>
+      <li><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li><a href="ch15_if_switch.html" class="active">IF / Switch 分支</a></li>
+      <li><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li><a href="ch18_set_function.html">資料整形</a></li>
+      <li><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li><a href="ch20_code_node.html">Code node</a></li>
+      <li><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>本章</h2>
+      <a href="#why">為什麼要學這個</a>
+      <a href="#concept">IF vs Switch</a>
+      <a href="#steps">加第一個 IF 節點</a>
+      <a href="#what">Condition 型別</a>
+      <a href="#advanced">多條件 AND / OR</a>
+      <a href="#modes">Switch 節點詳解</a>
+      <a href="#tips">常見實例</a>
+      <a href="#compare">巢狀分支</a>
+      <a href="#troubleshoot">常見卡關</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>附錄</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="chapter-header">
+      <div class="kicker">第 15 章</div>
+      <h1>IF / Switch：條件分支</h1>
+      <p class="lead">workflow 不會每次都做同一件事。「金額大於 1,000 才通知經理」「客戶是 VIP 才寄致謝信」「表單有勾同意才存資料」——這種「看資料再決定走哪條路」的能力，n8n 靠兩個節點做到：<strong>IF</strong>（二選一）跟 <strong>Switch</strong>（多選一）。這章把兩個節點的差別、設定方式、常見坑一次講清楚，讓你以後看到「有時候要 A、有時候要 B」的需求，腦袋自動浮出解法。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼要學這個">
+      <h2 data-icon="why">為什麼要學條件分支</h2>
+      <p>到<a href="ch14_expressions.html">第 14 章</a>為止，你會用 <code>{{ $json.amount }}</code> 把上一個節點的資料塞進下一個節點——不錯，但這只是「原封不動地往下傳」。真實的自動化幾乎每一條都會有「岔路」：</p>
+      <ul>
+        <li>訂單來了：金額 <strong>大於 1,000</strong> 通知經理，其他丟到日常清單就好。</li>
+        <li>客戶名單進來：VIP 走「寄致謝信＋建 Slack 頻道」，普通客戶只寄自動回覆。</li>
+        <li>表單提交：勾了同意條款才存資料庫，沒勾就寄「請重新填」的信。</li>
+        <li>系統告警：等級 <strong>critical</strong> 打電話、<strong>warning</strong> 發 Slack、<strong>info</strong> 只寫 log。</li>
+      </ul>
+      <p>這些「看資料決定走哪條路」的邏輯就叫<strong>條件分支（conditional branching）</strong>，寫程式的人會用 <code>if / else</code> 或 <code>switch / case</code>；在 n8n 裡，你不寫程式，直接放 <strong>IF 節點</strong>或 <strong>Switch 節點</strong>，用視覺化的方式拉線接下游——資料進來、節點判斷、走上面或下面（IF）或走哪一號 output（Switch）。</p>
+      <div class="callout"><strong>觀念：</strong>IF 跟 Switch 都是 n8n 的 <strong>Core 節點</strong>（<a href="ch7_node_types.html">第 7 章</a>講過三大類：Trigger / Action / Core）。它們不呼叫任何外部 API、不吃你的 SaaS 額度，純粹在 workflow 內部做流程控制，執行速度幾乎是零成本。</p>
+    </section>
+
+    <section id="concept" data-nav="IF vs Switch">
+      <h2 data-icon="concept">IF vs Switch：哪個時候用哪個</h2>
+      <p>兩個節點都在做「判斷 → 分路」，選錯不會壞，但用對會讓 canvas 乾淨很多。一句話對照：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>特徵</th><th>IF 節點</th><th>Switch 節點</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>幾個 output</td>
+            <td><strong>固定兩個</strong>：true（上）、false（下）</td>
+            <td><strong>可自訂多個</strong>（實務上最多 4 個 rule，Expression 模式無上限）</td>
+          </tr>
+          <tr>
+            <td>回答的問題</td>
+            <td>一個 yes/no（例：「金額 &gt; 1000 嗎？」）</td>
+            <td>一個資料對應多種可能（例：「tier 是 gold、silver 還是 bronze？」）</td>
+          </tr>
+          <tr>
+            <td>心智模型</td>
+            <td>程式的 <code>if / else</code></td>
+            <td>程式的 <code>switch / case</code>；像大樓電梯，按幾樓去幾樓</td>
+          </tr>
+          <tr>
+            <td>條件寫法</td>
+            <td>可加多個條件，用 AND / OR 組合</td>
+            <td>每個 output 各自寫條件（Rules 模式）或直接用一個 Expression 決定去哪號（Expression 模式）</td>
+          </tr>
+          <tr>
+            <td>該怎麼挑</td>
+            <td>只有「要 / 不要」兩條路走時</td>
+            <td>三條路以上、或明顯的分類（等級、狀態、來源）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip"><strong>提示：</strong>「三種以上分類」不是硬規則。你可以疊三個 IF 節點（第一個判 gold、下面接第二個判 silver…），但這會讓 canvas 變成階梯狀，讀起來很累。同一個欄位的多種可能，一律用 Switch 才漂亮。</div>
+    </section>
+
+    <section id="steps" data-nav="加第一個 IF 節點">
+      <h2 data-icon="steps">動手做：加第一個 IF 節點</h2>
+      <p>我們拿一個具體情境：<strong>訂單金額大於 1,000 就往「通知經理」走，否則往「日常紀錄」走</strong>。假設你的上游節點（可能是 Webhook、Google Sheets、Airtable）已經把訂單以 <code>{ "amount": 1500, "customer": "台北文具行" }</code> 這種 JSON 傳下來。</p>
+
+      <ol class="steps">
+        <li>
+          <h3>在 canvas 上加 IF 節點</h3>
+          <p>在上游節點右邊的 <strong>+</strong> 圖示點一下（或空白處按 <kbd>Tab</kbd>）叫出節點抽屜 → 搜尋框輸入 <code>if</code> → 點 <strong>If</strong>（在 Flow 分類底下）。節點會落到 canvas 上，自動連好上游。</p>
+        </li>
+        <li>
+          <h3>設第一個 Condition</h3>
+          <p>雙擊 IF 節點打開右邊面板。你會看到一個 <strong>Conditions</strong> 區塊，預設有一列空的比較。三個欄位由左到右填：</p>
+          <ul>
+            <li><strong>Value 1</strong>（左值）：點欄位進入 Expression 模式，寫 <code>{{ $json.amount }}</code>——這是從上游拿 <code>amount</code> 欄位。</li>
+            <li><strong>Operator</strong>（中間）：先在下拉左邊選型別 <code>Number</code>，右邊再選 <code>is greater than</code>（有些版本寫 <code>larger</code>）。</li>
+            <li><strong>Value 2</strong>（右值）：填 <code>1000</code>（純數字，不用引號）。</li>
+          </ul>
+        </li>
+        <li>
+          <h3>看節點右邊多了兩條 output 線</h3>
+          <p>設好 condition 後，IF 節點右側會分出兩條 output：上面標 <strong>true</strong>（綠色）、下面標 <strong>false</strong>（紅色）。這就是你可以拉線的兩條路。</p>
+        </li>
+        <li>
+          <h3>分別接不同下游節點</h3>
+          <p>從 <strong>true</strong> 那個圓點拖一條線出去，接你的「通知經理」節點（例：Slack 傳訊息到 #manager 頻道）。再從 <strong>false</strong> 拖一條線出去，接「日常紀錄」節點（例：Google Sheets Append Row）。canvas 現在會分岔成兩條路。</p>
+        </li>
+        <li>
+          <h3>存檔＋按 Execute Workflow 測</h3>
+          <p><kbd>Ctrl</kbd>+<kbd>S</kbd> 存檔。canvas 右上按 <strong>Execute Workflow</strong>。IF 節點跑完會用<strong>綠框</strong>標示它走的是哪條 output——你看訂單金額 1500 &gt; 1000，理應走 true，實際看到 Slack 節點也跟著亮起來就對了。</p>
+        </li>
+        <li>
+          <h3>再測一次「應該走 false」的資料</h3>
+          <p>把上游 mock 資料改成 <code>amount: 800</code> 再跑一次，這次應該只有 Google Sheets Append 那條亮，Slack 那條沒動。兩條都測過，這個 IF 才算真的驗證完。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="what" data-nav="Condition 型別">
+      <h2 data-icon="what">IF 節點的四種資料型別 Condition</h2>
+      <p>IF 節點的 <strong>Operator</strong> 下拉分兩層：左邊先挑<strong>資料型別</strong>，右邊才會顯示對應的比較運算子。挑對型別很重要——挑錯的話「看起來對，跑起來永遠是 false」，是新手第一名踩雷。</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>型別</th><th>常見 Operator</th><th>Value 2 要填什麼</th><th>例子</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>String</strong>（字串）</td>
+            <td>equals / not equals / contains / does not contain / starts with / ends with / matches regex</td>
+            <td>字串（可含 Expression）</td>
+            <td>Value 1 <code>{{ $json.status }}</code>、Operator <code>equals</code>、Value 2 <code>paid</code></td>
+          </tr>
+          <tr>
+            <td><strong>Number</strong>（數字）</td>
+            <td>equals / not equals / is greater than / is less than / is greater than or equal / is less than or equal</td>
+            <td>純數字（不加引號）</td>
+            <td>Value 1 <code>{{ $json.amount }}</code>、Operator <code>is greater than</code>、Value 2 <code>1000</code></td>
+          </tr>
+          <tr>
+            <td><strong>Boolean</strong>（布林）</td>
+            <td>is true / is false / equals / not equals</td>
+            <td>對 is true / is false 不用填；equals 填 <code>true</code> 或 <code>false</code></td>
+            <td>Value 1 <code>{{ $json.consent }}</code>、Operator <code>is true</code></td>
+          </tr>
+          <tr>
+            <td><strong>Date &amp; Time</strong>（日期）</td>
+            <td>is after / is before / is equal / is between</td>
+            <td>ISO 日期字串或 Expression（例：<code>{{ $now }}</code>）</td>
+            <td>Value 1 <code>{{ $json.createdAt }}</code>、Operator <code>is after</code>、Value 2 <code>2026-01-01</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>另外還有 <strong>Array</strong>（陣列，例 <code>contains</code>、<code>length equals</code>）跟 <strong>Object</strong>（物件），比較少用，這裡先跳過。</p>
+
+      <div class="callout warn"><strong>注意（第一名踩雷）：</strong>資料明明是字串 <code>"1500"</code>，你選了 <code>Number → is greater than → 1000</code>——結果永遠是 false。因為<em>字串 1500</em> 不是<em>數字 1500</em>，n8n 不會幫你自動轉。修法：Value 1 改成 <code>{{ Number($json.amount) }}</code> 強制轉型，或者上游用 <a href="ch14_expressions.html">Expression</a> / <a href="ch18_set_function.html">Set 節點</a>先轉好。看到「條件應該對卻走 false」，八成就是這個坑。</div>
+    </section>
+
+    <section id="advanced" data-nav="多條件 AND / OR">
+      <h2 data-icon="advanced">多條件組合：AND / OR</h2>
+      <p>一個 IF 節點裡可以放<strong>好幾個 condition</strong>，然後決定它們的組合方式。面板下面有一個 <strong>Combine</strong>（或叫 <strong>Combinator</strong>）下拉，兩個選項：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>Combinator</th><th>意思</th><th>什麼時候用</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>AND</strong>（且）</td>
+            <td>所有 condition 都要為 true，整個 IF 才算 true</td>
+            <td>「金額大 <em>而且</em> 付款狀態是 paid 才通知」</td>
+          </tr>
+          <tr>
+            <td><strong>OR</strong>（或）</td>
+            <td>只要有一個 condition 為 true，整個 IF 就算 true</td>
+            <td>「客戶是 VIP <em>或</em> 訂單超過 5,000 都要通知經理」</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>範例：訂單金額大於 1,000 AND 付款狀態是 paid</h3>
+      <p>需求是「不只要金額大，還得真的收到錢才通知經理」。開 IF 節點，加兩個 condition：</p>
+      <ul>
+        <li>Condition 1：Value 1 <code>{{ $json.amount }}</code>、Operator <code>Number is greater than</code>、Value 2 <code>1000</code></li>
+        <li>Condition 2：Value 1 <code>{{ $json.status }}</code>、Operator <code>String equals</code>、Value 2 <code>paid</code></li>
+        <li>Combine：<code>AND</code></li>
+      </ul>
+      <p>兩個都滿足才走 true。如果 status 是 <code>pending</code>，即使金額 5,000 也會走 false。</p>
+
+      <h3>範例：VIP 客戶 OR 高額訂單</h3>
+      <p>需求是「特別關照」——只要滿足其一就走 true：</p>
+      <ul>
+        <li>Condition 1：Value 1 <code>{{ $json.tier }}</code>、Operator <code>String equals</code>、Value 2 <code>vip</code></li>
+        <li>Condition 2：Value 1 <code>{{ $json.amount }}</code>、Operator <code>Number is greater than</code>、Value 2 <code>5000</code></li>
+        <li>Combine：<code>OR</code></li>
+      </ul>
+
+      <div class="callout tip"><strong>提示：</strong>要「A AND (B OR C)」這種混合邏輯，一個 IF 節點的 Combinator 是全域套用（要嘛全 AND 要嘛全 OR），做不出來。這時候有兩招：(1) 串兩個 IF 節點（第一個判 A，true 那條再接第二個 IF 判 B OR C）；(2) Value 1 改用 Expression 寫一整段 JS 判斷式，例 <code>{{ $json.a && ($json.b || $json.c) }}</code>，Operator 選 <code>Boolean is true</code>。第二招比較優雅，但要會寫一點 JS。</div>
+    </section>
+
+    <section id="modes" data-nav="Switch 節點詳解">
+      <h2 data-icon="modes">Switch 節點詳解：兩種模式</h2>
+      <p>Switch 節點打開來會先問你 <strong>Mode</strong>：<code>Rules</code> 還是 <code>Expression</code>。這是 Switch 跟 IF 最大的差別，兩種模式的思維完全不一樣。</p>
+
+      <h3>Mode 1：Rules（規則模式，最常用）</h3>
+      <p>像很多個 IF 疊起來——每個 <strong>Rule</strong> 都有自己的 condition（跟 IF 節點一樣的 Operator 系統），滿足哪個 Rule 就走對應那個 output。加 Rule 的方法：面板上按 <strong>Add Routing Rule</strong>，就多出一個 output（節點右邊會多一個圓點）。</p>
+
+      <p><strong>例子</strong>：客戶等級分三種，不同下游處理。上游丟下來的 item 是 <code>{ "tier": "gold", ... }</code>。設 Switch 節點：</p>
+      <ul>
+        <li>Rule 0：Value 1 <code>{{ $json.tier }}</code>、Operator <code>String equals</code>、Value 2 <code>gold</code> → output 0 接「寄致謝信＋通知業務」</li>
+        <li>Rule 1：Value 1 <code>{{ $json.tier }}</code>、Operator <code>String equals</code>、Value 2 <code>silver</code> → output 1 接「寄折扣券」</li>
+        <li>Rule 2：Value 1 <code>{{ $json.tier }}</code>、Operator <code>String equals</code>、Value 2 <code>bronze</code> → output 2 接「寄一般歡迎信」</li>
+      </ul>
+      <p>Rules 之外可以打開 <strong>Fallback Output</strong>（在 Options 底下），沒對到任何 rule 的 item 會走這條路——很好用，通常接一個「未分類」的 log 或告警節點。</p>
+
+      <h3>Mode 2：Expression（表達式模式，進階）</h3>
+      <p>直接寫一個 Expression 回傳<strong>要走 output 幾號</strong>（從 0 開始數）。這比 Rules 模式簡潔，但需要你會用 Expression。</p>
+
+      <p><strong>同上例</strong>用 Expression 模式：</p>
+      <pre class="code-block"><code>{{ { "gold": 0, "silver": 1, "bronze": 2 }[$json.tier] }}</code></pre>
+      <p>意思是「查表：<code>tier</code> 是 gold 走 output 0、silver 走 output 1、bronze 走 output 2」。回傳的數字對應 canvas 右側從上到下第幾條輸出線。<strong>Number of Outputs</strong> 欄位要先設好（例：3），節點才會有那麼多條線可以接。</p>
+
+      <div class="callout"><strong>觀念：</strong>Rules 模式對新手友善，看 canvas 就能猜出邏輯；Expression 模式對進階者省設定時間，尤其分類很多、規則單純（一對一映射）的時候。兩種都能達成一樣的效果，選你順手的即可。</div>
+    </section>
+
+    <section id="tips" data-nav="常見實例">
+      <h2 data-icon="tips">常見實例對照表</h2>
+      <p>把 IF / Switch 常見用法整成一張表，看你的需求對到哪一列，直接抄就好：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>情境</th><th>用哪個節點</th><th>條件設定</th><th>下游怎麼接</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>新表單來 → 有勾同意才存 Sheet，沒勾就寄「請重新填」</td>
+            <td>IF</td>
+            <td>Value 1 <code>{{ $json.consent }}</code>、Operator <code>Boolean is true</code></td>
+            <td>true → Google Sheets Append；false → Gmail Send Message</td>
+          </tr>
+          <tr>
+            <td>訂單金額分級通知：&lt;1000 助理、1000-5000 組長、&gt;5000 經理</td>
+            <td>Switch（Rules）</td>
+            <td>Rule 0 <code>amount &lt; 1000</code>、Rule 1 <code>amount is between 1000, 5000</code>、Rule 2 <code>amount &gt; 5000</code></td>
+            <td>各接一個 Slack 節點，target 頻道不同</td>
+          </tr>
+          <tr>
+            <td>Gmail Trigger 收信 → 依寄件人 domain 分流到不同資料夾</td>
+            <td>Switch（Rules）</td>
+            <td>Value 1 <code>{{ $json.from.split('@')[1] }}</code>、每個 Rule String equals 一個 domain</td>
+            <td>各接 Gmail Add Label 或 Move Message</td>
+          </tr>
+          <tr>
+            <td>系統告警：等級 critical 打電話、warning 發 Slack、info 只寫 log</td>
+            <td>Switch（Expression）</td>
+            <td>Expression：<code>{{ { critical: 0, warning: 1, info: 2 }[$json.level] }}</code></td>
+            <td>output 0 → HTTP Request 打電話 API；output 1 → Slack；output 2 → HTTP Request 寫 log</td>
+          </tr>
+          <tr>
+            <td>訂單狀態 = paid 且金額 &gt; 1000 才通知經理</td>
+            <td>IF（多條件 AND）</td>
+            <td>兩個 condition：status equals paid、amount &gt; 1000；Combine AND</td>
+            <td>true → Slack 通知經理；false → 不接任何節點（沒動作）</td>
+          </tr>
+          <tr>
+            <td>Webhook 收 payload → 依 <code>event_type</code> 走不同流程</td>
+            <td>Switch（Rules）</td>
+            <td>每個 Rule 一個 event_type 字串</td>
+            <td>各自接對應的處理節點鏈；記得打開 Fallback 接一個「未知事件」告警</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip"><strong>提示：</strong>IF 節點的 false output 如果<em>不需要</em>做任何事，可以直接不接任何節點——item 走到那裡就自然停下，不會報錯，也不會影響 true 那條。這是很常見的「什麼都不做」寫法。</div>
+    </section>
+
+    <section id="compare" data-nav="巢狀分支">
+      <h2 data-icon="compare">IF 後面又接 IF：巢狀分支可以，但要克制</h2>
+      <p>n8n 沒有規定分支不能再分支——IF 的 true 那條下游接一個 Switch，Switch 的某個 output 又接一個 IF，都合法。但視覺上會變成很多岔路，過幾個月你自己回來看都會頭大。</p>
+
+      <h3>什麼時候可以放心巢狀</h3>
+      <ul>
+        <li>兩層以內、每層都很單純（例：先 IF 判 VIP，VIP 那條再 Switch 依國家分區）——canvas 還讀得懂。</li>
+        <li>下游動作只有兩三步就結束，不是又拉一大串。</li>
+      </ul>
+
+      <h3>什麼時候該抽 Sub-workflow</h3>
+      <ul>
+        <li>三層以上的巢狀分支——canvas 變成樹狀圖，肉眼難以追。</li>
+        <li>同一個判斷邏輯在好幾條 workflow 都出現（例：「這個客戶是不是 VIP」）——抽成 sub-workflow，一改全改，<a href="ch19_subworkflow.html">第 19 章</a>會講。</li>
+        <li>某個分支下游超過 5 個節點——這條分支自成一個小工作流，抽出來單獨測比較好。</li>
+      </ul>
+
+      <div class="callout warn"><strong>注意：</strong>巢狀 IF 每一層都會拆一次 items 陣列（走 true 的 items 跟走 false 的 items 各自往下）。如果你上游有很多筆資料，最後每一條分支拿到的 items 數量可能都不一樣，下游節點要小心處理「沒有 item」的情況——這常常導致「上游明明有 100 筆，最後 Slack 只發了 3 則」的困惑。</div>
+    </section>
+
+    <section id="troubleshoot" data-nav="常見卡關">
+      <h2 data-icon="troubleshoot">IF / Switch 常見卡關</h2>
+      <p>條件分支不動、走錯邊、分不出來——把下面對照一次，八成能自己救。</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>症狀</th><th>可能原因</th><th>怎麼救</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>「兩條分支都走了」</td>
+            <td><strong>不會發生</strong>。IF 是 XOR，每一筆 item 只會走 true 或 false 其中一條。你看到兩邊都亮綠，是因為<em>上游有多筆 items</em>，其中一部分走 true、一部分走 false，兩條下游各拿到自己那份。</td>
+            <td>點 IF 節點看每條 output 的 items 數，加起來應該等於上游 items 總數</td>
+          </tr>
+          <tr>
+            <td>「條件應該對，卻永遠走 false」</td>
+            <td>資料型別跟 Operator 型別不符（例：資料是字串 <code>"1500"</code>，你選 Number is greater than）</td>
+            <td>Value 1 加轉型：<code>{{ Number($json.amount) }}</code>、<code>{{ String($json.status) }}</code>；或上游用 Set 節點先轉好</td>
+          </tr>
+          <tr>
+            <td>「Switch 有些 item 消失了」</td>
+            <td>那些 item 沒對到任何 Rule，且你沒開 Fallback Output——n8n 就把它們丟掉了</td>
+            <td>面板 Options → 打開 <strong>Fallback Output</strong>，多出一條 output，接一個「未分類」節點（例：Slack 通知你、Sheet 記一筆）</td>
+          </tr>
+          <tr>
+            <td>「分支之後想合起來，讓下游只寫一遍」</td>
+            <td>這是正常需求，但需要 Merge 節點</td>
+            <td>兩條分支的末端拉去接同一個 <strong>Merge</strong> 節點（<a href="ch16_merge_split.html">第 16 章</a>整章講合流）</td>
+          </tr>
+          <tr>
+            <td>「Expression 模式的 Switch 顯示 output 編號無效」</td>
+            <td>Expression 回傳的數字超出 Number of Outputs 範圍（例設 3 個 output 卻回 5）</td>
+            <td>Expression 用查表或 clamp 保底：<code>{{ ({a:0,b:1,c:2}[$json.type]) ?? 0 }}</code>，找不到走 0</td>
+          </tr>
+          <tr>
+            <td>「IF 節點打開沒有 Conditions 區塊，只有一個空白面板」</td>
+            <td>版本差異或節點沒 load 完</td>
+            <td>把節點刪了重新加一次；或關掉 canvas 分頁重開 workflow</td>
+          </tr>
+          <tr>
+            <td>「用 String contains 沒對到，明明看得到字串裡有」</td>
+            <td>大小寫敏感（<code>contains</code> 是 case-sensitive）；或欄位前後有空白</td>
+            <td>Value 1 加 <code>{{ $json.text.toLowerCase().trim() }}</code>，Value 2 也用小寫</td>
+          </tr>
+          <tr>
+            <td>「Date is before/after 判斷永遠走 false」</td>
+            <td>Value 1 拿到的是字串日期，不是 Date 物件；n8n 有時候能自動轉、有時不能</td>
+            <td>Value 1 改成 <code>{{ DateTime.fromISO($json.createdAt) }}</code> 明確轉成 Luxon DateTime</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+
+      <details class="faq">
+        <summary>IF 之後我想「兩條都繼續走原本的流程」，怎麼寫？</summary>
+        <div class="body">如果兩條之後<strong>要做的事完全一樣</strong>，那你根本不需要 IF——直接讓上游接下游就好。IF 存在的目的就是「兩條要做不一樣的事」。如果你的需求是「兩條之後都要做同一件事、只是想加個標籤區分」，正確做法是：不用 IF，改用 <a href="ch18_set_function.html">Set 節點</a>加一個欄位（例 <code>tag = "vip"</code> 或 <code>"normal"</code>），下游再依這個欄位處理。這樣資料流不分岔，也保留了分類資訊。</div>
+      </details>
+
+      <details class="faq">
+        <summary>一個 workflow 太多 IF 會不會拖慢速度？</summary>
+        <div class="body">幾乎不會。IF / Switch 是純運算，不呼叫外部 API、不做 I/O，一個 IF 執行時間通常是<strong>毫秒級</strong>甚至更短。真正拖慢 workflow 的是 API 呼叫（Gmail、Sheets、HTTP Request 這些）跟大量 items 的迴圈。放 50 個 IF 都比多打一次 Gmail API 快。所以：需要幾個就放幾個，別為了節點少而硬把邏輯塞進 Code node。</div>
+      </details>
+
+      <details class="faq">
+        <summary>條件太複雜、UI 拉不出來，怎麼辦？</summary>
+        <div class="body">改用 <strong>Expression 模式</strong>——IF 節點的 Value 1 直接寫一整段 JavaScript 判斷式回傳 true/false，然後 Operator 選 <code>Boolean is true</code>。例子：<code>{{ $json.amount > 1000 && ($json.tier === "vip" || $json.paid) && !$json.blocked }}</code>——這種 A AND (B OR C) AND NOT D 混合邏輯，用 Expression 一行搞定。當然，能寫成清楚可讀的更好；真的很複雜就抽到 <a href="ch20_code_node.html">Code node</a> 裡處理，回傳 <code>{ shouldNotify: true }</code>，IF 再判 <code>{{ $json.shouldNotify }}</code>。</div>
+      </details>
+
+      <details class="faq">
+        <summary>IF 節點跑一次算一個 execution 嗎？會吃我的額度嗎？</summary>
+        <div class="body">「execution」有兩個層級，別搞混：(1) <strong>workflow-level execution</strong>：一次 Trigger 到底跑完算一次，跟裡面有幾個節點無關，這是 n8n Cloud 版計費的單位。(2) <strong>node-level execution</strong>：每個節點跑一次算它自己的一次，會出現在 Executions 詳情頁，方便你除錯。IF 節點<strong>只算 node-level</strong>，不會多花 workflow-level 額度。而且 IF 也<em>完全不呼叫任何 SaaS API</em>（不像 Gmail Send 會用一次 Gmail 配額），所以放再多都不會踩到外部服務的 rate limit。Woow n8n 是 self-host 版，兩種都不計費。</div>
+      </details>
+
+      <details class="faq">
+        <summary>Switch 最多能有幾個 output？IF 能有三個 output 嗎？</summary>
+        <div class="body">Switch 節點 Rules 模式的 UI 通常限制在 <strong>4 個 Rule</strong>（加上一個 Fallback 就是 5 條 output）；Expression 模式的 <strong>Number of Outputs</strong> 可以設更大（實務上 10 個以上就該考慮抽 sub-workflow 了）。IF 節點<strong>永遠只有 2 個 output</strong>（true / false），這是設計上的定義——想要三條路就直接用 Switch，不要用「IF 接 IF」硬湊，會很亂。</div>
+      </details>
+
+      <details class="faq">
+        <summary>可以在 IF / Switch 之後再合流嗎？</summary>
+        <div class="body">可以，但要用 <strong>Merge 節點</strong>（<a href="ch16_merge_split.html">第 16 章</a>整章講）。直接把兩條分支拉去接同一個下游節點，n8n 會把兩條的 items <em>合併</em>塞給下游——但要小心：合起來的順序不保證、欄位可能不一致。用 Merge 節點的 <code>Append</code> 或 <code>Combine</code> 模式明確控制怎麼合，比較保險。</div>
+      </details>
+
+      <details class="faq">
+        <summary>Switch 的 Rules 從上到下順序有影響嗎？</summary>
+        <div class="body">有——當一筆 item <strong>同時滿足多個 Rule</strong> 時（例：Rule 0 是「amount &gt; 100」、Rule 1 是「amount &gt; 1000」，一筆 amount=5000 兩個都符合），n8n 會走<strong>第一個對到的 Rule</strong>（依 UI 上從上到下的順序）。所以寫多個 Rule 時，把「最嚴格」的條件放上面、「最寬鬆」的放下面，才不會被寬鬆的那條先撈走。或者把每個 Rule 寫成互斥的（例：<code>amount is between 100, 999</code> / <code>amount is between 1000, 4999</code> / <code>amount &gt;= 5000</code>），根本不會撞到，順序也就無所謂。</div>
+      </details>
+
+      <details class="faq">
+        <summary>IF 節點的條件可以取上上一個節點的資料嗎？</summary>
+        <div class="body">可以。用 <code>{{ $node['節點名稱'].json.欄位 }}</code>——這是 <a href="ch14_expressions.html">第 14 章</a>教過的跨節點取值語法。例：<code>{{ $node['Webhook'].json.body.customer_id }}</code>。條件裡跨節點取值很常見（例：現在的節點是「查詢客戶」的結果，但你想用「Webhook 觸發時的原始 payload」做判斷）。注意節點名稱區分大小寫、中間有空白要保留。</div>
+      </details>
+
+      <details class="faq">
+        <summary>可以動態決定分支數量嗎（例：依上游資料才知道要幾條）？</summary>
+        <div class="body">不能。canvas 上的 output 數量是<em>設計時</em>寫死的，不會執行時才長出來。如果你的分類是動態的（例：「有幾種 tier 我事先不知道」），正確做法是：用 <a href="ch16_merge_split.html">Split In Batches 或 Item Lists</a> 把資料按 tier 分組，然後對每一組跑同一段下游邏輯（可能塞進 <a href="ch19_subworkflow.html">Sub-workflow</a>）——這比動態長 output 有彈性得多，也比較符合資料處理的思維。</div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="ch14_expressions.html">
+        <span class="label">← 上一章</span>
+        <span class="title">14 · Expression</span>
+      </a>
+      <a class="next" href="ch16_merge_split.html">
+        <span class="label">下一章 →</span>
+        <span class="title">16 · Merge / Split</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>《Woow n8n 入住指南》由 <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer>
+  </main>
+</div>
+<script src="assets/js/toc.js"></script>
+</body>
+</html>

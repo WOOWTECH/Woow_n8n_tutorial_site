@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第 7 章 · 三種節點：Trigger / Action / Core · Woow n8n 入住指南</title>
+  <meta name="description" content="n8n 節點抽屜分類：Trigger（觸發器）／Action（動作／整合）／Core（流程控制）三大類的意義與位置。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://woowtech.github.io/Woow_n8n_tutorial_site/ch7_node_types.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="第 7 章 · 三種節點：Trigger / Action / Core · Woow n8n 入住指南" />
+  <meta property="og:description" content="n8n 節點抽屜分類：Trigger（觸發器）／Action（動作／整合）／Core（流程控制）三大類的意義與位置。" />
+  <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch7_node_types.html" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="第 7 章 · 三種節點：Trigger / Action / Core · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="n8n 節點抽屜分類：Trigger（觸發器）／Action（動作／整合）／Core（流程控制）三大類的意義與位置。" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <h2>章節</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li><a href="ch7_node_types.html" class="active">三種節點</a></li>
+      <li><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li><a href="ch18_set_function.html">資料整形</a></li>
+      <li><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li><a href="ch20_code_node.html">Code node</a></li>
+      <li><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>本章</h2>
+      <a href="#why">為什麼要先分類</a>
+      <a href="#concept">Trigger 節點</a>
+      <a href="#what">Action 節點</a>
+      <a href="#detail">Core 節點</a>
+      <a href="#advanced">辨別技巧</a>
+      <a href="#tips">workflow 的節奏</a>
+      <a href="#search">抽屜怎麼找節點</a>
+      <a href="#troubleshoot">常見狀況排除</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>附錄</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="chapter-header">
+      <div class="kicker">第 7 章</div>
+      <h1>三種節點：Trigger / Action / Core</h1>
+      <p class="lead">前面六章你已經會登入 n8n、認得工作區、還會把別人做好的 workflow 抄過來改。從這章開始要動手拉自己的了——但在動手前，你得先看得懂節點抽屜。幾百個節點、十幾個分類看起來很嚇人，其實從功能角度只有三大類：<strong>開頭的（Trigger）</strong>、<strong>做事的（Action）</strong>、<strong>控制流程的（Core）</strong>。這章讀完你看任何 workflow 都是「哦這是 A 接 B 加點 C」。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼要先分類">
+      <h2 data-icon="why">為什麼要先分類</h2>
+      <p>你到<a href="ch3_workspace_tour.html">第 3 章</a>看過的節點抽屜——按 Canvas 空白處的 <strong>+</strong>、或右邊面板點 <strong>Add first step</strong>，那個從右邊滑出來的清單。裡面東西多到嚇人：</p>
+      <ul>
+        <li>官方節點 400+ 個（Slack、Gmail、Notion、Airtable、HubSpot、Stripe、GitHub…）</li>
+        <li>Core 節點 30+ 個（IF、Switch、Merge、Set、Code、Wait、Function…）</li>
+        <li>Trigger 節點另外還有一大排（Schedule、Webhook、每家 SaaS 都自帶一個 Trigger 版）</li>
+        <li>再加上 AI／LangChain 系列一整包（AI Agent、Chat Model、Memory、Vector Store…）</li>
+      </ul>
+      <p>你不用背這幾百個名字。真正需要的是——<strong>看到一個節點，兩秒內知道它屬於哪一類、能幹嘛</strong>。這樣看別人的 workflow 才不會霧煞煞，自己拉的時候才知道該去哪一區找。</p>
+      <div class="callout tip"><strong>提示：</strong>這章是純觀念章，沒有動手步驟。看完直接進<a href="ch8_first_workflow.html">第 8 章</a>拉你的第一條 workflow，就會自然而然用到這三類節點的分工。</div>
+      <p>先講結論，一句話對照——</p>
+      <ul>
+        <li><strong>Trigger</strong> = workflow 的「開頭」，決定<strong>什麼時候會跑</strong></li>
+        <li><strong>Action</strong> = workflow 的「做事」，跟外部服務（Slack、Sheet、Notion…）互動</li>
+        <li><strong>Core</strong> = workflow 的「控制」，管資料流向、條件分支、等待、迴圈</li>
+      </ul>
+      <p>下面三節分別細講。</p>
+    </section>
+
+    <section id="concept" data-nav="Trigger 節點">
+      <h2 data-icon="concept">Trigger 節點：workflow 的開頭</h2>
+      <p>每一條 workflow 都需要一個起點。這個起點就叫 Trigger 節點——它決定「這條 workflow 什麼時候會跑」。你打開節點抽屜第一個看到的分類通常就是 <strong>On app event / On a schedule / When called by another workflow</strong> 這幾組，全部都是 Trigger。</p>
+      <p>Trigger 節點有一個很好認的視覺特徵：<strong>它左邊沒有輸入圓點</strong>。因為它是起點，前面沒東西可接。右邊有一個輸出圓點，把資料往下游送。</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Trigger 節點</th><th>什麼時候會跑</th><th>典型用途</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Manual Trigger</td>
+            <td>你按下 <code>Execute Workflow</code> 才跑</td>
+            <td>測試、開發、給人手動點的 workflow</td>
+          </tr>
+          <tr>
+            <td>Schedule Trigger</td>
+            <td>像 Cron，指定時間跑（每小時、每天 8:00、每週一…）</td>
+            <td>每日報告、每週彙整、每月結算</td>
+          </tr>
+          <tr>
+            <td>Webhook</td>
+            <td>外部系統打 URL 就跑</td>
+            <td>表單填完、Line Bot、HA 觸發、第三方 callback</td>
+          </tr>
+          <tr>
+            <td>App Event（Gmail Trigger、Slack Trigger…）</td>
+            <td>指定 SaaS 有事情發生就跑</td>
+            <td>收到 VIP 信件轉發、Slack 提到某關鍵字通知</td>
+          </tr>
+          <tr>
+            <td>Chat Trigger</td>
+            <td>使用者在 chat 介面打字就跑</td>
+            <td><a href="ch11_saas_integrations.html">AI Agent（ch21）</a>做客服機器人時用</td>
+          </tr>
+          <tr>
+            <td>Execute Workflow Trigger</td>
+            <td>另一個 workflow 呼叫你就跑</td>
+            <td>被抽出來重用的 sub-workflow（ch19）</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>觀念：</strong>一個 workflow <strong>可以有多個 Trigger</strong>。例如同一條「新客戶通知」既掛 Webhook（表單填完）、又掛 Schedule Trigger（每天 8:00 補跑一次）、還掛 Manual Trigger（測試時手動跑）——任何一個觸發都會讓整條 workflow 動起來。<a href="ch10_triggers.html">第 10 章</a>會專門講三大類觸發時機的比較。</div>
+      <p>Trigger 節點的抽屜位置也很好認——n8n 進節點抽屜的第一頁預設就是 <strong>Triggers</strong>，你在 Canvas 空白處按 <strong>+</strong> 開始新 workflow 的時候，n8n 會直接引導你選 Trigger（因為沒 Trigger 就沒起點、workflow 根本跑不起來）。</p>
+    </section>
+
+    <section id="what" data-nav="Action 節點">
+      <h2 data-icon="what">Action 節點：workflow 的做事的</h2>
+      <p>三類節點裡數量最多的就是 Action 節點——官方 400+ 個節點裡有超過 90% 都是這類。它們的共通點是：<strong>每一個節點對應一家外部服務（SaaS、資料庫、雲端），節點內部封裝好那家 API 的所有操作</strong>。</p>
+      <p>如果你用過 Zapier，這個概念一模一樣——Zapier 每個 App 對應一個節點；n8n 也是一家 SaaS 對應一個節點。差別在 Zapier 叫「Actions」，n8n 就叫「節點」而已。</p>
+      <p>一個 Action 節點裡面通常有很多 <strong>sub-operation（子操作）</strong>。以 Slack 為例——</p>
+      <ul>
+        <li><strong>Send Message</strong>：傳訊息到指定頻道或人</li>
+        <li><strong>Update Message</strong>：改一則已經傳出去的訊息</li>
+        <li><strong>Delete Message</strong>：刪一則訊息</li>
+        <li><strong>Get Channel</strong>：抓某個頻道的資訊</li>
+        <li><strong>Invite User</strong>：邀某人進頻道</li>
+        <li>…還有 20 幾個其他操作</li>
+      </ul>
+      <p>你不用一開始就記所有子操作。拉出 Slack 節點後，右邊 <strong>Operation</strong> 下拉選單會列所有選項，你要哪個選哪個。</p>
+      <p>Action 節點官方大概分成這幾大類，抽屜裡都能對號入座：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>分類</th><th>常見節點</th><th>典型場景</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Communication 通訊</td>
+            <td>Slack、Discord、Telegram、Email、Line</td>
+            <td>通知、群發、聊天機器人</td>
+          </tr>
+          <tr>
+            <td>Data &amp; Storage 資料儲存</td>
+            <td>Google Sheets、Airtable、Notion、Postgres、Redis、MongoDB</td>
+            <td>寫入表格、查資料庫、做資料流</td>
+          </tr>
+          <tr>
+            <td>Productivity 生產力</td>
+            <td>Google Calendar、Todoist、Trello、Asana、ClickUp</td>
+            <td>建行程、開任務、追進度</td>
+          </tr>
+          <tr>
+            <td>Marketing 行銷</td>
+            <td>HubSpot、Mailchimp、SendGrid、ActiveCampaign</td>
+            <td>加 lead、寄電子報、追客戶動態</td>
+          </tr>
+          <tr>
+            <td>AI 人工智慧</td>
+            <td>OpenAI、Anthropic、Google Gemini（獨立節點）</td>
+            <td>生成文案、摘要、翻譯（跟 AI Agent 不同層）</td>
+          </tr>
+          <tr>
+            <td>Developer 開發者</td>
+            <td>GitHub、GitLab、Jira、Bitbucket、Docker Hub</td>
+            <td>開 issue、建 PR、跑 CI 通知</td>
+          </tr>
+          <tr>
+            <td>Files &amp; Cloud 檔案雲端</td>
+            <td>Google Drive、Dropbox、OneDrive、AWS S3</td>
+            <td>上傳附件、備份、跨雲搬檔</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout tip"><strong>提示：</strong>你完全不需要記這張表。用不到就跳過，需要時再去抽屜搜尋。90% 的人常用的就那五六家（Slack、Gmail、Google Sheet、Notion、HubSpot、GitHub）。</div>
+      <p>Action 節點的視覺特徵：<strong>左右兩邊都有圓點</strong>（左邊收上游的資料、右邊送下游），節點圖示通常就是那家 SaaS 的官方 logo（Slack 是紫色井字、Gmail 是紅色信封、Notion 是黑白翻頁）。看到 logo 你大概就知道這是哪家的節點了。</p>
+    </section>
+
+    <section id="detail" data-nav="Core 節點">
+      <h2 data-icon="what">Core 節點：workflow 的控制中樞</h2>
+      <p>三類節點裡數量最少（大概 30 幾個），但也最容易被忽略、同時最重要的就是 Core 節點。它們不跟外部服務講話，職責是<strong>管 workflow 內部的資料流跟控制流</strong>——像水管的三通、閥門、開關。</p>
+      <p>Core 節點都放在節點抽屜的 <strong>Core Nodes</strong> 分類底下（有些版本叫 <strong>Flow</strong> 或 <strong>Data Transformation</strong>）。你早晚會用到，特別是當你想寫「如果客戶總金額 &gt; 10000 才通知業務」這種帶條件的自動化。</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Core 節點</th><th>做什麼</th><th>哪一章細講</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>IF</td>
+            <td>條件分支（true 走一條路、false 走另一條）</td>
+            <td><a href="ch15_if_switch.html">第 15 章</a></td>
+          </tr>
+          <tr>
+            <td>Switch</td>
+            <td>多分支（依欄位值走不同路）</td>
+            <td><a href="ch15_if_switch.html">第 15 章</a></td>
+          </tr>
+          <tr>
+            <td>Merge</td>
+            <td>把多路資料合成一路（append / combine / choose）</td>
+            <td>ch16</td>
+          </tr>
+          <tr>
+            <td>Split In Batches</td>
+            <td>把一大批 item 分批處理，避免打爆 API rate limit</td>
+            <td>ch16</td>
+          </tr>
+          <tr>
+            <td>Item Lists</td>
+            <td>陣列操作（去重、排序、聚合、拆開）</td>
+            <td>ch16</td>
+          </tr>
+          <tr>
+            <td>Set / Edit Fields</td>
+            <td>加欄位、改欄位名、重排、扁平化</td>
+            <td><a href="ch18_set_function.html">第 18 章</a></td>
+          </tr>
+          <tr>
+            <td>Code / Function</td>
+            <td>寫幾行 JavaScript 或 Python 補現成節點不夠的洞</td>
+            <td>ch20</td>
+          </tr>
+          <tr>
+            <td>Wait</td>
+            <td>暫停一段時間（等 5 秒、等到明天 9:00、等 Webhook）</td>
+            <td>ch17</td>
+          </tr>
+          <tr>
+            <td>Execute Workflow</td>
+            <td>呼叫另一條 workflow（sub-workflow）</td>
+            <td>ch19</td>
+          </tr>
+          <tr>
+            <td>HTTP Request</td>
+            <td>打任何 REST API（沒有官方節點時的萬用鑰匙）</td>
+            <td><a href="ch12_http_request.html">第 12 章</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout warn"><strong>注意：</strong>HTTP Request 節點嚴格講其實橫跨 Action 跟 Core——它不綁特定 SaaS（所以放 Core 分類），但功能上是「打外部 API」（所以行為像 Action）。你只要記得：<strong>找不到某家 SaaS 的專屬節點 → 用 HTTP Request 自己打</strong> 就好。</div>
+      <p>Core 節點的視覺特徵：<strong>左右兩邊都有圓點</strong>（IF、Switch 因為要分支，右邊會有多個輸出圓點），節點圖示是抽象幾何——IF 是分岔箭頭、Merge 是箭頭合流、Set 是筆或欄位圖、Code 是尖括號 <code>&lt;/&gt;</code>。看不到 SaaS logo 的節點，八成就是 Core。</p>
+    </section>
+
+    <section id="advanced" data-nav="辨別技巧">
+      <h2 data-icon="advanced">怎麼看一個節點是哪類</h2>
+      <p>認完三大類，實戰時最有用的技巧是<strong>看一眼就能分類</strong>。用這三個特徵對照，一秒判斷——</p>
+      <ol class="steps">
+        <li>
+          <h3>看左邊有沒有輸入圓點</h3>
+          <p>左邊<strong>沒有</strong>圓點（只有右邊出線）→ 一定是 <strong>Trigger</strong>。這是最直觀的線索。你在 Canvas 上看到一個節點孤零零掛在最左邊，前面沒接東西，那就是 Trigger。</p>
+        </li>
+        <li>
+          <h3>看名字有沒有 "Trigger" 或 "On ..." 字樣</h3>
+          <p>節點抽屜裡叫 <strong>Slack Trigger</strong>、<strong>Gmail Trigger</strong>、<strong>Schedule Trigger</strong>、<strong>Webhook</strong>、<strong>On form submission</strong> 的都是 Trigger。跟同樣 SaaS 的 Action 節點（例：<code>Slack</code> vs <code>Slack Trigger</code>）擺在抽屜裡通常是不同項目。</p>
+        </li>
+        <li>
+          <h3>看圖示是 SaaS logo 還是抽象幾何</h3>
+          <p>圖示是某家 SaaS 的 logo（Slack 紫井字、Gmail 紅信封、Notion 黑白頁）→ 幾乎一定是 <strong>Action</strong>。圖示是抽象幾何（分岔、合流、齒輪、尖括號）→ 幾乎一定是 <strong>Core</strong>。</p>
+        </li>
+        <li>
+          <h3>看抽屜分類</h3>
+          <p>n8n 抽屜本來就已經分好類了：<strong>Triggers</strong> 一區、<strong>Actions in apps</strong> 依 SaaS 分類、<strong>Core Nodes</strong> 或 <strong>Flow</strong> / <strong>Data Transformation</strong> 一區。分不清就回抽屜看它被放在哪個標籤下。</p>
+        </li>
+      </ol>
+      <div class="callout"><strong>觀念：</strong>同一家 SaaS 通常會有兩個節點——一個 Action 版（<code>Slack</code>：主動去 Slack 傳訊息）、一個 Trigger 版（<code>Slack Trigger</code>：被動聽 Slack 事件）。名字很像但職責相反，別選錯。</div>
+    </section>
+
+    <section id="tips" data-nav="workflow 的節奏">
+      <h2 data-icon="tips">一個 workflow 通常的節奏</h2>
+      <p>三大類節點在真實 workflow 裡怎麼組合？從最短到最複雜，大概三種節奏：</p>
+      <ol class="steps">
+        <li>
+          <h3>最短：Trigger → 1 個 Action</h3>
+          <p>「每天早上 8:00 傳一則固定訊息到 Slack」——<code>Schedule Trigger</code> 接 <code>Slack (Send Message)</code>，完。兩個節點、一條線，這是最簡單的 workflow 形狀。適合當提醒、當 reminder 用。</p>
+        </li>
+        <li>
+          <h3>常見：Trigger → 讀資料 Action → Core 過濾 → 寫資料 Action → 通知 Action</h3>
+          <p>「每天早上抓客服 ticket、只留 urgent 的、寫進 Notion、通知業務主管」——<code>Schedule Trigger</code> → <code>HTTP Request（讀 ticket API）</code> → <code>IF（priority == urgent）</code> → <code>Notion（新增頁）</code> → <code>Slack（通知）</code>。這是最典型的 5 節點 workflow，公司 8 成的自動化都長這樣。</p>
+        </li>
+        <li>
+          <h3>複雜：多 Trigger → IF 分支 → 平行 Action → Merge → Sub-workflow → 錯誤處理</h3>
+          <p>「新客戶進來（Webhook + Manual + Schedule 三個 Trigger）→ 依國家分流 → 並行寄歡迎信/加 CRM/開 Slack 頻道 → 合流回主線 → 呼叫『發通知』sub-workflow → 錯了自動 retry 3 次還不行就通知 IT」。這種 15+ 節點的複雜 workflow 你到後面幾章才會慢慢碰到，不用怕。</p>
+        </li>
+      </ol>
+      <p>看得出來，Trigger 通常 1 個（有時多個）、Action 是主力（占節點數 60% 以上）、Core 節點是<strong>把 Action 串起來的水管接頭</strong>（IF 決定往哪走、Set 整型資料、Merge 合流）。</p>
+      <div class="callout tip"><strong>提示：</strong>你以後看到別人分享的 workflow 截圖，可以用這三種節奏對號入座：只有兩三塊就是「最短」、五到八塊是「常見」、十幾塊帶分岔就是「複雜」。看得懂結構才看得懂 workflow 在幹嘛。</div>
+    </section>
+
+    <section id="search" data-nav="抽屜怎麼找節點">
+      <h2 data-icon="tips">抽屜怎麼找節點最快</h2>
+      <p>知道分類是為了看得懂，但實戰時找節點你根本不會一個個滑分類。<strong>直接打關鍵字</strong>比什麼都快。</p>
+      <ol class="steps">
+        <li>
+          <h3>打服務名字：Slack、Sheet、Gmail、Notion</h3>
+          <p>抽屜最上面有搜尋框，輸入 <code>slack</code> 就會濾出 Slack 相關的節點（Slack、Slack Trigger 都會出現）。99% 的常用整合這樣就找得到。</p>
+        </li>
+        <li>
+          <h3>打功能字眼：if、set、code、wait、http</h3>
+          <p>Core 節點沒有 SaaS 名字，用功能字搜。輸入 <code>if</code> 會出現 IF、Switch；輸入 <code>set</code> 會出現 Set / Edit Fields；輸入 <code>http</code> 出現 HTTP Request。</p>
+        </li>
+        <li>
+          <h3>找不到 → 可能是社群節點（community package）</h3>
+          <p>比較小眾的服務（例如某台灣本土 SaaS）可能官方沒做節點，但 n8n 有 <strong>community nodes</strong>（社群套件）機制——需要管理員在後台裝。這個屬於進階操作，找 IT 部門幫忙裝就好。</p>
+        </li>
+        <li>
+          <h3>完全沒有這家 SaaS 的節點 → 用 HTTP Request 自己打</h3>
+          <p>官方跟社群都沒有？沒問題，只要那家 SaaS 有 REST API，用 <a href="ch12_http_request.html">HTTP Request 節點（第 12 章）</a>照 API 文件填 URL、method、header、body 就能打。這是 n8n 的萬用鑰匙——只要對方有 API，你就打得到。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="troubleshoot" data-nav="常見狀況排除">
+      <h2 data-icon="troubleshoot">常見狀況排除</h2>
+      <p>剛開始接觸節點抽屜，最常遇到這幾個狀況：</p>
+      <ol class="steps">
+        <li>
+          <h3>節點抽屜打不開</h3>
+          <p>兩種方式：<strong>Canvas 空白處按 +</strong>、或是新 workflow 就按右邊面板的 <strong>Add first step</strong>。已經有節點的話，把游標移到某個節點右邊的圓點上會出現 <strong>+</strong>，點下去也會開抽屜（自動接在該節點後面）。</p>
+        </li>
+        <li>
+          <h3>抽屜太多分類找不到</h3>
+          <p>不要一頁一頁滑，直接在最上面的搜尋框打關鍵字。分類是為了瀏覽的人設計的，實戰用搜尋最快。</p>
+        </li>
+        <li>
+          <h3>我要的節點打了搜不到</h3>
+          <p>三種可能：<strong>（1）</strong>拼字對不上——例如你打 <code>google sheets</code> 找不到，試 <code>sheets</code>；<strong>（2）</strong>可能是社群節點，需要管理員在後台裝 community package；<strong>（3）</strong>該服務沒官方節點——那就改用 <a href="ch12_http_request.html">HTTP Request（第 12 章）</a>對它 API 打。</p>
+        </li>
+        <li>
+          <h3>節點名字改了找不到（Function → Code）</h3>
+          <p>n8n 定期會改節點名字（例如 <code>Function</code> 節點在 v1 之後改叫 <code>Code</code>；<code>Set</code> 在 v1 之後也叫 <code>Edit Fields</code>）。舊教學裡的名字搜不到就打新名字（Code、Edit Fields）；新版名字通常放在同一個分類下面。</p>
+        </li>
+        <li>
+          <h3>選了 SaaS Action 節點但左邊沒有輸入圓點</h3>
+          <p>你可能選成 SaaS 的 <strong>Trigger 版</strong>了（例如 <code>Slack Trigger</code> 而不是 <code>Slack</code>）。刪掉重選純 Action 版本——搜尋 <code>slack</code> 時同時會出現兩個節點，選<strong>沒有</strong> "Trigger" 字樣那個。</p>
+        </li>
+        <li>
+          <h3>拉了 Core 節點但不知道要接哪</h3>
+          <p>Core 節點通常放在 workflow <strong>中間</strong>（Trigger 跟最終 Action 之間）。IF 放在你要分岔的位置、Set 放在你要整型資料的地方、Merge 放在多路合流處。單獨拉一個 Core 節點沒用，它必須夾在別的節點中間才有意義。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>n8n 的節點總共有幾種？</summary>
+        <div class="body">
+          <p>n8n 官方支援 400+ 個節點（<a href="https://n8n.io/integrations/" target="_blank" rel="noopener">n8n.io/integrations</a> 的清單）；加上社群套件（community nodes）還有幾百個。實務上 8 成的自動化用不到 20 個節點，別被數字嚇到。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>最常用的到底哪幾個？</summary>
+        <div class="body">
+          <p>Woow 內部觀察下來，這 8 個節點涵蓋 80% 的 workflow：</p>
+          <ul>
+            <li><strong>Schedule Trigger</strong>（Trigger）——定時跑</li>
+            <li><strong>Webhook</strong>（Trigger）——外部打進來</li>
+            <li><strong>Slack</strong>（Action）——通知</li>
+            <li><strong>Gmail</strong>（Action）——寄信</li>
+            <li><strong>Google Sheets</strong>（Action）——記錄</li>
+            <li><strong>HTTP Request</strong>（Core/Action）——打其他 API</li>
+            <li><strong>IF</strong>（Core）——條件分支</li>
+            <li><strong>Set / Edit Fields</strong>（Core）——整型資料</li>
+          </ul>
+          <p>把這 8 個玩熟就可以在公司獨當一面了。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>AI Agent 節點算哪一類？</summary>
+        <div class="body">
+          <p>算特殊的一類——n8n 把 AI 系列（LangChain family）獨立成一個分類 <strong>Advanced AI</strong>，跟三大類平行。裡面有 AI Agent、Chat Model、Memory、Tool、Vector Store 等，會組合起來用。<a href="ch11_saas_integrations.html">第 21 章</a>會專門講。這章你先記得「AI 節點是特殊分類、不歸在三大類裡」就好。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>新版節點會不會取代舊的？</summary>
+        <div class="body">
+          <p>n8n 有時候會發新版節點（例：Google Sheets 有 v1、v2；Set 節點在 v1 之後改叫 Edit Fields）。舊版一般會保留讓現有 workflow 不會壞掉；新拉的建議用新版（功能更完整、bug fix 較新）。抽屜裡搜 <code>sheets</code> 會同時出現舊版跟新版，選最新的那個。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>Trigger 節點跟 Action 節點差在哪？</summary>
+        <div class="body">
+          <p>Trigger 是<strong>被動聽</strong>（時間到了、Webhook 進來、SaaS 有事件發生），會自動啟動 workflow；Action 是<strong>主動做</strong>（傳訊息、寫表格、開帳號），需要上游先送資料才會執行。視覺上 Trigger 左邊沒圓點、Action 兩邊都有圓點。同一家 SaaS 通常都會提供 Trigger 版跟 Action 版兩個節點——Slack Trigger 聽 Slack 事件、Slack 主動打 Slack。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>Core 節點會不會跟 SaaS 講話？</summary>
+        <div class="body">
+          <p>不會，這是 Core 跟 Action 最大的差別。Core 節點都只在 workflow 內部處理資料流、控制流——IF 判斷、Set 整型、Merge 合流、Wait 暫停——沒有一個 Core 節點會打外部 API。唯一的例外是 <strong>HTTP Request</strong>，它雖然放在 Core 分類但功能上是打外部 API，算是灰色地帶。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>官方文件在哪查節點細節？</summary>
+        <div class="body">
+          <p>兩個地方：<strong>（1）</strong>整合節點看 <a href="https://n8n.io/integrations/" target="_blank" rel="noopener">n8n.io/integrations</a>，每家 SaaS 有獨立頁面列所有 operation 跟參數；<strong>（2）</strong>Core 節點看 <a href="https://docs.n8n.io/integrations/builtin/core-nodes/" target="_blank" rel="noopener">docs.n8n.io/integrations/builtin/core-nodes/</a>，官方文件講每個 Core 節點的細節跟範例。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>下一步做什麼？</summary>
+        <div class="body">
+          <p>去<a href="ch8_first_workflow.html">第 8 章</a>從零拉第一條 workflow：<code>Schedule Trigger</code>（每天 8:00）→ <code>Google Calendar</code>（抓今日行事曆）→ <code>Slack</code>（傳訊息）。剛好就是 Trigger + 2 個 Action 的最短節奏，把這章講的三大類實際感受一次。</p>
+        </div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="ch6_modify_workflow.html">
+        <span class="label">← 上一章</span>
+        <span class="title">06 · 改別人的</span>
+      </a>
+      <a class="next" href="ch8_first_workflow.html">
+        <span class="label">下一章 →</span>
+        <span class="title">08 · 第一個 workflow</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>《Woow n8n 入住指南》由 <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer>
+  </main>
+</div>
+<script src="assets/js/toc.js"></script>
+</body>
+</html>

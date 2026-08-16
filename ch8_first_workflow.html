@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第 8 章 · 第一個 workflow：早上把 Google 行事曆推 Slack · Woow n8n 入住指南</title>
+  <meta name="description" content="手把手做第一個 n8n workflow：Schedule Trigger + Google Calendar 讀事件 + Slack 傳訊息，跑一次成功。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://woowtech.github.io/Woow_n8n_tutorial_site/ch8_first_workflow.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="第 8 章 · 第一個 workflow：早上把 Google 行事曆推 Slack · Woow n8n 入住指南" />
+  <meta property="og:description" content="手把手做第一個 n8n workflow：Schedule Trigger + Google Calendar 讀事件 + Slack 傳訊息，跑一次成功。" />
+  <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch8_first_workflow.html" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="第 8 章 · 第一個 workflow：早上把 Google 行事曆推 Slack · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="手把手做第一個 n8n workflow：Schedule Trigger + Google Calendar 讀事件 + Slack 傳訊息，跑一次成功。" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <h2>章節</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li><a href="ch7_node_types.html">三種節點</a></li>
+      <li><a href="ch8_first_workflow.html" class="active">第一個 workflow</a></li>
+      <li><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li><a href="ch18_set_function.html">資料整形</a></li>
+      <li><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li><a href="ch20_code_node.html">Code node</a></li>
+      <li><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>本章</h2>
+      <a href="#why">為什麼從這個開始</a>
+      <a href="#concept">動手前先想三件事</a>
+      <a href="#steps">從零拉出 workflow</a>
+      <a href="#slack-text">Slack 訊息三種寫法</a>
+      <a href="#test-vs-schedule">手動測 vs 排程跑</a>
+      <a href="#executions">執行紀錄怎麼看</a>
+      <a href="#variations">常見改法五種</a>
+      <a href="#pattern">這章教你的 pattern</a>
+      <a href="#troubleshoot">常見卡關</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>附錄</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="chapter-header">
+      <div class="kicker">第 8 章</div>
+      <h1>第一個 workflow：早上 8:00 把 Google 行事曆推 Slack</h1>
+      <p class="lead">前面七章都在講概念、看別人的 workflow。這章第一次從空白 canvas 拉一個「你會真的每天用到」的東西：每天早上 8:00，n8n 自動去讀你今天的 Google 行事曆，把事件標題和時間傳到你的 Slack。看完你不只有一個能跑的 workflow，更重要的是——你會抓到「Trigger → Action → Action」這個 pattern，之後所有 workflow 都是這個骨架加東西。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼從這個開始">
+      <h2 data-icon="why">為什麼第一個 workflow 選這個</h2>
+      <p>你可能已經按過<a href="ch6_modify_workflow.html">第 6 章</a>教的「改別人的 workflow」，甚至在<a href="ch7_node_types.html">第 7 章</a>認識了三種節點。但你心裡一定有個疑問：<em>「所以我到底什麼時候能自己拉一個？」</em> 答案是——現在。</p>
+      <p>選「早上推行事曆到 Slack」當第一個 workflow，是有理由的：</p>
+      <ul>
+        <li><strong>你會真的每天用到</strong>——不是玩具範例，是喝早上第一杯咖啡的時候瞄一眼就會用到的東西。我自己用了兩年多。</li>
+        <li><strong>三個節點就夠</strong>——Schedule → Google Calendar → Slack。剛好把 Trigger、拉資料、送出去這三個 pattern 湊齊。</li>
+        <li><strong>兩個都是公司在用的 SaaS</strong>——你不用去申請奇怪的第三方帳號，用你現有的 Google Workspace 跟公司 Slack 就能做。</li>
+        <li><strong>失敗了不會壞事</strong>——這 workflow 只讀不寫，最壞就是 Slack 沒收到訊息，不會誤刪任何東西。</li>
+      </ul>
+      <p>如果你還沒設過 Slack 或 Google 的 credential，這章會帶你在流程裡順便設好。想先集中處理 credential 的話，也可以先跳到<a href="ch13_credentials.html">第 13 章</a>把兩組帳號先綁好再回來。</p>
+      <div class="callout"><strong>觀念：</strong>「自動化」聽起來很酷，但真正有價值的自動化通常不酷——就是把一件你每天在做、但很煩、很容易忘的小事，交給機器每天固定時間做一次。「推行事曆」正是這種事。</div>
+    </section>
+
+    <section id="concept" data-nav="動手前先想三件事">
+      <h2 data-icon="concept">動手前先想清楚的三件事</h2>
+      <p>做任何 workflow 之前，我都會先在紙上（或腦袋裡）回答三個問題。這是<strong>本書最重要的一個習慣</strong>，你養成它，之後你想到任何想自動化的事，都能在 30 秒內拆解成 n8n 骨架：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>問題</th><th>對應到 n8n 的什麼</th><th>這次的答案</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>什麼時候要跑？</strong></td>
+            <td>Trigger 節點的選擇</td>
+            <td>每天固定時間 → <strong>Schedule Trigger</strong>，設 08:00</td>
+          </tr>
+          <tr>
+            <td><strong>要拿什麼資料？</strong></td>
+            <td>中間的 SaaS 節點</td>
+            <td>今天的行事曆 → <strong>Google Calendar</strong> 節點的 <em>Get Many Events</em></td>
+          </tr>
+          <tr>
+            <td><strong>要做什麼事？</strong></td>
+            <td>最後一個 action 節點</td>
+            <td>推訊息給我自己 → <strong>Slack</strong> 節點的 <em>Send Message</em></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>三題答完就 done。你已經知道要拉哪三個節點、每個節點的 operation 選哪個。剩下的工作只是「照著填」而已。</p>
+
+      <div class="callout tip"><strong>提示：</strong>之後你自己想做新 workflow 的時候，卡住的話就回來問這三題。答不出來就代表需求還沒想清楚，不要急著開 canvas 亂拉節點。</div>
+
+      <h3>畫成流程長這樣</h3>
+      <p>用最白話的方式畫出來：</p>
+      <pre class="code-block"><code>[⏰ 每天 08:00]  →  [📅 讀今天行事曆]  →  [💬 傳給 Slack]
+   Schedule           Google Calendar           Slack
+   Trigger            Get Many Events          Send Message</code></pre>
+      <p>三個節點、兩條連線。就這樣。等下你就要一步一步把它做出來。</p>
+    </section>
+
+    <section id="steps" data-nav="從零拉出 workflow">
+      <h2 data-icon="steps">從零到 workflow 完成——十一個步驟</h2>
+      <p>準備：確認你已經登入 <code>n8n.woowtech.io</code>，並且你的 Google 帳號可以看到自己的 Calendar、Slack 裡有一個「只有你」的頻道（或用你自己的 DM）可以測試。</p>
+
+      <ol class="steps">
+        <li>
+          <h3>側欄點 Workflows，右上按 Add workflow</h3>
+          <p>登入之後預設就在 Workflows 列表頁。看不到列表的話點左邊側欄的 <strong>Workflows</strong>。列表頁右上角有一顆 <strong>+ Add workflow</strong> 按鈕，按下去。畫面會切到一張空白的 canvas（灰色格子背景），中央有一顆大大的 <strong>+ Add first step</strong> 按鈕。</p>
+        </li>
+        <li>
+          <h3>給 workflow 取名字：<code>每日行事曆推送</code></h3>
+          <p>畫面正上方會有一個預設名 <em>My workflow</em>，點它就能改。取一個之後好找的名字，例如 <code>每日行事曆推送</code>。旁邊有 <strong>Save</strong>（或 <kbd>Ctrl</kbd>+<kbd>S</kbd>）先存一次，避免中途瀏覽器崩掉全部白做。</p>
+          <div class="callout tip"><strong>提示：</strong>Workflow 名字盡量用「動詞＋對象＋時間」的格式：<code>每日行事曆推送</code>、<code>每小時抓 RSS</code>、<code>Slack 收單自動建 Notion</code>。之後 workflow 一多，光看名字就能秒懂它在幹嘛。</div>
+        </li>
+        <li>
+          <h3>按 Add first step，選 Schedule Trigger</h3>
+          <p>點 canvas 中央那顆 <strong>+ Add first step</strong>。右邊會彈出節點清單，最上面幾類是「Trigger」類型。找到 <strong>On a schedule</strong>（或直接在搜尋框打 <code>schedule</code>）點下去。canvas 中央會出現一個時鐘圖示的節點，這就是你的 Schedule Trigger。</p>
+        </li>
+        <li>
+          <h3>設定 Schedule：Every Day，08:00</h3>
+          <p>雙擊剛加的節點打開設定面板：</p>
+          <ul>
+            <li><strong>Trigger Interval</strong>：從下拉選 <code>Days</code>（有些版本叫 <code>Every Day</code>）。</li>
+            <li><strong>Days Between Triggers</strong>：<code>1</code>（每天）。</li>
+            <li><strong>Trigger at Hour</strong>：<code>8</code>（早上 8 點）。</li>
+            <li><strong>Trigger at Minute</strong>：<code>0</code>。</li>
+          </ul>
+          <p>設好按面板右上角的 <strong>Back to canvas</strong>（有些版本是 <kbd>×</kbd>）關閉。節點下方會出現排程摘要，例如 <em>Every day at 08:00</em>。</p>
+        </li>
+        <li>
+          <h3>Trigger 節點右邊按 +，找 Google Calendar</h3>
+          <p>把滑鼠移到 Schedule Trigger 節點右邊，會冒出一個小小的 <strong>+</strong>。點它，右邊再彈節點清單，搜尋框打 <code>google calendar</code>。點選出現的 <strong>Google Calendar</strong> 節點。</p>
+          <p>面板打開後，<strong>Resource</strong> 選 <code>Event</code>，<strong>Operation</strong> 選 <code>Get Many</code>（有些版本顯示為 <em>Get Many Events</em>）。這個組合的意思是「拿多筆行事曆事件」。</p>
+        </li>
+        <li>
+          <h3>綁 Google credential（第一次會跳 OAuth 授權）</h3>
+          <p>面板最上方 <strong>Credential to connect with</strong> 這欄如果是空的，點下拉 → <em>Create new credential</em>。會跳出 OAuth 視窗，讓你選 Google 帳號並允許 n8n 讀取 Calendar。允許之後視窗會自己關掉，credential 就綁好了。</p>
+          <div class="callout warn"><strong>注意：</strong>OAuth 允許畫面會出現 Google 警告「這個 app 沒被 Google 驗證」，那是因為 Woow n8n 是自架的，不是官方 app，屬正常現象。點<em>進階</em> → <em>前往 n8n.woowtech.io（不安全）</em>即可。你授權的對象是自家伺服器，跟公開的 app 不同。</div>
+        </li>
+        <li>
+          <h3>Calendar 選你自己的、Time Min/Max 填今天範圍</h3>
+          <p>回到 Google Calendar 節點面板，繼續填：</p>
+          <ul>
+            <li><strong>Calendar</strong>：從下拉選你自己的（通常顯示成你的 email 或 <em>Primary</em>）。</li>
+            <li><strong>Return All</strong>：<em>ON</em>（或設一個大一點的 Limit，例如 50）。</li>
+            <li><strong>Options</strong> → <strong>Time Min</strong>：切成 <em>Expression</em> 模式（欄位右邊那顆小小 <em>fx</em> 或 <em>Expression</em> tab），填 <code>{{ $now.startOf('day') }}</code>。</li>
+            <li><strong>Options</strong> → <strong>Time Max</strong>：一樣切 Expression，填 <code>{{ $now.endOf('day') }}</code>。</li>
+          </ul>
+          <p>這兩個 expression 的意思是「今天凌晨 00:00 到今天晚上 23:59:59」。Expression 是 n8n 的動態表達式，詳細寫法<a href="ch14_expressions.html">第 14 章</a>會拆。</p>
+        </li>
+        <li>
+          <h3>按 Execute Node，先看看今天到底有沒有行程</h3>
+          <p>Google Calendar 節點面板右上角有一顆 <strong>Execute Node</strong>（或 <em>Test step</em>）按鈕，按下去。這個按鈕只跑「這一顆節點」，不會執行整個 workflow。</p>
+          <p>右邊的 <strong>OUTPUT</strong> 面板會出現一份 JSON，展開後你會看到 <code>items</code> 陣列，每個元素是一個事件，有 <code>summary</code>（標題）、<code>start.dateTime</code>（開始時間）、<code>end.dateTime</code>（結束時間）等欄位。看到這個就代表資料拉成功了。</p>
+          <div class="callout"><strong>觀念：</strong>OUTPUT 欄的 JSON 結構「今天長什麼樣」<strong>非常關鍵</strong>，因為下一步的 Slack 訊息要靠它拼字串。看不到 <code>items</code> 但看到 <code>summary</code> 直接躺在最上面的話（每個事件變獨立一筆），那個「怎麼拿」的寫法就會不一樣。<a href="ch9_item_data_flow.html">第 9 章</a>會把 items 資料流講透。</div>
+        </li>
+        <li>
+          <h3>加 Slack 節點：Send Message</h3>
+          <p>Google Calendar 節點右邊 <strong>+</strong> → 搜 <code>slack</code> → 點 <strong>Slack</strong>。<strong>Resource</strong> 選 <code>Message</code>、<strong>Operation</strong> 選 <code>Send</code>。</p>
+          <p>Credential 一樣：第一次要點 <em>Create new credential</em>，跑一次 OAuth 授權你的 Slack workspace。授權完回到節點面板繼續填。</p>
+        </li>
+        <li>
+          <h3>Channel 選你自己的頻道，Text 用 Expression 拼字串</h3>
+          <p>Slack 節點的欄位：</p>
+          <ul>
+            <li><strong>Send Message To</strong>：<code>Channel</code>。</li>
+            <li><strong>Channel</strong>：從下拉選一個「只有你看得到」的頻道測試，例如 <code>#daily-me</code>，或直接選 DM 給自己的私訊。<strong>不要一開始就選 <code>#general</code></strong>，測試訊息會發到全公司。</li>
+            <li><strong>Text</strong>：切 Expression 模式，貼下面這段：</li>
+          </ul>
+          <pre class="code-block"><code>早安！今天有 {{ $json.items.length }} 個行程：
+{{ $json.items.map(e =&gt; e.summary).join('、') }}</code></pre>
+          <p>意思是「印出事件數量，然後把所有事件標題用『、』串起來」。</p>
+          <p>按 <strong>Execute Node</strong> 手動測一次，切到你的 Slack 應該就會看到那則訊息。</p>
+        </li>
+        <li>
+          <h3>Save，然後把右上 Active toggle 打開</h3>
+          <p>整個 workflow 完成了。按 <strong>Save</strong>（或 <kbd>Ctrl</kbd>+<kbd>S</kbd>）存檔。<strong>然後最重要的一步——把畫面右上角的 <em>Active</em> 開關切成 ON</strong>。這個開關沒開的話，Schedule Trigger 是「睡眠狀態」，時間到了不會自動觸發，你只能手動按 Execute Workflow 才會跑。</p>
+          <div class="callout warn"><strong>注意：</strong>90% 新手第一次踩的坑就是「奇怪我明明設好 8:00 了為什麼隔天沒收到訊息」——十次有九次就是 <strong>Active 忘了打開</strong>。存檔跟啟用是兩件事。</div>
+        </li>
+      </ol>
+
+      <p>恭喜。你剛做出人生第一個會自己跑的 n8n workflow。明天早上 8:00 它就會自動去讀你的行事曆、傳到你的 Slack，不需要你做任何事。</p>
+    </section>
+
+    <section id="slack-text" data-nav="Slack 訊息三種寫法">
+      <h2 data-icon="advanced">Slack Text 進階：三種常見版型</h2>
+      <p>上面步驟 10 用的是最簡版。訊息想寫得漂亮一點，Slack 支援它自己一套 markdown 語法（叫 mrkdwn），加上 emoji 可以讓早上那則通知看起來像個東西，不像 log。三種常見版型：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>版型</th><th>Text 欄位寫法</th><th>什麼時候用</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>極簡版</td>
+            <td><code>今天 {{ $json.items.length }} 個行程</code></td>
+            <td>只想知道數字、不想看細節；用在很多會的日子避免 Slack 被撐爆</td>
+          </tr>
+          <tr>
+            <td>條列版</td>
+            <td><code>今天行程：\n{{ $json.items.map(e =&gt; '• ' + e.summary + ' @ ' + e.start.dateTime).join('\n') }}</code></td>
+            <td>要看清楚每一場什麼時間；日常主力版型</td>
+          </tr>
+          <tr>
+            <td>Markdown 版</td>
+            <td><code>*今天行程* :calendar:\n&gt; {{ $json.items.map(e =&gt; e.summary + ' (' + e.start.dateTime + ')').join('\n&gt; ') }}</code></td>
+            <td>訊息夠正式、方便長按引用；跟同事分享時看起來比較體面</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Slack 支援的語法快速版：</p>
+      <ul>
+        <li><code>*粗體*</code>、<code>_斜體_</code>、<code>~刪除線~</code></li>
+        <li><code>`行內 code`</code>、<code>```code block```</code></li>
+        <li><code>&gt; 引用</code>（每行前面加 <code>&gt;</code>）</li>
+        <li>emoji 用 <code>:calendar:</code>、<code>:coffee:</code>、<code>:tada:</code> 這種 shortcode（Slack 會自動渲染成圖）</li>
+        <li>換行是 <code>\n</code>（在 expression 裡是真的兩個字元反斜線+n）</li>
+      </ul>
+
+      <div class="callout tip"><strong>提示：</strong>Slack 節點還有一個 <strong>Blocks</strong> 模式（面板往下拉會看到）可以做出有分隔線、按鈕、圖片的排版精美訊息，Woow 內部有些通知就是用這個做的。第一個 workflow 先用 Text 就好，Blocks 之後再玩。</div>
+    </section>
+
+    <section id="test-vs-schedule" data-nav="手動測 vs 排程跑">
+      <h2 data-icon="test">手動測 vs 排程跑——兩顆按鈕差在哪</h2>
+      <p>在 canvas 上你會看到兩顆長得很像但意義完全不一樣的按鈕：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>按鈕</th><th>位置</th><th>做什麼</th><th>什麼時候用</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Execute Node</strong></td>
+            <td>某個節點的面板右上</td>
+            <td>只跑<strong>這一顆</strong>節點，不會觸發下游</td>
+            <td>剛設好一顆節點想確認資料對不對</td>
+          </tr>
+          <tr>
+            <td><strong>Execute Workflow</strong></td>
+            <td>canvas 下方中央 or 右上</td>
+            <td>從 Trigger 一路跑到最後，但<strong>不寫入 execution log</strong>（有些版本會寫，看設定）</td>
+            <td>開發階段整體測試</td>
+          </tr>
+          <tr>
+            <td><strong>Active toggle（ON）</strong></td>
+            <td>畫面右上角</td>
+            <td>讓 Schedule Trigger 進入「等時間到自動跑」的正式狀態</td>
+            <td>開發完想上線</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>對新手來說一句話講完：<strong>Execute Workflow = 給你自己看的、Active = 交給時間跑的</strong>。開發時用左邊，做完把右邊打開。</p>
+
+      <div class="callout warn"><strong>注意：</strong>Active 是 ON 的 workflow，你在 canvas 上再按 Execute Workflow 手動觸發，跑的是「當下這個時刻」不是「排程時刻」。所以測試「明天早上 8:00 會不會有事件」你按 Execute Workflow 是驗不到未來的，那個排程要真的等到明天早上才會跑。</div>
+    </section>
+
+    <section id="executions" data-nav="執行紀錄怎麼看">
+      <h2 data-icon="history">看執行紀錄——排錯的黃金頁面</h2>
+      <p>workflow 開始自己跑之後，你怎麼知道「昨天早上到底跑了沒？成功還失敗？資料長怎樣？」——答案在 <strong>Executions</strong> 頁面。這是你之後最常回來看的一頁。</p>
+      <ol class="steps">
+        <li>
+          <h3>兩個入口都能到</h3>
+          <p>方法 A：側欄點 <strong>Executions</strong>（會看到全帳號所有 workflow 的執行）。方法 B：進到某個 workflow，上方 tab 切 <strong>Executions</strong>（只看這個 workflow 的）。第一次找的時候，用方法 B 比較不會被別人 workflow 的紀錄干擾。</p>
+        </li>
+        <li>
+          <h3>列表看綠 vs 紅</h3>
+          <p>每一筆執行都有狀態：<strong>綠色 Success</strong>（全通）、<strong>紅色 Error</strong>（中間某個節點炸掉了）、<strong>黃色 Waiting</strong>（暫停，Woow 教學範圍不太會用到）。時間欄顯示執行的時間點跟花費時間。</p>
+        </li>
+        <li>
+          <h3>點進去看每個節點吐什麼</h3>
+          <p>點某一筆進去，會看到跟編輯 canvas 幾乎一樣的視圖，但每個節點下面會多顯示「這一次跑的時候，這顆節點吃了什麼、吐了什麼」。點 Google Calendar 節點就能看到那天早上 8:00 抓到的事件 JSON。</p>
+        </li>
+        <li>
+          <h3>紅色的節點左邊會亮紅框</h3>
+          <p>執行失敗的話，出事的那顆節點會有紅框，點下去下方會顯示錯誤訊息。這是<strong>排錯最快的方式</strong>，比看 log 快十倍。錯誤訊息看不懂就整段複製丟 Google 或問 IT，通常兩下就找到原因。</p>
+        </li>
+      </ol>
+      <div class="callout tip"><strong>提示：</strong>Executions 頁面 URL 可以直接分享給同事：「我的 workflow 昨天出事，這是那筆 execution 的連結，你幫我看一下」。這比截圖有用多了，同事直接就能看到所有節點的 input/output。</div>
+    </section>
+
+    <section id="variations" data-nav="常見改法五種">
+      <h2 data-icon="modes">學會的 workflow 怎麼變出五種花樣</h2>
+      <p>骨架搞懂了，剩下都是「換零件」。同一個「早上推行事曆」邏輯，改一兩個地方就能生出完全不同的用途。這五種是我實際用過的變形：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>想達成</th><th>改哪裡</th><th>怎麼改</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>不想每天推、只想上班日</td>
+            <td>Schedule Trigger</td>
+            <td>Trigger Interval 改成 <code>Days of the week</code>，勾 Mon～Fri</td>
+          </tr>
+          <tr>
+            <td>下班前也推一次隔天的</td>
+            <td>加第二條 Schedule</td>
+            <td>複製整個 workflow、Schedule 改 17:30，Google Calendar 的 Time Min/Max 改 <code>{{ $now.plus({days:1}).startOf('day') }}</code> 到 <code>.endOf('day')</code></td>
+          </tr>
+          <tr>
+            <td>推給整個小組、不只自己</td>
+            <td>Slack Channel</td>
+            <td>Channel 從 <code>#daily-me</code> 改成 <code>#team-daily</code>；但事件內容改成小組共用行事曆會更有意義</td>
+          </tr>
+          <tr>
+            <td>推到 Line 不要 Slack</td>
+            <td>換節點</td>
+            <td>刪 Slack 節點、加 Line Notify 節點（或用 HTTP Request 打 Line 的 webhook），詳見<a href="ch11_saas_integrations.html">第 11 章</a></td>
+          </tr>
+          <tr>
+            <td>當天沒行程就不要推</td>
+            <td>中間加 IF 節點</td>
+            <td>在 Google Calendar 後面接 <strong>IF</strong>，條件 <code>{{ $json.items.length }}</code> <em>不等於</em> <code>0</code>，True 分支才接 Slack。core node IF 的用法之後專章講</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>你會發現，這些改法都不是「重做一個 workflow」，而是「同一個骨架換零件」。這就是 n8n 最強的地方——你學會的每一個 pattern，之後都是可以複用的積木。</p>
+    </section>
+
+    <section id="pattern" data-nav="這章教你的 pattern">
+      <h2 data-icon="done">這個 workflow 教會你的 pattern</h2>
+      <p>抽掉細節，這章其實只教了一件事：<strong>Trigger → Action → Action</strong>。之後你會看到的所有 workflow，不管長多複雜，骨頭都是這個：</p>
+
+      <pre class="code-block"><code>[什麼時候跑]  →  [拿什麼資料]  →  [做什麼事]
+   Trigger          Action 1              Action 2
+                    (可以 0 到很多顆)     (通常最少 1 顆)</code></pre>
+
+      <p>後面的章節只是把中間的部分擴充：</p>
+      <ul>
+        <li>資料需要判斷分流？中間插一顆 <strong>IF</strong>（core node）</li>
+        <li>要同時處理多個來源？用 <strong>Merge</strong> 把它們合起來</li>
+        <li>資料要清一清、算一算？用 <strong>Set</strong> 或 <strong>Code</strong> 節點加工</li>
+        <li>要用不同 SaaS？換掉 Google Calendar、換掉 Slack 就好，pattern 不變</li>
+      </ul>
+
+      <p>Trigger 有哪幾種、什麼時候該選哪種——<a href="ch10_triggers.html">第 10 章</a>會拆完。SaaS 有哪些常用的、每個怎麼設——<a href="ch11_saas_integrations.html">第 11 章</a>。這章請把「Trigger → Action → Action」記牢，這是你的第一塊拼圖。</p>
+
+      <div class="callout"><strong>觀念：</strong>剛做完這個 workflow 你可能會覺得「就這樣？」對，就這樣。真實工作場景 80% 的自動化就是這麼簡單。剩下 20% 是加 IF / Merge / Code 節點的變體。你已經站在起點線後了。</div>
+    </section>
+
+    <section id="troubleshoot" data-nav="常見卡關">
+      <h2 data-icon="troubleshoot">常見卡關</h2>
+      <p>第一次做的人幾乎都會撞到下面五個之一。逐一對照：</p>
+
+      <ol class="steps">
+        <li>
+          <h3>Google Calendar 節點 OAuth 授權完，Calendar 下拉是空白</h3>
+          <p>通常是授權時沒有勾 Calendar scope，或用錯 Google 帳號。解法：回到 credential 設定頁刪掉那組 credential，重新 Create new credential，OAuth 視窗跳出來時<strong>看清楚選的是你有 Calendar 的那個 Google 帳號</strong>，同意畫面要看到「查看您日曆的事件」這句才對。</p>
+        </li>
+        <li>
+          <h3>Slack 節點紅色 401 / not_authed / invalid_auth</h3>
+          <p>credential 沒設好或 token 過期。回到 credential 設定頁：（1）確認 Slack workspace 是對的那個；（2）重跑一次 OAuth；（3）如果公司 Slack 有安裝限制（app 需要 admin 批准），你可能要請 IT 先批准 n8n app 才能連。</p>
+        </li>
+        <li>
+          <h3>Schedule Trigger 隔天早上沒自動跑</h3>
+          <p>90% 的原因：右上 <strong>Active toggle 沒開</strong>。回去打開就好。其他可能：（1）workflow 存檔前忘了 save，Schedule 沒生效；（2）時區設錯，你以為 08:00 是台北時間，但實例跑的是 UTC，實際是台北時間下午 4 點才跑（Personal settings 改 timezone，或 Schedule 節點裡指定）；（3）Trigger 節點 disable（節點右鍵可以 Disable，會變灰色，整條 workflow 都不會跑）。</p>
+        </li>
+        <li>
+          <h3>Executions 頁面完全沒紀錄</h3>
+          <p>幾種可能：（1）時間還沒到，Schedule 從來沒被觸發；（2）Trigger 節點 disable 掉了（看看是不是灰色）；（3）你手動按 Execute Workflow 但 workflow 的「Save Data」設定關掉了（Workflow settings → Save execution progress 設 On）；（4）你在看整帳號的 Executions，但你的 workflow 是私人的，那筆躲在下面翻幾頁才看到。</p>
+        </li>
+        <li>
+          <h3>Slack 收到訊息，但內容變成 <code>{{ $json.items.length }}</code> 這串字</h3>
+          <p>Text 欄位<strong>沒切成 Expression 模式</strong>。欄位右邊有一顆小小的 <em>fx</em> 圖示或 <em>Expression</em> tab，切過去才會執行 <code>{{...}}</code>，不切的話就會被當成純文字。切完之後 <code>{{ $json.items.length }}</code> 應該會即時預覽成數字。</p>
+        </li>
+        <li>
+          <h3>訊息推出去了但事件標題顯示 <code>undefined</code></h3>
+          <p>Google Calendar API 有時候會回沒有 <code>summary</code> 欄位的事件（例如全天空白事件、或某些日曆的隱私設定）。解法：把 expression 改成 <code>{{ $json.items.map(e =&gt; e.summary || '（無標題事件）').join('、') }}</code>，用 <code>||</code> 給一個 fallback 字串就不會 undefined。</p>
+        </li>
+      </ol>
+
+      <p>還是不行的話，複製 Executions 頁面裡那筆的 URL 貼給同事或 IT，比自己截圖形容快多了。錯誤處理更完整的機制（Error workflow、retry）在<a href="ch17_error_handling.html">第 17 章</a>展開。</p>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+
+      <details class="faq">
+        <summary>跑失敗會怎樣？我會被通知嗎？</summary>
+        <div class="body">
+          <p>預設情況下，跑失敗會在 Executions 頁面留下紅色的一筆，但不會主動通知你。你不去看就不知道。如果這個 workflow 很重要（例如客戶通知、對帳），可以設定一個 <strong>Error Workflow</strong>——就是「主 workflow 掛掉的時候自動跑另一個 workflow 傳 Slack 給你」。詳細做法在<a href="ch17_error_handling.html">第 17 章「錯誤處理」</a>整套講。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>一天跑一次會不會很浪費資源？</summary>
+        <div class="body">
+          <p>一天一次<strong>非常省</strong>。這個 workflow 跑一次大概不到 1 秒、資料量幾 KB，可以說完全不佔資源。你就算一天跑 24 次（每小時一次）也還在很省的範圍。Woow n8n 實例扛幾百個這種等級的 workflow 完全沒問題。真正會吃資源的是「每分鐘跑一次 + 一次抓幾萬筆 + 用 Code 節點做重度計算」那種，一般用不到。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>我可以同時做很多個這種 workflow 嗎？會不會互相影響？</summary>
+        <div class="body">
+          <p>可以做很多個，彼此不會互相影響（每個 workflow 是獨立執行）。實務上很多同事帳號下都有 10~30 個 active workflow 在跑，都很順。要注意的只有兩件事：（1）credential 是共用的（例如同一組 Google credential 綁在多個 workflow），credential 被刪或 token 過期會一次全部炸；（2）名字取好一點，多了才好找。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>Time Min / Time Max 用 <code>$now.startOf('day')</code> 是哪個時區？</summary>
+        <div class="body">
+          <p>用的是<strong>執行 workflow 時 n8n 實例的時區</strong>。Woow 的 n8n 預設應該是 <code>Asia/Taipei</code>，所以 <code>startOf('day')</code> 就是台北時間 00:00。想確認：Personal settings → Timezone 那格顯示的就是你目前的時區。想更保險可以在 Schedule Trigger 節點裡也明確指定 timezone，兩邊對上不會出錯。時區的細節在<a href="ch14_expressions.html">第 14 章</a>會補充。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>我可以推到 Slack 的私訊（DM）而不是頻道嗎？</summary>
+        <div class="body">
+          <p>可以。Slack 節點的 <strong>Send Message To</strong> 選 <code>User</code>（不選 Channel），然後 <strong>User</strong> 從下拉選你自己或某個人的 Slack 名字。這樣訊息會出現在 Slackbot 的 DM 或跟那個人的私訊裡。對「只給自己看的每日提醒」這種用途，DM 通常比開一個專屬頻道乾淨。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>如果我改了 workflow 但忘了 Save，Active 還是原來那版嗎？</summary>
+        <div class="body">
+          <p>對。Active 執行的是「最後一次 Save 的版本」，沒 Save 的改動不會生效。所以順序是：改動 → <strong>Save</strong> → 觀察下一次自動觸發。有些版本 canvas 上方會顯示「Unsaved changes」提醒你，看到那個字樣就代表你在編輯還沒存的草稿。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>Google Calendar 節點看得到「同事分享給我的 calendar」嗎？</summary>
+        <div class="body">
+          <p>看得到，只要那個 calendar 已經分享給你的 Google 帳號、你在 Google Calendar 網頁版也看得到，n8n 節點的 <strong>Calendar</strong> 下拉就會出現。選擇對應的 calendar 就能抓那個 calendar 的事件。做「小組每日行程推送」很好用。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>下一步該學什麼？</summary>
+        <div class="body">
+          <p>建議路線：<a href="ch9_item_data_flow.html">第 9 章「items 資料流」</a>把「節點之間到底怎麼傳資料」搞清楚（這是 n8n 最容易混淆的觀念），然後<a href="ch10_triggers.html">第 10 章「Trigger 全覽」</a>認識除了 Schedule 之外還有哪些觸發方式（Webhook、SaaS Trigger、Manual）。這兩章讀完你就有能力自己設計第二個、第三個 workflow 了。想直接照範例動手做的話，<a href="ch11_saas_integrations.html">第 11 章</a>有一堆真實情境。</p>
+        </div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="ch7_node_types.html">
+        <span class="label">← 上一章</span>
+        <span class="title">07 · 三種節點</span>
+      </a>
+      <a class="next" href="ch9_item_data_flow.html">
+        <span class="label">下一章 →</span>
+        <span class="title">09 · 資料怎麼流</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>《Woow n8n 入住指南》由 <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer>
+  </main>
+</div>
+<script src="assets/js/toc.js"></script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第 4 章 · 從 Templates gallery 起步 · Woow n8n 入住指南</title>
+  <meta name="description" content="n8n Templates gallery 導覽：怎麼找模板、看評分、看用了哪些節點，複製到自己 workspace 就能跑。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://woowtech.github.io/Woow_n8n_tutorial_site/ch4_templates.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="第 4 章 · 從 Templates gallery 起步 · Woow n8n 入住指南" />
+  <meta property="og:description" content="n8n Templates gallery 導覽：怎麼找模板、看評分、看用了哪些節點，複製到自己 workspace 就能跑。" />
+  <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch4_templates.html" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="第 4 章 · 從 Templates gallery 起步 · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="n8n Templates gallery 導覽：怎麼找模板、看評分、看用了哪些節點，複製到自己 workspace 就能跑。" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <h2>章節</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li><a href="ch4_templates.html" class="active">從 Templates 開始</a></li>
+      <li><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li><a href="ch7_node_types.html">三種節點</a></li>
+      <li><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li><a href="ch18_set_function.html">資料整形</a></li>
+      <li><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li><a href="ch20_code_node.html">Code node</a></li>
+      <li><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>本章</h2>
+      <a href="#why">為什麼要先抄</a>
+      <a href="#concept">兩個入口</a>
+      <a href="#pick">怎麼挑好模板</a>
+      <a href="#steps-builtin">從內建 Templates 裝</a>
+      <a href="#steps-json">貼 JSON 進來</a>
+      <a href="#post-install">裝完該做三件事</a>
+      <a href="#modify-ok">能不能改</a>
+      <a href="#troubleshoot">常見卡關</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>附錄</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="chapter-header">
+      <div class="kicker">第 4 章</div>
+      <h1>從 Templates gallery 起步</h1>
+      <p class="lead">從零寫一個 workflow 很累。n8n 官方 + 社群做了幾千個現成的模板，「表單來了通知 Slack」「Airtable 資料同步 Google Sheet」「AI 幫你摘要 email」——直接抄改改就是你的。這章教你去哪找、怎麼挑、怎麼裝進 Woow n8n。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼要先抄">
+      <h2 data-icon="why">為什麼要先抄別人的</h2>
+      <p>新手第一週最容易掉進的坑，是打開一個空白 canvas，然後盯著它想「⋯要拉哪個節點？」。半小時過去什麼都沒動。</p>
+      <p>真相是：你想做的事，別人 80% 機率已經做過了。而且做得比你第一次做的好。</p>
+      <ul>
+        <li>想做「Google 表單填完自動通知 Slack」——有現成 template。</li>
+        <li>想做「Airtable 新增一列，寄封感謝信給對方」——有現成 template。</li>
+        <li>想做「每天早上 9:00 抓 RSS 摘要用 AI 生一段內容貼 Notion」——也有現成 template。</li>
+      </ul>
+      <p>抄別人的 template 不是偷懶，是<strong>用最快的方式看懂 n8n 怎麼組節點</strong>。你會在 30 分鐘內看到一個能跑的 workflow，比你自己摸索兩週還有效。</p>
+      <div class="callout tip"><strong>提示：</strong>這章的目標是「一小時內把別人的 workflow 跑起來」。真正從零手拉的第一個 workflow 留到<a href="ch8_first_workflow.html">第 8 章</a>——那時你已經看過 5、6 個別人的成品，手感完全不一樣。</div>
+    </section>
+
+    <section id="concept" data-nav="兩個入口">
+      <h2 data-icon="concept">Templates 有兩個入口</h2>
+      <p>n8n 的模板分兩池，內容有重疊但不完全一樣，兩邊都值得看：</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>入口</th>
+            <th>在哪裡</th>
+            <th>特色</th>
+            <th>怎麼用</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>n8n 內建 Templates</strong></td>
+            <td>Woow n8n 左側欄的 Templates 分頁</td>
+            <td>官方 curate、跟你的版本相容性高、一鍵匯入</td>
+            <td>直接在 workspace 裡瀏覽 → 「Use workflow」</td>
+          </tr>
+          <tr>
+            <td><strong>n8n.io/workflows</strong></td>
+            <td>瀏覽器打開 <code>https://n8n.io/workflows/</code></td>
+            <td>社群完整 gallery、幾千個、有安裝次數與作者資訊</td>
+            <td>找到 → 「Use for free」 → 拿到 JSON 貼回 workspace</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>觀念：</strong>兩邊都是「起點」不是「終點」。抄過來只是骨架，一定要換 credential、改欄位才會變成你的。改的部分下一章 (<a href="ch6_modify_workflow.html">ch6</a>) 專門講。</div>
+    </section>
+
+    <section id="pick" data-nav="怎麼挑好模板">
+      <h2 data-icon="tips">怎麼挑一個好模板</h2>
+      <p>模板池很大，你不會每個都適合。五個判斷點，10 秒內排除 80% 的地雷：</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>看什麼</th>
+            <th>好徵兆</th>
+            <th>壞徵兆</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>節點數量</td>
+            <td>3–8 個節點，一眼看得完</td>
+            <td>超過 15 個節點，光讀就頭暈——新手先跳過</td>
+          </tr>
+          <tr>
+            <td>安裝次數（n8n.io 才有）</td>
+            <td>四位數以上，代表很多人跑過</td>
+            <td>個位數，可能還沒被驗證過</td>
+          </tr>
+          <tr>
+            <td>更新日期</td>
+            <td>一年內</td>
+            <td>兩年沒動——節點 API 可能已改，跑不起來</td>
+          </tr>
+          <tr>
+            <td>用了哪些節點</td>
+            <td>有你認得的服務（Slack、Google Sheets、Gmail）</td>
+            <td>全是沒聽過的服務，credential 都不知去哪申請</td>
+          </tr>
+          <tr>
+            <td>描述</td>
+            <td>清楚寫「這是幹嘛的、需要什麼」</td>
+            <td>只有標題沒說明——作者自己都懶得寫</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout tip"><strong>提示：</strong>第一次挑，直接找節點數 &lt; 5、又有 Slack / Gmail / Google Sheets 之類你天天用的服務的模板。跑起來的機率最高，成就感最強。</div>
+    </section>
+
+    <section id="steps-builtin" data-nav="從內建 Templates 裝">
+      <h2 data-icon="steps">Steps 甲：從 n8n 內建 Templates 裝</h2>
+      <p>這是新手最推的路。整個過程都在 Woow n8n 裡完成，不用開新分頁。</p>
+      <ol class="steps">
+        <li>
+          <h3>左側欄按「Templates」</h3>
+          <p>登入 Woow n8n 後，左側欄除了 Workflows、Executions、Credentials 之外還有一個 Templates。點進去會看到官方 curate 的模板列表，可以照類別（AI、Sales、IT Ops、Marketing⋯⋯）或關鍵字篩選。</p>
+          <p>如果側欄看不到，先看<a href="ch3_workspace_tour.html">第 3 章</a>把介面認熟。</p>
+        </li>
+        <li>
+          <h3>用關鍵字找一個貼近你需求的</h3>
+          <p>例：搜尋 <code>slack</code>、<code>gmail</code>、<code>google sheets</code>。找一個描述看得懂的，例如「Save new Gmail attachments to Google Drive」（自動把 Gmail 附件存到 Google Drive）。</p>
+        </li>
+        <li>
+          <h3>點進去看預覽</h3>
+          <p>右側會顯示這個模板的 canvas 縮圖：有幾個節點、怎麼串、需要哪些外部服務（Gmail、Drive⋯⋯）。這一步就在<strong>做「挑模板五個判斷點」</strong>——如果縮圖看起來一大堆節點、你認不得，就 back 出來換一個。</p>
+        </li>
+        <li>
+          <h3>按「Use workflow」（有些版本寫 Use this template）</h3>
+          <p>模板詳情頁右上角會有一個按鈕，點下去就會複製一份到你的 workspace，變成一個新的 workflow，名字通常是模板原名。你會被自動跳到編輯畫面。</p>
+        </li>
+        <li>
+          <h3>綁 credential、填欄位</h3>
+          <p>剛匯入的模板，節點大多是紅色的驚嘆號——因為它還沒接上你的帳號。點紅色節點 → 選 Credential → 選你之前建過的、或按 <strong>Create New</strong> 建一個。細節在<a href="ch13_credentials.html">第 13 章</a>。</p>
+        </li>
+        <li>
+          <h3>按 Execute workflow 手動跑一次</h3>
+          <p>右下角的紫色按鈕。跑成功每個節點會變綠打勾；有紅色錯誤就點進去看訊息（通常是欄位空著或 credential 沒接對）。</p>
+        </li>
+        <li>
+          <h3>確認 OK 再把 Active 打開</h3>
+          <p>右上角的 Active 開關。打開後排程 / Webhook 才會真的自動觸發。<strong>沒手動跑成功之前不要開</strong>，會半夜掛你一堆錯誤 log。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="steps-json" data-nav="貼 JSON 進來">
+      <h2 data-icon="steps">Steps 乙：從 n8n.io 貼 JSON 進來</h2>
+      <p>內建 Templates 池比較小，如果沒找到你要的，就去社群完整 gallery 挖。這條路多兩三步，但寶藏多。</p>
+      <ol class="steps">
+        <li>
+          <h3>瀏覽器打開 <code>https://n8n.io/workflows/</code></h3>
+          <p>官方社群 gallery。左邊有分類（AI、Sales、IT Ops、Marketing、Document Ops、Support⋯⋯），也可以按服務 icon（Google Sheets、OpenAI、Telegram、Gmail⋯⋯）縮小範圍。</p>
+        </li>
+        <li>
+          <h3>用關鍵字搜或按分類挑</h3>
+          <p>例：搜 <code>slack notification</code>、<code>rss to notion</code>、<code>ai email summary</code>。點進看起來像的模板，用前面「五個判斷點」評估一次。</p>
+        </li>
+        <li>
+          <h3>模板詳情頁按「Use for free」</h3>
+          <p>右上角的橘色按鈕。點下去會出現一個小視窗，通常給你兩個選項：一是複製 JSON 到剪貼簿（Copy template to clipboard），二是直接跳到雲端試玩（Try it on n8n Cloud）——我們選 <strong>Copy</strong>。</p>
+          <div class="callout warn"><strong>注意：</strong>看到「Try it on n8n Cloud」不要按，那會跑到 n8n 官方雲端不是我們的 Woow n8n。你的資料要留在公司這一台。</div>
+        </li>
+        <li>
+          <h3>回 Woow n8n，打開一個 workflow（新的也行）</h3>
+          <p>Workflows 頁 → 按「+ Add workflow」建一個空白的，或打開任一個現有的（貼進去不會蓋掉原本的節點）。</p>
+        </li>
+        <li>
+          <h3>在 canvas 空白處按 <kbd>Ctrl</kbd>+<kbd>V</kbd>（Mac 是 <kbd>Cmd</kbd>+<kbd>V</kbd>）</h3>
+          <p>整個 workflow 的節點就會刷一下貼進來，連連線都保留。如果快捷鍵沒反應，右鍵空白處會有 Paste 選項。</p>
+        </li>
+        <li>
+          <h3>存檔並改名</h3>
+          <p>左上角 workflow 名字通常是 <code>My workflow</code> 之類的預設，直接點下去改成看得懂的（例：「RSS 早報摘要」）。按右上角 Save 或 <kbd>Ctrl</kbd>+<kbd>S</kbd>。</p>
+        </li>
+      </ol>
+      <div class="callout"><strong>觀念：</strong>貼進來之後，接下來的動作跟從內建 Templates 匯入的模板一模一樣——綁 credential、手動跑一次、確認 OK 再開 Active。</div>
+    </section>
+
+    <section id="post-install" data-nav="裝完該做三件事">
+      <h2 data-icon="done">裝完 template 該做的三件事</h2>
+      <p>模板匯進來只是「借了一份骨架」，還不能跑。順序照這個做，錯誤率最低：</p>
+      <ol class="steps">
+        <li>
+          <h3>看每個節點的紅色提示</h3>
+          <p>紅色圓點 / 驚嘆號 = 這個節點少東西。八成是「Credential 沒接」，少數是「必填欄位空著」（例如收件人 email 未填）。從最上游的 Trigger 節點開始一路修下來。</p>
+        </li>
+        <li>
+          <h3>看它想連哪些外部服務、你是不是有</h3>
+          <p>如果模板用了 Airtable、你們公司沒 Airtable 帳號，那這個模板對你沒用——早點放棄換一個。或改成用 Google Sheets（可以，但屬於「改 template」範圍，看<a href="ch6_modify_workflow.html">ch6</a>）。</p>
+        </li>
+        <li>
+          <h3>先手動 Execute workflow 跑一次</h3>
+          <p>用右下角紫色的 <strong>Execute workflow</strong> 按鈕手動跑。全綠打勾才代表整條通了。<strong>沒跑成功之前，Active 開關不要開。</strong></p>
+        </li>
+      </ol>
+      <div class="callout warn"><strong>注意：</strong>手動跑成功 ≠ 排程跑會成功。有些節點在手動模式下用你的臨時 test 資料，切到正式排程時抓的是真的資料，欄位對不上就會爆。要在排程開之前用真實資料再跑一次。</div>
+    </section>
+
+    <section id="modify-ok" data-nav="能不能改">
+      <h2 data-icon="concept">能不能改 template？可以，而且應該</h2>
+      <p>Template 只是起點，複製過來之後<strong>整份就是你的</strong>，愛怎麼改怎麼改：</p>
+      <ul>
+        <li>把 Slack 通知改成寄 Gmail。</li>
+        <li>加一個 IF 節點，只有金額 &gt; 1000 才發通知。</li>
+        <li>刪掉裡面用不到的節點（例如那個社群作者順便加的「同步到 Airtable」你根本沒用）。</li>
+        <li>把英文欄位訊息改成中文。</li>
+      </ul>
+      <p>改得越多，跟原本的 template 距離越遠，也越像你自己做的。<a href="ch6_modify_workflow.html">第 6 章</a>會示範完整的「改別人 workflow」流程。</p>
+      <div class="callout tip"><strong>提示：</strong>改之前先「另存新檔」——複製一份出來練習，這樣你把原始版本留著，改壞了還能對照。（在 workflow 列表右邊三個點 → Duplicate。）</div>
+    </section>
+
+    <section id="troubleshoot" data-nav="常見卡關">
+      <h2 data-icon="troubleshoot">常見卡關</h2>
+      <ol class="steps">
+        <li>
+          <h3>側欄的 Templates 頁面點進去空空的</h3>
+          <p>可能是你的 workspace 權限沒開 Templates，或網路擋了外部 template 服務（n8n 內建 Templates 是從 n8n.io 拉的）。先重整頁面看看；還是空的就找 IT 或看<a href="ch2_login.html">第 2 章</a>確認登入正確。</p>
+        </li>
+        <li>
+          <h3>從 n8n.io 貼 JSON，貼不上去</h3>
+          <p>90% 是複製時漏東西——例如只複製到部分文字。回 n8n.io 那個模板頁面，重新按「Use for free」→「Copy template to clipboard」，這才會複製完整 JSON。另外要確定你點的是 canvas 空白處（不是某個節點）再貼。</p>
+        </li>
+        <li>
+          <h3>貼進來的節點全是紅色 error</h3>
+          <p>兩個主因：（a）Credential 還沒設，一個個點紅節點綁上去；（b）模板用的節點版本你這台 n8n 沒有——最下方會顯示 <em>Unknown node type</em>，這種只能換更新的模板或升級 n8n。</p>
+        </li>
+        <li>
+          <h3>workflow 匯進來名字很怪，例如「My workflow 7」</h3>
+          <p>直接點左上角的標題就能改名。習慣一開始就改成「用途_服務」的格式（例：<code>rss早報_slack</code>），之後 workflow 列表才找得到。</p>
+        </li>
+        <li>
+          <h3>Template 描述說要某個節點，但我這邊搜不到</h3>
+          <p>該節點可能是 n8n community edition 沒包（例如某些企業版才有的節點），或該整合被公司在 Woow n8n 停用了。找 IT 或換個用「基本節點 + HTTP Request」實作的模板。<a href="ch12_http_request.html">HTTP Request 節點</a>幾乎可以取代任何 SaaS 專用節點。</p>
+        </li>
+        <li>
+          <h3>手動跑通了，Active 打開後半夜跑失敗</h3>
+          <p>常見原因：手動跑時你用的是自己臨時貼的測試資料，實際排程觸發時外部 API 回來的欄位長不一樣。看<a href="appendix_errors.html">附錄 B</a>找對應症狀。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>一定要從 template 起步嗎？可以從零寫自己的嗎？</summary>
+        <div class="body">當然可以。但新手強烈建議先抄至少 3、5 個別人的跑起來，你會很快看懂節點怎麼串。從零寫留到<a href="ch8_first_workflow.html">第 8 章</a>——那時你已經有手感，寫起來會順很多。</div>
+      </details>
+      <details class="faq">
+        <summary>別人的 template 有沒有病毒 / 惡意程式碼？</summary>
+        <div class="body">n8n template 不會執行任意程式（它只是節點的組合定義）。但要注意：模板可能包含 <code>Code node</code>，裡面有 JavaScript / Python。匯入前把每個 Code node 點開看一下程式碼在做什麼，尤其是有「呼叫外部網址」或「發送資料到不明地方」的要警覺。官方 curate 的內建 Templates 相對安全，社群 gallery 就要多留一分心。</div>
+      </details>
+      <details class="faq">
+        <summary>Template 都免費嗎？會不會用一用要收費？</summary>
+        <div class="body">n8n templates 本身<strong>全部免費</strong>。要付費的部分不是模板，而是它連接的外部服務——例如某個 template 用 OpenAI 節點，你就要有 OpenAI 的 API 帳號（那個是你付給 OpenAI 的）。跟模板本身沒關係。</div>
+      </details>
+      <details class="faq">
+        <summary>我改了 template 之後可以貢獻回社群嗎？</summary>
+        <div class="body">可以。到 <code>n8n.io/workflows/</code> 有「Submit a template」按鈕，需要註冊 n8n.io 帳號。但先別急——你剛入門，先讓你的 workflow 在公司裡跑穩幾週，把敏感的 credential、內部 URL、公司名稱都清掉之後再考慮貢獻。</div>
+      </details>
+      <details class="faq">
+        <summary>模板匯進來會佔用 executions 額度嗎？</summary>
+        <div class="body">「匯入」本身完全不算 executions（只是複製了一份定義）。只有你按 Execute workflow 或 Active 打開後排程真的跑，才算一次 execution。放心大膽地匯入試試看。</div>
+      </details>
+      <details class="faq">
+        <summary>我可以一次匯入很多 template 嗎？會不會亂？</summary>
+        <div class="body">技術上可以無限匯。但實務上建議：一次匯 1、2 個先跑成功再匯下一個，不然一堆紅色錯誤節點會分不清是哪個 template 的問題。Workflow 列表可以用「標籤（Tags）」分類，例如 <code>試玩中</code>、<code>正式在跑</code>——之後想清理很方便。</div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="ch3_workspace_tour.html">
+        <span class="label">← 上一章</span>
+        <span class="title">03 · 工作區導覽</span>
+      </a>
+      <a class="next" href="ch5_import_workflow.html">
+        <span class="label">下一章 →</span>
+        <span class="title">05 · 匯入 workflow</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>《Woow n8n 入住指南》由 <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer>
+  </main>
+</div>
+<script src="assets/js/toc.js"></script>
+</body>
+</html>

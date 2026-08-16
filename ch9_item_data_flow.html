@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第 9 章 · Item 是什麼？資料怎麼在節點間流動 · Woow n8n 入住指南</title>
+  <meta name="description" content="n8n 的 item 資料模型：JSON 結構、每個節點的 items 陣列、$json / $binary、資料流視覺化的方式。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://woowtech.github.io/Woow_n8n_tutorial_site/ch9_item_data_flow.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="第 9 章 · Item 是什麼？資料怎麼在節點間流動 · Woow n8n 入住指南" />
+  <meta property="og:description" content="n8n 的 item 資料模型：JSON 結構、每個節點的 items 陣列、$json / $binary、資料流視覺化的方式。" />
+  <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch9_item_data_flow.html" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="第 9 章 · Item 是什麼？資料怎麼在節點間流動 · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="n8n 的 item 資料模型：JSON 結構、每個節點的 items 陣列、$json / $binary、資料流視覺化的方式。" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <h2>章節</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li><a href="ch7_node_types.html">三種節點</a></li>
+      <li><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li><a href="ch9_item_data_flow.html" class="active">資料怎麼流</a></li>
+      <li><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li><a href="ch18_set_function.html">資料整形</a></li>
+      <li><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li><a href="ch20_code_node.html">Code node</a></li>
+      <li><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>本章</h2>
+      <a href="#why">為什麼要搞懂 item</a>
+      <a href="#concept">item 就是一列資料</a>
+      <a href="#structure">item 的內部結構</a>
+      <a href="#expression_core">Expression 抓資料 4 招</a>
+      <a href="#run_modes">節點跑幾次</a>
+      <a href="#walkthrough">三節點資料流</a>
+      <a href="#output_panel">讀 output 面板</a>
+      <a href="#wrong_count">為什麼只跑一次</a>
+      <a href="#binary">binary 什麼時候用</a>
+      <a href="#troubleshoot">常見卡關</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>附錄</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="chapter-header">
+      <div class="kicker">第 9 章</div>
+      <h1>Item 是什麼？資料怎麼在節點間流動</h1>
+      <p class="lead">n8n 最重要、也最容易被略過的觀念就一個字：<strong>item</strong>。搞懂 item 之後，「為什麼我的 workflow 只跑一次不是五次」「為什麼 Slack 節點傳了 100 遍」「為什麼 Expression 顯示 undefined」都會變合理。這章一次講清楚，之後每一章都會回來用。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼要搞懂 item">
+      <h2 data-icon="why">為什麼要搞懂 item</h2>
+      <p><a href="ch8_first_workflow.html">第 8 章</a>做完那個「早上把行事曆推 Slack」的 workflow 之後，你大概會發現幾件怪事：</p>
+      <ul>
+        <li>Google Calendar 節點跑一次讀回<strong>五個事件</strong>，Slack 節點就自己傳了<strong>五次訊息</strong>——沒人叫它 for-loop 啊？</li>
+        <li>Expression 面板打 <code>{{ $json.summary }}</code> 明明有值，換成 <code>{{ $json.items[0].summary }}</code> 就 <code>undefined</code>。</li>
+        <li>Google Sheet 讀回一個空表，下游全部節點<strong>直接被跳過</strong>——連錯誤都沒噴，就是不跑。</li>
+        <li>用 Set 節點加了一個欄位，結果 output 面板一次跑出<strong>五列</strong>，不是預期的一列。</li>
+      </ul>
+      <p>這些現象背後都是同一件事：<strong>n8n 節點跟節點之間傳的不是一團 JSON，是一「列」一「列」的 item</strong>。跟 Zapier 把這件事藏起來不同，n8n 把 item 直接攤在你眼前——這也是它比 Zapier 強、但初學者比 Zapier 難的核心原因。</p>
+      <div class="callout"><strong>本章目標：</strong>讀完你會知道 item 是什麼、一個節點吃幾個 item、下一個節點會跑幾次、Expression 抓的到底是什麼、以及看 output 面板 debug 的正確姿勢。這章不用動手做新 workflow，但強烈建議打開<a href="ch8_first_workflow.html">第 8 章</a>那個 workflow 一邊對照。</div>
+    </section>
+
+    <section id="concept" data-nav="item 就是一列資料">
+      <h2 data-icon="concept">item 就是「一筆資料」，像 Excel 一列</h2>
+      <p>最好用的比喻：<strong>每個節點的 output 就是一份 Excel 表格</strong>，表格的每一列就是一個 item。</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Excel 用語</th><th>n8n 用語</th><th>實際長怎樣</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>一整份表格</td><td>節點的 output（一個 array）</td><td><code>[ {...}, {...}, {...} ]</code></td></tr>
+          <tr><td>一列</td><td>一個 item</td><td><code>{ name: "Elmo", age: 30 }</code></td></tr>
+          <tr><td>一欄</td><td>item 裡的一個 field</td><td><code>name</code>、<code>age</code></td></tr>
+          <tr><td>一格</td><td>某個 item 的某個欄位值</td><td><code>"Elmo"</code></td></tr>
+        </tbody>
+      </table>
+      <p>然後最關鍵的規則：<strong>下一個節點會對「每一個 item」各跑一次</strong>。所以 Google Sheet 讀回 100 列 → Slack 節點就會傳 100 次訊息。這不是 bug，是 n8n 的核心行為，官方文件叫<em>item-based execution</em>。</p>
+      <div class="callout tip"><strong>提示：</strong>把「item = Excel 一列」這個比喻寫在便利貼貼螢幕上。之後每次看到 workflow 行為怪怪的，先問自己「這個節點的 input 有幾個 item？」，八成問題就找到了。</div>
+    </section>
+
+    <section id="structure" data-nav="item 的內部結構">
+      <h2 data-icon="what">一個 item 內部有哪些「隔間」</h2>
+      <p>一個 item 不是純 JSON，而是有<strong>幾個固定隔間</strong>的物件。你 99% 只會用第一個，但另外兩個知道存在會少踩坑。</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>隔間</th><th>放什麼</th><th>什麼時候會用到</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>json</code></td><td>主要資料，一個純 JSON 物件。這是你 <strong>99% 時間在讀的地方</strong>。</td><td>幾乎所有 workflow。</td></tr>
+          <tr><td><code>binary</code></td><td>附加的檔案內容（PDF、圖片、CSV 等 binary data）。</td><td>Gmail 附件、Google Drive 下載、API 回傳檔案。</td></tr>
+          <tr><td><code>pairedItem</code></td><td>記錄「這個 item 是從上游哪個 item 來的」，用於 Merge 節點對齊。</td><td>用 Merge 節點合流的時候。多數情況 n8n 自動填。</td></tr>
+        </tbody>
+      </table>
+      <p>用程式碼看一個 item 完整長這樣：</p>
+      <pre class="code-block"><code>{
+  "json": {
+    "name": "Elmo",
+    "age": 30,
+    "email": "elmo@example.com"
+  },
+  "binary": {
+    "attachment": {
+      "mimeType": "application/pdf",
+      "fileName": "invoice.pdf",
+      "data": "..."
+    }
+  },
+  "pairedItem": { "item": 0 }
+}</code></pre>
+      <p>所以下一個節點要抓 <code>name</code> 這個欄位，路徑是 <code>$json.name</code>——注意<strong>是 <code>$json.name</code> 不是 <code>$json.json.name</code></strong>，n8n 幫你把外面那層 <code>json</code> 拆掉了，讓 Expression 短一點。</p>
+    </section>
+
+    <section id="expression_core" data-nav="Expression 抓資料 4 招">
+      <h2 data-icon="tabs">在 Expression 裡抓資料的四個核心寫法</h2>
+      <p>節點欄位切成 Expression 模式（欄位右上角那個齒輪或 <code>=</code> 標記）之後，就是進到 Expression 世界。抓 item 資料只有這四種寫法要背，其他都是變化：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>寫法</th><th>意思</th><th>什麼時候用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>{{ $json }}</code></td><td>當前 item 的整包 JSON。</td><td>想看整包長怎樣、傳給下游整包。</td></tr>
+          <tr><td><code>{{ $json.field }}</code></td><td>當前 item 的某個欄位。</td><td>最常用，例：<code>{{ $json.summary }}</code>、<code>{{ $json.email }}</code>。</td></tr>
+          <tr><td><code>{{ $json['field with space'] }}</code></td><td>欄位名有空格或中文用中括號寫。</td><td>API 回來的欄位叫 <code>User Name</code>、<code>訂單編號</code>時。</td></tr>
+          <tr><td><code>{{ $('Google Sheets').item.json.field }}</code></td><td>抓上游<strong>指定節點</strong>的資料（不是上一個節點）。</td><td>跳過中間節點抓兩三站前的資料。</td></tr>
+        </tbody>
+      </table>
+      <p><code>$('節點名稱')</code> 就是「用節點名找到上游那個節點的 output」的意思。節點名字是<strong>你在 canvas 上看到的那個</strong>（雙擊節點可以改）。這樣寫的好處是——就算中間插了一堆 Set / IF，你還是能直接回頭抓原始資料。</p>
+      <div class="callout"><strong>觀念：</strong>寫 Expression 的時候<strong>不用自己記語法</strong>。點欄位進 Expression 模式後，右邊會滑出「輸入」面板，左半邊列上游所有節點的資料（Table / JSON / Schema 三種檢視），你點哪個欄位它就幫你插入正確的 Expression。<a href="ch14_expressions.html">第 14 章</a>會完整拆這個面板。</div>
+    </section>
+
+    <section id="run_modes" data-nav="節點跑幾次">
+      <h2 data-icon="modes">同一個節點會跑幾次？兩種模式</h2>
+      <p>「這個節點會跑幾次」這件事，被兩個因素決定：<strong>input 有幾個 item</strong> 和 <strong>節點的 Execute Once 設定</strong>。多數內建節點的預設行為是「input 有幾個 item 就跑幾次」，但這是可以改的。</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>模式</th><th>行為</th><th>誰是這樣</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>對每個 item 各跑一次</strong>（預設）</td><td>Input 有 N 個 item → 節點會跑 N 次 → output 通常也是 N 個 item。</td><td>大部分整合類節點（Slack、Gmail、HTTP Request 打 API 等）。</td></tr>
+          <tr><td><strong>吃全部 item 一次處理完</strong></td><td>Input 有 N 個 item → 節點只跑一次拿到整份 array → 你在裡面決定要 output 幾個。</td><td>Set、Aggregate、Item Lists、Code node（可切）、Sub-workflow（可切）。</td></tr>
+        </tbody>
+      </table>
+      <p>要看／改一個節點是哪一種：點節點打開設定 → 頂端切到 <strong>Settings</strong> 分頁 → 找 <strong>Execute Once</strong> 這個 toggle。開啟後這個節點無論 input 幾個 item，都<strong>只用第一個 item</strong> 跑一次，其他丟掉。</p>
+      <div class="callout warn"><strong>注意：</strong>Execute Once 是「用第一個 item 跑一次」，<strong>不是「把全部 item 整成一包跑一次」</strong>。這兩件事很多人搞混。真的要「把 5 個 item 合成 1 個包」，你需要的是 Aggregate 或 Item Lists 節點（<a href="ch16_merge_split.html">第 16 章</a>詳講）。</div>
+    </section>
+
+    <section id="walkthrough" data-nav="三節點資料流">
+      <h2 data-icon="steps">三個節點的資料流動實例</h2>
+      <p>看抽象概念看到頭暈？拿最簡單的 3 節點 workflow 走一次就懂了：<strong>Manual Trigger → Google Sheets (Read) → Slack (Send)</strong>。假設 Google Sheet 裡有 5 列聯絡人。</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>階段</th><th>節點</th><th>Input items</th><th>做什麼</th><th>Output items</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>開頭</td><td>Manual Trigger</td><td>—（沒有 input）</td><td>手動按 Execute 觸發。</td><td><strong>1 個空 item</strong>：<code>[ {} ]</code></td></tr>
+          <tr><td>中間</td><td>Google Sheets (Read Rows)</td><td>1 個 item</td><td>對這 1 個 item 跑一次，去 Sheet 讀回 5 列。</td><td><strong>5 個 items</strong>：<code>[{row1}, {row2}, ...]</code></td></tr>
+          <tr><td>結尾</td><td>Slack (Send Message)</td><td>5 個 items</td><td>對每個 item 跑一次 send → 傳 5 次訊息。</td><td>5 個 items（每次 send 的結果）</td></tr>
+        </tbody>
+      </table>
+      <p>看出來重點了嗎——<strong>資料筆數是被中間那個節點放大的</strong>。Manual Trigger 只丟 1 個空 item 進去，Google Sheets 把它「展開」成 5 個 items，Slack 就自動被連跑 5 次。整個流程沒有一行 for-loop 程式碼，全靠 item 觀念自動展開。</p>
+      <div class="callout tip"><strong>提示：</strong>大部分 Trigger 節點（Manual、Schedule）第一次啟動時只吐 1 個 item。真正把資料量放大的是<strong>之後的讀取節點</strong>（Google Sheets Read、Gmail Trigger 抓新信、資料庫 SELECT）。所以看 workflow 資料筆數對不對，看的是<strong>「哪個節點是資料來源」</strong>，不是看 Trigger。</div>
+    </section>
+
+    <section id="output_panel" data-nav="讀 output 面板">
+      <h2 data-icon="records">看 output 面板讀 item 的三種檢視</h2>
+      <p>節點按 <strong>Execute step</strong>（單獨跑這個節點）或整個 workflow 跑完之後，畫面右邊的 output 面板會顯示這個節點吐出的 items。頂端有三個檢視模式可以切，各有各的場合：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>檢視</th><th>看起來像</th><th>什麼時候用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Table</strong>（表格）</td><td>Excel 表格，欄位是 column、item 是 row。</td><td>快速看每個 item 的值、比對筆數對不對。這是預設檢視。</td></tr>
+          <tr><td><strong>JSON</strong></td><td>原始 JSON 陣列，可以展開／收合物件。</td><td>Table 顯示不下（欄位太多／巢狀結構）、要複製整包貼到別的地方。</td></tr>
+          <tr><td><strong>Schema</strong></td><td>樹狀的欄位結構圖，只顯示欄位名與型別，不顯示值。</td><td><strong>寫 Expression 前必看</strong>——知道有哪些欄位可以抓、路徑怎麼寫。</td></tr>
+        </tbody>
+      </table>
+      <p>面板頂端還會顯示<strong>「N items」</strong>那個數字——這是你 debug 最常看的一個數字。跟你預期不一樣就代表這個節點出事了，往上游追。</p>
+      <p>Table 檢視每一列前面有個小數字（<code>0</code>、<code>1</code>、<code>2</code>...）就是 item index。抓「第一個 item 的某個欄位」就是 <code>$json.field</code>（當前那一次 iteration 的 item）；<strong>不是</strong> <code>$json[0].field</code>——這是初學者最常犯的錯之一。</p>
+      <div class="callout"><strong>觀念：</strong>Schema 檢視在 n8n 的重要性被嚴重低估。寫 Expression 前先切 Schema 看一下，能省掉九成「打了半天發現欄位名寫錯」的時間。Schema 上直接點欄位還會幫你把 Expression 插入到當前正在編輯的欄位。</div>
+    </section>
+
+    <section id="wrong_count" data-nav="為什麼只跑一次">
+      <h2 data-icon="troubleshoot">為什麼我的 workflow 只跑 1 次不是 5 次？</h2>
+      <p>這是新手第一週最常問的問題。原因永遠是三個之一，用<strong>Executions 逐節點看 item 數量</strong>就能定位：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>原因</th><th>症狀</th><th>怎麼確認</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A：Trigger 只吐 1 個 item</strong></td><td>Schedule Trigger、Manual Trigger 預設每次觸發都只丟 1 個空 item。你以為它會「自動連跑 5 次」是誤解。</td><td>Trigger 節點的 output 面板看 items 數量。</td></tr>
+          <tr><td><strong>B：某節點被設 Execute Once</strong></td><td>上游有 5 個 items，這個節點只跑 1 次就結束——很可能是你或別人不小心開了 Settings → Execute Once。</td><td>逐節點看 output items 數量，找那個「從 5 變 1」的節點。</td></tr>
+          <tr><td><strong>C：Expression 抓錯層級</strong></td><td>你以為 <code>$json.items</code> 是把 items 展開，但其實它只是抓「當前 item 裡叫 items 的欄位」——那個欄位是個陣列，不是 n8n 的 items 概念。</td><td>Schema 檢視看該節點 output 結構，判斷 items 是<strong>真的多個 item</strong> 還是<strong>一個 item 裡面有個叫 items 的陣列</strong>。</td></tr>
+        </tbody>
+      </table>
+      <p>C 這個很坑：<strong>「n8n 的 items」跟「JSON 裡剛好叫 items 的欄位」是兩件事</strong>。API 常常回傳長這樣：</p>
+      <pre class="code-block"><code>{
+  "total": 5,
+  "items": [
+    { "id": 1, "name": "A" },
+    { "id": 2, "name": "B" },
+    ...
+  ]
+}</code></pre>
+      <p>整包被 n8n 當成<strong>一個 item</strong>（因為 API 回傳就是一包）。要把 <code>items</code> 陣列展開成 5 個 n8n items，需要用 <strong>Split Out</strong> 節點（<a href="ch16_merge_split.html">第 16 章</a>）指定 <code>items</code> 這個欄位。展開後才會變成 5 個 item，下游節點才會被連跑 5 次。</p>
+    </section>
+
+    <section id="binary" data-nav="binary 什麼時候用">
+      <h2 data-icon="what">binary data 什麼時候會用到</h2>
+      <p><strong>多數業務類 workflow 完全不會碰到 binary。</strong>只有涉及「檔案本身」的節點才會產生 binary：</p>
+      <ul>
+        <li>Gmail Trigger 抓到有附件的信 → 附件在 <code>binary.attachment_0</code>、<code>binary.attachment_1</code>...</li>
+        <li>Google Drive Download → 檔案內容在 <code>binary.data</code>。</li>
+        <li>HTTP Request 收到 PDF／圖片回應，且 Response Format 選 <em>File</em> → binary。</li>
+        <li>Read/Write Binary File（self-host 才有意義）。</li>
+      </ul>
+      <p>看 binary 要切到 output 面板的 <strong>Binary</strong> 分頁（跟 Table / JSON / Schema 平行的第四個分頁，有 binary 才會出現）。裡面會列每個 binary 的 mime type、檔名、大小，圖片還可以預覽。</p>
+      <div class="callout warn"><strong>注意：</strong>binary 直接<strong>塞在記憶體</strong>裡跟著整個 execution 一起跑，一個 10MB 附件 × 100 個 item 就是 1GB。碰到大檔案 workflow 有兩個原則：（1）能早處理完丟掉就早丟——用 Set 節點只留 <code>$json</code>、把 <code>$binary</code> 清掉；（2）避免不必要的 <em>Execute Workflow</em> 傳遞（sub-workflow 會複製一份）。</div>
+    </section>
+
+    <section id="troubleshoot" data-nav="常見卡關">
+      <h2 data-icon="troubleshoot">常見卡關</h2>
+      <ol class="steps">
+        <li>
+          <h3>Expression 顯示 <code>undefined</code></h3>
+          <p>兩個可能：（1）<strong>欄位名打錯</strong>——切 Schema 檢視看真實欄位名（大小寫、有沒有空格、有沒有前綴 <code>data.</code>）。（2）<strong>上游節點根本沒跑成功</strong>——那個節點的 output 面板是空的或紅色。先修上游再管 Expression。</p>
+        </li>
+        <li>
+          <h3>節點跑 100 次但你只想跑 1 次</h3>
+          <p>上游有 100 個 items 的緣故。三個做法選一個：（a）在中間插 <strong>Aggregate</strong> 節點把 100 個聚合成 1 個；（b）用 <strong>Code node</strong>（<a href="ch20_code_node.html">第 20 章</a>）寫 <code>return [ { json: { all: $input.all() } } ]</code>；（c）如果只想拿第一筆，該節點 Settings 開 <strong>Execute Once</strong>——但注意這是「只拿第一筆」不是「合併全部」。</p>
+        </li>
+        <li>
+          <h3>Merge 節點吐出來筆數對不上</h3>
+          <p>Merge 有多個 mode，選錯結果差很多：<strong>Append</strong>（頭接尾，A 3 個+B 2 個=5 個）、<strong>Combine → Merge by Position</strong>（同 index 湊一對，靠 pairedItem 對齊）、<strong>Combine → Multiplex</strong>（笛卡兒積，A 3 個×B 2 個=6 個）。用之前先想清楚要哪一種，<a href="ch16_merge_split.html">第 16 章</a>會拆更細。</p>
+        </li>
+        <li>
+          <h3>節點吃到 0 個 item 直接被跳過</h3>
+          <p>n8n 的行為：<strong>input 是空 array 時，節點不會跑</strong>。這是刻意的（不用寫 empty check）但初學者會誤以為節點壞了。往上游追是誰吐了 0 個——通常是（a）IF 節點兩個分支都沒過、（b）Google Sheet Read 沒讀到資料、（c）過濾節點把全部濾掉。</p>
+        </li>
+        <li>
+          <h3>Set 節點跑完 item 數量不對</h3>
+          <p>Set 節點預設<strong>對每個 item 各跑一次</strong>（保持 item 數量不變），這是對的。如果你發現 5 進 5 出但欄位跑掉，通常是 Set 的模式選了「Keep Only Set」把原欄位砍光了——改成「Include All Fields」或「Include Selected Fields」試試。<a href="ch18_set_function.html">第 18 章</a>會完整拆 Set 節點。</p>
+        </li>
+        <li>
+          <h3>Expression 顯示的預覽跟實際跑出來不一樣</h3>
+          <p>Expression 編輯器預覽用的是<strong>「上游節點上一次跑的 output」</strong>——如果上游還沒跑或跑錯了，預覽就是舊值。解法：對上游節點按 <strong>Execute step</strong> 跑一次讓它產生新 output，再回來看 Expression 預覽。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>Zapier 也有這個 item 觀念嗎？</summary>
+        <div class="body">有，但 Zapier <strong>把它藏起來了</strong>——Zapier 每個 Zap 每次觸發預設就是「一筆資料」，需要多筆時要另外開 Sub-Zap 或 loop by Zapier。n8n 選擇把 item 直接攤在你面前，好處是超彈性（同一個 workflow 可以處理 1 筆也可以處理 1000 筆），代價是初學者要多花 30 分鐘理解這個章節。理解之後你會覺得 Zapier 那種黑箱反而礙事。</div>
+      </details>
+      <details class="faq">
+        <summary>一次能吃多少 item？有上限嗎？</summary>
+        <div class="body">技術上沒硬性上限，但實務有：n8n 是把整個 execution 的 items 放<strong>記憶體</strong>裡跑，幾千筆純 JSON 沒問題，上萬筆就會慢，帶 binary 的一兩百筆就可能撐爆。真的要處理大量資料，用 <strong>Split In Batches</strong> 節點分批跑（<a href="ch16_merge_split.html">第 16 章</a>），或者把資料處理拆到資料庫層做完再讓 n8n 只碰結果。</div>
+      </details>
+      <details class="faq">
+        <summary>binary 資料會佔記憶體嗎？</summary>
+        <div class="body">會，而且吃很兇。一個 10MB 的 PDF 附件會完整塞在 execution 記憶體，如果又觸發 sub-workflow 還會被複製一份。原則：（1）不需要 binary 的 item 用 Set 節點清掉 binary；（2）Cloud 版有 execution size 上限，超過會失敗；（3）self-host 記得監控 n8n 容器記憶體用量。</div>
+      </details>
+      <details class="faq">
+        <summary>怎麼看到 workflow 實際跑了多久、每個節點花多久？</summary>
+        <div class="body">側欄 <strong>Executions</strong> 頁面每一筆紀錄有總 duration。點進去可以看每個節點分別跑了多久（節點右上角的小時鐘標記）。慢的節點通常是打外部 API 的那幾個（Slack、Google 系列、HTTP Request），不是 n8n 自己慢。<a href="ch17_error_handling.html">第 17 章</a>錯誤處理會教怎麼設 timeout 跟 retry。</div>
+      </details>
+      <details class="faq">
+        <summary>可以只讓 workflow 對「某幾個 item」跑而不是全部嗎？</summary>
+        <div class="body">可以。中間插一個 <strong>IF</strong> 或 <strong>Filter</strong> 節點做條件過濾，只有符合條件的 item 會往下走，其他被截住。或者用 <strong>Split In Batches</strong> 分批處理（例：一次 10 筆，跑 10 輪）。這些都會在<a href="ch16_merge_split.html">第 16 章</a>詳細講。</div>
+      </details>
+      <details class="faq">
+        <summary>$json 跟 $input.all() 差在哪？</summary>
+        <div class="body">在一般節點的 Expression 欄位裡，<code>$json</code> 是「當前這一輪 iteration 的那個 item 的 json」——因為節點被連跑 N 次，每次的 <code>$json</code> 都指不同的 item。<code>$input.all()</code> 拿的是「這一個節點吃到的全部 items 的 array」，主要在 <strong>Code node</strong> 裡用（<a href="ch20_code_node.html">第 20 章</a>），因為 Code node 通常設成一次處理全部。</div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="ch8_first_workflow.html">
+        <span class="label">← 上一章</span>
+        <span class="title">08 · 第一個 workflow</span>
+      </a>
+      <a class="next" href="ch10_triggers.html">
+        <span class="label">下一章 →</span>
+        <span class="title">10 · 三種觸發</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>《Woow n8n 入住指南》由 <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer>
+  </main>
+</div>
+<script src="assets/js/toc.js"></script>
+</body>
+</html>

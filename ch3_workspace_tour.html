@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第 3 章 · 工作區長什麼樣 · Woow n8n 入住指南</title>
+  <meta name="description" content="n8n 主工作區完整導覽：Canvas 畫布、節點抽屜、Executions 歷史、Templates 模板、Credentials 金鑰位置。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://woowtech.github.io/Woow_n8n_tutorial_site/ch3_workspace_tour.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="第 3 章 · 工作區長什麼樣 · Woow n8n 入住指南" />
+  <meta property="og:description" content="n8n 主工作區完整導覽：Canvas 畫布、節點抽屜、Executions 歷史、Templates 模板、Credentials 金鑰位置。" />
+  <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch3_workspace_tour.html" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="第 3 章 · 工作區長什麼樣 · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="n8n 主工作區完整導覽：Canvas 畫布、節點抽屜、Executions 歷史、Templates 模板、Credentials 金鑰位置。" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <h2>章節</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li><a href="ch3_workspace_tour.html" class="active">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li><a href="ch7_node_types.html">三種節點</a></li>
+      <li><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li><a href="ch18_set_function.html">資料整形</a></li>
+      <li><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li><a href="ch20_code_node.html">Code node</a></li>
+      <li><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>本章</h2>
+      <a href="#why">為什麼要先認地圖</a>
+      <a href="#concept">主側欄七個項目</a>
+      <a href="#workflow_page">打開一個 workflow</a>
+      <a href="#node_shape">節點長什麼樣</a>
+      <a href="#node_panel">節點抽屜</a>
+      <a href="#executions">Executions 頁</a>
+      <a href="#templates_entry">Templates 入口</a>
+      <a href="#credentials_entry">Credentials 頁</a>
+      <a href="#canvas_tools">右下小工具</a>
+      <a href="#troubleshoot">常見卡關</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>附錄</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="chapter-header">
+      <div class="kicker">第 3 章</div>
+      <h1>工作區長什麼樣</h1>
+      <p class="lead">很多人第一次登進 n8n 都會愣三秒——側欄一排陌生名字、中間一片空白畫布、右下角一堆小圖示。這章帶你把每個區塊點過一次，之後任何一章跟你說「打開 Executions」「開一個 Workflow 進去看設定」你都找得到。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼要先認地圖">
+      <h2 data-icon="why">為什麼要先認地圖</h2>
+      <p>n8n 跟 Zapier / Make 最大的差別是「什麼都給你看」——所有 workflow、所有跑過的紀錄、所有金鑰都在同一個介面裡。這是好事，但代價就是<strong>剛開始畫面資訊量比較大</strong>。</p>
+      <p>已經在<a href="ch2_login.html">第 2 章</a>成功登入 <code>n8n.woowtech.io</code> 的話，你眼前應該就是這個工作區。這章不動任何東西，只帶你認：</p>
+      <ul>
+        <li>左邊<strong>主側欄</strong>那七個項目分別是幹嘛的。</li>
+        <li>打開一個 workflow 之後，<strong>畫面各個角落</strong>都是什麼。</li>
+        <li><strong>Executions 頁</strong>為什麼是 debug 的救命恩人。</li>
+        <li><strong>Templates、Credentials</strong> 這種之後會反覆用到的入口在哪。</li>
+      </ul>
+      <div class="callout"><strong>本章不用動手：</strong>純粹「跟著我把滑鼠移到每個區塊上讀一次」的導覽章。真正動手做 workflow 要到<a href="ch8_first_workflow.html">第 8 章</a>才開始，這章先讓你不會迷路。</div>
+    </section>
+
+    <section id="concept" data-nav="主側欄七個項目">
+      <h2 data-icon="concept">主側欄從上到下七個項目</h2>
+      <p>登入後畫面最左邊那條深色欄位就是<strong>主側欄</strong>（Main sidebar）。從上到下按順序長這樣：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>項目</th><th>幹嘛用的</th><th>什麼時候會來</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Overview</strong></td><td>首頁儀表板，最近開過的 workflow、最近跑過的紀錄、統計摘要。</td><td>登入後第一眼、想快速回到「昨天弄到一半那個」。</td></tr>
+          <tr><td><strong>Workflows</strong></td><td>你能存取的所有 workflow 清單，可以搜尋、過濾、開新分頁、標星號。</td><td>幾乎每次進來都會用到，是主要工作面。</td></tr>
+          <tr><td><strong>Templates</strong></td><td>官方模板 gallery，幾千個現成 workflow 一鍵複製到你的 workspace。</td><td>想抄別人做好的（<a href="ch4_templates.html">第 4 章</a>詳講）。</td></tr>
+          <tr><td><strong>Credentials</strong></td><td>金鑰、OAuth 授權、API token 的集中儲存。</td><td>要串新的 SaaS 服務時、要跟同事分享共用帳號時（<a href="ch13_credentials.html">第 13 章</a>詳講）。</td></tr>
+          <tr><td><strong>Executions</strong></td><td>整個 workspace 跑過的每一次 workflow 紀錄。</td><td>Debug 的黃金頁——workflow 半夜壞了、想看昨天到底跑了幾筆。</td></tr>
+          <tr><td><strong>Insights</strong></td><td>企業版才有的用量統計、成功率報表。</td><td>Woow 目前用不到，看到灰灰的就對了。</td></tr>
+          <tr><td><strong>Help</strong> / <strong>Settings</strong> / <strong>頭像</strong></td><td>側欄最下方：說明文件連結、個人與 workspace 設定、你的登入頭像（點開可以登出）。</td><td>調語言、換主題、登出。</td></tr>
+        </tbody>
+      </table>
+      <div class="callout tip"><strong>提示：</strong>把滑鼠移到任何一個側欄圖示上會跳出中文（或英文）名稱。如果側欄是「收起」狀態（只看得到圖示沒有文字），點側欄底部那個 <code>«</code> / <code>»</code> 箭頭可以展開。</div>
+      <div class="callout warn"><strong>注意：</strong>你看到的側欄項目數量會跟你的權限有關。如果你是 workspace 的一般成員，可能看不到某些系統管理項目（例如 Insights、部分 Settings 分頁），這是正常的，不是壞掉。</div>
+    </section>
+
+    <section id="workflow_page" data-nav="打開一個 workflow">
+      <h2 data-icon="what">打開一個 workflow 會看到什麼</h2>
+      <p>從側欄點 <strong>Workflows</strong> → 隨便挑一個 workflow 點進去（沒有就先點右上角 <strong>+ Create Workflow</strong> 開一個空的），你會進入 workflow 編輯畫面。這時候畫面分成好幾塊：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>位置</th><th>元件</th><th>作用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>最頂端左邊</td><td>Workflow 名字（點一下可以改名）</td><td>會出現在瀏覽器分頁跟 Workflows 清單。</td></tr>
+          <tr><td>最頂端中間</td><td>三個分頁：<strong>Editor</strong> / <strong>Executions</strong> / <strong>Evaluations</strong></td><td>切換視角——編輯、看跑過的紀錄、看評測（進階）。</td></tr>
+          <tr><td>最頂端右邊</td><td><strong>Active</strong> 開關 + <strong>Save</strong> + <strong>Execute Workflow</strong></td><td>啟用排程／webhook、存檔、手動跑一次測試。</td></tr>
+          <tr><td>畫面中央</td><td><strong>Canvas（畫布）</strong></td><td>所有節點跟連線放在這裡，可以縮放拖動。</td></tr>
+          <tr><td>右下角</td><td>一排小工具：Zoom in／Zoom out／Fit view／Tidy up／Mini-map</td><td>畫布縮放與整理。</td></tr>
+          <tr><td>Canvas 右邊或空白處</td><td><strong>+ Add first step</strong>（新 workflow）或 <strong>+</strong> 按鈕（節點之間）</td><td>叫出節點抽屜（Node panel）加新節點。</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>觀念：</strong><strong>Active</strong> 是<strong>整個 workflow 的總開關</strong>——關著的時候排程 / webhook / 訊息事件都不會觸發，只有「Execute Workflow」手動按鈕能跑。你在改的時候通常先讓它關著；上線那一刻再打開。詳細會在<a href="ch10_triggers.html">第 10 章</a>講。</div>
+    </section>
+
+    <section id="node_shape" data-nav="節點長什麼樣">
+      <h2 data-icon="what">Canvas 上的節點長什麼樣</h2>
+      <p>每一個節點都是<strong>一張矩形卡片</strong>放在畫布上，元素固定就這幾樣：</p>
+      <ul>
+        <li><strong>左邊小圓點</strong>（input）：資料從這邊流進來。Trigger 節點沒有 input，因為它是流程的頭。</li>
+        <li><strong>節點 icon</strong>：Slack 的 <code>#</code>、Gmail 的信封等，一眼認出是哪個服務。</li>
+        <li><strong>節點名字</strong>：預設是節點類型名（例：<code>Schedule Trigger</code>），可以雙擊改成你看得懂的名字（例：<code>每天早上八點</code>）。</li>
+        <li><strong>右邊小圓點</strong>（output）：資料從這邊流出去。有些節點有多個 output（例：IF 節點有 true / false 兩個）。</li>
+      </ul>
+      <p><strong>連線</strong>是節點之間那條曲線：從上一個節點的 output 圓點拉到下一個節點的 input 圓點。滑鼠移到連線上會出現 <code>×</code> 可以刪除。</p>
+      <p><strong>點一下節點</strong>會從右側滑出設定面板，裡面通常有三個分頁：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>分頁</th><th>內容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Parameters</strong></td><td>這個節點的所有欄位設定（要打哪隻 API、要傳什麼訊息、要抓哪個欄位）。</td></tr>
+          <tr><td><strong>Settings</strong></td><td>節點層設定：錯誤時要不要繼續、重試次數、備註、node ID。</td></tr>
+          <tr><td><strong>Output</strong>（跑過之後才有）</td><td>這個節點上一次跑產生的資料，可以切 Table / JSON / Schema / Binary 看。</td></tr>
+        </tbody>
+      </table>
+      <div class="callout tip"><strong>提示：</strong>Canvas 上按住 <kbd>Space</kbd> 拖動可以平移畫面，滾輪可以縮放。如果不小心把節點拖到看不見的地方，右下角 <strong>Fit view</strong> 一秒拉回來。</div>
+    </section>
+
+    <section id="node_panel" data-nav="節點抽屜">
+      <h2 data-icon="tabs">節點抽屜（Node panel）詳解</h2>
+      <p>Canvas 空白處點右鍵或按 <kbd>Tab</kbd>、或直接點節點之間的 <strong>+</strong>、或空 workflow 中央那顆 <strong>+ Add first step</strong>——都會叫出<strong>節點抽屜</strong>從右邊滑出來。這是加節點的唯一入口。</p>
+      <p>抽屜上方有搜尋框，直接輸入服務名（例：<code>slack</code>、<code>gmail</code>、<code>sheet</code>）最快。下方會按<strong>兩大類</strong>展開：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>類別</th><th>意義</th><th>例子</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Triggers</strong>（觸發器）</td><td>Workflow 的<strong>開頭</strong>——決定什麼時候要跑。一個 workflow 通常只有一個 Trigger。</td><td>Schedule Trigger（時間到）、Webhook（外部打過來）、Gmail Trigger（新信）。</td></tr>
+          <tr><td><strong>Actions</strong>（動作）</td><td>Workflow 的<strong>身體</strong>——真正做事的節點，看是要傳 Slack、寫 Sheet、還是打 API。</td><td>Slack、Google Sheets、HTTP Request、OpenAI。</td></tr>
+        </tbody>
+      </table>
+      <p>下方會再依用途分子分類（Communication、Data &amp; Storage、Marketing、Development、AI 等）。找不到就直接搜尋，n8n 內建幾百個節點大部分都靠搜尋而不是分類找。三種節點的差別會在<a href="ch7_node_types.html">第 7 章</a>完整拆解。</p>
+      <div class="callout warn"><strong>注意：</strong>如果你在<strong>空的 workflow</strong> 按 <strong>+</strong>，抽屜只會顯示 Triggers 給你選（因為第一個節點一定要是 Trigger 或 Manual Trigger）。有第一個節點之後，再按 <strong>+</strong> 才會出現 Actions。這不是 bug，是 n8n 硬性規定 workflow 必須有明確的開頭。</div>
+    </section>
+
+    <section id="executions" data-nav="Executions 頁">
+      <h2 data-icon="records">Executions 頁是幹嘛的</h2>
+      <p>「Executions」在兩個地方都找得到：</p>
+      <ul>
+        <li><strong>主側欄的 Executions</strong>：看整個 workspace 所有 workflow 的所有執行紀錄，可以依 workflow 篩選。</li>
+        <li><strong>workflow 內頂端的 Executions 分頁</strong>：只看這個 workflow 自己的紀錄。</li>
+      </ul>
+      <p>每一筆紀錄是「這個 workflow 跑過一次」的完整快照，包含：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>欄位</th><th>會告訴你</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>狀態</strong></td><td>Success（綠）／Error（紅）／Running（藍轉圈）／Waiting（等 Wait 節點）。</td></tr>
+          <tr><td><strong>開始時間</strong></td><td>什麼時候被觸發的。</td></tr>
+          <tr><td><strong>執行時間</strong></td><td>總共跑了幾秒。太久要開始擔心 timeout。</td></tr>
+          <tr><td><strong>觸發模式</strong></td><td>是排程自動跑的、還是有人手動按 Execute、還是 Webhook 被打進來。</td></tr>
+          <tr><td><strong>每個節點的資料</strong></td><td>點進紀錄可以逐節點看：吃了什麼 input、吐了什麼 output、錯在哪個節點的哪一行。</td></tr>
+        </tbody>
+      </table>
+      <div class="callout tip"><strong>Debug 神招：</strong>workflow 半夜炸掉，最先來這裡。<strong>紅色</strong>紀錄點進去，n8n 會直接把炸掉的節點紅框標出來，右邊面板 Output 分頁就是完整錯誤訊息。<a href="ch17_error_handling.html">第 17 章</a>錯誤處理會回來這裡教你系統化除錯。</div>
+      <div class="callout"><strong>觀念：</strong>Executions 預設<strong>只保留一段時間</strong>（Woow 這台的設定值可以到 Settings 看），舊的會被清掉。真的要長期存證的資料自己另外寫進 Sheet 或資料庫，不要靠 Executions 當歷史紀錄。</div>
+    </section>
+
+    <section id="templates_entry" data-nav="Templates 入口">
+      <h2 data-icon="advanced">Templates 入口在哪</h2>
+      <p>Templates 兩個入口都通：</p>
+      <ul>
+        <li><strong>主側欄的 Templates</strong>：直接進 gallery。</li>
+        <li><strong>Workflows 頁右上角</strong>的「Templates」按鈕（有些版本叫 <em>Browse templates</em>）。</li>
+      </ul>
+      <p>進去之後可以做這幾件事，不用馬上動：</p>
+      <ol class="steps">
+        <li>
+          <h3>搜尋或分類找模板</h3>
+          <p>搜尋框輸關鍵字（例：<code>slack digest</code>、<code>ai chat</code>），或用左邊分類（AI、Marketing、Sales、DevOps 等）過濾。</p>
+        </li>
+        <li>
+          <h3>預覽 workflow 長怎樣</h3>
+          <p>點進一個模板會看到縮圖、用了哪些節點、作者、下載次數、簡短說明——像 App Store 的 app 頁面。</p>
+        </li>
+        <li>
+          <h3>一鍵 Use workflow</h3>
+          <p>按 <strong>Use workflow</strong> 按鈕，n8n 會複製這個模板到你的 workspace，變成一個新 workflow 直接讓你進去編輯。原始模板不會被動到。</p>
+        </li>
+      </ol>
+      <p>怎麼挑好模板、怎麼看模板需要哪些 credential、模板貼過來要改哪些欄位，<a href="ch4_templates.html">第 4 章</a>會手把手示範一次。</p>
+    </section>
+
+    <section id="credentials_entry" data-nav="Credentials 頁">
+      <h2 data-icon="security">Credentials 頁在哪</h2>
+      <p>側欄 <strong>Credentials</strong> 點進去，會列出這個 workspace 裡<strong>所有你有權存取的 credential</strong>：Slack Bot Token、Google OAuth、Gmail、OpenAI API Key、HTTP Header Auth 等等。</p>
+      <p>每一筆 credential 顯示：</p>
+      <ul>
+        <li>Credential 名字（自己取的，例：<code>Slack - #general 通知</code>）。</li>
+        <li>類型（Slack API、Google Sheets OAuth2 等）。</li>
+        <li>擁有者 / 分享對象。</li>
+        <li>建立與最後編輯時間。</li>
+      </ul>
+      <div class="callout danger"><strong>危險：</strong>Credential 一但存進 n8n，任何在同一個 workflow 裡選到它的節點都能拿去用。跟同事分享 credential 之前先想清楚——他可以用你的 Slack 帳號發任何訊息。細節、OAuth 流程、共用界線都在<a href="ch13_credentials.html">第 13 章</a>。</div>
+      <div class="callout"><strong>觀念：</strong>Credential 跟 workflow 是<strong>分開存的</strong>。刪掉一個 workflow 不會刪 credential；反過來刪掉 credential，用到它的 workflow 會在該節點顯示紅色警告。這個設計是刻意的——同一組 credential 可以被很多 workflow 共用。</div>
+    </section>
+
+    <section id="canvas_tools" data-nav="右下小工具">
+      <h2 data-icon="tips">右下角三個好用小工具</h2>
+      <p>Canvas 右下角那排小按鈕很多人一整年都沒點過，但其實超救命：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>按鈕</th><th>快捷鍵</th><th>什麼時候用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Zoom in / Zoom out</strong>（＋／−）</td><td>滾輪也行</td><td>節點看不清楚、想看細節。</td></tr>
+          <tr><td><strong>Fit view</strong>（田字圖示）</td><td>—</td><td>整個 workflow 一次縮到剛好塞滿畫面。找不到節點時的第一招。</td></tr>
+          <tr><td><strong>Tidy up</strong>（掃把 / 對齊圖示）</td><td>—</td><td>自動把亂七八糟的節點排整齊——比人工拖快 10 倍。</td></tr>
+          <tr><td><strong>Mini-map</strong>（縮圖）</td><td>—</td><td>展開右下角的小地圖，大 workflow（20+ 節點）想快速跳到另一區。</td></tr>
+        </tbody>
+      </table>
+      <div class="callout tip"><strong>提示：</strong>按 <kbd>?</kbd>（問號鍵）會叫出<strong>快捷鍵 cheat sheet</strong>，把常用快捷鍵一次列給你。學會 <kbd>Tab</kbd>（開節點抽屜）、<kbd>Ctrl+S</kbd>（存檔）、<kbd>Ctrl+A</kbd>（全選節點）三個就已經比大部分同事快了。</div>
+    </section>
+
+    <section id="troubleshoot" data-nav="常見卡關">
+      <h2 data-icon="troubleshoot">常見卡關</h2>
+      <ol class="steps">
+        <li>
+          <h3>打開 workflow 是一片空白</h3>
+          <p>正常——這是全新的空 workflow。中央會有一顆 <strong>+ Add first step</strong>，點下去就會出現節點抽屜（只顯示 Triggers）。挑一個 Trigger 開始。</p>
+        </li>
+        <li>
+          <h3>節點拖不動 / 改不了設定</h3>
+          <p>大概是<strong>你沒有 Editor 權限</strong>只有 Viewer。頁面右上角會看到「Read only」提示。找 workspace 管理者升權限，或請他把 workflow 分享給你。</p>
+        </li>
+        <li>
+          <h3>節點連線連不起來</h3>
+          <p>要<strong>從 output 圓點</strong>（節點右邊）拉<strong>到 input 圓點</strong>（下一個節點左邊）。中間拉的過程中不要放開；接近目標圓點時會亮綠色就可以放。反向（input 拉到 output）拉不起來是刻意的。</p>
+        </li>
+        <li>
+          <h3>找不到剛才跑的執行紀錄</h3>
+          <p>兩個地方都能看：workflow 內頂端 <strong>Executions</strong> 分頁（只看這個 workflow）、或側欄 <strong>Executions</strong>（看全部）。如果剛才是按 <strong>Execute Workflow</strong> 手動跑，紀錄會標成「Manual」；如果是 Trigger 觸發的會標「Trigger」。</p>
+        </li>
+        <li>
+          <h3>Canvas 縮到看不見自己在哪</h3>
+          <p>右下角 <strong>Fit view</strong> 按下去，整個 workflow 會自動縮回剛好塞滿畫面。或按 <kbd>0</kbd>（有些版本）reset zoom。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>介面可以切成全中文嗎？</summary>
+        <div class="body">可以。點側欄底部你的頭像 → <strong>Settings</strong> → <strong>Personal</strong> → <strong>Language</strong>，下拉選單有繁體中文可以選（不同 n8n 版本翻譯完整度不太一樣，有些節點內文欄位還是英文，這是正常的）。</div>
+      </details>
+      <details class="faq">
+        <summary>有沒有深色模式？</summary>
+        <div class="body">有。同樣在 <strong>Settings → Personal</strong> 找 <strong>Theme</strong>，可以選 System（跟系統走）／Light／Dark。切完不用重整，即時套用。</div>
+      </details>
+      <details class="faq">
+        <summary>有沒有快捷鍵一覽？</summary>
+        <div class="body">有。在 Canvas 上按 <kbd>?</kbd>（不用按 Shift，就是問號鍵）會跳出快捷鍵 cheat sheet，把加節點、存檔、複製貼上、縮放的快捷鍵一次列給你。</div>
+      </details>
+      <details class="faq">
+        <summary>Canvas 上節點亂成一團怎麼辦？</summary>
+        <div class="body">兩招：右下角 <strong>Tidy up</strong> 讓 n8n 自動對齊排整齊；或框選一批節點（滑鼠框選）拖到你想要的位置。真的很大就開 mini-map 看整體再局部整理。</div>
+      </details>
+      <details class="faq">
+        <summary>可以同時打開兩個 workflow 嗎？</summary>
+        <div class="body">可以，在瀏覽器<strong>另開分頁</strong>就好——每個 workflow 都是獨立的 URL。從 Workflows 清單按住 <kbd>Ctrl</kbd>（Mac 是 <kbd>Cmd</kbd>）點 workflow 名字會直接開新分頁。</div>
+      </details>
+      <details class="faq">
+        <summary>不小心關掉右邊那個節點設定面板了怎麼辦？</summary>
+        <div class="body">再點一次那個節點就會叫回來。或雙擊節點也可以。面板永遠不會真的「消失」，只是折疊而已。</div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="ch2_login.html">
+        <span class="label">← 上一章</span>
+        <span class="title">02 · 打開 Woow n8n</span>
+      </a>
+      <a class="next" href="ch4_templates.html">
+        <span class="label">下一章 →</span>
+        <span class="title">04 · Templates 起步</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>《Woow n8n 入住指南》由 <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer>
+  </main>
+</div>
+<script src="assets/js/toc.js"></script>
+</body>
+</html>

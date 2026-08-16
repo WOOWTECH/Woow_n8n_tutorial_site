@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>附錄 C · 底層架構好奇者向 · Woow n8n 入住指南</title>
+  <meta name="description" content="n8n 底層架構深入：Community／Cloud／Enterprise 三種版本差別、self-host 部署方式、queue mode、資料庫（SQLite vs Postgres）、backup 策略。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://woowtech.github.io/Woow_n8n_tutorial_site/appendix_internals.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="附錄 C · 底層架構好奇者向 · Woow n8n 入住指南" />
+  <meta property="og:description" content="n8n 底層架構深入：Community／Cloud／Enterprise 三種版本差別、self-host 部署方式、queue mode、資料庫（SQLite vs Postgres）、backup 策略。" />
+  <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/appendix_internals.html" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="附錄 C · 底層架構好奇者向 · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="n8n 底層架構深入：Community／Cloud／Enterprise 三種版本差別、self-host 部署方式、queue mode、資料庫（SQLite vs Postgres）、backup 策略。" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <h2>章節</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li><a href="ch7_node_types.html">三種節點</a></li>
+      <li><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li><a href="ch18_set_function.html">資料整形</a></li>
+      <li><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li><a href="ch20_code_node.html">Code node</a></li>
+      <li><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>本章</h2>
+      <a href="#why">誰該看這篇</a>
+      <a href="#editions">三個版本對照</a>
+      <a href="#woow-version">Woow 走哪版</a>
+      <a href="#processes">主要 process</a>
+      <a href="#database">資料庫選擇</a>
+      <a href="#data-locations">重要資料存哪</a>
+      <a href="#pruning">Executions 資料膨脹</a>
+      <a href="#queue-mode">Queue mode</a>
+      <a href="#backup">backup 策略</a>
+      <a href="#upgrade">升級策略</a>
+      <a href="#monitoring">監控 n8n</a>
+      <a href="#troubleshoot">架構層 troubleshoot</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>附錄</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html" class="active">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="chapter-header">
+      <div class="kicker">附錄 C</div>
+      <h1>底層架構好奇者向</h1>
+      <p class="lead">99% 的 n8n 使用者這輩子都不需要看這篇——你只要會拉節點、跑 workflow 就夠了。但當你哪一天想幫公司決定「要不要改用 Cloud」「要不要升 Enterprise」「n8n 掛了怎麼救」「executions 塞爆 DB 怎麼辦」——這篇給你一張地圖，看 n8n 底層在跑什麼、資料放哪、可以怎麼 scale。看完你就有跟 IT / infra 同事對話的詞彙。</p>
+    </div>
+
+    <section id="why" data-nav="誰該看這篇">
+      <h2 data-icon="why">誰該看這篇（多數人可以直接跳過）</h2>
+      <p>如果你只是想用 <a href="ch2_login.html">Woow n8n</a> 拉幾條 workflow 幫自己自動化，這篇你不用看。<a href="ch1_what_is_n8n.html">第 1 章</a>已經給你「n8n 是什麼」的白話版；<a href="ch13_credentials.html">第 13 章</a>教你 credentials；<a href="ch17_error_handling.html">第 17 章</a>教你錯誤處理。用起來就夠了。</p>
+      <p>這篇是寫給這幾種人的：</p>
+      <ul>
+        <li><strong>想幫公司評估「要不要改用 n8n Cloud」的人</strong>——需要知道自架 vs Cloud 的界線在哪。</li>
+        <li><strong>想升 Enterprise 版的決策者</strong>——需要知道花錢買到的到底是什麼功能。</li>
+        <li><strong>被叫去救 n8n 的 IT／DevOps</strong>——n8n 掛了、DB 爆了、想升級——需要知道每個 process 在做什麼、資料放哪、怎麼 backup。</li>
+        <li><strong>想自己在家 self-host 一個 n8n 玩玩的技術控</strong>——需要知道 Docker 跑起來之後底下發生什麼。</li>
+      </ul>
+      <div class="callout"><strong>觀念：</strong>n8n 是<strong>開源專案</strong>（Sustainable Use License）。你可以下載原始碼、看 GitHub 每一行怎麼寫的、自己 fork。它不是黑盒子——這也是為什麼有人可以自架、有人願意付錢用 Cloud，兩條路都通。</div>
+    </section>
+
+    <section id="editions" data-nav="三個版本對照">
+      <h2 data-icon="compare">Community vs Cloud vs Enterprise 三個版本</h2>
+      <p>n8n 官方目前有三種版本，功能差別如下——這張表決定你要不要花錢：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>版本</th><th>Community</th><th>Cloud</th><th>Enterprise</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>付費模式</strong></td>
+            <td>免費，自架</td>
+            <td>月費（依 executions 數）</td>
+            <td>年費，找官方談</td>
+          </tr>
+          <tr>
+            <td><strong>host 在哪</strong></td>
+            <td>你自己伺服器</td>
+            <td>n8n 官方雲</td>
+            <td>你自己伺服器 / 自架 K8s</td>
+          </tr>
+          <tr>
+            <td>Core 功能（節點、Trigger、Expression）</td>
+            <td>全部有</td>
+            <td>全部有</td>
+            <td>全部有</td>
+          </tr>
+          <tr>
+            <td>Code node / AI Agent / Webhook</td>
+            <td>有</td>
+            <td>有</td>
+            <td>有</td>
+          </tr>
+          <tr>
+            <td>Templates gallery / community 節點</td>
+            <td>有</td>
+            <td>有</td>
+            <td>有</td>
+          </tr>
+          <tr>
+            <td>SSO（Google / Microsoft / SAML / LDAP）</td>
+            <td>沒有</td>
+            <td>Pro 起有 Google/GitHub；SAML 要 Enterprise</td>
+            <td>有</td>
+          </tr>
+          <tr>
+            <td>RBAC（角色權限控管）</td>
+            <td>基本 owner/member</td>
+            <td>基本</td>
+            <td>細粒度角色 + Project 隔離</td>
+          </tr>
+          <tr>
+            <td>Audit log（誰改了什麼）</td>
+            <td>沒有</td>
+            <td>沒有</td>
+            <td>有</td>
+          </tr>
+          <tr>
+            <td>Log Streaming（把 log 打到外部）</td>
+            <td>沒有</td>
+            <td>沒有</td>
+            <td>有</td>
+          </tr>
+          <tr>
+            <td>Version Control（workflow 版控到 Git）</td>
+            <td>沒有</td>
+            <td>沒有</td>
+            <td>有</td>
+          </tr>
+          <tr>
+            <td>Multi-environment（staging / production）</td>
+            <td>沒有</td>
+            <td>沒有</td>
+            <td>有</td>
+          </tr>
+          <tr>
+            <td>SLA 與官方 support</td>
+            <td>沒有（社群 forum）</td>
+            <td>有</td>
+            <td>有</td>
+          </tr>
+          <tr>
+            <td><strong>適合誰</strong></td>
+            <td>技術強的團隊、想省錢、能自己修</td>
+            <td>不想管 infra、10 人以下團隊</td>
+            <td>企業合規需求、大團隊、要 SSO 與 audit</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip"><strong>提示：</strong>Cloud 版有 Starter / Pro / Enterprise 三個 tier，功能會依 tier 慢慢解鎖（例如 Pro 才有 admin dashboard、Enterprise Cloud 才有 SSO）。以官方定價頁為準：<code>n8n.io/pricing</code>。</div>
+    </section>
+
+    <section id="woow-version" data-nav="Woow 走哪版">
+      <h2 data-icon="what">Woow n8n 走的是哪個版本</h2>
+      <p>Woow 內部的 n8n（<code>n8n.woowtech.io</code>）是 <strong>self-hosted Community 版</strong>——放在公司自己的 server 上，用 Docker 跑，Cloudflare tunnel 對外。</p>
+
+      <ul>
+        <li><strong>好處：</strong>免費、資料完全在公司內、想改什麼設定都能改、想開什麼實驗性 flag 就開。</li>
+        <li><strong>代價：</strong>沒 SSO（現在用內建帳號密碼）、沒 audit log、升級要 IT 手動做、Fault 要自己 debug。</li>
+        <li><strong>是否有 Enterprise license：</strong>依 Woow 目前規模與需求變動——想確認請直接問 IT。有 Enterprise 就會多出 SSO / RBAC / 環境切換等功能。</li>
+      </ul>
+
+      <div class="callout"><strong>觀念：</strong>你在 Woow n8n 上用不到「Cloud 才有的功能」（例如：訂閱付費升 tier），因為那些是官方 Cloud 專屬。你能感受到的差別只在「是不是有裝某個 Enterprise 功能」——找 IT 或系統管理員問一下就知道。</div>
+    </section>
+
+    <section id="processes" data-nav="主要 process">
+      <h2 data-icon="concept">主要 process 架構：main / worker / webhook</h2>
+      <p>n8n 跑起來時，底下不是「一個大程式」——它可以拆成不同角色的 process。這是為什麼可以 scale。</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>Process</th><th>做什麼</th><th>什麼時候有</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>main</strong></td>
+            <td>前端網頁 UI、REST API、workflow orchestrator（誰要跑、跑到哪）、Trigger 節點的排程</td>
+            <td>永遠都有（單一實例 = 全部靠這個）</td>
+          </tr>
+          <tr>
+            <td><strong>worker</strong></td>
+            <td>專門執行 workflow（真的跑節點的那個）</td>
+            <td>Queue mode 開啟後才拆出來</td>
+          </tr>
+          <tr>
+            <td><strong>webhook</strong></td>
+            <td>專門接收 webhook 進來的 HTTP request</td>
+            <td>Queue mode 可選擇拆出來</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>預設情況（<strong>Regular mode</strong>）下只有一個 main process，它一個人做完全部事情——UI、API、排程、執行 workflow、收 webhook。小型部署（<50 workflow、每天 <1000 executions）這樣就夠。</p>
+
+      <p>當你 workflow 變多、有某條 workflow 跑很久卡住整台，就該考慮切成 <strong>Queue mode</strong>（詳見下面 §Queue mode）：main process 只負責 UI 與排程調度，實際跑 workflow 交給 worker，webhook 接收拆給 webhook process。三種角色各自可以 horizontal scale。</p>
+
+      <div class="callout tip"><strong>提示：</strong>Regular mode 的 main process 是<em>單執行緒</em>執行 workflow（Node.js 本質），一次一個。如果你有 workflow 動不動跑 5 分鐘，其他 workflow 就得排隊等——這是 Queue mode 存在的最主要原因。</div>
+    </section>
+
+    <section id="database" data-nav="資料庫選擇">
+      <h2 data-icon="records">資料庫選擇：SQLite / Postgres / MySQL</h2>
+      <p>n8n 需要一個 DB 來存 workflow、credentials、executions。三種 DB 都支援：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>DB</th><th>好處</th><th>缺點</th><th>什麼時候用</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>SQLite</strong>（預設）</td>
+            <td>單一檔案、零設定、backup 只要複製檔案</td>
+            <td>單機、不能 shared、大量 write 會鎖表；不適合 Queue mode</td>
+            <td>開發、demo、小 team（<5 人、每天 <500 executions）</td>
+          </tr>
+          <tr>
+            <td><strong>Postgres</strong></td>
+            <td>production 標配、效能好、可 shared、支援 Queue mode</td>
+            <td>要額外架一台或用 managed 服務</td>
+            <td>Production、Queue mode、多實例、企業部署</td>
+          </tr>
+          <tr>
+            <td><strong>MySQL / MariaDB</strong></td>
+            <td>也支援</td>
+            <td>相對少人用、社群支援度較低、官方推 Postgres</td>
+            <td>公司本來就只有 MySQL DBA 才勉強選</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>設定 DB 靠環境變數：</p>
+      <pre class="code-block"><code>DB_TYPE=postgresdb
+DB_POSTGRESDB_HOST=postgres.internal
+DB_POSTGRESDB_PORT=5432
+DB_POSTGRESDB_DATABASE=n8n
+DB_POSTGRESDB_USER=n8n_user
+DB_POSTGRESDB_PASSWORD=***</code></pre>
+
+      <div class="callout warn"><strong>注意：</strong>SQLite 換 Postgres <em>不是</em>改個環境變數就好——你要先用 <code>n8n export:workflow</code> 與 <code>export:credentials</code> 匯出、切 DB、再 import 進來。半途中間換 DB 是新手大坑，一定要走 export/import 流程。</div>
+    </section>
+
+    <section id="data-locations" data-nav="重要資料存哪">
+      <h2 data-icon="url">重要資料存在哪裡</h2>
+      <p>知道資料放哪，你 backup、restore、debug 才有頭緒。以下是 n8n 主要資料的位置：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>資料類型</th><th>存哪</th><th>備份重點</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Workflow 定義</strong>（節點結構、連線）</td>
+            <td>DB 的 <code>workflow_entity</code> 表</td>
+            <td>跟著 DB 一起 backup</td>
+          </tr>
+          <tr>
+            <td><strong>Credentials</strong>（帳密、OAuth token）</td>
+            <td>DB 的 <code>credentials_entity</code> 表，<em>加密後</em>存</td>
+            <td>DB backup + <strong>encryption key 一定要另外備份</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Executions</strong>（每次執行紀錄）</td>
+            <td>DB 的 <code>execution_entity</code> 表（+ 每個節點的 output）</td>
+            <td>DB 空間大戶；backup 前先 prune</td>
+          </tr>
+          <tr>
+            <td><strong>User / 帳號</strong></td>
+            <td>DB 的 <code>user</code> 表</td>
+            <td>跟著 DB backup</td>
+          </tr>
+          <tr>
+            <td><strong>Encryption key</strong>（credentials 的解密金鑰）</td>
+            <td>環境變數 <code>N8N_ENCRYPTION_KEY</code>（Docker 是 <code>.env</code>）</td>
+            <td><strong>一定要另外備份、離線存好</strong>——沒它 credentials 全解不開</td>
+          </tr>
+          <tr>
+            <td><strong>Static / user data</strong>（binary 檔、log）</td>
+            <td>檔案系統，預設 <code>~/.n8n/</code> 或 Docker volume <code>/home/node/.n8n</code></td>
+            <td>整個 mount volume backup</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout danger"><strong>危險：</strong><code>N8N_ENCRYPTION_KEY</code> 遺失 = <strong>所有 credentials 永遠打不開</strong>。你的 workflow 還在、UI 進得去，但每個 credential 都變亂碼。這是 n8n 最容易發生的災難之一：搬機器只搬 DB、忘了帶 <code>.env</code>。<strong>強制紀律：</strong>encryption key 存兩份——一份在服務器 <code>.env</code>、一份在 password manager（或公司加密保險箱）。</div>
+    </section>
+
+    <section id="pruning" data-nav="Executions 資料膨脹">
+      <h2 data-icon="warning">Executions 資料膨脹：不管會塞爆 DB</h2>
+      <p>每次 workflow 跑一次就產生一筆 <code>execution_entity</code>——加上每個節點的 input / output 資料，一次執行可能就是幾百 KB。跑幾個月你的 DB 會膨脹到讓你嚇到。</p>
+
+      <p><a href="ch17_error_handling.html">第 17 章</a>提過 <code>EXECUTIONS_DATA_MAX_AGE</code>，這裡把整組 pruning 環境變數列出來：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>環境變數</th><th>用途</th><th>建議值</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>EXECUTIONS_DATA_PRUNE</code></td>
+            <td>是否自動清舊 executions</td>
+            <td><code>true</code>（一定要開）</td>
+          </tr>
+          <tr>
+            <td><code>EXECUTIONS_DATA_MAX_AGE</code></td>
+            <td>保留幾小時（超過就清）</td>
+            <td><code>336</code>（14 天）</td>
+          </tr>
+          <tr>
+            <td><code>EXECUTIONS_DATA_PRUNE_MAX_COUNT</code></td>
+            <td>最多保留幾筆</td>
+            <td><code>10000</code></td>
+          </tr>
+          <tr>
+            <td><code>EXECUTIONS_DATA_SAVE_ON_ERROR</code></td>
+            <td>錯誤時是否存詳細資料</td>
+            <td><code>all</code>（debug 好用）</td>
+          </tr>
+          <tr>
+            <td><code>EXECUTIONS_DATA_SAVE_ON_SUCCESS</code></td>
+            <td>成功時是否存詳細資料</td>
+            <td><code>all</code> 或 <code>none</code>（依 DB 空間）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>還可以在單一 workflow 的 Settings 裡蓋掉全域設定——例：某條每分鐘跑的 workflow 就設「成功不存 data」，只有錯誤才留紀錄，省超多空間。</p>
+
+      <div class="callout tip"><strong>提示：</strong>如果 DB 已經很大，改設定值只影響<em>未來</em>；已經在的舊資料要另外清。Postgres 可以直接下 SQL：<code>DELETE FROM execution_entity WHERE "startedAt" &lt; NOW() - INTERVAL '30 days';</code> 記得清完 <code>VACUUM FULL</code>（會鎖表，找離峰時段做）。</div>
+    </section>
+
+    <section id="queue-mode" data-nav="Queue mode">
+      <h2 data-icon="advanced">Queue mode：進階 scaling</h2>
+      <p>當你 workflow 越來越多、有某條 workflow 一跑就 5 分鐘、其他 workflow 都被卡——你就需要 Queue mode。</p>
+
+      <h3>Queue mode 做了什麼</h3>
+      <ol class="steps">
+        <li>
+          <h3>Main process 只負責 UI 與排程</h3>
+          <p>不再自己跑 workflow，改成把「要跑什麼」丟到 Redis queue。</p>
+        </li>
+        <li>
+          <h3>Worker process 從 queue 拿工作、實際跑 workflow</h3>
+          <p>可以開 N 個 worker，工作會自動分配。一個 worker 跑久沒關係，其他 worker 繼續拿新工作。</p>
+        </li>
+        <li>
+          <h3>Webhook process（可選）專門收 webhook</h3>
+          <p>把 webhook 從 main 拆出來，避免 UI 慢的時候 webhook 也慢。</p>
+        </li>
+      </ol>
+
+      <h3>開啟 Queue mode 需要什麼</h3>
+      <ul>
+        <li><strong>Redis</strong>（當 queue broker）——另外裝一台或用 managed。</li>
+        <li><strong>Postgres</strong>——SQLite 不能 shared，多個 worker 讀不到同一份資料。</li>
+        <li>環境變數：</li>
+      </ul>
+
+      <pre class="code-block"><code># main
+EXECUTIONS_MODE=queue
+QUEUE_BULL_REDIS_HOST=redis.internal
+QUEUE_BULL_REDIS_PORT=6379
+DB_TYPE=postgresdb
+# ... 其他 DB 設定
+
+# worker（另一個 container / process）
+EXECUTIONS_MODE=queue
+QUEUE_BULL_REDIS_HOST=redis.internal
+# ... 同樣的 DB 與 Redis 設定
+# 啟動指令：n8n worker</code></pre>
+
+      <div class="callout warn"><strong>注意：</strong>Queue mode 是<em>認真 production</em>才會走的路——多了 Redis 這個 moving part，運維複雜度直接上一階。單一 team 用（<20 人）通常 Regular mode 就夠。真要開之前先確認：main 有沒有真的常卡？有的話再改。過早開 Queue mode 是常見反模式。</div>
+    </section>
+
+    <section id="backup" data-nav="backup 策略">
+      <h2 data-icon="restore">Backup 與 restore 策略</h2>
+      <p>n8n 的 backup 有三個層次，一起 backup 才算完整：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>要備份什麼</th><th>怎麼備</th><th>頻率</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DB</strong>（workflow / credentials / executions / user）</td>
+            <td>Postgres 用 <code>pg_dump n8n &gt; backup.sql</code>；SQLite 用複製 <code>database.sqlite</code> 檔（先 <code>docker compose stop</code>）</td>
+            <td>每天</td>
+          </tr>
+          <tr>
+            <td><strong><code>.env</code> / 環境變數</strong>（含 <code>N8N_ENCRYPTION_KEY</code>）</td>
+            <td>直接複製檔案；password manager 存一份 encryption key</td>
+            <td>改設定就更新；encryption key 只需備一次</td>
+          </tr>
+          <tr>
+            <td><strong>Workflow JSON</strong>（版控用，可選）</td>
+            <td>CLI：<code>n8n export:workflow --all --backup --output=./workflows/</code>；每條 workflow 一個 JSON 檔</td>
+            <td>依需求（每週 / 每天 push 到 Git）</td>
+          </tr>
+          <tr>
+            <td><strong>User data 檔案</strong>（binary uploads、custom nodes）</td>
+            <td>備份整個 <code>~/.n8n/</code> 或 Docker volume</td>
+            <td>每週或有動就備</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Restore 的正確順序</h3>
+      <ol class="steps">
+        <li>
+          <h3>先停掉 n8n</h3>
+          <p><code>docker compose stop n8n</code>——避免 restore 過程有寫入。</p>
+        </li>
+        <li>
+          <h3>Restore DB</h3>
+          <p>Postgres：<code>psql n8n &lt; backup.sql</code>；SQLite：複製 <code>database.sqlite</code> 蓋回去。</p>
+        </li>
+        <li>
+          <h3>確認 <code>N8N_ENCRYPTION_KEY</code> 匹配</h3>
+          <p>這是 restore 最關鍵的一步——新環境的 encryption key 必須跟 backup 當時<em>一模一樣</em>，credentials 才解得開。改過就死。</p>
+        </li>
+        <li>
+          <h3>開 n8n、驗證</h3>
+          <p><code>docker compose up -d n8n</code>，登入後打開一條 workflow 手動跑一次，確認 credentials 正常。有錯多半是 encryption key 對不上。</p>
+        </li>
+      </ol>
+
+      <div class="callout tip"><strong>提示：</strong><code>n8n export:workflow --backup</code> 匯出的 JSON 存在 Git 是很棒的第二保險——即使 DB 整個爛掉、encryption key 遺失，workflow 結構還在（credentials 得重設）。企業版直接有 Version Control 功能自動 push；Community 版可以 cron 每天跑一次 export + git push。</div>
+    </section>
+
+    <section id="upgrade" data-nav="升級策略">
+      <h2 data-icon="steps">升級策略：不要在週五升級</h2>
+      <p>n8n 版本迭代快（幾乎每週有小 release），升級雖然大多平順、但偶爾有 breaking change。步驟：</p>
+
+      <ol class="steps">
+        <li>
+          <h3>先在 staging 環境試跑</h3>
+          <p>拉一份 production DB 到 staging，升級後跑所有主要 workflow 各一次。<strong>不要直接升 production。</strong></p>
+        </li>
+        <li>
+          <h3>讀 changelog 有沒有 breaking change</h3>
+          <p><code>github.com/n8n-io/n8n/releases</code>——特別注意 <strong>major version</strong>（0.x → 1.x 是大事）與標記 <code>BREAKING</code> 的項目。node 的 v1 → v2 也常有欄位改名。</p>
+        </li>
+        <li>
+          <h3>Backup 一次（不管你多有信心）</h3>
+          <p>上面 §backup 那組全跑一遍。這是升級前的最後一道保險。</p>
+        </li>
+        <li>
+          <h3>停 workflow → 升級 → 開起來</h3>
+          <p>Docker 用戶：<code>docker compose pull &amp;&amp; docker compose up -d</code>（如果 tag 是 <code>latest</code>）。手動裝的：<code>npm install -g n8n@latest</code>。</p>
+        </li>
+        <li>
+          <h3>檢查 UI、跑一條測試 workflow</h3>
+          <p>登入、打開 workflow、手動 Execute 一次。有錯先看 log（<code>docker logs n8n</code>）。</p>
+        </li>
+      </ol>
+
+      <div class="callout warn"><strong>注意：</strong>Docker 用 <code>latest</code> tag 每次 pull 都是拿最新版——上 production 建議<em>釘死版本</em>（例：<code>n8nio/n8n:1.60.2</code>），這樣不會在你沒注意到的時候被自動升級。要升就有意識地改 tag、升一次。</div>
+    </section>
+
+    <section id="monitoring" data-nav="監控 n8n">
+      <h2 data-icon="records">監控：怎麼知道 n8n 還活著</h2>
+      <p>Production n8n 應該要有基本監控——不然半夜掛了沒人知道。幾種做法從簡單到複雜：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>做法</th><th>需要什麼</th><th>看得到什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cron 打 <code>/healthz</code></strong></td>
+            <td>任何 uptime 監控（UptimeRobot、cron + curl、Woow 內部 Uptime Kuma）</td>
+            <td>n8n 服務有沒有活著（HTTP 200 = OK）</td>
+          </tr>
+          <tr>
+            <td><strong>看 Executions 頁</strong></td>
+            <td>手動或 cron 開瀏覽器看</td>
+            <td>有沒有反覆錯的 workflow（<a href="ch17_error_handling.html">第 17 章</a>的 Executions 那節）</td>
+          </tr>
+          <tr>
+            <td><strong>Error workflow 通知</strong></td>
+            <td>每條 production workflow 都綁 Error workflow</td>
+            <td>單條 workflow 掛就 Slack/Email 通知（<a href="ch17_error_handling.html">第 17 章</a>教過）</td>
+          </tr>
+          <tr>
+            <td><strong>Prometheus metrics</strong>（Enterprise 版）</td>
+            <td><code>N8N_METRICS=true</code>、Enterprise license</td>
+            <td>執行數、latency、queue length 等指標，接 Grafana</td>
+          </tr>
+          <tr>
+            <td><strong>Log Streaming</strong>（Enterprise 版）</td>
+            <td>Enterprise 版功能</td>
+            <td>把所有 log 打到 Loki / Datadog / Splunk 集中分析</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip"><strong>提示：</strong>Community 版最實用的組合是「Uptime Kuma 打 <code>/healthz</code> + 每條 workflow 都有 Error workflow 通知 Slack」——一個接「n8n 掛了」、一個接「n8n 活但某條 workflow 掛」。這兩層蓋起來就 cover 大部分故障場景。</div>
+    </section>
+
+    <section id="troubleshoot" data-nav="架構層 troubleshoot">
+      <h2 data-icon="troubleshoot">架構層常見卡關</h2>
+      <p>不是 workflow 邏輯錯、而是 n8n 本身出問題時，最容易遇到這幾種：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>症狀</th><th>可能原因</th><th>怎麼救</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Main process 卡住、workflow 都跑不動、UI 也很慢</td>
+            <td>單一 workflow 執行太久佔滿 CPU / memory；Regular mode 單執行緒瓶頸</td>
+            <td>先看有沒有某條 workflow 死迴圈或載入太大資料；長期解方：升 CPU / memory；根治：開 Queue mode 拆 worker</td>
+          </tr>
+          <tr>
+            <td>DB 空間爆滿、n8n 寫入變慢或跑不動</td>
+            <td><code>execution_entity</code> 沒 prune、SQLite 檔案已經幾十 GB</td>
+            <td>先設 <code>EXECUTIONS_DATA_PRUNE=true</code> 與 max age；手動清舊 executions；長期解：換 Postgres</td>
+          </tr>
+          <tr>
+            <td>升級後 workflow 打不開、node 顯示紅框</td>
+            <td>Community 節點跟新版不相容、或該 node 的欄位改名了</td>
+            <td>停在原版、升級前先看 community node 是否有相容新版；已經升了就把該 community node 更新或改用官方 node</td>
+          </tr>
+          <tr>
+            <td>移機後所有 credentials 全 fail（401 / decrypt error）</td>
+            <td><code>N8N_ENCRYPTION_KEY</code> 沒帶走或不匹配</td>
+            <td>把舊機的 encryption key 找出來（<code>.env</code> 或 <code>~/.n8n/config</code>）貼到新機、重啟。真的遺失了：所有 credentials 只能全部重建</td>
+          </tr>
+          <tr>
+            <td>Queue mode worker 沒接到工作、queue 一直堆積</td>
+            <td>worker 沒連上 Redis、或 DB 連線串不對、或 worker 根本沒起來</td>
+            <td>看 worker container log；<code>redis-cli</code> 確認 <code>bull:jobs:*</code> queue 內容；確認 main 與 worker 用<em>同一組</em> Redis 與 DB</td>
+          </tr>
+          <tr>
+            <td>Webhook 有時收不到、有時很慢</td>
+            <td>main process 也在跑 workflow 卡住；或 CF tunnel 抽風</td>
+            <td>拆 webhook process（Queue mode 選項）；檢查 CF tunnel log；用 <code>curl</code> 直打 webhook URL 排除中間網路問題</td>
+          </tr>
+          <tr>
+            <td>n8n 一直重啟、log 顯示 <code>SQLITE_BUSY</code></td>
+            <td>SQLite 被多個程序同時寫（不支援）；或磁碟壞</td>
+            <td>單機用不要開 Queue mode（會有兩個程序寫）；長期換 Postgres；先檢查磁碟 SMART 狀態</td>
+          </tr>
+          <tr>
+            <td>Docker 升級 image 後 workflow 全消失</td>
+            <td>Docker volume 沒 mount 對，n8n 讀到全新的空 DB</td>
+            <td>檢查 <code>docker-compose.yml</code>：<code>~/.n8n</code> 或 <code>/home/node/.n8n</code> 一定要 mount 到<em>持久性</em>的 volume，不是每次啟動都新建</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+
+      <details class="faq">
+        <summary>Cloud vs self-host 誰便宜？我們該選哪個？</summary>
+        <div class="body">看規模。<strong>不到 10 人、每月 executions 不到幾千</strong>——Cloud Starter / Pro 划算，你不用付 IT 時間管 infra、backup 官方幫你做。<strong>超過 50 人、大量 executions（每月幾十萬）、有內部 IT 團隊</strong>——self-host 便宜很多（一台幾千元月費的 VM 就跑得動）、資料在自己手上、可以做深度客製。中間灰色地帶就看你有沒有能顧的人。Woow 內部走 self-host，因為公司本來就有 IT 團隊、也重視資料留在內部。</div>
+      </details>
+
+      <details class="faq">
+        <summary>Community 版有 SSO 嗎？我們的 IT 說必須要 SSO 才能上線。</summary>
+        <div class="body">Community <strong>沒有</strong>——只能用內建帳號密碼登入（可以開兩步驟驗證）。SSO（Google / SAML / LDAP）要 <strong>Enterprise</strong> 才有。這常常是 self-host 團隊被強制升 Enterprise 的主要原因——公司規定「所有內部服務必須 SSO」。買不下手的話，退而求其次可以用「n8n 前面掛一層 SSO proxy」（例：Cloudflare Access、Authelia、Keycloak + oauth2-proxy），也能達到強制 SSO 的效果，但體驗不如原生。</div>
+      </details>
+
+      <details class="faq">
+        <summary>n8n 支援 Kubernetes 嗎？</summary>
+        <div class="body">支援。<strong>官方有 Helm chart</strong>（<code>github.com/n8n-io/n8n-hosting/tree/main/kubernetes</code>），可以直接 <code>helm install</code>。生產環境建議走 Queue mode + Postgres + Redis，chart 都幫你 template 好了。這也是 Enterprise 客戶最常見的部署方式——multi-worker、autoscaling、跟公司 K8s 平台整合。單機 Docker Compose 是入門，K8s 是正式 scale。</div>
+      </details>
+
+      <details class="faq">
+        <summary>怎麼幫 n8n 官方貢獻？我們發現一個 bug／想寫一個 community node。</summary>
+        <div class="body">n8n 是開源的，貢獻管道齊全：<strong>(1) Bug report</strong>：<code>github.com/n8n-io/n8n/issues</code>，附最小可重現的 workflow JSON。<strong>(2) Feature request</strong>：官方社群論壇 <code>community.n8n.io</code> 用 <code>ideas</code> 分類發，別人投票、官方 review。<strong>(3) PR</strong>：直接 fork GitHub repo 改，看 CONTRIBUTING.md。<strong>(4) Community node</strong>：把你的整合 package 成 npm，別人可以 <code>npm install n8n-nodes-yourthing</code>。官方文件：<code>docs.n8n.io/integrations/community-nodes/build/</code>。<strong>(5) Discord</strong>：<code>discord.gg/n8n</code> 有官方與活躍社群，講中文的也有一區。</div>
+      </details>
+
+      <details class="faq">
+        <summary>Community 版跟 Enterprise 版的原始碼一樣嗎？</summary>
+        <div class="body">大部分一樣。n8n 是 <strong>fair-code / Sustainable Use License</strong>——原始碼公開、你可以改、可以 self-host、可以商用。Enterprise 額外的功能（SSO、audit log、log streaming、version control 等）是<em>閉源模組</em>，需要 license key 才能啟用。所以你 clone GitHub 拿到的是完整 Community 版；升級 Enterprise 是拿 key、不用換 image。這也是為什麼可以「先 Community 用、之後補買 Enterprise」——資料不用搬。</div>
+      </details>
+
+      <details class="faq">
+        <summary>Queue mode 開了之後 workflow 執行順序會亂嗎？</summary>
+        <div class="body">單一 workflow 內部的節點順序<em>不會</em>亂——一條 workflow 進 queue 後由一個 worker 完整跑完。但<strong>多條 workflow 之間</strong>的執行順序<em>沒有保證</em>——A workflow 先進 queue 不代表比 B 先跑完（可能 B 比較短先結束）。如果你需要「A 一定要在 B 之前完成」，用 Sub-workflow 把它們串起來（<a href="ch19_subworkflow.html">第 19 章</a>），不要靠時序假設。</div>
+      </details>
+
+      <details class="faq">
+        <summary>環境變數改了要重啟 n8n 嗎？</summary>
+        <div class="body">要。n8n 只在啟動時讀環境變數（跟大部分 Node.js app 一樣）——你在 <code>.env</code> 改了 <code>EXECUTIONS_DATA_MAX_AGE</code>，n8n 要 restart 才會生效（<code>docker compose restart n8n</code>）。<strong>但注意：</strong>某些設定改了會影響資料相容性（例如換 DB type、換 encryption key），改之前先 backup + 讀文件。</div>
+      </details>
+
+      <details class="faq">
+        <summary>我在家想架一個玩玩，最簡單的 self-host 方式？</summary>
+        <div class="body">Docker Compose 一鍵：官方提供 <code>docker-compose.yml</code>（<code>docs.n8n.io/hosting/installation/docker/</code>），基本就是 n8n container + persistent volume，5 分鐘跑起來。想公網訪問的話搭 Cloudflare Tunnel 或 Tailscale（不用 open port）。想更懶：Railway / Render / Fly.io 都有 n8n one-click template，2 分鐘部署完。玩過再考慮要不要接 Postgres、開 Queue mode。</div>
+      </details>
+
+      <details class="faq">
+        <summary>還有哪些附錄可以看？</summary>
+        <div class="body"><a href="appendix_settings_ref.html">附錄 A</a>是 n8n 設定速查——Timezone、Executions 保留策略、Log level 這些常改的設定放哪、什麼意思。<a href="appendix_errors.html">附錄 B</a>是常見錯誤速查——遇到某個錯誤訊息可以直接對照到解法。這篇附錄 C 是給你「知道 n8n 為什麼這樣運作」的背景，看完能跟 IT / DevOps 對話用；A 跟 B 則是給你每天用 n8n 遇到問題時翻的工具書。</div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="appendix_errors.html">
+        <span class="label">← 附錄 B</span>
+        <span class="title">附錄 B · 常見錯誤排錯</span>
+      </a>
+      <a class="next" href="index.html">
+        <span class="label">回目錄 →</span>
+        <span class="title">全套完成！</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>《Woow n8n 入住指南》由 <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer>
+  </main>
+</div>
+<script src="assets/js/toc.js"></script>
+</body>
+</html>
