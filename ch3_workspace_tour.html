@@ -14,11 +14,11 @@
   <meta property="og:title" content="第 3 章 · 工作區長什麼樣 · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n 主工作區完整導覽：Canvas 畫布、節點抽屜、Executions 歷史、Templates 模板、Credentials 金鑰位置。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch3_workspace_tour.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_sidebar.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="第 3 章 · 工作區長什麼樣 · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n 主工作區完整導覽：Canvas 畫布、節點抽屜、Executions 歷史、Templates 模板、Credentials 金鑰位置。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_sidebar.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -125,11 +125,19 @@
       </table>
       <div class="callout tip"><strong>提示：</strong>把滑鼠移到任何一個側欄圖示上會跳出中文（或英文）名稱。如果側欄是「收起」狀態（只看得到圖示沒有文字），點側欄底部那個 <code>«</code> / <code>»</code> 箭頭可以展開。</div>
       <div class="callout warn"><strong>注意：</strong>你看到的側欄項目數量會跟你的權限有關。如果你是 workspace 的一般成員，可能看不到某些系統管理項目（例如 Insights、部分 Settings 分頁），這是正常的，不是壞掉。</div>
+      <figure class="shot">
+        <img src="assets/screenshots/ch3/01_sidebar.png" alt="n8n 主側欄從上到下的七個項目" />
+        <figcaption><strong>圖 3-1</strong>左側主側欄：Overview／Workflows／Templates／Credentials／Executions／Insights，最下面才是 Help 與頭像。</figcaption>
+      </figure>
     </section>
 
     <section id="workflow_page" data-nav="打開一個 workflow">
       <h2 data-icon="what">打開一個 workflow 會看到什麼</h2>
       <p>從側欄點 <strong>Workflows</strong> → 隨便挑一個 workflow 點進去（沒有就先點右上角 <strong>+ Create Workflow</strong> 開一個空的），你會進入 workflow 編輯畫面。這時候畫面分成好幾塊：</p>
+      <figure class="shot">
+        <img src="assets/screenshots/ch3/02_workflows_list.png" alt="Workflows 分頁的 workflow 清單" />
+        <figcaption><strong>圖 3-2</strong>Workflows 分頁：所有你能存取的 workflow 一次列在這，右上角就是 + Create Workflow 開新的入口。</figcaption>
+      </figure>
       <table class="data-table">
         <thead>
           <tr><th>位置</th><th>元件</th><th>作用</th></tr>
@@ -144,6 +152,10 @@
         </tbody>
       </table>
       <div class="callout"><strong>觀念：</strong>n8n 2.0 之後把過去的「Active 開關」換成<strong>Publish / Unpublish（發佈 / 取消發佈）</strong>模型：你在編輯的一直是<strong>草稿（draft）</strong>，按 <strong>Publish</strong> 才會把當前這個版本推上線，排程 / Webhook / 訊息事件開始接收；沒 Publish 之前只有「Execute Workflow」手動按鈕能跑。這個改動就是為了避免手滑把改一半的 workflow 直接開啟。Woow 這台已經是 n8n 2.x，所以你在畫面右上角看到的會是 <strong>Publish</strong> 而不是 Active 開關。細節在<a href="ch10_triggers.html">第 10 章</a>。</div>
+      <figure class="shot">
+        <img src="assets/screenshots/ch3/05_canvas_empty.png" alt="剛開好的空白 Canvas 畫布" />
+        <figcaption><strong>圖 3-3</strong>剛開好的空白 Canvas：中央一顆 + Add first step 是加第一個 Trigger 的入口，右下角是 zoom／fit view／tidy up 小工具列。</figcaption>
+      </figure>
     </section>
 
     <section id="node_shape" data-nav="節點長什麼樣">
@@ -209,6 +221,10 @@
       </table>
       <div class="callout tip"><strong>Debug 神招：</strong>workflow 半夜炸掉，最先來這裡。<strong>紅色</strong>紀錄點進去，n8n 會直接把炸掉的節點紅框標出來，右邊面板 Output 分頁就是完整錯誤訊息。<a href="ch17_error_handling.html">第 17 章</a>錯誤處理會回來這裡教你系統化除錯。</div>
       <div class="callout"><strong>觀念：</strong>Executions 預設<strong>只保留一段時間</strong>（Woow 這台的設定值可以到 Settings 看），舊的會被清掉。真的要長期存證的資料自己另外寫進 Sheet 或資料庫，不要靠 Executions 當歷史紀錄。</div>
+      <figure class="shot">
+        <img src="assets/screenshots/ch3/03_executions.png" alt="Executions 頁面的執行紀錄清單" />
+        <figcaption><strong>圖 3-4</strong>Executions 頁：每一列是一次 workflow 執行，狀態、開始時間、耗時、觸發模式一次看完，紅色那筆點進去就是 debug 起點。</figcaption>
+      </figure>
     </section>
 
     <section id="templates_entry" data-nav="Templates 入口">
@@ -248,6 +264,10 @@
       </ul>
       <div class="callout danger"><strong>危險：</strong>Credential 一但存進 n8n，任何在同一個 workflow 裡選到它的節點都能拿去用。跟同事分享 credential 之前先想清楚——他可以用你的 Slack 帳號發任何訊息。細節、OAuth 流程、共用界線都在<a href="ch13_credentials.html">第 13 章</a>。</div>
       <div class="callout"><strong>觀念：</strong>Credential 跟 workflow 是<strong>分開存的</strong>。刪掉一個 workflow 不會刪 credential；反過來刪掉 credential，用到它的 workflow 會在該節點顯示紅色警告。這個設計是刻意的——同一組 credential 可以被很多 workflow 共用。</div>
+      <figure class="shot">
+        <img src="assets/screenshots/ch3/04_credentials.png" alt="Credentials 頁面的金鑰清單" />
+        <figcaption><strong>圖 3-5</strong>Credentials 頁：workspace 裡所有你有權存取的金鑰、OAuth 授權、API token 集中放在這，一列就是一組憑證。</figcaption>
+      </figure>
     </section>
 
     <section id="canvas_tools" data-nav="右下小工具">

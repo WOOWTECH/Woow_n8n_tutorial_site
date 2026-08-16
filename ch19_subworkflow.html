@@ -14,11 +14,11 @@
   <meta property="og:title" content="第 19 章 · Sub-workflow：把常用邏輯抽成小工作流 · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n Sub-workflow 模式：Execute Workflow 節點呼叫、傳參數、拿回傳值、可重用工具（例：統一發 Slack 通知）的抽出策略。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch19_subworkflow.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch19/01_bni_mcp.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="第 19 章 · Sub-workflow：把常用邏輯抽成小工作流 · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n Sub-workflow 模式：Execute Workflow 節點呼叫、傳參數、拿回傳值、可重用工具（例：統一發 Slack 通知）的抽出策略。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch19/01_bni_mcp.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -434,6 +434,10 @@ source: backup-daily</code></pre>
       </ul>
 
       <p>之後 HR API 網址換了、Slack channel 改名、時區格式微調——只改對應的那一個 sub-workflow，全公司所有 workflow 自動吃到新版。這就是 sub-workflow 真正的威力。</p>
+      <figure class="shot">
+        <img src="assets/screenshots/ch19/01_bni_mcp.png" alt="BNI MCP workflow 呼叫 sub-workflow 的實例" />
+        <figcaption><strong>圖 19-1</strong>實戰範例：BNI MCP workflow 用 Execute Workflow 節點呼叫子 workflow，把共用邏輯抽出來重用。</figcaption>
+      </figure>
 
       <div class="callout"><strong>觀念：</strong>Sub-workflow 就像公司內部的「共用函式庫」。第一次要花時間建、要跟同事講清楚介面（要傳什麼、會回什麼），但一旦建好就是複利。每多一個呼叫方，這組 sub-workflow 的投報率就再翻一倍。</div>
     </section>

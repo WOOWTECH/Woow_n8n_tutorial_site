@@ -14,11 +14,11 @@
   <meta property="og:title" content="第 22 章 · Webhook：讓外部系統打進 n8n · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n Webhook 節點完整教學：Test URL vs Production URL、HTTP 方法、auth、Response 模式、範例：Line Bot / 表單 / HA 自動化打進來。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch22_webhook.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch22/01_webhook_workflow.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="第 22 章 · Webhook：讓外部系統打進 n8n · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n Webhook 節點完整教學：Test URL vs Production URL、HTTP 方法、auth、Response 模式、範例：Line Bot / 表單 / HA 自動化打進來。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch22/01_webhook_workflow.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -202,6 +202,10 @@ received_at   →  {{ $now.toISO() }}</code></pre>
         <li>
           <h3>Execute step 確認 Sheet 真的多了一列</h3>
           <p>對 Google Sheets 節點按 <strong>Execute step</strong>——會拿剛剛 Webhook 收到的 item 送一次。開 Google Sheets 檢查有沒有多一列剛剛的資料。有的話代表整條鏈接通。</p>
+          <figure class="shot">
+            <img src="assets/screenshots/ch22/01_webhook_workflow.png" alt="Webhook → Send Email 三節點 workflow canvas" />
+            <figcaption><strong>圖 22-1</strong>Webhook 觸發後串接下游節點的典型三節點結構：外部 POST 打進 Webhook 節點，資料流到下一個節點做事。</figcaption>
+          </figure>
         </li>
         <li>
           <h3>Save，然後右上把 Active 打開</h3>

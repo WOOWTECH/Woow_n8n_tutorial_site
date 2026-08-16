@@ -14,11 +14,11 @@
   <meta property="og:title" content="附錄 B · 常見錯誤排錯 · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n 常見錯誤症狀對照表：節點紅色框、Timeout、Credential 失效、429 rate limit、Webhook 找不到、Sub-workflow 執行錯誤，每個症狀對應 2-3 個解法。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/appendix_errors.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/appx_b/01_executions_history.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="附錄 B · 常見錯誤排錯 · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n 常見錯誤症狀對照表：節點紅色框、Timeout、Credential 失效、429 rate limit、Webhook 找不到、Sub-workflow 執行錯誤，每個症狀對應 2-3 個解法。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/appx_b/01_executions_history.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -120,6 +120,10 @@
         <li>
           <h3>Executions 頁最新一筆是紅還是綠？</h3>
           <p>左側主導覽 <strong>Executions</strong>（或該 workflow 內的 Executions tab）。紅色 = 錯了，點進去看是哪個節點爆的、錯誤訊息寫什麼。綠色 = 有跑成功，那你其實沒錯，可能只是誤會（例：Schedule 還沒到時間）。</p>
+          <figure class="shot">
+            <img src="assets/screenshots/appx_b/01_executions_history.png" alt="n8n Executions history 頁面，列出每筆執行的狀態與時間，紅色列代表失敗" />
+            <figcaption><strong>圖 附B-1</strong>Executions history：一列一筆執行，<strong>紅色 = 失敗</strong>，點進去可看是哪個節點爆的與錯誤訊息。</figcaption>
+          </figure>
         </li>
         <li>
           <h3>該節點的 Credential 還通嗎？</h3>

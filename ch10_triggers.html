@@ -14,11 +14,11 @@
   <meta property="og:title" content="第 10 章 · 三種觸發：Manual / Schedule / Event · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n Trigger 節點三大類：Manual（手動測試）／Schedule（Cron）／Event（Webhook、SaaS 事件），各自適合場景與設定。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch10_triggers.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch10/01_trigger_workflow.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="第 10 章 · 三種觸發：Manual / Schedule / Event · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n Trigger 節點三大類：Manual（手動測試）／Schedule（Cron）／Event（Webhook、SaaS 事件），各自適合場景與設定。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch10/01_trigger_workflow.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -160,6 +160,10 @@
     <section id="auto" data-nav="Schedule Trigger">
       <h2 data-icon="auto">Schedule Trigger：像 Cron 一樣定時跑</h2>
       <p>Schedule Trigger 是自動化最常用的 Trigger——你設一個時間規則，n8n 就會按規則到點自動幫你跑 workflow。適用範例：早上 8:00 把行事曆推 Slack、每小時同步一次資料庫、每週一 9:00 寄週報。</p>
+      <figure class="shot">
+        <img src="assets/screenshots/ch10/01_trigger_workflow.png" alt="Website Down Checker workflow 起點：Schedule Trigger 節點在最左邊定時啟動整條流程" />
+        <figcaption><strong>圖 10-1</strong>Schedule Trigger 永遠站在 workflow 的最左邊：時間一到就自動點燃下游整條網站健檢流程。</figcaption>
+      </figure>
 
       <h3>Trigger Interval 有幾種設法</h3>
       <table class="data-table">

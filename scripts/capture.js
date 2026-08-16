@@ -24,7 +24,7 @@ const SHOTS_DIR = path.join(ROOT, 'assets', 'screenshots');
 function loadEnv() {
   const env = {};
   for (const line of fs.readFileSync(ENV_PATH, 'utf8').split('\n')) {
-    const m = line.match(/^([A-Z_]+)=(.*)$/);
+    const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
     if (m) env[m[1]] = m[2];
   }
   return env;
@@ -62,20 +62,18 @@ async function ensureLogin(browser, env) {
       viewport: { width: 1440, height: 900 },
     });
   }
-  console.log('· no cache, doing UI login');
+  console.log('· no cache, doing n8n UI login');
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
-  await gotoWithRetry(page, env.HA_URL);
+  await gotoWithRetry(page, env.N8N_URL + '/signin');
   await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
   await page.waitForTimeout(2500);
-  await page.waitForSelector('input[name="username"]', { timeout: 20000 });
-  await page.fill('input[name="username"]', env.HA_USER);
-  await page.fill('input[name="password"]', env.HA_PASS);
-  // Keep me logged in → long-lived refresh token persisted in storageState
-  await page.locator('input[type="checkbox"]').first().check().catch(() => {});
-  await page.locator('input[name="password"]').press('Enter');
-  // Wait for URL to change away from /auth/authorize
-  await page.waitForFunction(() => !location.pathname.startsWith('/auth/'), { timeout: 20000 }).catch(() => {});
+  await page.waitForSelector('input[name="emailOrLdapLoginId"]', { timeout: 20000 });
+  await page.fill('input[name="emailOrLdapLoginId"]', env.N8N_USER);
+  await page.fill('input[name="password"]', env.N8N_PASS);
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  // Wait for URL to change away from /signin (redirects to /workflows or /home)
+  await page.waitForFunction(() => !location.pathname.startsWith('/signin'), { timeout: 20000 }).catch(() => {});
   await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
   await ctx.storageState({ path: STATE_PATH });
   console.log('· saved storage_state.json (post-login URL: ' + page.url() + ')');
@@ -226,7 +224,7 @@ async function runActions(page, env, actions) {
     } else if (act.waitFor) {
       await page.waitForSelector(act.waitFor, { timeout: 8000 }).catch(() => {});
     } else if (act.url) {
-      await gotoWithRetry(page, env.HA_URL + act.url);
+      await gotoWithRetry(page, env.N8N_URL + act.url);
       await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
     }
   }
@@ -235,7 +233,7 @@ async function runActions(page, env, actions) {
 async function captureOne(ctx, env, shot) {
   const page = await ctx.newPage();
   await page.setViewportSize(shot.viewport || { width: 1440, height: 900 });
-  const url = env.HA_URL + (shot.url || '/');
+  const url = env.N8N_URL + (shot.url || '/');
   console.log(`  → ${shot.chapter}/${shot.filename}  ${url}`);
   await gotoWithRetry(page, url);
   if (shot.waitFor) {

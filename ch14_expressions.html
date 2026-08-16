@@ -14,11 +14,11 @@
   <meta property="og:title" content="第 14 章 · Expression 入門：`{{ $json.field }}` 從這裡開始 · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n Expression 語法入門：`{{ $json.field }}` 取當前 item、`$node['name']` 取指定節點、日期函式、字串拼接與常見錯誤。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch14_expressions.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch14/01_expression_canvas.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="第 14 章 · Expression 入門：`{{ $json.field }}` 從這裡開始 · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n Expression 語法入門：`{{ $json.field }}` 取當前 item、`$node['name']` 取指定節點、日期函式、字串拼接與常見錯誤。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch14/01_expression_canvas.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -267,6 +267,10 @@
     <section id="use_cases" data-nav="常見 Expression 場景">
       <h2 data-icon="tabs">常見場景直接抄</h2>
       <p>把你會遇到的常見 use case 跟對應寫法列成一張表——把 workflow 打開，欄位切 Expression 模式，直接照抄就能跑。</p>
+      <figure class="shot">
+        <img src="assets/screenshots/ch14/01_expression_canvas.png" alt="AI 對接 Odoo 任務流 v2 workflow 內含 Expression 引用" />
+        <figcaption><strong>圖 14-1</strong>「AI × Odoo 任務流 v2」實例：六個節點裡多處欄位用 Expression 引用上游 AI 節點的輸出，讓一條 workflow 動態處理無限筆任務。</figcaption>
+      </figure>
       <table class="data-table">
         <thead>
           <tr><th>場景</th><th>Expression 寫法</th><th>解釋</th></tr>

@@ -1,20 +1,16 @@
 {
   "_readme": [
-    "Screenshot + annotation definitions. Shots are captured against live HA.",
-    "Fields: chapter, filename, url (relative to HA_URL), waitFor (CSS selector list),",
-    "waitMs (ms after nav), viewport, fresh (true=use context without login),",
-    "actions[] (pre-shot interactions: click/hover/press/type/wait/waitFor/url),",
-    "annotations[] (box/arrow/callout drawn on top of the screenshot).",
-    "SAFETY: never call save/delete actions. Only open dialogs to screenshot then Escape."
+    "n8n screenshot definitions. Shots against live https://n8n.woowtech.io/.",
+    "Fields: chapter, filename, url (relative to N8N_URL), waitFor (CSS selector), waitMs, viewport, actions[], annotations[]."
   ],
   "shots": [
     {
-      "chapter": "ch1",
-      "filename": "01_login_page.png",
-      "fresh": true,
-      "url": "/",
-      "waitFor": "input[name=\"username\"]",
+      "chapter": "ch2",
+      "filename": "01_signin.png",
+      "url": "/signin",
+      "waitFor": "input[name=\"emailOrLdapLoginId\"]",
       "waitMs": 3000,
+      "fresh": true,
       "viewport": {
         "width": 1200,
         "height": 820
@@ -23,17 +19,17 @@
         {
           "type": "callout",
           "at": {
-            "x": 660,
-            "y": 200
+            "x": 720,
+            "y": 300
           },
           "number": 1,
-          "text": "帳號欄位"
+          "text": "Email 欄位"
         },
         {
           "type": "callout",
           "at": {
-            "x": 660,
-            "y": 320
+            "x": 720,
+            "y": 400
           },
           "number": 2,
           "text": "密碼欄位"
@@ -41,176 +37,65 @@
       ]
     },
     {
-      "chapter": "ch1",
-      "filename": "02_keep_logged_in.png",
-      "fresh": true,
-      "url": "/",
-      "waitFor": "input[name=\"username\"]",
-      "waitMs": 3000,
-      "viewport": {
-        "width": 1200,
-        "height": 820
-      },
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 660,
-            "y": 430
-          },
-          "number": 1,
-          "text": "個人裝置勾這個，10 天免重登"
-        }
-      ]
-    },
-    {
-      "chapter": "ch1",
-      "filename": "03_dashboard.png",
-      "url": "/dashboard-home/overview",
-      "waitFor": "home-assistant",
-      "waitMs": 6000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "登入成功後的主控台"
-        }
-      ]
-    },
-    {
       "chapter": "ch2",
-      "filename": "01_settings_entry.png",
-      "url": "/dashboard-home/overview",
-      "waitFor": "home-assistant",
+      "filename": "02_overview.png",
+      "url": "/home/workflows",
+      "waitFor": "body",
       "waitMs": 6000,
       "annotations": [
         {
           "type": "callout",
           "at": {
-            "x": 90,
-            "y": 770
+            "x": 720,
+            "y": 80
           },
           "number": 1,
-          "text": "左側最下方的「Settings」齒輪"
-        }
-      ]
-    },
-    {
-      "chapter": "ch2",
-      "filename": "02_general.png",
-      "url": "/config/general",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 500,
-            "y": 160
-          },
-          "number": 1,
-          "text": "「家」的名稱與時區都在這裡"
-        }
-      ]
-    },
-    {
-      "chapter": "ch2",
-      "filename": "03_location.png",
-      "url": "/config/general",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 500,
-            "y": 440
-          },
-          "number": 1,
-          "text": "拖曳定位針到你家"
-        }
-      ]
-    },
-    {
-      "chapter": "ch2",
-      "filename": "04_profile_language.png",
-      "url": "/profile",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 500,
-            "y": 220
-          },
-          "number": 1,
-          "text": "使用者語言（可與系統不同）"
+          "text": "登入後看到的 Overview 主頁"
         }
       ]
     },
     {
       "chapter": "ch3",
-      "filename": "01_areas_page.png",
-      "url": "/config/areas/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
+      "filename": "01_sidebar.png",
+      "url": "/home/workflows",
+      "waitFor": "body",
+      "waitMs": 6000,
       "annotations": [
         {
           "type": "callout",
           "at": {
-            "x": 720,
-            "y": 40
+            "x": 300,
+            "y": 80
           },
           "number": 1,
-          "text": "樓層與區域一覽"
+          "text": "左側欄：Overview / Chat / Templates / Insights / Help / Settings"
         }
       ]
     },
     {
       "chapter": "ch3",
-      "filename": "02_create_floor_dialog.png",
-      "url": "/config/areas/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "actions": [
-        {
-          "click": "button:has-text(\"Create floor\")"
-        },
-        {
-          "wait": 3000
-        }
-      ],
+      "filename": "02_workflows_list.png",
+      "url": "/home/workflows",
+      "waitFor": "body",
+      "waitMs": 6000,
       "annotations": [
         {
           "type": "callout",
           "at": {
             "x": 720,
-            "y": 80
+            "y": 260
           },
           "number": 1,
-          "text": "新增樓層 — 名稱、圖示、樓層編號"
+          "text": "Workflows 分頁：你能存取的所有 workflow"
         }
       ]
     },
     {
       "chapter": "ch3",
-      "filename": "03_create_area_dialog.png",
-      "url": "/config/areas/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "actions": [
-        {
-          "click": "button:has-text(\"Create area\")"
-        },
-        {
-          "wait": 3000
-        }
-      ],
+      "filename": "03_executions.png",
+      "url": "/home/executions",
+      "waitFor": "body",
+      "waitMs": 6000,
       "annotations": [
         {
           "type": "callout",
@@ -219,931 +104,33 @@
             "y": 80
           },
           "number": 1,
-          "text": "新增區域 — 名稱、圖示、所屬樓層"
+          "text": "Executions：debug 黃金頁面"
         }
       ]
     },
     {
       "chapter": "ch3",
-      "filename": "04_devices_list.png",
-      "url": "/config/devices/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
+      "filename": "04_credentials.png",
+      "url": "/home/credentials",
+      "waitFor": "body",
+      "waitMs": 6000,
       "annotations": [
         {
           "type": "callout",
           "at": {
             "x": 720,
-            "y": 40
+            "y": 80
           },
           "number": 1,
-          "text": "所有已配對的裝置"
+          "text": "Credentials：所有金鑰登記在這"
         }
       ]
     },
     {
       "chapter": "ch3",
-      "filename": "06_done.png",
-      "url": "/config/areas/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "完成後每個區域都有裝置數量"
-        }
-      ]
-    },
-    {
-      "chapter": "ch4",
-      "filename": "01_entities_list.png",
-      "url": "/config/entities",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "所有 entity — 用上方搜尋框最快"
-        }
-      ]
-    },
-    {
-      "chapter": "ch4",
-      "filename": "03_labels_page.png",
-      "url": "/config/labels",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "標籤 — 跨區域分類設備"
-        }
-      ]
-    },
-    {
-      "chapter": "ch5",
-      "filename": "01_users_page.png",
-      "url": "/config/users",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "使用者管理"
-        }
-      ]
-    },
-    {
-      "chapter": "ch5",
-      "filename": "02_new_user_dialog.png",
-      "url": "/config/users",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "actions": [
-        {
-          "click": "text=Add user"
-        },
-        {
-          "wait": 1500
-        }
-      ],
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "顯示名稱、帳號、密碼、管理員開關"
-        }
-      ]
-    },
-    {
-      "chapter": "ch5",
-      "filename": "03_persons_page.png",
-      "url": "/config/person",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "「人員」— 追蹤位置的實體"
-        }
-      ]
-    },
-    {
-      "chapter": "ch6",
-      "filename": "01_default_dashboard.png",
-      "url": "/dashboard-home/overview",
-      "waitFor": "home-assistant",
-      "waitMs": 6000,
-      "annotations": []
-    },
-    {
-      "chapter": "ch6",
-      "filename": "04_multi_tabs.png",
-      "url": "/dashboard-home/overview",
-      "waitFor": "home-assistant",
-      "waitMs": 6000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "頂端可切換多個分頁"
-        }
-      ]
-    },
-    {
-      "chapter": "ch7",
-      "filename": "01_mobile_sensors.png",
-      "url": "/config/devices/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "手機 App 註冊後會出現在裝置列表"
-        }
-      ]
-    },
-    {
-      "chapter": "ch7",
-      "filename": "02_dev_services.png",
-      "url": "/developer-tools/action",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "開發者工具 → 動作（原「服務」）"
-        }
-      ]
-    },
-    {
-      "chapter": "ch3",
-      "filename": "05_assign_area.png",
-      "url": "/config/devices/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "點任一裝置 → 頂端「Area」欄位就是分派區域的地方"
-        }
-      ]
-    },
-    {
-      "chapter": "ch4",
-      "filename": "02_rename_entity.png",
-      "url": "/config/entities",
-      "waitFor": "home-assistant",
-      "waitMs": 4000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "點任一 entity → 齒輪 → 改「Name」與「Entity ID」"
-        }
-      ]
-    },
-    {
-      "chapter": "ch6",
-      "filename": "02_edit_mode.png",
-      "url": "/dashboard-home/overview",
-      "waitFor": "home-assistant",
-      "waitMs": 6000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "右上三點 → Edit dashboard，進入編輯模式"
-        }
-      ]
-    },
-    {
-      "chapter": "ch6",
-      "filename": "03_add_card.png",
-      "url": "/dashboard-home/overview",
-      "waitFor": "home-assistant",
-      "waitMs": 6000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 40
-          },
-          "number": 1,
-          "text": "編輯模式下右下藍色「+」按鈕可加入新卡片"
-        }
-      ]
-    },
-    {
-      "chapter": "ch8",
-      "filename": "01_step.png",
-      "url": "/config/automation/edit/new",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "空白自動化編輯器 — 命名先寫清楚"
-        }
-      ]
-    },
-    {
-      "chapter": "ch8",
-      "filename": "02_step.png",
-      "url": "/config/automation/edit/new",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "點「Add trigger」→ 選「Sun」→ 選 Sunset 或 Sunrise"
-        }
-      ]
-    },
-    {
-      "chapter": "ch8",
-      "filename": "03_step.png",
-      "url": "/config/automation/edit/new",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "「Add condition」→ State → 選 person.xxx 是 home"
-        }
-      ]
-    },
-    {
-      "chapter": "ch8",
-      "filename": "04_step.png",
-      "url": "/config/automation/edit/new",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "「Add action」→ Perform action → light.turn_on + 選 entity"
-        }
-      ]
-    },
-    {
-      "chapter": "ch8",
-      "filename": "05_step.png",
-      "url": "/config/automation/edit/new",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "再新增第二個動作：notify.mobile_app_xxx"
-        }
-      ]
-    },
-    {
-      "chapter": "ch8",
-      "filename": "06_step.png",
-      "url": "/config/automation/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "自動化列表 — 每列右側可手動執行 / 開關 / 進入追蹤"
-        }
-      ]
-    },
-    {
-      "chapter": "ch9",
-      "filename": "01_step.png",
-      "url": "/config/backup",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "備份主頁面 — 右下角「Backup now」按鈕"
-        }
-      ]
-    },
-    {
-      "chapter": "ch9",
-      "filename": "02_step.png",
-      "url": "/config/backup",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "點右下「Backup now」→ 對話框跳出後選「完整備份」"
-        }
-      ]
-    },
-    {
-      "chapter": "ch9",
-      "filename": "03_step.png",
-      "url": "/config/backup",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "對話框中：命名 + 加密密碼（密碼務必存進密碼管理器）"
-        }
-      ]
-    },
-    {
-      "chapter": "ch9",
-      "filename": "04_step.png",
-      "url": "/config/backup",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "完成後回到主頁 → 點備份卡片右側可下載到電腦"
-        }
-      ]
-    },
-    {
-      "chapter": "ch10",
-      "filename": "01_scripts_page.png",
-      "url": "/config/script/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "腳本清單頁 — 右下角「＋ 新增腳本」"
-        }
-      ]
-    },
-    {
-      "chapter": "ch10",
-      "filename": "02_add_action.png",
-      "url": "/config/script/edit/new",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "腳本編輯器 — 每個動作可以是服務、延遲、等待、條件、迴圈"
-        }
-      ]
-    },
-    {
-      "chapter": "ch11",
-      "filename": "01_device_page.png",
-      "url": "/config/devices/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "裝置清單 — 點任一列進入詳細頁"
-        }
-      ]
-    },
-    {
-      "chapter": "ch11",
-      "filename": "02_rename_entity.png",
-      "url": "/config/entities",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "實體改名要同步改 entity_id，才不會留孤兒"
-        }
-      ]
-    },
-    {
-      "chapter": "ch11",
-      "filename": "03_entities_filter.png",
-      "url": "/config/entities",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "篩選器：Domain / Integration / Area / Label / 停用狀態"
-        }
-      ]
-    },
-    {
-      "chapter": "ch11",
-      "filename": "04_updates.png",
-      "url": "/config/updates",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "更新中心 — Core / OS / Add-on / 韌體都在這"
-        }
-      ]
-    },
-    {
-      "chapter": "ch11",
-      "filename": "05_repairs.png",
-      "url": "/config/repairs",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "修復中心 — 有問題會列在這，點進去有引導修復流程"
-        }
-      ]
-    },
-    {
-      "chapter": "ch12",
-      "filename": "01_dev_services.png",
-      "url": "/developer-tools/service",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "開發者工具 → 動作(服務) — 挑 Domain 逐一試"
-        }
-      ]
-    },
-    {
-      "chapter": "appx_b",
-      "filename": "01_scene_create.png",
-      "url": "/config/scene/edit/new",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "場景編輯器 — 加入實體、逐一設定狀態、儲存"
-        }
-      ]
-    },
-    {
-      "chapter": "appx_b",
-      "filename": "02_helpers_page.png",
-      "url": "/config/helpers",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "輔助元件頁 — 右下「＋」有 10 幾種型別可選"
-        }
-      ]
-    },
-    {
-      "chapter": "appx_b",
-      "filename": "03_group_create.png",
-      "url": "/config/helpers",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 700,
-            "y": 40
-          },
-          "number": 1,
-          "text": "新增 → 群組 — 把同類實體綁在一起共同控制"
-        }
-      ]
-    },
-    {
-      "chapter": "ch13",
-      "filename": "01_profile_theme.png",
-      "url": "/profile/general",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "個人資料 → 主題選擇區塊"
-        }
-      ]
-    },
-    {
-      "chapter": "ch13",
-      "filename": "02_hacs_themes.png",
-      "url": "/hacs/themes",
-      "waitFor": "home-assistant",
-      "waitMs": 6000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "HACS → Themes：社群主題清單"
-        }
-      ]
-    },
-    {
-      "chapter": "ch13",
-      "filename": "03_reload_themes.png",
-      "url": "/developer-tools/yaml",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "設定 → 工具 → YAML：改完主題按這裡「重新載入主題」"
-        }
-      ]
-    },
-    {
-      "chapter": "ch14",
-      "filename": "01_integrations_dashboard.png",
-      "url": "/config/integrations/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "整合頁：上排分頁 = 整合 / 實體 / 輔助元件"
-        }
-      ]
-    },
-    {
-      "chapter": "ch14",
-      "filename": "02_integrations_discovered.png",
-      "url": "/config/integrations/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 170
-          },
-          "number": 1,
-          "text": "「已探索」區塊：HA 自動偵測到的裝置"
-        }
-      ]
-    },
-    {
-      "chapter": "ch14",
-      "filename": "03_devices.png",
-      "url": "/config/devices/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "裝置頁：一個整合底下的多個裝置"
-        }
-      ]
-    },
-    {
-      "chapter": "ch14",
-      "filename": "04_entities.png",
-      "url": "/config/entities",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "實體頁：每個裝置的實際狀態點"
-        }
-      ]
-    },
-    {
-      "chapter": "ch16",
-      "filename": "01_todo_panel.png",
-      "url": "/todo",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "側欄 → 待辦清單面板"
-        }
-      ]
-    },
-    {
-      "chapter": "ch16",
-      "filename": "02_calendar_panel.png",
-      "url": "/calendar",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "側欄 → 行事曆面板"
-        }
-      ]
-    },
-    {
-      "chapter": "ch16",
-      "filename": "03_add_local_todo.png",
-      "url": "/config/integrations/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 1200,
-            "y": 830
-          },
-          "number": 1,
-          "text": "右下角「新增整合」→ 搜尋 Local To-do"
-        }
-      ]
-    },
-    {
-      "chapter": "ch18",
-      "filename": "01_history.png",
-      "url": "/history",
-      "waitFor": "home-assistant",
-      "waitMs": 6000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "歷史（History）：時間序列圖與下載鍵"
-        }
-      ]
-    },
-    {
-      "chapter": "ch18",
-      "filename": "02_logbook.png",
-      "url": "/logbook",
-      "waitFor": "home-assistant",
-      "waitMs": 6000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "活動（Logbook）：文字化事件紀錄"
-        }
-      ]
-    },
-    {
-      "chapter": "ch18",
-      "filename": "03_statistics.png",
-      "url": "/developer-tools/statistics",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "工具 → 統計：修正有問題的長期統計實體"
-        }
-      ]
-    },
-    {
-      "chapter": "ch20",
-      "filename": "01_addon_store.png",
-      "url": "/hassio/store",
-      "waitFor": "home-assistant",
-      "waitMs": 6000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "應用程式（Apps）商店：Add-on 都在這裡"
-        }
-      ]
-    },
-    {
-      "chapter": "ch20",
-      "filename": "02_supervisor_dashboard.png",
-      "url": "/hassio/dashboard",
-      "waitFor": "home-assistant",
-      "waitMs": 14000,
-      "annotations": [
-        {
-          "type": "callout",
-          "at": {
-            "x": 720,
-            "y": 80
-          },
-          "number": 1,
-          "text": "Supervisor 首頁：已裝的 Add-on 都列在這"
-        }
-      ]
-    },
-    {
-      "chapter": "ch20",
-      "filename": "03_system_health.png",
-      "url": "/config/repairs",
-      "waitFor": "home-assistant",
+      "filename": "05_canvas_empty.png",
+      "url": "/workflow/new",
+      "waitFor": "body",
       "waitMs": 8000,
       "annotations": [
         {
@@ -1153,33 +140,69 @@
             "y": 80
           },
           "number": 1,
-          "text": "設定 → 修復：整合異常、統計錯誤都會列在這"
+          "text": "空白 Canvas + Add first step 是新 workflow 起點"
         }
       ]
     },
     {
-      "chapter": "ch22",
-      "filename": "01_helpers.png",
-      "url": "/config/helpers",
-      "waitFor": "home-assistant",
-      "waitMs": 5000,
+      "chapter": "ch4",
+      "filename": "01_workflows_page.png",
+      "url": "/home/workflows",
+      "waitFor": "body",
+      "waitMs": 6000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {
+            "x": 150,
+            "y": 770
+          },
+          "number": 1,
+          "text": "側欄底部找 Templates 入口"
+        }
+      ]
+    },
+    {
+      "chapter": "ch7",
+      "filename": "01_canvas_start.png",
+      "url": "/workflow/new",
+      "waitFor": "body",
+      "waitMs": 8000,
       "annotations": [
         {
           "type": "callout",
           "at": {
             "x": 720,
-            "y": 80
+            "y": 400
           },
           "number": 1,
-          "text": "輔助元件：計數器、輸入布林、數字、日期等都在這"
+          "text": "點 Add first step 展開節點抽屜（Trigger 家族優先）"
         }
       ]
     },
     {
-      "chapter": "ch22",
-      "filename": "02_history_chart.png",
-      "url": "/history",
-      "waitFor": "home-assistant",
+      "chapter": "ch8",
+      "filename": "01_canvas_start.png",
+      "url": "/workflow/new",
+      "waitFor": "body",
+      "waitMs": 8000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {
+            "x": 720,
+            "y": 400
+          },
+          "number": 1,
+          "text": "從這裡 Add first step 開始你的第一個 workflow"
+        }
+      ]
+    },
+    {
+      "chapter": "ch13",
+      "filename": "01_credentials_page.png",
+      "url": "/home/credentials",
+      "waitFor": "body",
       "waitMs": 6000,
       "annotations": [
         {
@@ -1189,16 +212,16 @@
             "y": 80
           },
           "number": 1,
-          "text": "歷史圖表：可以直接嵌到儀表板卡片上"
+          "text": "Credentials 頁：每張卡片一個 credential"
         }
       ]
     },
     {
-      "chapter": "ch22",
-      "filename": "03_dashboard.png",
-      "url": "/dashboard-home/overview",
-      "waitFor": "home-assistant",
-      "waitMs": 14000,
+      "chapter": "ch17",
+      "filename": "01_executions_page.png",
+      "url": "/home/executions",
+      "waitFor": "body",
+      "waitMs": 6000,
       "annotations": [
         {
           "type": "callout",
@@ -1207,7 +230,283 @@
             "y": 80
           },
           "number": 1,
-          "text": "儀表板：把生活紀錄卡片放在這裡"
+          "text": "Executions 頁面：紅色代表失敗，點進去看每個節點 output"
+        }
+      ]
+    },
+    {
+      "chapter": "appx_a",
+      "filename": "01_settings.png",
+      "url": "/settings/personal",
+      "waitFor": "body",
+      "waitMs": 6000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {
+            "x": 720,
+            "y": 80
+          },
+          "number": 1,
+          "text": "Personal Settings：只影響你這個帳號的偏好"
+        }
+      ]
+    },
+    {
+      "chapter": "ch1",
+      "filename": "01_overview.png",
+      "url": "/home/workflows",
+      "waitFor": "body",
+      "waitMs": 6000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {
+            "x": 720,
+            "y": 80
+          },
+          "number": 1,
+          "text": "Woow 內部 n8n 實例主頁（Overview 顯示執行統計）"
+        }
+      ]
+    },
+    {
+      "chapter": "ch5",
+      "filename": "01_workflows_list.png",
+      "url": "/home/workflows",
+      "waitFor": "body",
+      "waitMs": 6000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 200},
+          "number": 1,
+          "text": "點右上 + 新建 workflow，再從三個點選單找 Import from URL / File"
+        }
+      ]
+    },
+    {
+      "chapter": "ch6",
+      "filename": "01_existing_workflow.png",
+      "url": "/workflow/hsWPdcFsTjXB0cDI",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "任何節點雙擊都能打開參數面板改欄位、換 credential、拉不同資料源"
+        }
+      ]
+    },
+    {
+      "chapter": "ch9",
+      "filename": "01_data_flow_canvas.png",
+      "url": "/workflow/MglcvPBbtbriuAlN",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "節點之間流動的是 Items 陣列，每個節點自動對每個 item 執行一次"
+        }
+      ]
+    },
+    {
+      "chapter": "ch10",
+      "filename": "01_trigger_workflow.png",
+      "url": "/workflow/hsWPdcFsTjXB0cDI",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "每個 workflow 一定有一個 Trigger（Schedule / Webhook / Manual…）"
+        }
+      ]
+    },
+    {
+      "chapter": "ch11",
+      "filename": "01_saas_workflow.png",
+      "url": "/workflow/6qKDqwFtXs0peGts",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "SaaS 整合節點：直接調 Slack / Gmail / Notion 等外部 API"
+        }
+      ]
+    },
+    {
+      "chapter": "ch12",
+      "filename": "01_http_workflow.png",
+      "url": "/workflow/hsWPdcFsTjXB0cDI",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "HTTP Request 節點是萬用鑰匙：n8n 沒現成整合的 API 都能打"
+        }
+      ]
+    },
+    {
+      "chapter": "ch14",
+      "filename": "01_expression_canvas.png",
+      "url": "/workflow/1OGOhcfvjTB7TSBm",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "Expression 用 ={{ ... }} 把上一節點資料塞進欄位（雙擊節點看細節）"
+        }
+      ]
+    },
+    {
+      "chapter": "ch15",
+      "filename": "01_if_workflow.png",
+      "url": "/workflow/i2LN8d5hD5vlC3gc",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "IF / Switch 節點會分成 true / false 兩條線，看你要走哪邊"
+        }
+      ]
+    },
+    {
+      "chapter": "ch16",
+      "filename": "01_multi_branch.png",
+      "url": "/workflow/MglcvPBbtbriuAlN",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "分岔後用 Merge / Split Out 把兩條線合回一條 items 陣列"
+        }
+      ]
+    },
+    {
+      "chapter": "ch18",
+      "filename": "01_form_runner.png",
+      "url": "/workflow/BKNBTZR3Xv3cjZxd",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "Set / Edit Fields 節點：加欄位、改型別、砍欄位，不用寫 code"
+        }
+      ]
+    },
+    {
+      "chapter": "ch19",
+      "filename": "01_bni_mcp.png",
+      "url": "/workflow/i2LN8d5hD5vlC3gc",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "Execute Sub-workflow 節點會呼叫另一個獨立 workflow（可傳 items 進去）"
+        }
+      ]
+    },
+    {
+      "chapter": "ch20",
+      "filename": "01_ha_agent.png",
+      "url": "/workflow/7B7btSy0WIY2ftpZ",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "Code 節點跑 JS / Python，寫比 Expression 更複雜的邏輯（雙擊看內容）"
+        }
+      ]
+    },
+    {
+      "chapter": "ch21",
+      "filename": "01_ai_agent_canvas.png",
+      "url": "/workflow/G8QgXF25Z1T19Q3w",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "AI Agent 節點 = LLM + Tools + Memory 拼起來的自主 agent"
+        }
+      ]
+    },
+    {
+      "chapter": "ch22",
+      "filename": "01_webhook_workflow.png",
+      "url": "/workflow/qNJTjyGOOV1jzRCA",
+      "waitFor": "body",
+      "waitMs": 10000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 80},
+          "number": 1,
+          "text": "Webhook 節點會給你一個 URL，讓外部服務推資料進 n8n"
+        }
+      ]
+    },
+    {
+      "chapter": "appx_b",
+      "filename": "01_executions_history.png",
+      "url": "/home/executions",
+      "waitFor": "body",
+      "waitMs": 6000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 720, "y": 200},
+          "number": 1,
+          "text": "紅色列 = 失敗執行，點進去看是哪個節點噴什麼錯誤"
+        }
+      ]
+    },
+    {
+      "chapter": "appx_c",
+      "filename": "01_settings_index.png",
+      "url": "/settings/personal",
+      "waitFor": "body",
+      "waitMs": 6000,
+      "annotations": [
+        {
+          "type": "callout",
+          "at": {"x": 200, "y": 300},
+          "number": 1,
+          "text": "左側 Settings 導覽：Personal / Users / API / Community Nodes / Log Streaming…"
         }
       ]
     }

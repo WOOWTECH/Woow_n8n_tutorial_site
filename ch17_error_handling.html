@@ -14,11 +14,11 @@
   <meta property="og:title" content="第 17 章 · 錯誤處理：Error workflow / Retry / Wait · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n 錯誤處理三招：Error workflow 統一接住、節點層 Retry on fail、Wait 節點錯開 rate limit，附排程失敗的通知模式。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch17_error_handling.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch17/01_executions_page.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="第 17 章 · 錯誤處理：Error workflow / Retry / Wait · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n 錯誤處理三招：Error workflow 統一接住、節點層 Retry on fail、Wait 節點錯開 rate limit，附排程失敗的通知模式。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch17/01_executions_page.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -418,6 +418,10 @@ Workflow: {{ $json.workflow.name }}
       </table>
 
       <p>點任一筆紅色 Execution 進去 → 會看到 canvas 樣的視覺化：<strong>失敗的節點會被紅框 highlight</strong>，點該節點就看到當時的 input / output / error 訊息。這是找 bug 最快的方式。</p>
+      <figure class="shot">
+        <img src="assets/screenshots/ch17/01_executions_page.png" alt="Executions 頁面顯示成功與失敗的執行紀錄" />
+        <figcaption><strong>圖 17-1</strong>Executions 頁面：綠色是成功、<strong>紅色是失敗</strong>，點紅色那筆進去就能看到掛在哪個節點跟錯誤訊息。</figcaption>
+      </figure>
 
       <h3>Pin data：測試時很好用的省 API 次數招</h3>
       <p>開發時每改一個節點就重跑一次 workflow，會不斷打真的 API（Gmail、Slack、Sheets），既慢又浪費 quota。<strong>Pin data</strong> 可以讓你把某個節點的一次成功 output <em>釘住</em>，之後 workflow 重跑到那個節點時，會直接吃 pin 住的資料，<em>不會真的打 API</em>。</p>

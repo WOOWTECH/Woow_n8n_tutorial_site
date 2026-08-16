@@ -14,11 +14,11 @@
   <meta property="og:title" content="附錄 C · 底層架構好奇者向 · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n 底層架構深入：Community／Cloud／Enterprise 三種版本差別、self-host 部署方式、queue mode、資料庫（SQLite vs Postgres）、backup 策略。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/appendix_internals.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/appx_c/01_settings_index.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="附錄 C · 底層架構好奇者向 · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n 底層架構深入：Community／Cloud／Enterprise 三種版本差別、self-host 部署方式、queue mode、資料庫（SQLite vs Postgres）、backup 策略。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/appx_c/01_settings_index.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -106,6 +106,10 @@
         <li><strong>想自己在家 self-host 一個 n8n 玩玩的技術控</strong>——需要知道 Docker 跑起來之後底下發生什麼。</li>
       </ul>
       <div class="callout"><strong>觀念：</strong>n8n 是<strong>原始碼公開（source-available）</strong>的軟體，用的是 <strong>Sustainable Use License（SUL）</strong>——不是 OSI 認可的 open source，而是官方所謂 <em>fair-code</em> 哲學的實作：可以看原始碼、可以自架、可以內部商用，但不可以「拿去做競品 SaaS」或「移除授權標記」。檔名含 <code>.ee.</code> 的模組屬 Enterprise，另需 license key 才能啟用。它不是黑盒子——這也是為什麼有人可以自架、有人願意付錢用 Cloud，兩條路都通。</div>
+      <figure class="shot">
+        <img src="assets/screenshots/appx_c/01_settings_index.png" alt="n8n Settings 頁面的側欄導覽，列出 Personal、Users、API 等管理項目" />
+        <figcaption><strong>圖 附C-1</strong>Settings 導覽側欄：管理員/IT 進入 n8n 後主要面對的分區入口，決定你能看到哪些內部設定與版本功能。</figcaption>
+      </figure>
     </section>
 
     <section id="editions" data-nav="三個版本對照">

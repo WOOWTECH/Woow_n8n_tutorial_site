@@ -14,11 +14,11 @@
   <meta property="og:title" content="第 21 章 · AI Agent：讓 workflow 有一個「會想的」節點 · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n AI Agent 節點（LangChain 系列）：Chat Trigger + AI Agent + Chat Model + Memory 組合、Tool 給 agent 用、常見客服／資料整理範例。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch21_ai_agent.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch21/01_ai_agent_canvas.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="第 21 章 · AI Agent：讓 workflow 有一個「會想的」節點 · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n AI Agent 節點（LangChain 系列）：Chat Trigger + AI Agent + Chat Model + Memory 組合、Tool 給 agent 用、常見客服／資料整理範例。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch21/01_ai_agent_canvas.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -301,6 +301,10 @@
         <li>
           <h3>回聊天視窗測試</h3>
           <p>Save + Activate（如果剛才動過設定要重存）。回 chat URL 打「你們有賣掃地機器人嗎？」——agent 應該會判斷「這要查產品」→ 自動 call Sheet Tool → 傳 <code>product_query="掃地機器人"</code> → 拿到你的 Sheet 資料 → 用自然語言組成回覆。點 execution 進去看 agent 的思考鏈，會看到清楚的 <strong>Tool call: googleSheets, args: {product_query: "掃地機器人"}</strong> 記錄。</p>
+          <figure class="shot">
+            <img src="assets/screenshots/ch21/01_ai_agent_canvas.png" alt="HA Chat AI 管家 v2 workflow canvas，5 節點串起 Chat Trigger、AI Agent、Chat Model、Memory 與 Tool" />
+            <figcaption><strong>圖 21-1</strong>完整的 AI Agent workflow：Chat Trigger 觸發、AI Agent 為核心、下方掛 Chat Model（大腦）、Memory（記憶）與 Tool（工具）共 5 個節點。</figcaption>
+          </figure>
         </li>
       </ol>
       <div class="callout tip"><strong>提示：</strong>可以掛<strong>好幾個 tool</strong>在同一個 agent 下——查產品 Tool、查訂單 Tool、寄 email Tool、算數字 Calculator Tool。每個 tool 的 Description 寫清楚「什麼情況用我」，agent 自己會挑對的來用。最強的搭法是掛 <strong>Workflow Tool</strong>——把你在<a href="ch19_subworkflow.html">第 19 章</a>做好的 sub-workflow 整個當 tool，agent 有需要就整條流程跑起來。</div>

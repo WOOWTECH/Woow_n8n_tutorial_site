@@ -14,11 +14,11 @@
   <meta property="og:title" content="第 12 章 · HTTP Request 節點：碰所有沒官方整合的 API · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n HTTP Request 節點完整教學：GET/POST/PUT/DELETE、headers、body、auth、分頁、常見錯誤處理。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch12_http_request.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch12/01_http_workflow.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="第 12 章 · HTTP Request 節點：碰所有沒官方整合的 API · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n HTTP Request 節點完整教學：GET/POST/PUT/DELETE、headers、body、auth、分頁、常見錯誤處理。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch12/01_http_workflow.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -180,6 +180,10 @@
     <section id="steps" data-nav="打第一個 API">
       <h2 data-icon="steps">動手：打第一個 API（GitHub 公開資料）</h2>
       <p>先用一個不用 auth 的公開 API 熟練節點介面。目標：抓 GitHub 使用者 <code>octocat</code>（吉祥物章魚貓）的公開資料。</p>
+      <figure class="shot">
+        <img src="assets/screenshots/ch12/01_http_workflow.png" alt="Website Down Checker workflow — 用 HTTP Request 打各站健康檢查" />
+        <figcaption><strong>圖 12-1</strong>Website Down Checker 實例：用一連串 HTTP Request 節點對多個網站做健康檢查，示範 GET 呼叫怎麼串進 workflow。</figcaption>
+      </figure>
       <ol class="steps">
         <li>
           <h3>在 Canvas 加 HTTP Request 節點</h3>

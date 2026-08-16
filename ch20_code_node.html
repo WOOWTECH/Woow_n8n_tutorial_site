@@ -14,11 +14,11 @@
   <meta property="og:title" content="第 20 章 · Code node：在 workflow 裡寫幾行 JavaScript · Woow n8n 入住指南" />
   <meta property="og:description" content="n8n Code node 入門：JavaScript / Python 模式、$input.all() / 回傳格式、四個常用 pattern（過濾、映射、聚合、拆開）、複製即用範例。" />
   <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/ch20_code_node.html" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch20/01_ha_agent.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="第 20 章 · Code node：在 workflow 裡寫幾行 JavaScript · Woow n8n 入住指南" />
   <meta name="twitter:description" content="n8n Code node 入門：JavaScript / Python 模式、$input.all() / 回傳格式、四個常用 pattern（過濾、映射、聚合、拆開）、複製即用範例。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch20/01_ha_agent.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -105,6 +105,10 @@
         <li>要把 100 筆資料轉成 <strong>Slack Block Kit</strong> 的 JSON 結構——一堆巢狀 <code>{ type, elements: [...] }</code>，用 Set 節點會瘋掉。</li>
       </ul>
       <p>這時候就是 Code node 上場。它給你一個空白 JavaScript 編輯器，讓你寫幾行 code 把 items 進來、items 出去。<strong>不需要你會寫應用程式</strong>——大多場景抄下面四個 pattern 改參數就夠用。</p>
+      <figure class="shot">
+        <img src="assets/screenshots/ch20/01_ha_agent.png" alt="AI HA 管家 18 節點 workflow 含 Code 節點" />
+        <figcaption><strong>圖 20-1</strong>實戰範例：AI HA 管家 18 節點 workflow，中間用 Code 節點做內建節點做不到的資料整形與邏輯處理。</figcaption>
+      </figure>
       <div class="callout warn"><strong>新手警告：</strong>這章跟前面 19 章不一樣，會出現真的 JavaScript code。看不懂完全 OK——實務上業務／行銷同仁很少需要自己寫 Code node，能認出「這裡有一段程式碼在做 X」就夠了。真的跟不上，直接翻<a href="ch21_ai_agent.html">第 21 章 AI Agent</a> 跟<a href="ch17_error_handling.html">第 17 章錯誤處理</a>，完全不影響。</div>
     </section>
 
