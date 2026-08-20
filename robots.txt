@@ -1,5 +1,5 @@
-# Home Assistant 新居入住指南 — 公開教學站，歡迎索引
+# Woow n8n 入住指南 — 公開教學站，歡迎索引
 User-agent: *
 Allow: /
 
-Sitemap: https://woowtech.github.io/Woow_ha_tutorial_site/sitemap.xml
+Sitemap: https://n8n-guide.woowtech.io/sitemap.xml

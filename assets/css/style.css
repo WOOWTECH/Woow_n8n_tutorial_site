@@ -806,3 +806,12 @@ section h2[data-icon="zigbee"]::before          { content: "\F0D41"; }  /* zigbe
    min-width:0 讓欄位可以縮，寬內容才會改由自己的 overflow-x 處理。 */
 .layout > * { min-width: 0; }
 .content pre, .content .data-table { max-width: 100%; }
+
+/* hub 模式：側欄回資源總覽的連結（build_nav.js 產生） */
+.sidebar .hub-link {
+  display: inline-block;
+  font-size: 12.5px;
+  color: var(--ink-500);
+  margin: -20px 0 24px;
+}
+.sidebar .hub-link:hover { color: var(--ww-blue-700); text-decoration: none; }

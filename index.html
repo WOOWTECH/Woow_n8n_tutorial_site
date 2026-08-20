@@ -3,215 +3,137 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Woow n8n 入住指南 · 把重複工作外包給流程自動化</title>
-  <meta name="description" content="22 章＋3 附錄的繁體中文 n8n 教學：從打開登入、用別人的 template、做出第一個 workflow，一路帶到 Expression、Code node、AI Agent 與 Webhook，把公司的重複工作外包給流程自動化。" />
+  <title>n8n 資源總覽 · 教學、銷售手冊、提示詞庫、Skill 手冊 · WoowTech</title>
+  <meta name="description" content="Woow n8n 的四本手冊集中地：22 章入住教學、給客戶的銷售手冊、給 AI agent 建 workflow 用的提示詞庫、community node 與 MCP server 的 skill 手冊。三本手冊提供單檔 HTML 下載，離線可讀。" />
   <meta name="author" content="WoowTech" />
-  <link rel="canonical" href="https://woowtech.github.io/Woow_n8n_tutorial_site/" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta property="og:type" content="article" />
+  <link rel="canonical" href="https://n8n-guide.woowtech.io/" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Woow n8n 入住指南" />
   <meta property="og:locale" content="zh_TW" />
-  <meta property="og:title" content="Woow n8n 入住指南 · 把重複工作外包給流程自動化" />
-  <meta property="og:description" content="22 章＋3 附錄的繁體中文 n8n 教學：從打開登入、用別人的 template、做出第一個 workflow，一路帶到 Expression、Code node、AI Agent 與 Webhook，把公司的重複工作外包給流程自動化。" />
-  <meta property="og:url" content="https://woowtech.github.io/Woow_n8n_tutorial_site/" />
-  <meta property="og:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Woow n8n 入住指南 · 把重複工作外包給流程自動化" />
-  <meta name="twitter:description" content="22 章＋3 附錄的繁體中文 n8n 教學：從打開登入、用別人的 template、做出第一個 workflow，一路帶到 Expression、Code node、AI Agent 與 Webhook，把公司的重複工作外包給流程自動化。" />
-  <meta name="twitter:image" content="https://woowtech.github.io/Woow_n8n_tutorial_site/assets/screenshots/ch3/01_workspace.png" />
+  <meta property="og:title" content="n8n 資源總覽 · WoowTech" />
+  <meta property="og:description" content="教學、銷售手冊、提示詞庫、Skill 手冊，一頁入口。三本手冊提供單檔 HTML 下載。" />
+  <meta property="og:url" content="https://n8n-guide.woowtech.io/" />
   <meta name="theme-color" content="#6183FC" />
-  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* hub 專用（index.html 由人手維護，build_nav 不碰這一頁） */
+    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .res-card {
+      display: flex; flex-direction: column;
+      padding: 28px 26px; border: 1px solid var(--hairline); border-radius: var(--radius);
+      background: var(--surface); box-shadow: var(--shadow-sm);
+    }
+    .res-card .tile {
+      display: inline-flex; width: 48px; height: 48px; border-radius: 16px;
+      background: var(--ww-blue-050); align-items: center; justify-content: center; margin-bottom: 14px;
+    }
+    .res-card .tile svg { display: block; }
+    .res-card h3 { margin: 0 0 6px; font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+    .res-card .aud { font-size: 12.5px; color: var(--ink-500); margin-bottom: 10px; }
+    .res-card p { margin: 0 0 18px; color: var(--ink-700); font-size: 14.5px; flex: 1; }
+    .res-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-pill, .btn-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-weight: 600; font-size: 14px;
+      padding: 10px 22px; border-radius: 999px; text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
+    .btn-pill { background: var(--ww-blue); color: #fff; }
+    .btn-pill:hover { background: var(--ww-blue-600); color: #fff; text-decoration: none; transform: translateY(-1px); }
+    .btn-ghost { background: var(--surface); color: var(--ink-900); border: 1.5px solid var(--hairline); }
+    .btn-ghost:hover { border-color: var(--ww-blue); color: var(--ww-blue-700); text-decoration: none; }
+    .btn-ghost svg, .btn-pill svg { flex-shrink: 0; }
+    .dl-note {
+      margin: 26px 0 0; padding: 14px 18px; border-radius: var(--radius-sm);
+      background: var(--ww-blue-050); border: 1px solid rgba(97,131,252,0.18);
+      font-size: 13.5px; color: var(--ink-700);
+    }
+    .link-row { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 14px; font-size: 14px; }
+    @media (max-width: 720px) { .res-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
   <main class="home">
     <div class="hero">
-      <span class="kicker-script">from zero to running</span>
-      <div class="kicker">Home Assistant 新居入住指南</div>
-      <h1>從零到能用</h1>
-      <p>把剛裝好的 Home Assistant 從空白狀態，一路設定到可以在牆上點兩下開燈、在手機上收到通知，再往下走到通訊協定、能源監控、語音助理與案場級的網路架構。22 章＋ 3 附錄，每章 10 分鐘。</p>
+      <span class="kicker-script">automate the boring stuff</span>
+      <div class="kicker">WoowTech · Woow n8n</div>
+      <h1>n8n 資源總覽</h1>
+      <p>把公司裡的重複工作外包給流程自動化——四本手冊一次備齊：怎麼用、怎麼賣、怎麼讓 AI 幫你建、有哪些節點跟 MCP 可以裝。三本手冊提供單檔 HTML 下載，存下來離線也能讀。</p>
     </div>
 
     <section class="chapter-index">
-      <h2 class="index-title">起步認識</h2>
-      <div class="chapter-grid">
-        <a class="chapter-card" href="ch1_what_is_n8n.html">
-          <span class="num">01</span>
-          <h3>什麼是 n8n？跟 Zapier/Make 差在哪</h3>
-          <p>為什麼公司選 n8n、跟你可能用過的 Zapier/Make 差在哪、能替你省掉哪些重複勞動。</p>
-        </a>
-        <a class="chapter-card" href="ch2_login.html">
-          <span class="num">02</span>
-          <h3>打開 Woow n8n：登入與 5 分鐘介面導覽</h3>
-          <p>打開 n8n.woowtech.io、拿到你的帳號、確認裝置能連進來、看完介面主要區塊。</p>
-        </a>
-        <a class="chapter-card" href="ch3_workspace_tour.html">
-          <span class="num">03</span>
-          <h3>工作區長什麼樣</h3>
-          <p>Canvas、節點抽屜、Executions、Templates、Credentials 一次認完不再迷路。</p>
-        </a>
+      <h2 class="index-title">四本手冊</h2>
+      <div class="res-grid">
+
+        <div class="res-card">
+          <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M19 2L14 6.5V17.5L19 13V2M6.5 5C4.55 5 2.45 5.4 1 6.5V21.16C1 21.41 1.25 21.66 1.5 21.66C1.6 21.66 1.65 21.59 1.75 21.59C3.1 20.94 5.05 20.5 6.5 20.5C8.45 20.5 10.55 20.9 12 22C13.35 21.15 15.8 20.5 17.5 20.5C19.15 20.5 20.85 20.81 22.25 21.56C22.35 21.61 22.4 21.59 22.5 21.59C22.75 21.59 23 21.34 23 21.09V6.5C22.4 6.05 21.75 5.75 21 5.5V19C19.9 18.65 18.7 18.5 17.5 18.5C15.8 18.5 13.35 19.15 12 20V6.5C10.55 5.4 8.45 5 6.5 5Z"/></svg></span>
+          <h3>入住教學</h3>
+          <div class="aud">給用戶 · 22 章＋3 附錄</div>
+          <p>從打開 Woow n8n、用別人做好的 template、拉出第一支 workflow，一路帶到 Expression、Code node、AI Agent、Webhook。每章 10 分鐘。</p>
+          <div class="res-actions">
+            <a class="btn-pill" href="tutorial.html">線上閱讀 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#FFFFFF" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"/></svg></a>
+            <a class="btn-ghost" href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site/archive/refs/heads/main.zip"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#3A57C4" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg> 整站 zip</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M11 6H14L17.29 2.7A1 1 0 0 1 18.71 2.7L21.29 5.29A1 1 0 0 1 21.29 6.7L19 9H11V11A1 1 0 0 1 10 12A1 1 0 0 1 9 11V8A2 2 0 0 1 11 6M5 11V15L2.71 17.29A1 1 0 0 0 2.71 18.7L5.29 21.29A1 1 0 0 0 6.71 21.29L11 17H15A1 1 0 0 0 16 16V15H17A1 1 0 0 0 18 14V13H19A1 1 0 0 0 20 12V11H13V12A2 2 0 0 1 11 14H9A2 2 0 0 1 7 12V9Z"/></svg></span>
+          <h3>銷售手冊</h3>
+          <div class="aud">給客戶與經銷商 · 單頁</div>
+          <p>把「有人在做但不該有人做」的重複勞動交給 workflow：兩種模式（HAOS Add-on 或 n8n.woowtech.io 雲端）、六個實際場景、Template Package 與 SLA 條件。</p>
+          <div class="res-actions">
+            <a class="btn-pill" href="sales.html">線上閱讀 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#FFFFFF" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"/></svg></a>
+            <a class="btn-ghost" href="sales.html" download="n8n-銷售手冊.html"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#3A57C4" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg> 下載 HTML</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2M20 16H5.2L4 17.2V4H20V16M17 11H15V9H17M13 11H11V9H13M9 11H7V9H9"/></svg></span>
+          <h3>API／MCP 提示詞庫</h3>
+          <div class="aud">給工程師與 AI agent · 44 條可複製</div>
+          <p>用一句話讓 Claude／Cursor 幫你建 workflow：44 條分 8 類（生成／trigger／資料轉換／SaaS 整合／AI Agent／錯誤處理／除錯／維運），每條觸發 n8n MCP tool 或 REST API。</p>
+          <div class="res-actions">
+            <a class="btn-pill" href="prompts.html">線上閱讀 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#FFFFFF" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"/></svg></a>
+            <a class="btn-ghost" href="prompts.html" download="n8n-api-mcp-prompts.html"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#3A57C4" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg> 下載 HTML</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M22,13.5C22,15.26 20.7,16.72 19,16.96V20A2,2 0 0,1 17,22H13.2V21.7A2.7,2.7 0 0,0 10.5,19C9,19 7.8,20.21 7.8,21.7V22H4A2,2 0 0,1 2,20V16.2H2.3C3.79,16.2 5,15 5,13.5C5,12 3.79,10.8 2.3,10.8H2V7A2,2 0 0,1 4,5H7.04C7.28,3.3 8.74,2 10.5,2C12.26,2 13.72,3.3 13.96,5H17A2,2 0 0,1 19,7V10.04C20.7,10.28 22,11.74 22,13.5M17,15H18.5A1.5,1.5 0 0,0 20,13.5A1.5,1.5 0 0,0 18.5,12H17V7H12V5.5A1.5,1.5 0 0,0 10.5,4A1.5,1.5 0 0,0 9,5.5V7H4V9.12C5.76,9.8 7,11.5 7,13.5C7,15.5 5.75,17.2 4,17.88V20H6.12C6.8,18.25 8.5,17 10.5,17C12.5,17 14.2,18.25 14.88,20H17V15Z"/></svg></span>
+          <h3>Skill 手冊</h3>
+          <div class="aud">給進階用戶 · 節點型錄＋MCP 速查</div>
+          <p>裝一顆 community node 或給 AI 一顆 MCP server，n8n 立刻多會十件事。精選 10 顆熱門節點（Puppeteer、ElevenLabs、MCP、Evolution API 等）、4 大 n8n MCP server 深度比較（含 czlonkowski/n8n-mcp 22.7k★）與安全守則。</p>
+          <div class="res-actions">
+            <a class="btn-pill" href="skills.html">線上閱讀 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#FFFFFF" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"/></svg></a>
+            <a class="btn-ghost" href="skills.html" download="n8n-skill-手冊.html"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#3A57C4" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg> 下載 HTML</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="dl-note">
+        銷售手冊、提示詞庫、Skill 手冊都是<strong>自包含單檔 HTML</strong>：圖示全部內嵌，下載後離線可開、可直接轉寄。教學為多頁站，建議線上閱讀，需要離線請下載整站 zip。
       </div>
     </section>
 
     <section class="chapter-index" style="margin-top:56px;">
-      <h2 class="index-title">從別人做好的起步</h2>
-      <div class="chapter-grid">
-        <a class="chapter-card" href="ch4_templates.html">
-          <span class="num">04</span>
-          <h3>從 Templates gallery 起步</h3>
-          <p>n8n 已經有幾千個現成 workflow，直接抄別人做好的最快上手。</p>
-        </a>
-        <a class="chapter-card" href="ch5_import_workflow.html">
-          <span class="num">05</span>
-          <h3>從 n8n.io 找 JSON 貼進來</h3>
-          <p>n8n.io/workflows 有海量分享的 workflow，複製 JSON 貼進來就是你的。</p>
-        </a>
-        <a class="chapter-card" href="ch6_modify_workflow.html">
-          <span class="num">06</span>
-          <h3>動一動別人做好的：改欄位、換觸發、跑一次</h3>
-          <p>拿別人 workflow 直接用是幻想。這章教你怎麼改成自己的用途。</p>
-        </a>
-      </div>
-    </section>
-
-    <section class="chapter-index" style="margin-top:56px;">
-      <h2 class="index-title">動手做第一個</h2>
-      <div class="chapter-grid">
-        <a class="chapter-card" href="ch7_node_types.html">
-          <span class="num">07</span>
-          <h3>三種節點：Trigger / Action / Core</h3>
-          <p>節點抽屜幾百個節點，其實就三類：開頭、做事、控制流程。</p>
-        </a>
-        <a class="chapter-card" href="ch8_first_workflow.html">
-          <span class="num">08</span>
-          <h3>第一個 workflow：早上把 Google 行事曆推 Slack</h3>
-          <p>從零拉出一個實用 workflow：早上 8:00 把今天的行事曆推到 Slack。</p>
-        </a>
-        <a class="chapter-card" href="ch9_item_data_flow.html">
-          <span class="num">09</span>
-          <h3>Item 是什麼？資料怎麼在節點間流動</h3>
-          <p>n8n 的 item 觀念一次講清：一個節點吃幾個 item、下一個節點怎麼收。</p>
-        </a>
-        <a class="chapter-card" href="ch10_triggers.html">
-          <span class="num">10</span>
-          <h3>三種觸發：Manual / Schedule / Event</h3>
-          <p>workflow 什麼時候會跑？手動、排程、外部事件三種選擇。</p>
-        </a>
-      </div>
-    </section>
-
-    <section class="chapter-index" style="margin-top:56px;">
-      <h2 class="index-title">常用整合</h2>
-      <div class="chapter-grid">
-        <a class="chapter-card" href="ch11_saas_integrations.html">
-          <span class="num">11</span>
-          <h3>熱門 SaaS 整合：Slack、Gmail、Google 表格與 Drive</h3>
-          <p>上班族最常需要串的四家：Slack 通知、Gmail 寄信、Google 表格記錄、Drive 存檔。</p>
-        </a>
-        <a class="chapter-card" href="ch12_http_request.html">
-          <span class="num">12</span>
-          <h3>HTTP Request 節點：碰所有沒官方整合的 API</h3>
-          <p>n8n 沒現成節點的服務，用 HTTP Request 節點自己打。80% 的自訂串接靠這個。</p>
-        </a>
-        <a class="chapter-card" href="ch13_credentials.html">
-          <span class="num">13</span>
-          <h3>Credentials 管理：金鑰、OAuth、跟同事分享的界線</h3>
-          <p>workflow 要拿你的帳號密碼才能幫你辦事，這章教怎麼安全存、怎麼分享。</p>
-        </a>
-        <a class="chapter-card" href="ch14_expressions.html">
-          <span class="num">14</span>
-          <h3>Expression 入門：`{{ $json.field }}` 從這裡開始</h3>
-          <p>節點欄位要抓上一個節點的資料時，靠 Expression。這章講最常用的五種。</p>
-        </a>
-      </div>
-    </section>
-
-    <section class="chapter-index" style="margin-top:56px;">
-      <h2 class="index-title">流程控制</h2>
-      <div class="chapter-grid">
-        <a class="chapter-card" href="ch15_if_switch.html">
-          <span class="num">15</span>
-          <h3>IF / Switch：條件分支</h3>
-          <p>if 大於 100 走 A 分支、小於 100 走 B 分支——這章教視覺化寫條件。</p>
-        </a>
-        <a class="chapter-card" href="ch16_merge_split.html">
-          <span class="num">16</span>
-          <h3>Merge / Split / Item Lists：處理多筆資料</h3>
-          <p>同時處理很多筆、把多路合起來、把陣列拆開，這三種是 n8n 的資料水管。</p>
-        </a>
-        <a class="chapter-card" href="ch17_error_handling.html">
-          <span class="num">17</span>
-          <h3>錯誤處理：Error workflow / Retry / Wait</h3>
-          <p>workflow 半夜掛了怎麼救？這章教錯誤流程、重試與等待。</p>
-        </a>
-      </div>
-    </section>
-
-    <section class="chapter-index" style="margin-top:56px;">
-      <h2 class="index-title">資料整形與重用</h2>
-      <div class="chapter-grid">
-        <a class="chapter-card" href="ch18_set_function.html">
-          <span class="num">18</span>
-          <h3>Set / Edit Fields：資料整形不寫程式</h3>
-          <p>把上一個節點的 JSON 加欄位、改名字、重排——不寫程式版本。</p>
-        </a>
-        <a class="chapter-card" href="ch19_subworkflow.html">
-          <span class="num">19</span>
-          <h3>Sub-workflow：把常用邏輯抽成小工作流</h3>
-          <p>同一段流程五個 workflow 都在用？抽成 sub-workflow 一改全改。</p>
-        </a>
-      </div>
-    </section>
-
-    <section class="chapter-index" style="margin-top:56px;">
-      <h2 class="index-title">拔高進階</h2>
-      <div class="chapter-grid">
-        <a class="chapter-card" href="ch20_code_node.html">
-          <span class="num">20</span>
-          <h3>Code node：在 workflow 裡寫幾行 JavaScript</h3>
-          <p>現成節點做不到的資料處理，Code node 給你逃生口。新手 copy-paste 就好。</p>
-        </a>
-        <a class="chapter-card" href="ch21_ai_agent.html">
-          <span class="num">21</span>
-          <h3>AI Agent：讓 workflow 有一個「會想的」節點</h3>
-          <p>普通節點是規則機器人，AI Agent 是「有判斷力」的節點。做客服、資料整理超好用。</p>
-        </a>
-        <a class="chapter-card" href="ch22_webhook.html">
-          <span class="num">22</span>
-          <h3>Webhook：讓外部系統打進 n8n</h3>
-          <p>表單填完、HA 觸發、Line 訊息進來——都靠 Webhook 節點打進 n8n。</p>
-        </a>
-      </div>
-    </section>
-
-    <section class="chapter-index" style="margin-top:56px;">
-      <h2 class="index-title">附錄</h2>
-      <div class="chapter-grid">
-        <a class="chapter-card" href="appendix_settings_ref.html">
-          <span class="num">A</span>
-          <h3>設定速查</h3>
-          <p>Executions 保留天數、Timezone、Log level、Personal 與 Workspace 設定的意義。</p>
-        </a>
-        <a class="chapter-card" href="appendix_errors.html">
-          <span class="num">B</span>
-          <h3>常見錯誤排錯</h3>
-          <p>節點紅色、Timeout、Credential 失效、429 Rate limit、Sub-workflow 找不到——症狀對照解法。</p>
-        </a>
-        <a class="chapter-card" href="appendix_internals.html">
-          <span class="num">C</span>
-          <h3>底層架構好奇者向</h3>
-          <p>Community vs Cloud vs Enterprise 差別、self-host 選擇、queue mode、資料庫。</p>
-        </a>
+      <h2 class="index-title">相關連結</h2>
+      <div class="link-row">
+        <a href="https://n8n.woowtech.io/" rel="noopener">Woow n8n 實例（帳號向 IT 索取）</a>
+        <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">本站原始碼與勘誤</a>
+        <a href="https://n8n.io/" rel="noopener">n8n 官方站</a>
+        <a href="https://pi-agent-guide.woowtech.io/" rel="noopener">姊妹站：Woow HA Pi Agent 入住指南</a>
+        <a href="https://woowtech.github.io/Woow_ha_tutorial_site/" rel="noopener">姊妹站：HA 新居入住指南</a>
       </div>
     </section>
 
     <footer class="site-footer">
       <p>《Woow n8n 入住指南》由 <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+      <p class="footer-meta">n8n 是 <a href="https://n8n.io/" rel="noopener">n8n.io</a> 的開源工作流自動化平台（Sustainable Use License）。本站與 n8n GmbH 無隸屬關係，僅為社群教學。截圖取自 Woow 內部 n8n 實例與 n8n 官方文件。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
     </footer>
   </main>
 </body>
