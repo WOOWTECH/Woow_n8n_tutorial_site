@@ -1,158 +1,182 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch1_what_is_n8n.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/tutorial.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch2_login.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch1_what_is_n8n.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch3_workspace_tour.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch2_login.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch4_templates.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch3_workspace_tour.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch5_import_workflow.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch4_templates.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch6_modify_workflow.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch5_import_workflow.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch7_node_types.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch6_modify_workflow.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch8_first_workflow.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch7_node_types.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch9_item_data_flow.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch8_first_workflow.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch10_triggers.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch9_item_data_flow.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch11_saas_integrations.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch10_triggers.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch12_http_request.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch11_saas_integrations.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch13_credentials.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch12_http_request.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch14_expressions.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch13_credentials.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch15_if_switch.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch14_expressions.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch16_merge_split.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch15_if_switch.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch17_error_handling.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch16_merge_split.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch18_set_function.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch17_error_handling.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch19_subworkflow.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch18_set_function.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch20_code_node.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch19_subworkflow.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch21_ai_agent.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch20_code_node.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/ch22_webhook.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch21_ai_agent.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/appendix_settings_ref.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/ch22_webhook.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/appendix_errors.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/appendix_settings_ref.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://woowtech.github.io/Woow_n8n_tutorial_site/appendix_internals.html</loc>
-    <lastmod>2026-08-16</lastmod>
+    <loc>https://n8n-guide.woowtech.io/appendix_errors.html</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://n8n-guide.woowtech.io/appendix_internals.html</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://n8n-guide.woowtech.io/sales.html</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://n8n-guide.woowtech.io/prompts.html</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://n8n-guide.woowtech.io/skills.html</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
