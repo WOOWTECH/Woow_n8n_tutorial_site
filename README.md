@@ -64,7 +64,7 @@ Fork 自姊妹站《[HA 入住指南](https://github.com/WOOWTECH/Woow_ha_tutori
 
 ## 授權與致謝
 
-《Woow n8n 入住指南》與三本分冊由 [WoowTech](https://github.com/WOOWTECH) 製作，以 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh-hant) 授權釋出——可自由分享與改作，請保留出處。
+《Woow n8n 入住指南》與其三本分冊由 [WoowTech](https://github.com/WOOWTECH) 製作，以 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh-hant) 授權釋出——可自由分享與改作，請保留出處。
 
 n8n 是 [n8n.io](https://n8n.io/) 的開源工作流自動化平台（Sustainable Use License）。本站與 n8n GmbH 無隸屬關係，僅為社群教學。Skill 手冊中的第三方 community node 與 MCP server 各依其原始授權；集合規模與 star 數據為 2026-08 調查當日之 GitHub／npm 公開資訊。
 
