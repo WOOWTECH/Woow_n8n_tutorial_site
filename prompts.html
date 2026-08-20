@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>n8n API／MCP 提示詞庫 · 42 條可複製的 workflow 建置提示詞 · WoowTech</title>
+  <meta name="description" content="給 Claude／AI agent 用的 n8n workflow 建置提示詞：42+ 條分 8 類，每一條都會觸發 n8n MCP server 工具（n8n-mcp、n8n-workflow-builder）或直接呼叫 n8n REST API（POST /workflows、PATCH /workflows/:id、POST /workflows/:id/activate）。附複製按鈕、clipboard fallback。" />
+  <meta name="author" content="WoowTech" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="canonical" href="https://n8n-guide.woowtech.io/prompts.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <style>
+/* n8n API/MCP 提示詞庫 — Woow_ha_tutorial_site 版型 × woowtech Brand Prompt Library v2 */
+:root {
+  --ww-blue: #6183FC;
+  --ww-blue-600: #4A6DE8;
+  --ww-blue-700: #3A57C4;
+  --ww-blue-050: #EEF2FF;
+  --ww-blue-100: #DCE4FF;
+
+  --ink-900: #1B2033;
+  --ink-700: #3A4054;
+  --ink-500: #6B7186;
+  --ink-300: #A5AAB9;
+  --ink-100: #E7E9F0;
+
+  --paper: #F7F8FC;
+  --surface: #FFFFFF;
+  --surface-alt: #F1F3FA;
+  --hairline: #E2E5EF;
+
+  --info: var(--ww-blue);
+  --tip:  #8CD37F;
+  --warn: #E66D3E;
+  --danger: #F45D6D;
+
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 2px 6px rgba(27, 32, 51, 0.05), 0 1px 2px rgba(27, 32, 51, 0.04);
+  --shadow-md: 0 8px 24px rgba(27, 32, 51, 0.08), 0 2px 6px rgba(27, 32, 51, 0.04);
+  --shadow-lg: 0 20px 48px rgba(27, 32, 51, 0.12), 0 4px 12px rgba(27, 32, 51, 0.06);
+  --shadow-float: 0 26px 60px -18px rgba(97, 131, 252, 0.28);
+
+  --font-display: "Outfit", "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-body: "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-script: "Yellowtail", cursive;
+  --font-mono: "SF Mono", Menlo, Consolas, "Fira Code", monospace;
+
+  --sidebar-w: 268px;
+  --max-content: 780px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  font-family: var(--font-body);
+  color: var(--ink-900);
+  background: var(--paper);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html { scroll-behavior: smooth; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.005em; }
+
+a { color: var(--ww-blue-600); text-decoration: none; transition: color 0.15s; }
+a:hover { color: var(--ww-blue-700); text-decoration: underline; }
+
+.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--hairline);
+  padding: 28px 22px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar h2 {
+  font-family: var(--font-body); font-size: 12px; color: var(--ink-500);
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin: 0 0 12px;
+}
+.sidebar .brand {
+  display: block; font-family: var(--font-display); font-size: 20px; font-weight: 700;
+  color: var(--ink-900); margin-bottom: 4px; letter-spacing: -0.01em;
+}
+.sidebar .brand-sub { font-size: 13px; color: var(--ink-500); margin-bottom: 6px; }
+.sidebar .hub-link { display: inline-block; font-size: 12.5px; color: var(--ink-500); margin-bottom: 22px; }
+.sidebar .hub-link:hover { color: var(--ww-blue-700); text-decoration: none; }
+.sidebar .toc-in-chapter { border-top: 1px solid var(--hairline); padding-top: 16px; margin-top: 8px; }
+.sidebar .toc-in-chapter:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.sidebar .toc-in-chapter a {
+  display: block; padding: 7px 12px; border-radius: var(--radius-xs);
+  color: var(--ink-700); font-size: 13.5px;
+}
+.sidebar .toc-in-chapter a:hover { background: var(--surface-alt); text-decoration: none; }
+.sidebar .toc-in-chapter a.active { background: var(--ww-blue-050); color: var(--ww-blue-700); font-weight: 600; }
+
+.content { padding: 56px 64px 96px; max-width: calc(var(--max-content) + 128px); }
+
+.chapter-header { margin-bottom: 40px; }
+.chapter-header .kicker-script {
+  font-family: var(--font-script); font-size: 30px; color: var(--ww-blue);
+  line-height: 1; margin-bottom: 10px; display: block;
+}
+.chapter-header .kicker {
+  color: var(--ww-blue); font-family: var(--font-display); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;
+}
+.chapter-header h1 {
+  font-family: "Noto Sans TC", var(--font-display); font-size: 38px; font-weight: 700;
+  margin: 0 0 14px; letter-spacing: -0.02em; line-height: 1.25;
+}
+.chapter-header .lead { font-size: 17px; color: var(--ink-700); margin: 0; max-width: var(--max-content); }
+
+section { margin-bottom: 56px; scroll-margin-top: 24px; }
+section h2 {
+  font-family: var(--font-display); font-size: 24px; font-weight: 700;
+  margin: 0 0 20px; padding: 0; border: 0;
+  display: flex; align-items: center; gap: 14px; color: var(--ink-900);
+}
+section h2[data-icon]::before {
+  content: ""; display: inline-flex; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  background-color: var(--ww-blue-050);
+  background-repeat: no-repeat; background-position: center; background-size: 22px 22px;
+}
+section h2[data-icon="why"]::before      { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="steps"]::before    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M7,13V11H21V13H7M7,19V17H21V19H7M7,7V5H21V7H7M3,8V5H2V4H4V8H3M2,17V16H5V20H2V19H4V18.5H3V17.5H4V17H2M4.25,10A0.75,0.75 0 0,1 5,10.75C5,10.95 4.92,11.14 4.79,11.27L3.12,13H5V14H2V13.08L4,11H2V10H4.25Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="create"]::before   { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="trigger"]::before  { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M11,15H6L13,1V9H18L11,23V15Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="transform"]::before{ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M19,12L15,16H18A6,6 0 0,1 12,22C10.42,22 8.96,21.38 7.88,20.36L9.3,18.94C10,19.6 11,20 12,20A4,4 0 0,0 16,16H13L17,12L19,12M6,8A4,4 0 0,0 10,12H7L11,16L13,12V16C13,17.58 13.63,19.04 14.64,20.12L16.06,18.7C15.4,18 15,17 15,16H12A6,6 0 0,1 6,10L2,6L6,2V6H12A6,6 0 0,1 18,12L14,16H17A4,4 0 0,0 21,12H24L20,8L18,4L14,8H17A6,6 0 0,0 11,2L11.03,4.94L6,8Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="integration"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="agent"]::before    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="error"]::before    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="debug"]::before    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M14,12H10V10H14M14,16H10V14H14M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.03,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.03,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.97,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.97,10.33 17.91,10H20V8Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="faq"]::before      { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M4,2A2,2 0 0,0 2,4V16A2,2 0 0,0 4,18H8V21A1,1 0 0,0 9,22H9.5V22C9.75,22 10,21.9 10.2,21.71L13.9,18H20A2,2 0 0,0 22,16V4C22,2.89 21.1,2 20,2H4M4,4H20V16H13.08L10,19.08V16H4V4M12.19,5.5C11.3,5.5 10.59,5.68 10.05,6.04C9.5,6.4 9.22,7 9.27,7.69L11.24,7.69C11.24,7.41 11.34,7.2 11.5,7.06C11.7,6.92 11.92,6.85 12.19,6.85C12.5,6.85 12.77,6.93 12.95,7.11C13.13,7.28 13.22,7.5 13.22,7.8C13.22,8.08 13.14,8.33 13,8.54C12.83,8.76 12.62,8.94 12.36,9.08C11.84,9.4 11.5,9.68 11.29,9.92C11.1,10.16 11,10.5 11,11H13C13,10.72 13.05,10.5 13.14,10.32C13.23,10.15 13.4,10 13.66,9.85C14.12,9.64 14.5,9.36 14.79,9C15.08,8.63 15.23,8.24 15.23,7.8C15.23,7.1 14.96,6.54 14.42,6.12C13.88,5.71 13.13,5.5 12.19,5.5M11,12V14H13V12H11Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="download"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z'/%3E%3C/svg%3E"); }
+
+section h3 {
+  font-family: var(--font-display); font-size: 17px; font-weight: 600;
+  margin: 28px 0 12px; color: var(--ink-900);
+}
+section p, section li { color: var(--ink-700); max-width: var(--max-content); }
+
+/* Steps */
+.steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
+.steps > li {
+  counter-increment: step; position: relative;
+  padding: 22px 22px 22px 72px; margin-bottom: 14px;
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute; left: 20px; top: 20px; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--ww-blue); color: #fff;
+  font-family: var(--font-display); font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(97, 131, 252, 0.35);
+}
+.steps > li h3 { margin: 0 0 8px; font-size: 16px; }
+
+/* Callout */
+.callout {
+  padding: 14px 18px 14px 44px; border-radius: var(--radius-sm);
+  background: var(--ww-blue-050); margin: 16px 0; font-size: 14px; color: var(--ink-700);
+  position: relative; border: 1px solid rgba(97, 131, 252, 0.18);
+  max-width: var(--max-content);
+}
+.callout::before {
+  content: ""; position: absolute; left: 14px; top: 15px; width: 18px; height: 18px;
+  background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z'/%3E%3C/svg%3E");
+}
+.callout.tip { background: rgba(140, 211, 127, 0.14); border-color: rgba(140, 211, 127, 0.32); }
+.callout.tip::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234E9C42' d='M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2M9,21A1,1 0 0,0 10,22H14A1,1 0 0,0 15,21V20H9V21Z'/%3E%3C/svg%3E"); }
+.callout.warn { background: rgba(230, 109, 62, 0.10); border-color: rgba(230, 109, 62, 0.28); }
+.callout.warn::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B94D22' d='M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z'/%3E%3C/svg%3E"); }
+.callout strong { color: var(--ink-900); }
+
+/* 資料表格 */
+.data-table {
+  width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
+  font-size: 14px; background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.data-table thead th {
+  text-align: left; padding: 12px 14px; background: var(--surface-alt); color: var(--ink-900);
+  font-family: var(--font-display); font-weight: 600; font-size: 13px;
+  border-bottom: 1px solid var(--hairline); white-space: nowrap;
+}
+.data-table tbody td, .data-table tbody th {
+  padding: 11px 14px; border-bottom: 1px solid var(--hairline);
+  color: var(--ink-700); vertical-align: top; text-align: left;
+}
+.data-table tbody th { font-weight: 600; color: var(--ink-900); white-space: nowrap; }
+.data-table tbody tr:last-child td, .data-table tbody tr:last-child th { border-bottom: 0; }
+
+/* FAQ */
+details.faq {
+  margin-bottom: 10px; border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  background: var(--surface); overflow: hidden; box-shadow: var(--shadow-sm);
+  max-width: var(--max-content);
+}
+details.faq summary {
+  cursor: pointer; padding: 16px 48px 16px 20px;
+  font-family: var(--font-display); font-weight: 600; color: var(--ink-900);
+  list-style: none; position: relative;
+}
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary::after {
+  content: ""; position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  width: 20px; height: 20px; background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'/%3E%3C/svg%3E");
+}
+details.faq[open] summary::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M19,13H5V11H19V13Z'/%3E%3C/svg%3E"); }
+details.faq[open] summary { border-bottom: 1px solid var(--hairline); }
+details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; }
+
+/* 程式碼區塊 */
+pre.code-block {
+  background: var(--surface-alt); color: var(--ink-900);
+  padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--hairline);
+  font-family: var(--font-mono); font-size: 13px; line-height: 1.6;
+  overflow-x: auto; margin: 12px 0; max-width: var(--max-content);
+}
+code {
+  font-family: var(--font-mono); font-size: 13px;
+  background: var(--surface-alt); padding: 2px 8px; border-radius: var(--radius-xs);
+  color: var(--ww-blue-700);
+}
+pre.code-block code { background: none; padding: 0; color: inherit; }
+
+/* 提示詞卡 */
+.prompt-card {
+  position: relative; background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  padding: 16px 96px 16px 18px; margin: 10px 0;
+  box-shadow: var(--shadow-sm); max-width: var(--max-content);
+}
+.prompt-card .ptext { margin: 0; font-size: 14.5px; color: var(--ink-900); }
+.prompt-card .pnote, .pnote { margin: 8px 0 0; font-size: 13px; color: var(--ink-500); }
+.prompt-card .call {
+  display: inline-block; font-family: var(--font-mono); font-size: 12px;
+  color: var(--ww-blue-700); background: var(--ww-blue-050);
+  padding: 3px 8px; border-radius: var(--radius-xs); margin-top: 8px;
+  border: 1px solid rgba(97, 131, 252, 0.18);
+}
+.prompt-card .copy {
+  position: absolute; right: 12px; top: 12px;
+  font-family: var(--font-display); font-weight: 600; font-size: 12.5px;
+  color: var(--ww-blue-700); background: var(--ww-blue-050);
+  border: 1px solid rgba(97, 131, 252, 0.25); border-radius: 999px;
+  padding: 6px 14px; cursor: pointer; transition: background 0.15s;
+}
+.prompt-card .copy:hover { background: var(--ww-blue-100); }
+.prompt-card .copy.ok { background: rgba(140, 211, 127, 0.2); color: #3d7a34; border-color: rgba(140, 211, 127, 0.5); }
+@media (max-width: 720px) { .prompt-card { padding-right: 18px; padding-top: 46px; } }
+
+/* CTA / 按鈕 */
+.btn-pill {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
+  background: var(--ww-blue); color: #fff; padding: 13px 32px;
+  border-radius: var(--radius-pill); transition: background 0.15s, transform 0.15s;
+  text-decoration: none;
+}
+.btn-pill:hover { background: var(--ww-blue-600); color: #fff; text-decoration: none; transform: translateY(-1px); }
+.btn-ghost {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
+  background: var(--surface); color: var(--ink-900);
+  border: 1.5px solid var(--hairline); padding: 12px 30px; border-radius: 999px;
+  text-decoration: none; transition: border-color 0.15s;
+}
+.btn-ghost:hover { border-color: var(--ww-blue); color: var(--ww-blue-700); text-decoration: none; }
+
+/* Footer */
+.site-footer {
+  margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--hairline);
+  color: var(--ink-700); font-size: 13.5px; line-height: 1.75;
+}
+.site-footer p { margin: 0 0 6px; }
+.site-footer .footer-meta { color: var(--ink-500); font-size: 12.5px; }
+
+.nav-toggle {
+  display: none; width: 100%; align-items: center; justify-content: space-between; gap: 8px;
+  margin: 4px 0 0; padding: 12px 16px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--ink-900);
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); cursor: pointer;
+}
+.nav-toggle-caret {
+  width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 6px solid var(--ink-500); transition: transform 0.15s ease;
+}
+.sidebar.is-collapsed .nav-toggle-caret { transform: rotate(-90deg); }
+
+.layout > * { min-width: 0; }
+.content .data-table { max-width: 100%; }
+
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--hairline); }
+  .content { padding: 32px 20px 64px; }
+  .chapter-header h1 { font-size: 30px; }
+  .chapter-header .kicker-script { font-size: 26px; }
+  section h2 { font-size: 20px; }
+  section h2[data-icon]::before { width: 36px; height: 36px; background-size: 20px 20px; }
+  .data-table { display: block; overflow-x: auto; }
+  .data-table tbody td, .data-table thead th { min-width: 120px; }
+  .sidebar .nav-toggle { display: flex; }
+  .sidebar.is-collapsed .toc-in-chapter { display: none; }
+  .sidebar.is-collapsed > h2 { display: none; }
+}
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#top">n8n API／MCP 提示詞庫</a>
+    <div class="brand-sub">WoowTech · 給 Claude／agent 的 42 條範例</div>
+    <a class="hub-link" href="index.html">◂ n8n 資源總覽</a>
+    <button class="nav-toggle" id="navToggle" type="button">本冊內容<span class="nav-toggle-caret"></span></button>
+    <div class="toc-in-chapter">
+      <h2>本冊內容</h2>
+      <a href="#why">這本是什麼</a>
+      <a href="#howto">怎麼用</a>
+      <a href="#cat-create">workflow 生成</a>
+      <a href="#cat-trigger">Trigger 設定</a>
+      <a href="#cat-transform">資料轉換</a>
+      <a href="#cat-integration">SaaS 整合</a>
+      <a href="#cat-agent">AI Agent 節點</a>
+      <a href="#cat-error">錯誤處理與監控</a>
+      <a href="#cat-debug">Workflow 除錯</a>
+      <a href="#cat-ops">維運操作</a>
+      <a href="#tips">寫法小抄</a>
+      <a href="#faq">常見問題</a>
+      <a href="#download">下載</a>
+    </div>
+  </aside>
+
+  <main class="content" id="top">
+    <div class="chapter-header">
+      <span class="kicker-script">just tell claude</span>
+      <div class="kicker">WoowTech 提示詞庫</div>
+      <h1>用一句話讓 AI 幫你建 n8n workflow</h1>
+      <p class="lead">42+ 條可複製的提示詞，寫給 Claude／Cursor／Windsurf 等 AI agent 用。搭配 n8n MCP server（例：<code>czlonkowski/n8n-mcp</code>）或 n8n REST API，AI 會自動呼叫 <code>POST /workflows</code>、<code>PATCH /workflows/:id</code>、<code>POST /workflows/:id/activate</code> 幫你把 workflow 建起來、驗證、啟用。每條卡片右上角「複製」直接貼到你的 AI 對話。</p>
+    </div>
+
+    <section id="why" data-nav="這本是什麼">
+      <h2 data-icon="why">這本是什麼</h2>
+      <p>手拉 n8n 節點很快，但如果你已經是「用 AI 寫 code」的工程師／PM，其實可以更快——讓 AI 直接幫你把 workflow JSON 產出來、貼進 n8n。這本收錄 42 條真實工作場景的提示詞，每一條都寫得剛好讓 AI 可以觸發 n8n MCP server 或呼叫 n8n REST API。</p>
+      <p>兩種介接方式：</p>
+      <ul>
+        <li><strong>n8n MCP server</strong>（推薦）：讓 Claude Code／Cursor 掛上 <code>n8n-mcp</code> 或 <code>n8n-workflow-builder</code>，你講一句話，AI 直接呼叫 <code>create_workflow</code>、<code>activate_workflow</code> 等工具。</li>
+        <li><strong>直接呼叫 REST API</strong>：AI 產 curl 或 SDK 呼叫，走 <code>X-N8N-API-KEY</code> header 認證，命中 <code>/api/v1/workflows</code> 等端點。</li>
+      </ul>
+      <div class="callout"><strong>觀念：</strong>提示詞不是咒語。它的價值是示範「哪些細節要講」——目標、觸發時機、輸入輸出格式、錯誤處理策略。照抄能動，改成你的場景更好用。</div>
+    </section>
+
+    <section id="howto" data-nav="怎麼用">
+      <h2 data-icon="steps">怎麼用這些提示詞（3 分鐘準備版）</h2>
+      <ol class="steps">
+        <li>
+          <h3>裝一顆 n8n MCP server（推薦）</h3>
+          <p>在 Claude Code／Cursor 的 MCP 設定裡加：<code>npx n8n-mcp</code>（<a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a>，22.7k★）或 <code>npx @makafeli/n8n-workflow-builder</code>（<a href="https://github.com/makafeli/n8n-workflow-builder" rel="noopener">makafeli/n8n-workflow-builder</a>，540★）。啟動後你就會看到 <code>create_workflow</code>／<code>activate_workflow</code> 等工具出現。</p>
+        </li>
+        <li>
+          <h3>設 n8n API 環境變數</h3>
+          <p>MCP server 需要兩個變數：<code>N8N_URL</code>（例：<code>https://n8n.woowtech.io</code>）跟 <code>N8N_API_KEY</code>（在 n8n 的 <em>Settings → API</em> 建立）。</p>
+        </li>
+        <li>
+          <h3>挑一條提示詞、按「複製」</h3>
+          <p>貼進 Claude／Cursor 對話框，把角括號感的欄位（Slack channel、Airtable base、Sheet 名字）換成你的。</p>
+        </li>
+        <li>
+          <h3>讓 AI 先報告、再動手</h3>
+          <p>會建 workflow 的請求，保留提示詞裡「先給我 JSON 結構我看過，再 create」這句。避免 AI 用你的實際 credentials 亂跑。</p>
+        </li>
+      </ol>
+      <div class="callout tip"><strong>提示：</strong>沒有 MCP server 也能用——把提示詞直接貼到 Claude 或 ChatGPT，請它產 n8n workflow JSON，你手動貼進 n8n（在編輯器按 Ctrl+A 全選畫布→貼上就會覆蓋）。<a href="ch5_import_workflow.html">第 5 章</a>有 import JSON 的完整流程。</div>
+    </section>
+
+    <section id="cat-create" data-nav="workflow 生成">
+      <h2 data-icon="create">A · workflow 生成（Create / Update / Delete）</h2>
+      <p>最直接的一類：一句話產一支 workflow。AI 會呼叫 <code>POST /api/v1/workflows</code> 建卡、選擇是否 activate。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">在 n8n 建一支叫「訂單通知」的 workflow：Webhook 觸發（POST /order-in）→ Set 節點抽出 order_id/total/email 三欄 → Google Sheets Append 到 sheet id <code>1abcdef</code> 的「orders」分頁 → 用 Slack 傳訊息到 #sales channel「新訂單 {{order_id}}，${{total}}」。先給我 workflow JSON 我確認，再呼叫 create_workflow。</p>
+        <span class="call">→ create_workflow / POST /api/v1/workflows</span>
+        <p class="pnote">示範：先報告 JSON 再 create，最基本的安全習慣。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">列出目前 n8n 裡所有的 workflow，按 updatedAt 排序，最近改過的排最前面。輸出格式：id、name、active 狀態、上次更新時間、標籤。</p>
+        <span class="call">→ list_workflows / GET /api/v1/workflows</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">從 n8n 拿 workflow id <code>xyz789</code> 的完整定義，用 diff 格式跟我下面貼的 JSON 對比，告訴我我改了哪些欄位、加了哪些節點。</p>
+        <span class="call">→ get_workflow / GET /api/v1/workflows/:id</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">把 workflow id <code>abc123</code> 裡的 Slack channel 從 #sales 改成 #sales-taiwan，其他不動。先給我變更前後差異，我確認再 patch。</p>
+        <span class="call">→ update_workflow / PATCH /api/v1/workflows/:id</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">Duplicate workflow id <code>abc123</code> 成新的一支，名字加後綴 <code>-staging</code>，複製後把所有 Slack channel 換成 #staging-alerts、把 Google Sheet id 換成 <code>1STAGING</code>，並保持 inactive。</p>
+        <span class="call">→ get_workflow → create_workflow</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">啟用 workflow id <code>abc123</code>，啟用後幫我做 3 次 test execution 確認流程正常；如果有錯回報是哪個節點失敗，我再決定是否 deactivate。</p>
+        <span class="call">→ activate_workflow → run_workflow → list_executions</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">找到所有名稱包含「test」或「staging」的 workflow，列出來給我看，我確認之後全部 deactivate。真正 delete 我另外下指令。</p>
+        <span class="call">→ list_workflows → deactivate_workflow (bulk)</span>
+        <p class="pnote">安全：不主動 delete，先 deactivate。</p>
+      </div>
+
+    </section>
+
+    <section id="cat-trigger" data-nav="Trigger 設定">
+      <h2 data-icon="trigger">B · Trigger 設定（Webhook／Cron／Watcher）</h2>
+      <p>Trigger 是 workflow 的入口。這一類提示詞示範怎麼把不同觸發時機講清楚。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建一支 workflow：Webhook Trigger 監聽 <code>POST /line-webhook</code>、response mode 設 <code>lastNode</code>、authentication 用 header <code>X-Line-Signature</code> HMAC 驗簽（secret 用 credentials id <code>line-secret</code>）。收到後往下接一顆 Function node 抽出 events[0] 就好。</p>
+        <span class="call">→ create_workflow（Webhook node）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建一支 Schedule Trigger workflow：每個工作日（週一到週五）早上 8:00（Asia/Taipei）跑一次；跳過台灣國定假日（用 sub-workflow <code>holiday-check</code> 判斷）。</p>
+        <span class="call">→ create_workflow（Schedule + Execute Workflow）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">用 Gmail Trigger 監聽 label 為 <code>invoice</code> 的新信，每 5 分鐘輪詢一次；下游接一顆 IF 判斷附件為 PDF 才繼續。credential 用 <code>gmail-corp</code>。</p>
+        <span class="call">→ create_workflow（Gmail Trigger）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">Google Drive Trigger 監聽資料夾 id <code>1FOLDER</code>，觸發時機 <code>fileCreated</code>，每 10 分鐘檢查一次。抓到新檔就往下接抽文字 → 存到 Airtable base id <code>appBASE</code> 的 <code>Docs</code> table。</p>
+        <span class="call">→ create_workflow（Drive Trigger + Airtable）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建一組 <strong>兩支互相銜接</strong>的 workflow：（A）Cron 每 15 分鐘查 Notion database id <code>DB1</code> 找出 status=Ready 的頁；（B）用 Execute Workflow node 呼叫另一支 workflow 處理每一頁，並把處理結果寫回 Notion。分開建，避免單支太複雜。</p>
+        <span class="call">→ create_workflow ×2</span>
+      </div>
+
+    </section>
+
+    <section id="cat-transform" data-nav="資料轉換">
+      <h2 data-icon="transform">C · 資料轉換（Set／Function／Code node）</h2>
+      <p>資料整形是 workflow 裡出現最頻繁的節點——這類提示詞讓 AI 幫你決定用 Set 還是 Code。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">在現有 workflow id <code>abc123</code> 的 Webhook 節點下游插一顆 Set 節點（Edit Fields），把 body.customer.email 轉小寫、body.total 轉數字、body.created_at 轉 ISO 8601 UTC；其他欄位丟掉。</p>
+        <span class="call">→ update_workflow（Set node）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">插一顆 Code node（JavaScript），把上一個節點回傳的 items（含巢狀 orders 陣列）攤平成一列一 order 的格式：每個 item 保留原本的 customer_id，但 orders 展開成獨立 item，欄位對 orders[i] 的內容。</p>
+        <span class="call">→ update_workflow（Code node）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">在 workflow 裡加一顆 Item Lists 節點：把 API 回來的 200 筆 items 依 category 欄位分成三堆（A/B/C），每堆各接一顆下游 Slack 節點發到對應 channel。用 Split In Batches 每批 20 筆，避免 rate limit。</p>
+        <span class="call">→ update_workflow（Item Lists + Split In Batches）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">寫一個 Code node 做 dedupe：以 email 欄位為 key，同一 batch 裡有重複只保留最新 created_at 的那筆。給我 JavaScript code、加上詳細註解，Python 版另外附一份。</p>
+        <span class="call">→ update_workflow（Code node）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">用 Set node 把上游三個節點的 item（node A、B、C）合成一個新 item：欄位命名 <code>a_*</code>／<code>b_*</code>／<code>c_*</code> 前綴避免衝突，缺欄位補 <code>null</code> 而不是丟掉。用 Merge node combine + append mode。</p>
+        <span class="call">→ update_workflow（Set + Merge）</span>
+      </div>
+
+    </section>
+
+    <section id="cat-integration" data-nav="SaaS 整合">
+      <h2 data-icon="integration">D · SaaS 整合（Slack／Gmail／Notion／Airtable／Google Sheets）</h2>
+      <p>最常見的落地場景。credential id 部分請換成你自己的。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建一支 workflow：Slack Trigger 監聽 #customer-support 的 <code>message</code> 事件；若訊息含關鍵字 <code>refund</code> 或 <code>退款</code>，用 Notion node 在 database id <code>refunds</code> 建一頁，properties 帶用戶 id、訊息內容、時間；並在原 Slack thread 回覆「已建卡，追蹤中」。</p>
+        <span class="call">→ create_workflow（Slack Trigger + Notion）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建 Gmail 收信 → Airtable 建卡 workflow：Gmail Trigger label=<code>leads</code>；用 AI Agent 抽出 name/company/phone/interest 四欄；寫到 Airtable base=<code>appLEADS</code>、table=<code>Leads</code>；建卡後 24 小時內未回覆自動寄提醒（用 Wait node + Gmail send）。</p>
+        <span class="call">→ create_workflow（Gmail + AI + Airtable + Wait）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">寫一支 Google Sheets 讀寫 workflow：Cron 每天 8:00 讀 sheet <code>1ORDERS</code> 的 A2:F 範圍 → 過濾出昨天的訂單 → 統計每個地區的總營收 → 寫到同 sheet 的 <code>daily-summary</code> 分頁（append mode，一天一列）。</p>
+        <span class="call">→ create_workflow（Sheets Read + Function + Sheets Append）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建 Slack Approval workflow：Webhook 觸發後在 Slack #approvals 傳 interactive message（含 Approve/Reject 按鈕），Wait node 等最多 24 小時；使用者按 Approve 走上路（呼叫內部 API 發款）、Reject 走下路（Slack 回覆申請人）、超時走第三路（升級主管）。</p>
+        <span class="call">→ create_workflow（Slack Interactive + Wait + IF）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">HTTP Request 節點打自訂 API：POST <code>https://api.internal.com/v1/tickets</code>，headers 含 <code>Authorization: Bearer</code>（用 credential <code>internal-api-key</code>）、Content-Type: application/json；body 從上一個節點的 items 對應欄位。加 3 次 retry，指數 backoff，429 或 5xx 才重試。</p>
+        <span class="call">→ update_workflow（HTTP Request + retry）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">列出目前 n8n 裡所有 credentials（僅 id、name、type，別列 data），我要盤點哪些沒用到可以刪掉。</p>
+        <span class="call">→ list_credentials / GET /api/v1/credentials</span>
+      </div>
+
+    </section>
+
+    <section id="cat-agent" data-nav="AI Agent 節點">
+      <h2 data-icon="agent">E · AI Agent 節點（LangChain / Chat Model / Memory / Tool）</h2>
+      <p>n8n v1 之後推出的 LangChain 系列節點——AI Agent 讓 workflow 有一顆「會判斷的節點」。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建一支客服分派 workflow：Line Webhook 收訊息 → AI Agent（Chat Model：Anthropic Claude 3.5 Sonnet；prompt 內含 4 個分類定義：退換貨/技術問題/一般諮詢/其他）→ 用 Structured Output 回傳 <code>{category, confidence, reasoning}</code> → Switch 節點依 category 分流。confidence &lt; 0.7 走「其他」。</p>
+        <span class="call">→ create_workflow（Line + AI Agent + Switch）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">在 AI Agent 節點旁掛三顆 Tool：（1）HTTP Request 到內部訂單 API 查訂單狀態；（2）Notion Read 查 FAQ 資料庫；（3）Google Sheets Read 查退貨政策。system prompt 教它「先看 FAQ、再看訂單 API、最後才引用政策；回覆結尾附引用來源」。</p>
+        <span class="call">→ update_workflow（AI Agent + tools）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建 AI Agent + Memory workflow：Chat Trigger + AI Agent + Buffer Window Memory（size=10）+ OpenAI Chat Model。sessionId 從 Chat Trigger 的 sessionId 欄位帶入，保持同一 user 的對話上下文。附一顆 Structured Output Parser，讓回應永遠是 <code>{reply, next_action, tags[]}</code>。</p>
+        <span class="call">→ create_workflow（LangChain Chat）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建一支 PDF 摘要 workflow：Google Drive Watcher（PDF 出現）→ Extract from File 抽文字 → AI Agent（Claude Sonnet，prompt：三段式摘要 + 標籤 + 情緒）→ Airtable Upsert 到 Feedback 表。並發限制設 5，避免打爆 API。</p>
+        <span class="call">→ create_workflow（Drive + Extract + AI + Airtable）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">把現有 workflow id <code>abc123</code> 裡的 OpenAI GPT-4o 模型改成 Anthropic Claude 3.5 Sonnet，保留原 prompt 跟 temperature 設定。credential 換成 <code>anthropic-prod</code>。改完先 test 一次跑起來沒錯再存。</p>
+        <span class="call">→ update_workflow → run_workflow</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建一支 Multi-Agent workflow：Chat Trigger → AI Agent「Router」判斷是問技術還是問業務 → 分流到兩顆專門的 AI Agent（Tech Support / Sales Consultant），各自掛不同 tools 跟 memory。回覆時 Router 標明是誰回的。</p>
+        <span class="call">→ create_workflow（3× AI Agent）</span>
+      </div>
+
+    </section>
+
+    <section id="cat-error" data-nav="錯誤處理與監控">
+      <h2 data-icon="error">F · 錯誤處理與監控（Error Workflow / Retry / Alerting）</h2>
+      <p>Production workflow 沒有「不會壞」，只有「壞了怎麼救」。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建一支「全站錯誤接住」的 Error Workflow：Error Trigger → Set 節點整理出 workflow 名稱／failed node／error message／timestamp → Slack 傳到 #n8n-alerts（用 code block 附錯誤細節）→ 若同一支 workflow 24hr 內失敗超過 3 次，再多一則 tag @on-call。</p>
+        <span class="call">→ create_workflow（Error Trigger）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">把 workflow id <code>abc123</code> 的 settings 加上 <code>errorWorkflow: &lt;上一題的 error workflow id&gt;</code>，然後幫所有 name 含 <code>-prod</code> 的 workflow 都做同樣的設定。列一份清單給我確認之後再套。</p>
+        <span class="call">→ list_workflows → update_workflow (batch)</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">在 HTTP Request 節點加 retry：max attempts 5、initial wait 2 秒、backoff exponential ×2、只在 status 429/500/502/503/504 retry；其他 status 直接失敗。加 <code>continueOnFail: true</code> 讓下游能拿到錯誤物件另外處理。</p>
+        <span class="call">→ update_workflow（HTTP retry policy）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">寫一支「每日健康巡檢」workflow：Cron 每天 07:00 跑 → list_workflows 抓所有 active workflow → 對每一支 list_executions（last 24hr、status=error）→ 有 error 的整理成 Slack 訊息（表格）→ 傳到 #n8n-daily-health。零錯誤時也發一則「今日一切正常 ✅」。</p>
+        <span class="call">→ create_workflow（Cron + list_executions + Slack）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建 workflow：Cron 每小時跑，用 n8n API 抓過去 1 小時的 executions，計算失敗率；&gt;5% 立即通知；&gt;20% 呼叫 <code>deactivate_workflow</code> 把出錯最多的那支自動下線，並通知我來處理。</p>
+        <span class="call">→ list_executions → deactivate_workflow</span>
+      </div>
+
+    </section>
+
+    <section id="cat-debug" data-nav="Workflow 除錯">
+      <h2 data-icon="debug">G · Workflow 除錯（讀 log、看 execution、修改）</h2>
+      <p>當 workflow 半夜掛了，這一類提示詞讓 AI 幫你找出誰在哭。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">Workflow id <code>abc123</code> 昨晚在 execution id <code>exec_9876</code> 失敗了。抓那次 execution 的完整 log，告訴我：（1）哪個 node 失敗、（2）失敗當下上游傳給它的 input JSON 是什麼、（3）error message 是什麼、（4）你猜測的原因跟三個可能的修法。</p>
+        <span class="call">→ get_execution / GET /api/v1/executions/:id</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">列出 workflow id <code>abc123</code> 過去 7 天所有失敗的 executions，按時間排序；把失敗訊息按類型分組（credential 失效／timeout／validation 錯誤／其他），統計出哪一類最多、平均多久失敗一次。</p>
+        <span class="call">→ list_executions（filtered by workflow + status）</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">Workflow id <code>abc123</code> 現在跑起來很慢，平均一次 execution 花 45 秒。撈最近 20 次執行的 node timing，找出瓶頸節點；建議改法（加 cache？換 API endpoint？拆 sub-workflow？）。</p>
+        <span class="call">→ list_executions + get_execution</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">用 <code>run_workflow</code> 對 workflow id <code>abc123</code> 跑一次 test execution，input data 用下面這段 JSON：<code>{"customer_id": "test_001", "amount": 100}</code>。跑完把每個 node 的 input／output 都列給我看，我要確認資料流沒問題。</p>
+        <span class="call">→ run_workflow / POST /api/v1/workflows/:id/run</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">Workflow id <code>abc123</code> 的 Google Sheets 節點回報「credential expired」。（1）查這個 workflow 用的是哪個 credential id；（2）用 list_credentials 幫我確認狀態；（3）給我步驟怎麼在 n8n UI 重新授權；（4）授權好之後幫我 run 一次驗證。</p>
+        <span class="call">→ list_credentials + run_workflow</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">我下面貼一段 workflow JSON，你先「validate」它——找出：（1）語法錯誤；（2）dangling connection；（3）少 credential 引用；（4）明顯的效能地雷（同一個 API 迴圈打 200 次不批次）。修好後給我完整 JSON。</p>
+        <span class="call">→ validate_workflow（MCP tool）</span>
+      </div>
+
+    </section>
+
+    <section id="cat-ops" data-nav="維運操作">
+      <h2 data-icon="steps">H · 維運操作（Tags／Audit／備份／匯出）</h2>
+      <p>Ops 面：管好 workflow 命名、稽核、備份策略。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">列出所有沒掛 tag 的 workflow，幫我建議它們該屬於哪些 tag（依名稱、觸發器、下游 SaaS 判斷），並把 tag 分派表給我。我確認之後你再呼叫 update_workflow 幫我掛上去。</p>
+        <span class="call">→ list_workflows → update_workflow (tags)</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">跑一次 n8n Security Audit（<code>POST /api/v1/audit</code>），把結果分類為 Critical/High/Medium/Low；針對每個 Critical 項目給我修法。</p>
+        <span class="call">→ generate_audit</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">把所有 active workflow 一支一支 <code>get_workflow</code> 拿完整 JSON，全部打包成一個 zip 給我當備份。檔名格式 <code>{workflow_id}_{name_slug}.json</code>；再產一份 index.md 列出所有備份項目。</p>
+        <span class="call">→ list_workflows → get_workflow (loop)</span>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">我要把 dev 環境（<code>n8n-dev.woowtech.io</code>）的 workflow id <code>dev_abc</code> 複製到 prod（<code>n8n.woowtech.io</code>）。步驟：從 dev 取出 JSON → 掃描 credential id → 對應到 prod 的 credential（依 name 匹配）→ 在 prod create_workflow 但先不 activate。</p>
+        <span class="call">→ 多環境 MCP（multi-instance）</span>
+      </div>
+
+    </section>
+
+    <section id="tips" data-nav="寫法小抄">
+      <h2 data-icon="steps">提示詞寫法小抄</h2>
+      <p>回頭看那 42 條，其實有五招在來回用：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>這樣講</th><th>不要這樣講</th><th>為什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>寫目標＋節點大概順序：「Webhook → Set → Sheet → Slack」</td>
+            <td>只寫「做一支通知 workflow」</td>
+            <td>目標＋節點順序讓 AI 產出的 JSON 更貼近你要的形狀，少來回改</td>
+          </tr>
+          <tr>
+            <td>把 id 都寫死：sheet id、Notion database id、channel、credential 名</td>
+            <td>「用我常用的那張表」</td>
+            <td>AI 沒 memory，該具體就具體，模糊的一定產亂</td>
+          </tr>
+          <tr>
+            <td>先報告再動手：「給我 JSON 我看過再 create」</td>
+            <td>「直接建起來啟用」</td>
+            <td>會動 credentials 的請求，一句話換一道保險</td>
+          </tr>
+          <tr>
+            <td>error handling 一起講：retry 幾次、什麼 status 才 retry、失敗通知誰</td>
+            <td>只講 happy path</td>
+            <td>沒交代錯誤策略，AI 通常 skip 掉——上 prod 才發現沒有 error handling</td>
+          </tr>
+          <tr>
+            <td>先跑 test：「先 test_execution 我看過再啟用」</td>
+            <td>建完直接 activate</td>
+            <td>test execution 免費也快，卡在生產環境的錯 90% 都能靠 test 抓到</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>提示詞要一字不差照抄嗎？</summary>
+        <div class="body">不用。這些是示範「哪些細節要講」的範例：目標、觸發、資料流、錯誤策略、先報告再動手。用你自己的話講，把 id／channel／sheet name 換成你的就好。</div>
+      </details>
+      <details class="faq">
+        <summary>不裝 MCP server 可以用嗎？</summary>
+        <div class="body">可以。直接把提示詞貼給 Claude 或 ChatGPT，請它產 n8n workflow JSON，你手動 import 到 n8n（Ctrl+A 選全部畫布 → 貼上）。<a href="ch5_import_workflow.html">第 5 章</a>有完整流程。缺點：AI 沒辦法真的呼叫 API 驗證，只能猜。</div>
+      </details>
+      <details class="faq">
+        <summary>MCP server 要用哪一顆？czlonkowski/n8n-mcp 還是 makafeli/n8n-workflow-builder？</summary>
+        <div class="body">兩顆都成熟：<code>czlonkowski/n8n-mcp</code>（22.7k★）功能最完整，含 node search／validation／template 探索，適合深度使用；<code>makafeli/n8n-workflow-builder</code>（540★）15 顆 tool 就夠，安裝更簡單。初次用建議先裝 makafeli 那顆。<a href="skills.html">Skill 手冊</a>有更詳細比較。</div>
+      </details>
+      <details class="faq">
+        <summary>AI 會不會亂改 production workflow？</summary>
+        <div class="body">會，如果你沒加保險。三招最有效：（1）提示詞裡永遠加「先給我 JSON／diff 我看過再動」；（2）給 MCP server 用的 API key 只給該 workspace 的權限，別給 admin；（3）prod 環境的 MCP 連線只用 read-only key，寫入操作走 CI／PR。</div>
+      </details>
+      <details class="faq">
+        <summary>提示詞會不會很花 token？</summary>
+        <div class="body">MCP server 會把 n8n 完整 nodes list 塞進 context（<code>czlonkowski/n8n-mcp</code> 說支援 2,541 個 node），第一次對話會吃比較多 token。之後就穩定。建議挑推理較強的模型（Claude Sonnet／GPT-4o）——workflow 是 code，AI 判斷力越好產出越正確。</div>
+      </details>
+      <details class="faq">
+        <summary>MCP 呼叫 n8n API 需要什麼權限？</summary>
+        <div class="body">在 n8n 的 <em>Settings → n8n API</em> 建立 API key（Community 版就有），key 對應到建立者的權限範圍。用 <code>X-N8N-API-KEY</code> header 傳給 <code>/api/v1/*</code> 端點。要 workspace-level 隔離請洽 WoowTech 幫你切多 workspace（企業版功能）。</div>
+      </details>
+    </section>
+
+    <section id="download" data-nav="下載">
+      <h2 data-icon="download">把這本帶走</h2>
+      <p>整本是自包含單檔 HTML，圖示全部內嵌，下載後離線可開、可直接轉寄給團隊。</p>
+      <p>
+        <a class="btn-pill" href="prompts.html" download="n8n-api-mcp-prompts.html">下載本冊 HTML</a>
+        <a class="btn-ghost" href="index.html">回資源總覽</a>
+      </p>
+    </section>
+
+    <footer class="site-footer">
+      <p>《n8n API／MCP 提示詞庫》由 <strong>WoowTech 渥屋科技</strong> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出。</p>
+      <p class="footer-meta">The Smart Space Solution · 智慧空間解決方案 · <a href="index.html">n8n 資源總覽</a> · MCP server 資料為 2026-08-20 GitHub 快照，會隨時間變動。</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var sidebar = document.getElementById('sidebar');
+  var toggle = document.getElementById('navToggle');
+  var mq = window.matchMedia('(max-width: 960px)');
+  function applyCollapse(e) {
+    if (e.matches) { sidebar.classList.add('is-collapsed'); }
+    else { sidebar.classList.remove('is-collapsed'); }
+  }
+  applyCollapse(mq);
+  mq.addEventListener ? mq.addEventListener('change', applyCollapse) : mq.addListener(applyCollapse);
+  toggle.addEventListener('click', function () { sidebar.classList.toggle('is-collapsed'); });
+  sidebar.querySelectorAll('.toc-in-chapter a').forEach(function (a) {
+    a.addEventListener('click', function () { if (mq.matches) sidebar.classList.add('is-collapsed'); });
+  });
+
+  var links = Array.prototype.slice.call(sidebar.querySelectorAll('.toc-in-chapter a[href^="#"]'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  function onScroll() {
+    var current = null;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].getBoundingClientRect().top <= 120) current = sections[i].id;
+    }
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (current && map[current]) map[current].classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+// 複製按鈕
+(function () {
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  document.querySelectorAll('.prompt-card').forEach(function (card) {
+    var btn = card.querySelector('.copy');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var text = card.querySelector('.ptext').innerText;
+      var done = function () {
+        btn.textContent = '已複製'; btn.classList.add('ok');
+        setTimeout(function () { btn.textContent = '複製'; btn.classList.remove('ok'); }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+      } else { fallbackCopy(text, done); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
