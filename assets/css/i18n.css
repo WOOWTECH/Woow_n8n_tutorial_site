@@ -1,0 +1,32 @@
+/* i18n.css — 多語系專用樣式，與 style.css 分開放。
+ *
+ * 為什麼獨立一支：13 個教學站的 style.css 有多種變體，共用的 i18n 版面規則不該逐站去 patch。
+ * 這支檔在 13 站之間保持一致，只由 build_nav.js 在「有其他語系」時載入，zh 單語系時完全不出現。
+ * 只用 style.css 已定義的 token，不重寫任何品牌色。
+ */
+
+/* 語言切換：側欄品牌下方；hub 首頁在 hero 內。
+   三本手冊是自帶樣式的單檔頁，沒有 style.css 的 token，所以每個 var() 都給 fallback，
+   讓這一塊在有沒有 style.css 的頁面上都長得一樣。 */
+.lang-switch { display: inline-flex; gap: 4px; margin: -14px 0 var(--space-5, 20px); padding: 3px; border: 1px solid var(--hairline, rgba(33, 33, 33, .08)); border-radius: var(--radius-pill, 999px); background: var(--surface-card, #fff); }
+.lang-switch a { display: inline-flex; min-height: 26px; align-items: center; padding: 0 12px; border-radius: var(--radius-pill, 999px); color: var(--text-secondary, #616161); font: 600 12px/1 var(--font-title, "Poppins", sans-serif); letter-spacing: .04em; text-decoration: none; }
+.lang-switch a:hover { color: var(--ww-blue-700, #3F63E8); text-decoration: none; }
+.lang-switch a.active { background: var(--ww-blue-050, #EEF2FF); color: var(--ww-blue-700, #3F63E8); }
+.sidebar .lang-switch { margin-top: 0; }
+.sidebar .lang-switch + .hub-link { display: block; margin: -8px 0 24px; }
+.home .hero .lang-switch { margin: 0 0 var(--space-5); }
+
+/* 尚未翻譯的章節：側欄與目錄卡片降一階，讓讀者知道點進去是原文 */
+.sidebar ol li[data-i18n="pending"] a { color: var(--text-secondary); }
+.sidebar ol li[data-i18n="pending"] a::after { content: "·"; margin-left: 6px; color: var(--ww-blue); }
+.chapter-card[data-i18n="pending"] { opacity: .72; }
+
+/* 翻譯狀態橫幅：沿用 callout 版型，只換圖示 */
+.callout.i18n-pending::before { content: "\F05CA"; }   /* mdi-translate */
+.callout.i18n-stale::before { content: "\F0954"; }     /* mdi-update */
+.callout.i18n-pending a, .callout.i18n-stale a { color: var(--ww-blue-700); font-weight: 600; }
+
+/* 英文字串比中文長 1.5–3 倍：側欄加寬、避免任意處斷字 */
+html[lang="en"] { --sidebar-w: 320px; }
+html[lang="en"] .sidebar ol li a, html[lang="en"] .pager .title, html[lang="en"] .chapter-card h3 { overflow-wrap: break-word; hyphens: auto; }
+html[lang="en"] .sidebar .brand::before { vertical-align: -4px; }

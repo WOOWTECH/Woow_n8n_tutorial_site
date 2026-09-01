@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Woow n8n 入住指南 · 把重複工作外包給流程自動化</title>
+  <meta name="description" content="22 章＋3 附錄的繁體中文 n8n 教學：從打開登入、用別人的 template、做出第一個 workflow，一路帶到 Expression、Code node、AI Agent 與 Webhook，把公司的重複工作外包給流程自動化。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://n8n-guide.woowtech.io/en/tutorial.html" />
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
+  <meta property="og:title" content="Woow n8n 入住指南 · 把重複工作外包給流程自動化" />
+  <meta property="og:description" content="22 章＋3 附錄的繁體中文 n8n 教學：從打開登入、用別人的 template、做出第一個 workflow，一路帶到 Expression、Code node、AI Agent 與 Webhook，把公司的重複工作外包給流程自動化。" />
+  <meta property="og:url" content="https://n8n-guide.woowtech.io/en/tutorial.html" />
+  <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch3/01_workspace.en.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Woow n8n 入住指南 · 把重複工作外包給流程自動化" />
+  <meta name="twitter:description" content="22 章＋3 附錄的繁體中文 n8n 教學：從打開登入、用別人的 template、做出第一個 workflow，一路帶到 Expression、Code node、AI Agent 與 Webhook，把公司的重複工作外包給流程自動化。" />
+  <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch3/01_workspace.en.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/i18n.css" />
+</head>
+<body>
+  <main class="home">
+    <div class="hero">
+      <!-- i18n:switch -->
+      <nav class="lang-switch" aria-label="Language"><a href="../tutorial.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="tutorial.html" lang="en" aria-current="page">EN</a></nav>
+      <!-- /i18n:switch -->
+      <span class="kicker-script">make it yours</span>
+      <div class="kicker">Woow n8n 入住指南</div>
+      <h1>把重複工作外包給流程自動化</h1>
+      <p>從打開 Woow n8n、用別人做好的 template、拉出第一支 workflow，一路帶到 Expression、Code node、AI Agent、Webhook。22 章＋ 3 附錄，每章 10 分鐘。銷售手冊、提示詞庫與 Skill 手冊在 <a href="index.html">資源總覽</a>。</p>
+    </div>
+
+    <section class="chapter-index">
+      <h2 class="index-title">起步認識</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch1_what_is_n8n.html" data-i18n="pending">
+          <span class="num">01</span>
+          <h3>什麼是 n8n？跟 Zapier/Make 差在哪</h3>
+          <p>為什麼公司選 n8n、跟你可能用過的 Zapier/Make 差在哪、能替你省掉哪些重複勞動。</p>
+        </a>
+        <a class="chapter-card" href="ch2_login.html" data-i18n="pending">
+          <span class="num">02</span>
+          <h3>打開 Woow n8n：登入與 5 分鐘介面導覽</h3>
+          <p>打開 n8n.woowtech.io、拿到你的帳號、確認裝置能連進來、看完介面主要區塊。</p>
+        </a>
+        <a class="chapter-card" href="ch3_workspace_tour.html" data-i18n="pending">
+          <span class="num">03</span>
+          <h3>工作區長什麼樣</h3>
+          <p>Canvas、節點抽屜、Executions、Templates、Credentials 一次認完不再迷路。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">從別人做好的起步</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch4_templates.html" data-i18n="pending">
+          <span class="num">04</span>
+          <h3>從 Templates gallery 起步</h3>
+          <p>n8n 已經有幾千個現成 workflow，直接抄別人做好的最快上手。</p>
+        </a>
+        <a class="chapter-card" href="ch5_import_workflow.html" data-i18n="pending">
+          <span class="num">05</span>
+          <h3>從 n8n.io 找 JSON 貼進來</h3>
+          <p>n8n.io/workflows 有海量分享的 workflow，複製 JSON 貼進來就是你的。</p>
+        </a>
+        <a class="chapter-card" href="ch6_modify_workflow.html" data-i18n="pending">
+          <span class="num">06</span>
+          <h3>動一動別人做好的：改欄位、換觸發、跑一次</h3>
+          <p>拿別人 workflow 直接用是幻想。這章教你怎麼改成自己的用途。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">動手做第一個</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch7_node_types.html" data-i18n="pending">
+          <span class="num">07</span>
+          <h3>三種節點：Trigger / Action / Core</h3>
+          <p>節點抽屜幾百個節點，其實就三類：開頭、做事、控制流程。</p>
+        </a>
+        <a class="chapter-card" href="ch8_first_workflow.html" data-i18n="pending">
+          <span class="num">08</span>
+          <h3>第一個 workflow：早上把 Google 行事曆推 Slack</h3>
+          <p>從零拉出一個實用 workflow：早上 8:00 把今天的行事曆推到 Slack。</p>
+        </a>
+        <a class="chapter-card" href="ch9_item_data_flow.html" data-i18n="pending">
+          <span class="num">09</span>
+          <h3>Item 是什麼？資料怎麼在節點間流動</h3>
+          <p>n8n 的 item 觀念一次講清：一個節點吃幾個 item、下一個節點怎麼收。</p>
+        </a>
+        <a class="chapter-card" href="ch10_triggers.html" data-i18n="pending">
+          <span class="num">10</span>
+          <h3>三種觸發：Manual / Schedule / Event</h3>
+          <p>workflow 什麼時候會跑？手動、排程、外部事件三種選擇。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">常用整合</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch11_saas_integrations.html" data-i18n="pending">
+          <span class="num">11</span>
+          <h3>熱門 SaaS 整合：Slack、Gmail、Google 表格與 Drive</h3>
+          <p>上班族最常需要串的四家：Slack 通知、Gmail 寄信、Google 表格記錄、Drive 存檔。</p>
+        </a>
+        <a class="chapter-card" href="ch12_http_request.html" data-i18n="pending">
+          <span class="num">12</span>
+          <h3>HTTP Request 節點：碰所有沒官方整合的 API</h3>
+          <p>n8n 沒現成節點的服務，用 HTTP Request 節點自己打。80% 的自訂串接靠這個。</p>
+        </a>
+        <a class="chapter-card" href="ch13_credentials.html" data-i18n="pending">
+          <span class="num">13</span>
+          <h3>Credentials 管理：金鑰、OAuth、跟同事分享的界線</h3>
+          <p>workflow 要拿你的帳號密碼才能幫你辦事，這章教怎麼安全存、怎麼分享。</p>
+        </a>
+        <a class="chapter-card" href="ch14_expressions.html" data-i18n="pending">
+          <span class="num">14</span>
+          <h3>Expression 入門：`{{ $json.field }}` 從這裡開始</h3>
+          <p>節點欄位要抓上一個節點的資料時，靠 Expression。這章講最常用的五種。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">流程控制</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch15_if_switch.html" data-i18n="pending">
+          <span class="num">15</span>
+          <h3>IF / Switch：條件分支</h3>
+          <p>if 大於 100 走 A 分支、小於 100 走 B 分支——這章教視覺化寫條件。</p>
+        </a>
+        <a class="chapter-card" href="ch16_merge_split.html" data-i18n="pending">
+          <span class="num">16</span>
+          <h3>Merge / Split / Item Lists：處理多筆資料</h3>
+          <p>同時處理很多筆、把多路合起來、把陣列拆開，這三種是 n8n 的資料水管。</p>
+        </a>
+        <a class="chapter-card" href="ch17_error_handling.html" data-i18n="pending">
+          <span class="num">17</span>
+          <h3>錯誤處理：Error workflow / Retry / Wait</h3>
+          <p>workflow 半夜掛了怎麼救？這章教錯誤流程、重試與等待。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">資料整形與重用</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch18_set_function.html" data-i18n="pending">
+          <span class="num">18</span>
+          <h3>Set / Edit Fields：資料整形不寫程式</h3>
+          <p>把上一個節點的 JSON 加欄位、改名字、重排——不寫程式版本。</p>
+        </a>
+        <a class="chapter-card" href="ch19_subworkflow.html" data-i18n="pending">
+          <span class="num">19</span>
+          <h3>Sub-workflow：把常用邏輯抽成小工作流</h3>
+          <p>同一段流程五個 workflow 都在用？抽成 sub-workflow 一改全改。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">拔高進階</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch20_code_node.html" data-i18n="pending">
+          <span class="num">20</span>
+          <h3>Code node：在 workflow 裡寫幾行 JavaScript</h3>
+          <p>現成節點做不到的資料處理，Code node 給你逃生口。新手 copy-paste 就好。</p>
+        </a>
+        <a class="chapter-card" href="ch21_ai_agent.html" data-i18n="pending">
+          <span class="num">21</span>
+          <h3>AI Agent：讓 workflow 有一個「會想的」節點</h3>
+          <p>普通節點是規則機器人，AI Agent 是「有判斷力」的節點。做客服、資料整理超好用。</p>
+        </a>
+        <a class="chapter-card" href="ch22_webhook.html" data-i18n="pending">
+          <span class="num">22</span>
+          <h3>Webhook：讓外部系統打進 n8n</h3>
+          <p>表單填完、HA 觸發、Line 訊息進來——都靠 Webhook 節點打進 n8n。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">Appendices</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="appendix_settings_ref.html" data-i18n="pending">
+          <span class="num">A</span>
+          <h3>設定速查</h3>
+          <p>Executions 保留天數、Timezone、Log level、Personal 與 Workspace 設定的意義。</p>
+        </a>
+        <a class="chapter-card" href="appendix_errors.html" data-i18n="pending">
+          <span class="num">B</span>
+          <h3>常見錯誤排錯</h3>
+          <p>節點紅色、Timeout、Credential 失效、429 Rate limit、Sub-workflow 找不到——症狀對照解法。</p>
+        </a>
+        <a class="chapter-card" href="appendix_internals.html" data-i18n="pending">
+          <span class="num">C</span>
+          <h3>底層架構好奇者向</h3>
+          <p>Community vs Cloud vs Enterprise 差別、self-host 選擇、queue mode、資料庫。</p>
+        </a>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+    </footer>
+  </main>
+</body>
+</html>

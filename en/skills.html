@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>n8n Skill／Community Nodes 手冊 · 精選節點與 AI Agent Skill 型錄 · WoowTech</title>
+  <meta name="description" content="裝一顆 n8n community node 或給 AI agent 一顆 skill，你的自動化立刻多會十件事：精選 10 顆熱門 community node（Puppeteer、ElevenLabs、MCP、Evolution API 等）、6 大熱門集合入口（含 n8n-mcp / n8n-workflow-builder MCP servers），附安裝速查、相容性、安全守則、SKILL.md 規格參考。資料為 2026-08-20 快照。" />
+  <meta name="author" content="WoowTech" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="canonical" href="https://n8n-guide.woowtech.io/en/skills.html" />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <style>
+/* n8n Skill／Community Nodes 手冊 — Woow_ha_tutorial_site 版型 × woowtech Brand Prompt Library v2 */
+:root {
+  --ww-blue: #6183FC;
+  --ww-blue-600: #4A6DE8;
+  --ww-blue-700: #3A57C4;
+  --ww-blue-050: #EEF2FF;
+  --ww-blue-100: #DCE4FF;
+
+  --ink-900: #1B2033;
+  --ink-700: #3A4054;
+  --ink-500: #6B7186;
+  --ink-300: #A5AAB9;
+  --ink-100: #E7E9F0;
+
+  --paper: #F7F8FC;
+  --surface: #FFFFFF;
+  --surface-alt: #F1F3FA;
+  --hairline: #E2E5EF;
+
+  --info: var(--ww-blue);
+  --tip:  #8CD37F;
+  --warn: #E66D3E;
+  --danger: #F45D6D;
+
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 2px 6px rgba(27, 32, 51, 0.05), 0 1px 2px rgba(27, 32, 51, 0.04);
+  --shadow-md: 0 8px 24px rgba(27, 32, 51, 0.08), 0 2px 6px rgba(27, 32, 51, 0.04);
+  --shadow-lg: 0 20px 48px rgba(27, 32, 51, 0.12), 0 4px 12px rgba(27, 32, 51, 0.06);
+  --shadow-float: 0 26px 60px -18px rgba(97, 131, 252, 0.28);
+
+  --font-display: "Outfit", "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-body: "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-script: "Yellowtail", cursive;
+  --font-mono: "SF Mono", Menlo, Consolas, "Fira Code", monospace;
+
+  --sidebar-w: 268px;
+  --max-content: 780px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  font-family: var(--font-body);
+  color: var(--ink-900);
+  background: var(--paper);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html { scroll-behavior: smooth; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.005em; }
+
+a { color: var(--ww-blue-600); text-decoration: none; transition: color 0.15s; }
+a:hover { color: var(--ww-blue-700); text-decoration: underline; }
+
+.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--hairline);
+  padding: 28px 22px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar h2 {
+  font-family: var(--font-body); font-size: 12px; color: var(--ink-500);
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin: 0 0 12px;
+}
+.sidebar .brand {
+  display: block; font-family: var(--font-display); font-size: 20px; font-weight: 700;
+  color: var(--ink-900); margin-bottom: 4px; letter-spacing: -0.01em;
+}
+.sidebar .brand-sub { font-size: 13px; color: var(--ink-500); margin-bottom: 6px; }
+.sidebar .hub-link { display: inline-block; font-size: 12.5px; color: var(--ink-500); margin-bottom: 22px; }
+.sidebar .hub-link:hover { color: var(--ww-blue-700); text-decoration: none; }
+.sidebar .toc-in-chapter { border-top: 1px solid var(--hairline); padding-top: 16px; margin-top: 8px; }
+.sidebar .toc-in-chapter:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.sidebar .toc-in-chapter a {
+  display: block; padding: 7px 12px; border-radius: var(--radius-xs);
+  color: var(--ink-700); font-size: 13.5px;
+}
+.sidebar .toc-in-chapter a:hover { background: var(--surface-alt); text-decoration: none; }
+.sidebar .toc-in-chapter a.active { background: var(--ww-blue-050); color: var(--ww-blue-700); font-weight: 600; }
+
+.content { padding: 56px 64px 96px; max-width: calc(var(--max-content) + 128px); }
+
+.chapter-header { margin-bottom: 40px; }
+.chapter-header .kicker-script {
+  font-family: var(--font-script); font-size: 30px; color: var(--ww-blue);
+  line-height: 1; margin-bottom: 10px; display: block;
+}
+.chapter-header .kicker {
+  color: var(--ww-blue); font-family: var(--font-display); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;
+}
+.chapter-header h1 {
+  font-family: "Noto Sans TC", var(--font-display); font-size: 38px; font-weight: 700;
+  margin: 0 0 14px; letter-spacing: -0.02em; line-height: 1.25;
+}
+.chapter-header .lead { font-size: 17px; color: var(--ink-700); margin: 0; max-width: var(--max-content); }
+
+section { margin-bottom: 56px; scroll-margin-top: 24px; }
+section h2 {
+  font-family: var(--font-display); font-size: 24px; font-weight: 700;
+  margin: 0 0 20px; padding: 0; border: 0;
+  display: flex; align-items: center; gap: 14px; color: var(--ink-900);
+}
+section h2[data-icon]::before {
+  content: ""; display: inline-flex; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  background-color: var(--ww-blue-050);
+  background-repeat: no-repeat; background-position: center; background-size: 22px 22px;
+}
+section h2[data-icon="why"]::before      { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="steps"]::before    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M7,13V11H21V13H7M7,19V17H21V19H7M7,7V5H21V7H7M3,8V5H2V4H4V8H3M2,17V16H5V20H2V19H4V18.5H3V17.5H4V17H2M4.25,10A0.75,0.75 0 0,1 5,10.75C5,10.95 4.92,11.14 4.79,11.27L3.12,13H5V14H2V13.08L4,11H2V10H4.25Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="picks"]::before    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="mcp"]::before      { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="collections"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L10.11,5.22L16,8.61L17.96,7.5L12,4.15M6.04,7.5L12,10.85L13.96,9.75L8.08,6.35L6.04,7.5M5,15.91L11,19.29V12.58L5,9.21V15.91M19,15.91V9.21L13,12.58V19.29L19,15.91Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="integration"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="safety"]::before   { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M21,11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1L21,5V11M12,21C15.75,20 19,15.54 19,11.22V6.3L12,3.18L5,6.3V11.22C5,15.54 8.25,20 12,21M11,7H13V13H11V7M11,15H13V17H11V15Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="spec"]::before     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="faq"]::before      { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M4,2A2,2 0 0,0 2,4V16A2,2 0 0,0 4,18H8V21A1,1 0 0,0 9,22H9.5V22C9.75,22 10,21.9 10.2,21.71L13.9,18H20A2,2 0 0,0 22,16V4C22,2.89 21.1,2 20,2H4M4,4H20V16H13.08L10,19.08V16H4V4M12.19,5.5C11.3,5.5 10.59,5.68 10.05,6.04C9.5,6.4 9.22,7 9.27,7.69L11.24,7.69C11.24,7.41 11.34,7.2 11.5,7.06C11.7,6.92 11.92,6.85 12.19,6.85C12.5,6.85 12.77,6.93 12.95,7.11C13.13,7.28 13.22,7.5 13.22,7.8C13.22,8.08 13.14,8.33 13,8.54C12.83,8.76 12.62,8.94 12.36,9.08C11.84,9.4 11.5,9.68 11.29,9.92C11.1,10.16 11,10.5 11,11H13C13,10.72 13.05,10.5 13.14,10.32C13.23,10.15 13.4,10 13.66,9.85C14.12,9.64 14.5,9.36 14.79,9C15.08,8.63 15.23,8.24 15.23,7.8C15.23,7.1 14.96,6.54 14.42,6.12C13.88,5.71 13.13,5.5 12.19,5.5M11,12V14H13V12H11Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="download"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z'/%3E%3C/svg%3E"); }
+
+section h3 {
+  font-family: var(--font-display); font-size: 17px; font-weight: 600;
+  margin: 28px 0 12px; color: var(--ink-900);
+}
+section p, section li { color: var(--ink-700); max-width: var(--max-content); }
+
+/* Steps */
+.steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
+.steps > li {
+  counter-increment: step; position: relative;
+  padding: 22px 22px 22px 72px; margin-bottom: 14px;
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute; left: 20px; top: 20px; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--ww-blue); color: #fff;
+  font-family: var(--font-display); font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(97, 131, 252, 0.35);
+}
+.steps > li h3 { margin: 0 0 8px; font-size: 16px; }
+
+/* Callout */
+.callout {
+  padding: 14px 18px 14px 44px; border-radius: var(--radius-sm);
+  background: var(--ww-blue-050); margin: 16px 0; font-size: 14px; color: var(--ink-700);
+  position: relative; border: 1px solid rgba(97, 131, 252, 0.18);
+  max-width: var(--max-content);
+}
+.callout::before {
+  content: ""; position: absolute; left: 14px; top: 15px; width: 18px; height: 18px;
+  background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z'/%3E%3C/svg%3E");
+}
+.callout.tip { background: rgba(140, 211, 127, 0.14); border-color: rgba(140, 211, 127, 0.32); }
+.callout.tip::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234E9C42' d='M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2M9,21A1,1 0 0,0 10,22H14A1,1 0 0,0 15,21V20H9V21Z'/%3E%3C/svg%3E"); }
+.callout.warn { background: rgba(230, 109, 62, 0.10); border-color: rgba(230, 109, 62, 0.28); }
+.callout.warn::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B94D22' d='M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z'/%3E%3C/svg%3E"); }
+.callout strong { color: var(--ink-900); }
+
+/* 資料表格 */
+.data-table {
+  width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
+  font-size: 14px; background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.data-table thead th {
+  text-align: left; padding: 12px 14px; background: var(--surface-alt); color: var(--ink-900);
+  font-family: var(--font-display); font-weight: 600; font-size: 13px;
+  border-bottom: 1px solid var(--hairline); white-space: nowrap;
+}
+.data-table tbody td, .data-table tbody th {
+  padding: 11px 14px; border-bottom: 1px solid var(--hairline);
+  color: var(--ink-700); vertical-align: top; text-align: left;
+}
+.data-table tbody th { font-weight: 600; color: var(--ink-900); white-space: nowrap; }
+.data-table tbody tr:last-child td, .data-table tbody tr:last-child th { border-bottom: 0; }
+
+code {
+  font-family: var(--font-mono); font-size: 13px;
+  background: var(--surface-alt); padding: 2px 8px; border-radius: var(--radius-xs);
+  color: var(--ww-blue-700);
+}
+pre.code-block {
+  background: var(--surface-alt); color: var(--ink-900);
+  padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--hairline);
+  font-family: var(--font-mono); font-size: 13px; line-height: 1.6;
+  overflow-x: auto; margin: 12px 0; max-width: var(--max-content);
+}
+pre.code-block code { background: none; padding: 0; color: inherit; }
+
+/* Feature card (集合型錄) */
+.feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.feature-card {
+  padding: 26px 24px; border: 1px solid var(--hairline); border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow-sm);
+}
+.feature-card h3 { margin: 0 0 4px; font-size: 18px; }
+.feature-card .pnote {
+  color: var(--ink-500); font-size: 12.5px; margin: 0 0 10px;
+  font-family: var(--font-display); font-weight: 500;
+}
+.feature-card > p { margin: 0 0 12px; color: var(--ink-700); font-size: 14px; }
+
+/* FAQ */
+details.faq {
+  margin-bottom: 10px; border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  background: var(--surface); overflow: hidden; box-shadow: var(--shadow-sm);
+  max-width: var(--max-content);
+}
+details.faq summary {
+  cursor: pointer; padding: 16px 48px 16px 20px;
+  font-family: var(--font-display); font-weight: 600; color: var(--ink-900);
+  list-style: none; position: relative;
+}
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary::after {
+  content: ""; position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  width: 20px; height: 20px; background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'/%3E%3C/svg%3E");
+}
+details.faq[open] summary::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M19,13H5V11H19V13Z'/%3E%3C/svg%3E"); }
+details.faq[open] summary { border-bottom: 1px solid var(--hairline); }
+details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; }
+
+/* CTA / 按鈕 */
+.btn-pill {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
+  background: var(--ww-blue); color: #fff; padding: 13px 32px;
+  border-radius: var(--radius-pill); transition: background 0.15s, transform 0.15s;
+  text-decoration: none;
+}
+.btn-pill:hover { background: var(--ww-blue-600); color: #fff; text-decoration: none; transform: translateY(-1px); }
+.btn-ghost {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
+  background: var(--surface); color: var(--ink-900);
+  border: 1.5px solid var(--hairline); padding: 12px 30px; border-radius: 999px;
+  text-decoration: none; transition: border-color 0.15s;
+}
+.btn-ghost:hover { border-color: var(--ww-blue); color: var(--ww-blue-700); text-decoration: none; }
+
+/* Footer */
+.site-footer {
+  margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--hairline);
+  color: var(--ink-700); font-size: 13.5px; line-height: 1.75;
+}
+.site-footer p { margin: 0 0 6px; }
+.site-footer .footer-meta { color: var(--ink-500); font-size: 12.5px; }
+
+.nav-toggle {
+  display: none; width: 100%; align-items: center; justify-content: space-between; gap: 8px;
+  margin: 4px 0 0; padding: 12px 16px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--ink-900);
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); cursor: pointer;
+}
+.nav-toggle-caret {
+  width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 6px solid var(--ink-500); transition: transform 0.15s ease;
+}
+.sidebar.is-collapsed .nav-toggle-caret { transform: rotate(-90deg); }
+
+.layout > * { min-width: 0; }
+.content .data-table { max-width: 100%; }
+
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--hairline); }
+  .content { padding: 32px 20px 64px; }
+  .chapter-header h1 { font-size: 30px; }
+  .chapter-header .kicker-script { font-size: 26px; }
+  section h2 { font-size: 20px; }
+  section h2[data-icon]::before { width: 36px; height: 36px; background-size: 20px 20px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .data-table { display: block; overflow-x: auto; }
+  .data-table tbody td, .data-table thead th { min-width: 120px; }
+  .sidebar .nav-toggle { display: flex; }
+  .sidebar.is-collapsed .toc-in-chapter { display: none; }
+  .sidebar.is-collapsed > h2 { display: none; }
+}
+  </style>
+<!-- i18n:css --><link rel="stylesheet" href="../assets/css/i18n.css" /><!-- /i18n:css -->
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#top">n8n Skill 手冊</a>
+    <div class="brand-sub">WoowTech · Community Nodes + AI Skill 型錄</div>
+    <!-- i18n:switch --><nav class="lang-switch" aria-label="Language"><a href="../skills.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="skills.html" lang="en" aria-current="page">EN</a></nav><!-- /i18n:switch -->
+    <a class="hub-link" href="index.html">◂ n8n 資源總覽</a>
+    <button class="nav-toggle" id="navToggle" type="button">本冊內容<span class="nav-toggle-caret"></span></button>
+    <div class="toc-in-chapter">
+      <h2>本冊內容</h2>
+      <a href="#why">兩種擴充概念</a>
+      <a href="#install">怎麼裝</a>
+      <a href="#picks">精選十顆</a>
+      <a href="#mcp">MCP servers</a>
+      <a href="#collections">熱門集合</a>
+      <a href="#compat">相容性須知</a>
+      <a href="#safety">安全守則</a>
+      <a href="#spec">SKILL.md 規格</a>
+      <a href="#faq">常見問題</a>
+      <a href="#download">下載</a>
+    </div>
+  </aside>
+
+  <main class="content" id="top">
+    <div class="chapter-header">
+      <span class="kicker-script">extend everything</span>
+      <div class="kicker">WoowTech n8n Skill 手冊</div>
+      <h1>裝一顆節點或給 AI 一顆 skill，n8n 立刻多會十件事</h1>
+      <p class="lead">n8n 開箱有 400+ 官方節點，全球社群補了另外 2,100+ 顆 community node、還有幾十顆 MCP server 讓 AI agent 直接寫 workflow。這本手冊挑出「家庭／中小企業 / 內部團隊會真的用到」的 10 顆，加上 6 大熱門集合入口、安裝速查、相容性、安全守則、SKILL.md 規格參考。</p>
+      <div class="callout"><strong>調查基準：</strong>本冊的 star 數、下載數與維護狀態為 2026-08-20 調查當日的 npm／GitHub 公開數據，會隨時間變動；安裝前建議點進原始 repo 再確認一次。</div>
+    </div>
+
+    <section id="why" data-nav="兩種擴充概念">
+      <h2 data-icon="why">n8n 的兩種擴充概念</h2>
+      <p>n8n 的擴充分兩條線，這本手冊兩條都收：</p>
+      <ul>
+        <li><strong>Community Node</strong>：畫布上多一顆節點。你在 workflow 裡拉出來用（例：Puppeteer 抓網頁、ElevenLabs 產 TTS）。npm 上的 <code>n8n-nodes-*</code> 套件全部屬於這一類，2026-08 已破 500 個 package、5,800+ 顆 skill 級單元。</li>
+        <li><strong>AI Agent Skill / MCP Server</strong>：給你的 AI（Claude／Cursor／Windsurf）多一項能力。掛上 <code>n8n-mcp</code> 之後，你講「幫我建一支 workflow」，AI 直接呼叫 n8n API 幫你做。這一類是「教 AI 怎麼跟 n8n 對話」，跟 workflow 本身沒關係。</li>
+      </ul>
+      <p>兩種對「能自動化什麼」都有加成：Community Node 是幫「n8n 本人」多會一件事；MCP server 是幫「開 n8n 的你」少做一件事。</p>
+    </section>
+
+    <section id="install" data-nav="怎麼裝">
+      <h2 data-icon="steps">怎麼裝（3 分鐘版）</h2>
+
+      <h3>裝 Community Node</h3>
+      <ol class="steps">
+        <li>
+          <h3>打開 n8n Settings → Community Nodes</h3>
+          <p>需要管理員權限。雲端版（<code>n8n.woowtech.io</code>）預設關閉自裝，請洽 WoowTech；本地 add-on 或自架 n8n 開起來就有。</p>
+        </li>
+        <li>
+          <h3>按 Install a Community Node，貼上 npm package name</h3>
+          <p>例：<code>n8n-nodes-mcp</code>、<code>n8n-nodes-puppeteer</code>、<code>@elevenlabs/n8n-nodes-elevenlabs</code>。勾同意「使用第三方套件的風險」，按 Install。</p>
+        </li>
+        <li>
+          <h3>Reload n8n（或等它自動重啟）</h3>
+          <p>裝完在 workflow 編輯器的節點抽屜搜尋節點名稱，出現就成功。看不到？看 <em>Executions → Errors</em>，常見是套件相容性擋掉了。</p>
+        </li>
+        <li>
+          <h3>拉節點試跑一次</h3>
+          <p>官方 template 或該 repo 的 README 幾乎都附最小可跑範例，貼 credentials 進去試看看。</p>
+        </li>
+      </ol>
+
+      <h3>裝 MCP Server（給你的 AI 用）</h3>
+      <p>在 Claude Code／Cursor／Windsurf 的 <code>settings.json</code>／MCP config 加：</p>
+      <pre class="code-block"><code>{
+  "mcpServers": {
+    "n8n-mcp": {
+      "command": "npx",
+      "args": ["-y", "n8n-mcp"],
+      "env": {
+        "N8N_URL": "https://n8n.woowtech.io",
+        "N8N_API_KEY": "&lt;你的 API key，在 n8n Settings → API 建立&gt;"
+      }
+    }
+  }
+}</code></pre>
+      <p>存檔重啟 AI 客戶端，就會看到 <code>create_workflow</code>、<code>list_workflows</code> 等工具出現。<a href="prompts.html">提示詞庫</a>裡有 44 條可直接複製的 prompt。</p>
+
+      <div class="callout tip"><strong>提示：</strong>MCP server 通常不動 n8n 本身——它只是幫 AI 打 API。所以你可以在自架、Cloud、任何 n8n 實例上用，包括 <code>n8n.woowtech.io</code> 開帳號給你之後。</div>
+    </section>
+
+    <section id="picks" data-nav="精選十顆">
+      <h2 data-icon="picks">精選十顆 Community Node（中小企業視角）</h2>
+      <p>從 <a href="https://github.com/restyler/awesome-n8n" rel="noopener">restyler/awesome-n8n</a> 依 npm 月下載量排的清單裡，替中小企業／內部團隊挑十顆最實用的。「最對口」往下排：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Community Node</th><th>它幫 n8n 多會什麼</th><th>安裝 spec</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.npmjs.com/package/n8n-nodes-mcp" rel="noopener">n8n-nodes-mcp</a></td>
+            <td>讓 workflow 呼叫任何 MCP server（Notion、Filesystem、GitHub…）。等於把 Claude 生態的工具全接進 n8n。<strong>2026 最熱門</strong>，月下載 765K。</td>
+            <td><code>n8n-nodes-mcp</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.npmjs.com/package/n8n-nodes-puppeteer" rel="noopener">n8n-nodes-puppeteer</a></td>
+            <td>Chromium 完整控制：點按鈕、填表單、抓網頁截圖、產 PDF、抓 JS render 過的內容。爬蟲／自動化測試／報表 PDF 都靠它。</td>
+            <td><code>n8n-nodes-puppeteer</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.npmjs.com/package/n8n-nodes-globals" rel="noopener">n8n-nodes-globals</a></td>
+            <td>建全域常數給所有 workflow 共用（例：公司 slug、Slack 主 channel、DB URL）。改一個地方全部 workflow 生效——多 workflow 環境的救星。</td>
+            <td><code>n8n-nodes-globals</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.npmjs.com/package/@elevenlabs/n8n-nodes-elevenlabs" rel="noopener">@elevenlabs/n8n-nodes-elevenlabs</a></td>
+            <td>ElevenLabs 官方 TTS：把文字產成人聲 mp3。用途：語音通知、YouTube／podcast 自動配音、IVR 提示音。</td>
+            <td><code>@elevenlabs/n8n-nodes-elevenlabs</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.npmjs.com/package/n8n-nodes-text-manipulation" rel="noopener">n8n-nodes-text-manipulation</a></td>
+            <td>純字串處理：trim／replace／regex／encode／hash——工作流裡幾乎每支都會用到 1 顆。不用寫 Function node 的省事版。</td>
+            <td><code>n8n-nodes-text-manipulation</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.npmjs.com/package/n8n-nodes-datastore" rel="noopener">n8n-nodes-datastore</a></td>
+            <td>workflow 內建 in-memory KV store，跨 execution 保留狀態（例：去重、cache）。不用另外接 Redis。</td>
+            <td><code>n8n-nodes-datastore</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.npmjs.com/package/@mendable/n8n-nodes-firecrawl" rel="noopener">@mendable/n8n-nodes-firecrawl</a></td>
+            <td>Firecrawl 官方節點：把整站或多頁抓下來成乾淨 Markdown，餵給 AI Agent 分析比自己爬穩定太多。競品／內容監測必備。</td>
+            <td><code>@mendable/n8n-nodes-firecrawl</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.npmjs.com/package/n8n-nodes-evolution-api" rel="noopener">n8n-nodes-evolution-api</a></td>
+            <td>WhatsApp 專門的 channel hub，接 Evolution API。做 WhatsApp Bot／通知／客服的中小電商幾乎必裝，月下載 6.6M 是社群第一名。</td>
+            <td><code>n8n-nodes-evolution-api</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.npmjs.com/package/n8n-nodes-deepseek" rel="noopener">n8n-nodes-deepseek</a></td>
+            <td>DeepSeek 官方 AI 節點。中文能力好、比 GPT-4o 便宜一個級數，做內部工具或大量文本處理的省錢首選。</td>
+            <td><code>n8n-nodes-deepseek</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.npmjs.com/package/n8n-nodes-chatwoot" rel="noopener">n8n-nodes-chatwoot</a></td>
+            <td>Chatwoot（開源 Zendesk）整合：把 workflow 事件變成客服對話、把客服對話推進 workflow 分派。跟 Evolution API 搭做完整客服自動化。</td>
+            <td><code>n8n-nodes-chatwoot</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="pnote">下載數為 <a href="https://github.com/restyler/awesome-n8n" rel="noopener">restyler/awesome-n8n</a> 2026-01-20 快照的月下載量，2026-08 應更高。</p>
+    </section>
+
+    <section id="mcp" data-nav="MCP servers">
+      <h2 data-icon="mcp">n8n MCP Servers · 給你的 AI 一個 workflow builder</h2>
+      <p>MCP server 是「教你的 AI 怎麼跟 n8n 講話」的一段程式。掛好之後，你在 Claude／Cursor 講一句「幫我做一支 workflow」，AI 直接透過 n8n REST API 幫你 create／activate／debug。這一類目前最活的三顆：</p>
+      <div class="feature-grid">
+
+        <div class="feature-card">
+          <h3><a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a></h3>
+          <div class="pnote">22.7k ★ · MIT · 極活躍（1,193 commits）</div>
+          <p>目前 star 最高的 n8n MCP，功能最完整：Core Tools 7 顆（node search／validation／template 探索／docs），Management Tools 16 顆（workflow CRUD、execution、folder、credential、audit、health）。覆蓋 <strong>2,541 個 n8n 節點</strong>（832 core + 1,709 community）99% property。</p>
+          <pre class="code-block"><code>npx n8n-mcp</code></pre>
+          <p class="pnote">安裝也支援 Docker（<code>ghcr.io/czlonkowski/n8n-mcp</code>）、npm 安裝到本機、Railway 一鍵。<strong>2026 首選</strong>。</p>
+        </div>
+
+        <div class="feature-card">
+          <h3><a href="https://github.com/makafeli/n8n-workflow-builder" rel="noopener">makafeli/n8n-workflow-builder</a></h3>
+          <div class="pnote">540 ★ · MIT · 活躍（56 commits）</div>
+          <p>更輕量的選擇：15 顆 tool 分 5 類（Core Workflow、Lifecycle、Advanced、Execution、Organization）。sweet spot 是 <code>create_workflow_and_activate</code> 一步到位、<code>generate_audit</code> 一鍵安全稽核。給不需要 node search 的中階用戶。</p>
+          <pre class="code-block"><code>npx @makafeli/n8n-workflow-builder</code></pre>
+          <p class="pnote">TypeScript 撰寫、CI 完整、issue 回覆快。個人／小團隊起手推薦。</p>
+        </div>
+
+        <div class="feature-card">
+          <h3><a href="https://github.com/salacoste/mcp-n8n-workflow-builder" rel="noopener">salacoste/mcp-n8n-workflow-builder</a></h3>
+          <div class="pnote">229 ★ · MIT · 多實例支援</div>
+          <p>17 顆 tool（8 workflow + 4 execution + 5 tag + 6 credential），特色是 <strong>Multi-Instance Support</strong>：一個 MCP server 同時管 dev／staging／prod 三個 n8n，AI 自動路由。適合有多環境的中型團隊。</p>
+          <pre class="code-block"><code>npm i -g @kernel.salacoste/n8n-workflow-builder</code></pre>
+          <p class="pnote">38+ 頁詳細文件、credential 環境隔離做得細——需要多環境部署走這顆。</p>
+        </div>
+
+        <div class="feature-card">
+          <h3><a href="https://github.com/ifmelate/n8n-workflow-builder-mcp" rel="noopener">ifmelate/n8n-workflow-builder-mcp</a></h3>
+          <div class="pnote">≈200 ★ · 支援 VS Code／Cursor／Claude Code</div>
+          <p>強調 <strong>「agent mode」</strong>——AI 依你的自然語言 prompt 反覆迭代，自動 create → run → 觀察錯誤 → 修改。跟 IDE 內的 AI coding 體驗最一致。</p>
+          <pre class="code-block"><code>npx n8n-workflow-builder-mcp</code></pre>
+          <p class="pnote">適合已經在 Cursor 或 VS Code 寫 code 的工程師。</p>
+        </div>
+
+      </div>
+      <p class="pnote" style="margin-top:14px">備查：<a href="https://github.com/Jimmy974/n8n-workflow-builder" rel="noopener">Jimmy974/n8n-workflow-builder</a>、<a href="https://github.com/Daniboycg/n8n-workflow-builder-mcp-server" rel="noopener">daniel-carreon/n8n-workflow-builder-mcp-server</a>——同類 fork，功能大同小異；有偏好特定作者的可以看。</p>
+    </section>
+
+    <section id="collections" data-nav="熱門集合">
+      <h2 data-icon="collections">六大熱門集合入口</h2>
+      <p>不想一顆一顆挑？從這六個集合入口逛：</p>
+      <div class="feature-grid">
+
+        <div class="feature-card">
+          <h3><a href="https://github.com/restyler/awesome-n8n" rel="noopener">restyler/awesome-n8n</a></h3>
+          <div class="pnote">Community 精選清單 · 5,800+ 個 skill 條目 · 每月更新</div>
+          <p>依 npm 月下載量排序的 community node 大全，加上 tutorials／integrations 分類。想知道「這類需求有沒有現成 node」查這裡最快。</p>
+          <pre class="code-block"><code># 純索引，照連結裝各原始 npm 套件
+https://github.com/restyler/awesome-n8n</code></pre>
+        </div>
+
+        <div class="feature-card">
+          <h3><a href="https://www.npmjs.com/search?q=keywords%3An8n-community-node-package" rel="noopener">npmjs.com（keywords）</a></h3>
+          <div class="pnote">官方索引 · 500+ 套件 · 帶下載趨勢</div>
+          <p>npmjs 上的 <code>keywords:n8n-community-node-package</code> 搜尋是最新最全的一級資訊源。可以按下載量、更新時間排。</p>
+          <pre class="code-block"><code>npmjs.com/search?q=keywords:n8n-community-node-package</code></pre>
+        </div>
+
+        <div class="feature-card">
+          <h3><a href="https://n8n.io/integrations/" rel="noopener">n8n.io/integrations</a></h3>
+          <div class="pnote">官方整合目錄 · 700+ 節點 · 圖像化瀏覽</div>
+          <p>官方 + 認證的 verified community node，適合企業用戶——這一區的東西通常有基本審核與相容性保證。</p>
+          <pre class="code-block"><code>n8n.io/integrations</code></pre>
+          <p class="pnote">認證的通常有 official 標籤，直接從這裡挑最保險。</p>
+        </div>
+
+        <div class="feature-card">
+          <h3><a href="https://n8n.io/workflows/" rel="noopener">n8n.io/workflows</a></h3>
+          <div class="pnote">官方 template gallery · 3,000+ workflow · 直接 import</div>
+          <p>不是節點集合，是「別人做好的 workflow」集合。搜關鍵字（例：Slack notification、AI Agent）就有現成 JSON，複製過來改幾個欄位就能用。詳見 <a href="ch4_templates.html">第 4 章</a>。</p>
+          <pre class="code-block"><code>n8n.io/workflows</code></pre>
+        </div>
+
+        <div class="feature-card">
+          <h3><a href="https://community.n8n.io/" rel="noopener">community.n8n.io</a></h3>
+          <div class="pnote">官方論壇 · Share section · 高活躍</div>
+          <p>論壇的 <em>Share</em> 版是社群互相分享 workflow／node 的地方，比 npm 上多一層「作者現身回問題」。踩雷時到這裡搜錯誤訊息幾乎都有解。</p>
+          <pre class="code-block"><code>community.n8n.io</code></pre>
+        </div>
+
+        <div class="feature-card">
+          <h3><a href="https://github.com/topics/n8n-nodes" rel="noopener">github.com/topics/n8n-nodes</a></h3>
+          <div class="pnote">GitHub topic 索引 · 1,000+ repo · 依 star 排序</div>
+          <p>GitHub 上打了 <code>n8n-nodes</code> topic 的 repo。適合想直接看原始碼、追作者的社群玩家。</p>
+          <pre class="code-block"><code>github.com/topics/n8n-nodes</code></pre>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="compat" data-nav="相容性須知">
+      <h2 data-icon="integration">相容性須知</h2>
+      <p>Community Node／MCP server 在你的環境跑不跑得起來，常見卡在三件事：</p>
+      <ul>
+        <li><strong>n8n 版本</strong>：node 通常 pin 某個 n8n minor 版本區間。WoowTech <code>n8n.woowtech.io</code> 目前是 <code>v2.32.7 Community Edition</code>，安裝前看 node README 的 <code>peerDependencies</code>。</li>
+        <li><strong>Node.js 版本</strong>：node 用了新語法（例：optional chaining、top-level await）而你的 n8n 跑在較舊 Node.js 就會爆。HAOS add-on 版預設 Node 20，通常沒事。</li>
+        <li><strong>額外服務依賴</strong>：例如 Puppeteer 需要 Chromium binary，n8n Docker image 沒帶——要自己加 Dockerfile 或用 <code>n8n-nodes-puppeteer</code> 的獨立 image。</li>
+      </ul>
+      <p>MCP server 相容性簡單：只要你的 AI 客戶端（Claude Code／Cursor／Windsurf）支援 MCP 就能用，跟 n8n 版本沒直接關係（它是打 n8n API）。</p>
+      <div class="callout"><strong>觀念：</strong>挑第一準則不是 star 數，是「這顆的作者活不活」——最近 3 個月有沒有 commit、issue 有沒有回覆。</div>
+    </section>
+
+    <section id="safety" data-nav="安全守則">
+      <h2 data-icon="safety">安全守則</h2>
+      <div class="callout warn"><strong>注意：</strong>Community Node 是<strong>可以執行任意程式碼</strong>的 npm 套件，MCP server 是<strong>能呼叫你的 n8n API</strong>的 process。裝之前想清楚。</div>
+      <ul>
+        <li><strong>先讀 README，再 install</strong>：不是每顆都會標寫得清楚要哪些 credential、會發哪些請求。看不懂就叫 Claude 幫你讀一遍。</li>
+        <li><strong>Production 環境釘版本</strong>：<code>package.json</code> 用 <code>n8n-nodes-xxx: 1.2.3</code> 而不是 <code>^1.2.3</code>，避免上游改壞你無感升級。</li>
+        <li><strong>MCP server 用 scoped API key</strong>：n8n API key 建議建一支專給 MCP 用，權限限制到「特定 workflow tag」或 read-only。<strong>不要用 admin key</strong>。</li>
+        <li><strong>看貢獻者</strong>：只有 1 個 contributor 的 node 要有心理準備——他停更了就沒有下一版。生產環境用有維護組織的（官方、企業）比較安全。</li>
+        <li><strong>裝完做 audit</strong>：MCP server 都有 <code>generate_audit</code> 工具，跑一次看有沒有新裝的節點洩漏什麼。</li>
+      </ul>
+    </section>
+
+    <section id="spec" data-nav="SKILL.md 規格">
+      <h2 data-icon="spec">SKILL.md 規格速查（AI Agent Skill 用）</h2>
+      <p>如果你要寫自己的 AI Agent Skill（給 Claude／Cursor 用），Anthropic 的 SKILL.md 規格是目前業界事實標準。最小骨架：</p>
+      <pre class="code-block"><code>n8n-workflow-review/
+└── SKILL.md          ← 唯一必要檔案
+
+# SKILL.md 內容
+---
+name: n8n-workflow-review
+description: 使用者傳 n8n workflow JSON 時，做結構檢查——
+  找 dangling connection、缺 credential、明顯效能地雷。
+  也在使用者問「這支 workflow 有問題嗎」「幫我 review」時觸發。
+---
+
+# n8n Workflow Review
+
+（給 agent 看的做法說明，寫得像教新同事）</code></pre>
+      <table class="data-table">
+        <thead>
+          <tr><th>欄位</th><th>必填</th><th>說明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>name</code></td><td>是</td><td>小寫英數與連字號，1–64 字元。</td></tr>
+          <tr><td><code>description</code></td><td>是</td><td>做什麼＋何時用。<strong>AI 靠這行決定要不要載入</strong>，把使用者會講的話寫進去。</td></tr>
+          <tr><td><code>license</code> / <code>compatibility</code> / <code>allowed-tools</code></td><td>否</td><td>授權、相容性標注、工具白名單等選填欄位。</td></tr>
+        </tbody>
+      </table>
+      <p>慣例：SKILL.md 保持精簡，附件放 <code>references/</code>、<code>scripts/</code>、<code>assets/</code>，用到才讀，避免吃爆 AI 的 context。</p>
+      <div class="callout tip"><strong>提示：</strong>寫給 n8n 用的 skill 通常會描述「什麼 workflow pattern → 哪個 MCP tool」的映射；不寫成 skill 也可以，寫在 <a href="prompts.html">提示詞庫</a>裡當範例是最輕量的做法。</div>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>裝完 Community Node 沒出現在節點抽屜？</summary>
+        <div class="body">最常見兩個原因：（1）沒 reload n8n（或 add-on 沒重啟）；（2）版本不相容——看 <em>Settings → Community Nodes</em> 有沒有紅色錯誤訊息。實在不出來，去該 node 的 GitHub issue 搜同樣症狀，通常有解。</div>
+      </details>
+      <details class="faq">
+        <summary>Community Node 會不會拖累 n8n 效能？</summary>
+        <div class="body">每顆節點都會佔 memory（class 常駐），裝 50+ 顆會讓 n8n 啟動變慢 5-10 秒。原則：常用的留著、試玩過不用的就 uninstall。做 audit 的時候一併檢視。</div>
+      </details>
+      <details class="faq">
+        <summary>MCP server 需要一直開著嗎？會不會很吃資源？</summary>
+        <div class="body">MCP server 是 stdio 通信的短命 process——你的 AI 客戶端啟動時它才跑，關掉就停。CPU／記憶體用量幾乎為零，掛著沒差。</div>
+      </details>
+      <details class="faq">
+        <summary>WoowTech 的 <code>n8n.woowtech.io</code> 可以自己裝 community node 嗎？</summary>
+        <div class="body">預設不能——雲端多用戶環境，加 node 會影響所有客戶。有需求請開 ticket，WoowTech 評估後統一裝（通常會依社群評價 + 安全審核決定）。要完整自主權請走 HAOS add-on 模式（見 <a href="sales.html">銷售手冊</a>）。</div>
+      </details>
+      <details class="faq">
+        <summary>可以只用 npm 套件的 skill／node 名字打 star 追蹤，不裝嗎？</summary>
+        <div class="body">可以。npm 有 favorites、GitHub 有 star、awesome-n8n 有 issue 訂閱——先「收藏、看趨勢」，需要用了再裝，是最省心的策略。</div>
+      </details>
+      <details class="faq">
+        <summary>寫了新的 community node 或 skill 想上架？</summary>
+        <div class="body">Community Node：npm publish 加上 <code>keywords: ["n8n-community-node-package"]</code>，n8n 官方會自動收錄。AI Agent Skill：push 到 GitHub，投稿到 <a href="https://github.com/topics/claude-skill" rel="noopener">topics/claude-skill</a>；夠成熟的話 PR 到 <a href="https://github.com/restyler/awesome-n8n" rel="noopener">awesome-n8n</a> 或對應 skill 索引。</div>
+      </details>
+    </section>
+
+    <section id="download" data-nav="下載">
+      <h2 data-icon="download">把這本帶走</h2>
+      <p>整本是自包含單檔 HTML，下載後離線可開。集合資訊會過期，重要決定前回 <a href="index.html">資源總覽</a>看線上版。</p>
+      <p>
+        <a class="btn-pill" href="skills.html" download="n8n-skill-手冊.html">下載本冊 HTML</a>
+        <a class="btn-ghost" href="index.html">回資源總覽</a>
+      </p>
+    </section>
+
+    <footer class="site-footer">
+      <p>《n8n Skill／Community Nodes 手冊》由 <strong>WoowTech 渥屋科技</strong> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> 授權釋出。star 數與下載量為 2026-08-20 快照。</p>
+      <p class="footer-meta">The Smart Space Solution · 智慧空間解決方案 · <a href="index.html">n8n 資源總覽</a> · Community node 依各自作者授權；n8n 本身依 Sustainable Use License，本站與 n8n GmbH 無隸屬關係。</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var sidebar = document.getElementById('sidebar');
+  var toggle = document.getElementById('navToggle');
+  var mq = window.matchMedia('(max-width: 960px)');
+  function applyCollapse(e) {
+    if (e.matches) { sidebar.classList.add('is-collapsed'); }
+    else { sidebar.classList.remove('is-collapsed'); }
+  }
+  applyCollapse(mq);
+  mq.addEventListener ? mq.addEventListener('change', applyCollapse) : mq.addListener(applyCollapse);
+  toggle.addEventListener('click', function () { sidebar.classList.toggle('is-collapsed'); });
+  sidebar.querySelectorAll('.toc-in-chapter a').forEach(function (a) {
+    a.addEventListener('click', function () { if (mq.matches) sidebar.classList.add('is-collapsed'); });
+  });
+
+  var links = Array.prototype.slice.call(sidebar.querySelectorAll('.toc-in-chapter a[href^="#"]'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  function onScroll() {
+    var current = null;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].getBoundingClientRect().top <= 120) current = sections[i].id;
+    }
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (current && map[current]) map[current].classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>

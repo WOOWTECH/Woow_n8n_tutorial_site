@@ -1,0 +1,20 @@
+{
+  "_readme": "Per-unit translation policy for en/. Keys: '<file>' (whole page) or '<file>#<section id>'. Values: translate (default) | localize (adapt Taiwan-specific content for a global reader; must add a 'Note:' callout) | transcreate (rewrite for the audience; sales.html) | rewrite (prompts that assume Chinese output) | skip (excluded; card shows 'Chinese only'). Anything not listed = translate.",
+  "defaults": {
+    "policy": "translate"
+  },
+  "units": {
+    "sales.html": {
+      "policy": "transcreate",
+      "brief": "Overseas edition: no TWD, no Taiwan-only framing, real contact channel; Option A (self-hosted) / Option B (managed by WoowTech). Prices, currency, CTA and contact channel are placeholders until the business brief arrives."
+    },
+    "prompts.html": {
+      "policy": "rewrite",
+      "brief": "Prompts must instruct the AI to answer in English; keep CLI/API/UI strings verbatim; state the true prompt count."
+    },
+    "skills.html": {
+      "policy": "translate",
+      "brief": "Full translation; any prompt demanding Traditional Chinese output becomes English-only."
+    }
+  }
+}

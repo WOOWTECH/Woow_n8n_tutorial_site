@@ -1,0 +1,9 @@
+{
+  "_readme": "Non-primary site roots. published=false hides the locale from zh pages (no hreflang, no language pill) until the pilot is ready; flip to true at launch.",
+  "en": {
+    "dir": "en",
+    "hreflang": "en",
+    "label": "EN",
+    "published": false
+  }
+}

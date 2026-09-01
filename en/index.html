@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>n8n 資源總覽 · 教學、銷售手冊、提示詞庫、Skill 手冊 · WoowTech</title>
+  <meta name="description" content="Woow n8n 的四本手冊集中地：22 章入住教學、給客戶的銷售手冊、給 AI agent 建 workflow 用的提示詞庫、community node 與 MCP server 的 skill 手冊。三本手冊提供單檔 HTML 下載，離線可讀。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://n8n-guide.woowtech.io/en/" />
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="en_US" />
+  <!-- i18n:oglocale --><meta property="og:locale:alternate" content="zh_TW" /><!-- /i18n:oglocale -->
+  <meta property="og:title" content="n8n 資源總覽 · WoowTech" />
+  <meta property="og:description" content="教學、銷售手冊、提示詞庫、Skill 手冊，一頁入口。三本手冊提供單檔 HTML 下載。" />
+  <meta property="og:url" content="https://n8n-guide.woowtech.io/en/" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <!-- i18n:css --><link rel="stylesheet" href="../assets/css/i18n.css" /><!-- /i18n:css -->
+  <style>
+    /* hub 專用（index.html 由人手維護，build_nav 不碰這一頁） */
+    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .res-card {
+      display: flex; flex-direction: column;
+      padding: 28px 26px; border: 1px solid var(--hairline); border-radius: var(--radius);
+      background: var(--surface); box-shadow: var(--shadow-sm);
+    }
+    .res-card .tile {
+      display: inline-flex; width: 48px; height: 48px; border-radius: 16px;
+      background: var(--ww-blue-050); align-items: center; justify-content: center; margin-bottom: 14px;
+    }
+    .res-card .tile svg { display: block; }
+    .res-card h3 { margin: 0 0 6px; font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+    .res-card .aud { font-size: 12.5px; color: var(--ink-500); margin-bottom: 10px; }
+    .res-card p { margin: 0 0 18px; color: var(--ink-700); font-size: 14.5px; flex: 1; }
+    .res-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-pill, .btn-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-display); font-weight: 600; font-size: 14px;
+      padding: 10px 22px; border-radius: 999px; text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
+    .btn-pill { background: var(--ww-blue); color: #fff; }
+    .btn-pill:hover { background: var(--ww-blue-600); color: #fff; text-decoration: none; transform: translateY(-1px); }
+    .btn-ghost { background: var(--surface); color: var(--ink-900); border: 1.5px solid var(--hairline); }
+    .btn-ghost:hover { border-color: var(--ww-blue); color: var(--ww-blue-700); text-decoration: none; }
+    .btn-ghost svg, .btn-pill svg { flex-shrink: 0; }
+    .dl-note {
+      margin: 26px 0 0; padding: 14px 18px; border-radius: var(--radius-sm);
+      background: var(--ww-blue-050); border: 1px solid rgba(97,131,252,0.18);
+      font-size: 13.5px; color: var(--ink-700);
+    }
+    .link-row { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 14px; font-size: 14px; }
+    @media (max-width: 720px) { .res-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="home">
+    <div class="hero">
+      <!-- i18n:switch -->
+      <nav class="lang-switch" aria-label="Language"><a href="../index.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="index.html" lang="en" aria-current="page">EN</a></nav>
+      <!-- /i18n:switch -->
+      <span class="kicker-script">automate the boring stuff</span>
+      <div class="kicker">WoowTech · Woow n8n</div>
+      <h1>n8n 資源總覽</h1>
+      <p>把公司裡的重複工作外包給流程自動化——四本手冊一次備齊：怎麼用、怎麼賣、怎麼讓 AI 幫你建、有哪些節點跟 MCP 可以裝。三本手冊提供單檔 HTML 下載，存下來離線也能讀。</p>
+    </div>
+
+    <section class="chapter-index">
+      <h2 class="index-title">四本手冊</h2>
+      <div class="res-grid">
+
+        <div class="res-card">
+          <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M19 2L14 6.5V17.5L19 13V2M6.5 5C4.55 5 2.45 5.4 1 6.5V21.16C1 21.41 1.25 21.66 1.5 21.66C1.6 21.66 1.65 21.59 1.75 21.59C3.1 20.94 5.05 20.5 6.5 20.5C8.45 20.5 10.55 20.9 12 22C13.35 21.15 15.8 20.5 17.5 20.5C19.15 20.5 20.85 20.81 22.25 21.56C22.35 21.61 22.4 21.59 22.5 21.59C22.75 21.59 23 21.34 23 21.09V6.5C22.4 6.05 21.75 5.75 21 5.5V19C19.9 18.65 18.7 18.5 17.5 18.5C15.8 18.5 13.35 19.15 12 20V6.5C10.55 5.4 8.45 5 6.5 5Z"/></svg></span>
+          <h3>入住教學</h3>
+          <div class="aud">給用戶 · 22 章＋3 附錄</div>
+          <p>從打開 Woow n8n、用別人做好的 template、拉出第一支 workflow，一路帶到 Expression、Code node、AI Agent、Webhook。每章 10 分鐘。</p>
+          <div class="res-actions">
+            <a class="btn-pill" href="tutorial.html">線上閱讀 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#FFFFFF" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"/></svg></a>
+            <a class="btn-ghost" href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site/archive/refs/heads/main.zip"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#3A57C4" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg> 整站 zip</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M11 6H14L17.29 2.7A1 1 0 0 1 18.71 2.7L21.29 5.29A1 1 0 0 1 21.29 6.7L19 9H11V11A1 1 0 0 1 10 12A1 1 0 0 1 9 11V8A2 2 0 0 1 11 6M5 11V15L2.71 17.29A1 1 0 0 0 2.71 18.7L5.29 21.29A1 1 0 0 0 6.71 21.29L11 17H15A1 1 0 0 0 16 16V15H17A1 1 0 0 0 18 14V13H19A1 1 0 0 0 20 12V11H13V12A2 2 0 0 1 11 14H9A2 2 0 0 1 7 12V9Z"/></svg></span>
+          <h3>銷售手冊</h3>
+          <div class="aud">給客戶與經銷商 · 單頁</div>
+          <p>把「有人在做但不該有人做」的重複勞動交給 workflow：兩種模式（HAOS Add-on 或 n8n.woowtech.io 雲端）、六個實際場景、Template Package 與 SLA 條件。</p>
+          <div class="res-actions">
+            <a class="btn-pill" href="sales.html">線上閱讀 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#FFFFFF" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"/></svg></a>
+            <a class="btn-ghost" href="sales.html" download="n8n-銷售手冊.html"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#3A57C4" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg> 下載 HTML</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2M20 16H5.2L4 17.2V4H20V16M17 11H15V9H17M13 11H11V9H13M9 11H7V9H9"/></svg></span>
+          <h3>API／MCP 提示詞庫</h3>
+          <div class="aud">給工程師與 AI agent · 44 條可複製</div>
+          <p>用一句話讓 Claude／Cursor 幫你建 workflow：44 條分 8 類（生成／trigger／資料轉換／SaaS 整合／AI Agent／錯誤處理／除錯／維運），每條觸發 n8n MCP tool 或 REST API。</p>
+          <div class="res-actions">
+            <a class="btn-pill" href="prompts.html">線上閱讀 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#FFFFFF" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"/></svg></a>
+            <a class="btn-ghost" href="prompts.html" download="n8n-api-mcp-prompts.html"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#3A57C4" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg> 下載 HTML</a>
+          </div>
+        </div>
+
+        <div class="res-card">
+          <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M22,13.5C22,15.26 20.7,16.72 19,16.96V20A2,2 0 0,1 17,22H13.2V21.7A2.7,2.7 0 0,0 10.5,19C9,19 7.8,20.21 7.8,21.7V22H4A2,2 0 0,1 2,20V16.2H2.3C3.79,16.2 5,15 5,13.5C5,12 3.79,10.8 2.3,10.8H2V7A2,2 0 0,1 4,5H7.04C7.28,3.3 8.74,2 10.5,2C12.26,2 13.72,3.3 13.96,5H17A2,2 0 0,1 19,7V10.04C20.7,10.28 22,11.74 22,13.5M17,15H18.5A1.5,1.5 0 0,0 20,13.5A1.5,1.5 0 0,0 18.5,12H17V7H12V5.5A1.5,1.5 0 0,0 10.5,4A1.5,1.5 0 0,0 9,5.5V7H4V9.12C5.76,9.8 7,11.5 7,13.5C7,15.5 5.75,17.2 4,17.88V20H6.12C6.8,18.25 8.5,17 10.5,17C12.5,17 14.2,18.25 14.88,20H17V15Z"/></svg></span>
+          <h3>Skill 手冊</h3>
+          <div class="aud">給進階用戶 · 節點型錄＋MCP 速查</div>
+          <p>裝一顆 community node 或給 AI 一顆 MCP server，n8n 立刻多會十件事。精選 10 顆熱門節點（Puppeteer、ElevenLabs、MCP、Evolution API 等）、4 大 n8n MCP server 深度比較（含 czlonkowski/n8n-mcp 22.7k★）與安全守則。</p>
+          <div class="res-actions">
+            <a class="btn-pill" href="skills.html">線上閱讀 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#FFFFFF" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"/></svg></a>
+            <a class="btn-ghost" href="skills.html" download="n8n-skill-手冊.html"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#3A57C4" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg> 下載 HTML</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="dl-note">
+        銷售手冊、提示詞庫、Skill 手冊都是<strong>自包含單檔 HTML</strong>：圖示全部內嵌，下載後離線可開、可直接轉寄。教學為多頁站，建議線上閱讀，需要離線請下載整站 zip。
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">相關連結</h2>
+      <div class="link-row">
+        <a href="https://n8n.woowtech.io/" rel="noopener">Woow n8n 實例（帳號向 IT 索取）</a>
+        <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">本站原始碼與勘誤</a>
+        <a href="https://n8n.io/" rel="noopener">n8n 官方站</a>
+        <a href="https://pi-agent-guide.woowtech.io/" rel="noopener">姊妹站：Woow HA Pi Agent 入住指南</a>
+        <a href="https://woowtech.github.io/Woow_ha_tutorial_site/" rel="noopener">姊妹站：HA 新居入住指南</a>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>《Woow n8n 入住指南》由 <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">n8n 是 <a href="https://n8n.io/" rel="noopener">n8n.io</a> 的開源工作流自動化平台（Sustainable Use License）。本站與 n8n GmbH 無隸屬關係，僅為社群教學。截圖取自 Woow 內部 n8n 實例與 n8n 官方文件。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer>
+  </main>
+</body>
+</html>

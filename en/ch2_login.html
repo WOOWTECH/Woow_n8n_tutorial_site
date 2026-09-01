@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter 2 · 打開 Woow n8n：登入與 5 分鐘介面導覽 · Woow n8n 入住指南</title>
+  <meta name="description" content="登入 Woow n8n（n8n.woowtech.io）、確認權限、看懂主頁與側欄的位置。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch2_login.html" />
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
+  <meta property="og:title" content="Chapter 2 · 打開 Woow n8n：登入與 5 分鐘介面導覽 · Woow n8n 入住指南" />
+  <meta property="og:description" content="登入 Woow n8n（n8n.woowtech.io）、確認權限、看懂主頁與側欄的位置。" />
+  <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch2_login.html" />
+  <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch2/01_signin.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Chapter 2 · 打開 Woow n8n：登入與 5 分鐘介面導覽 · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="登入 Woow n8n（n8n.woowtech.io）、確認權限、看懂主頁與側欄的位置。" />
+  <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch2/01_signin.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/i18n.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="tutorial.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <nav class="lang-switch" aria-label="Language"><a href="../ch2_login.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch2_login.html" lang="en" aria-current="page">EN</a></nav>
+    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <h2>Chapters</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html" class="active">打開 Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
+      <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>This chapter</h2>
+      <a href="#why">為什麼要先搞懂登入</a>
+      <a href="#concept">Woow n8n 是自己的</a>
+      <a href="#steps">第一次登入五步</a>
+      <a href="#success">看到什麼代表成功</a>
+      <a href="#visibility">看不到某東西的原因</a>
+      <a href="#multi-device">手機能用嗎</a>
+      <a href="#tour">兩個必記位置</a>
+      <a href="#troubleshoot">卡關排錯</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>Appendices</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch2_login.html" hreflang="zh-Hant">Open the Chinese version</a></div>
+    <div class="chapter-header">
+      <div class="kicker">Chapter 2</div>
+      <h1>打開 Woow n8n：登入與 5 分鐘介面導覽</h1>
+      <p class="lead">同事叫你「去 n8n 開一個 workflow」，可是網址在哪、帳號怎麼拿、進去要點哪？這一章帶你從瀏覽器打開 <code>n8n.woowtech.io</code>、輸入公司給的帳密、看到主頁、確認你進的是對的地方。看完你就有一個「可以開始動手」的工作區。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼要先搞懂登入">
+      <h2 data-icon="why">為什麼要先花五分鐘搞懂登入</h2>
+      <p>公司裡通常是這樣：某天主管在 Slack 丟一句「這個重複工作你去用 n8n 排一下」，然後就沒有然後了。你 Google「n8n 登入」，結果跳出來的是 <code>n8n.io</code>（人家公司的雲端版），你註冊、登入、開始做，做到一半才發現：<strong>你進的根本不是公司那個實例</strong>，做出來的 workflow 同事看不到、公司的 credentials 也拿不到。</p>
+      <p>Woow 有自己架的 n8n，網址是 <code>https://n8n.woowtech.io/</code>。這一章就把三件事講清楚：</p>
+      <ul>
+        <li><strong>網址</strong>——去哪裡按下 Enter</li>
+        <li><strong>帳號</strong>——怎麼跟 IT 拿、拿到的長什麼樣</li>
+        <li><strong>第一次登入</strong>——會看到什麼、看不到某東西時代表什麼</li>
+      </ul>
+      <p>如果你還沒讀過<a href="ch1_what_is_n8n.html">第 1 章「什麼是 n8n」</a>，建議先掃一下，這樣後面看到「Workflow / Execution / Credential」這幾個詞才不會愣住。</p>
+      <div class="callout"><strong>觀念：</strong>「登入 n8n」不是一件事。有 n8n.io 官方雲端版、有各種自架的實例、有公司內部版。<strong>Woow 這一份是自己架的，跟外面公開的雲端版是完全不同的兩個系統。</strong>帳號不通用、workflow 不會互相看到。</p>
+    </section>
+
+    <section id="concept" data-nav="Woow n8n 是自己的">
+      <h2 data-icon="concept">Woow n8n 是「自架實例（self-hosted instance）」</h2>
+      <p>先把幾個名詞對齊。你之後跟 IT 講話會用到：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>名詞</th><th>意思</th><th>對 Woow 來說是誰</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>n8n.io</td>
+            <td>n8n 這家公司官網＋他們自己賣的雲端 SaaS 版</td>
+            <td>不是我們用的；只會去那邊看文件、抄 templates</td>
+          </tr>
+          <tr>
+            <td>Self-hosted 實例</td>
+            <td>把 n8n 這套軟體，架在自己公司伺服器上的版本</td>
+            <td><strong>就是我們的 <code>n8n.woowtech.io</code></strong></td>
+          </tr>
+          <tr>
+            <td>Cloudflare Proxy</td>
+            <td>公司在中間放的一層 CDN／保護層</td>
+            <td>你連 <code>n8n.woowtech.io</code> 其實先經過 Cloudflare，再進到公司內部；所以你在家、在辦公室、在客戶那都連得到</td>
+          </tr>
+          <tr>
+            <td>HTTPS</td>
+            <td>網址開頭 <code>https://</code> 的那個「加密連線」</td>
+            <td>Woow n8n 一定是 <code>https</code>，如果你看到 <code>http://</code> 開頭代表你打錯了</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>簡單講：<code>n8n.woowtech.io</code> 就是「公司自己的 n8n」。跟你可能在家玩過的 n8n cloud、跟同事口中的「n8n 官方那個」，是<strong>不同的宇宙</strong>。你的 workflow 只會存在這一個實例裡，換個網址就找不到。</p>
+
+      <div class="callout tip"><strong>提示：</strong>把 <code>https://n8n.woowtech.io/</code> 加到瀏覽器書籤，起名叫「公司 n8n」。之後就不用每次 Google 找路，也不會誤入 n8n.io 官方站。</div>
+
+      <h3>帳號怎麼來的？</h3>
+      <p>Woow n8n 的帳號<strong>不是你自己註冊</strong>，是由 IT／管理員在系統裡幫你開的。因為<strong>公司這個實例沒有設定 SMTP 寄信</strong>（實測 <code>/rest/settings</code> 回 <code>smtpSetup: false</code>），所以你<strong>不會收到官方 invite email</strong>；IT 會直接把一段<strong>邀請連結（Invite URL）</strong>或臨時密碼透過 Slack／面對面交給你。email 用什麼網域沒有硬性規定（n8n 沒有強制網域），Woow 慣例是 <code>你的名字@woowtech.io</code>，但如果 IT 用別的也是可以的。</p>
+      <p>如果你的帳號還沒被開通，直接看到 login 卡在原地按不進去，這章的「troubleshoot」段落會教你怎麼跟 IT 講、怎麼描述問題。</p>
+    </section>
+
+    <section id="steps" data-nav="第一次登入五步">
+      <h2 data-icon="steps">第一次登入的五個步驟</h2>
+      <p>準備好瀏覽器（Chrome、Edge、Safari、Firefox 都可以），跟 IT 給你的暫時密碼放旁邊。</p>
+
+      <ol class="steps">
+        <li>
+          <h3>打開瀏覽器，網址列貼上 <code>https://n8n.woowtech.io/</code></h3>
+          <p>按 Enter。網址一定要是 <code>https</code>，不是 <code>http</code>。如果你只打 <code>n8n.woowtech.io</code>，瀏覽器通常也會自動幫你補 https，這是正常的。</p>
+        </li>
+        <li>
+          <h3>看到 n8n 登入畫面</h3>
+          <p>畫面是<strong>淡灰底</strong>（Woow 這一版沒開深色主題選項），中間一張白色卡片，卡片上方有 n8n 的粉紅／橘紅色連線節點 logo 加上小寫「n8n」字樣，下面兩個輸入框：<strong>Email</strong> 與 <strong>Password</strong>，一顆橘色 <strong>Sign in</strong> 按鈕，按鈕下方一行小字連結 <strong>Forgot my password</strong>（不是「Forgot password?」）。沒有「Sign in with SSO / Sign in with Google」的按鈕——因為 Woow 沒開 SSO。看到這個畫面就代表你連到對的地方了。</p>
+          <figure class="shot">
+            <img src="../assets/screenshots/ch2/01_signin.png" alt="n8n 登入表單，Email 與密碼欄位被紅框標註" />
+            <figcaption><strong>圖 2-1</strong>登入卡片：紅框標出 Email 與 Password 兩個欄位，下方是橘色 Sign in 與 Forgot my password 連結。</figcaption>
+          </figure>
+        </li>
+        <li>
+          <h3>輸入 IT 給你的 email 與密碼</h3>
+          <p>密碼直接用 IT 給的字串（可能有大小寫、有特殊符號，複製貼上最保險，不要手打）。如果 IT 給你的是一段 <strong>Invite URL</strong>（例如 <code>https://n8n.woowtech.io/signup?inviterId=…&inviteeId=…</code>）而不是密碼，那你要走的是「接受邀請」流程——直接點那個網址，在跳出來的頁面自己設定密碼與姓名，設完會自動幫你登入。這種情況就跳到第 5 步。</p>
+          <div class="callout warn"><strong>注意：</strong>如果你在自己電腦上，瀏覽器可能會問「要儲存這個密碼嗎？」——先按<strong>不要</strong>，因為下一步可能還要改密碼，存的是暫時密碼沒意義。改完之後再存新的。</div>
+        </li>
+        <li>
+          <h3>按 Sign in（或接受邀請設密碼）</h3>
+          <p>如果 IT 給的是暫時密碼，登入後可以到 <em>右上頭像 → Personal settings → Change password</em> 自己換一組。n8n Community 版<strong>並不會強制第一次登入就改密碼</strong>，是你要主動去換。密碼長度<strong>最少 8 個字元</strong>（實測 <code>passwordMinLength: 8</code>），建議混英數與符號。</p>
+        </li>
+        <li>
+          <h3>看到主頁：左邊側欄、中間工作區</h3>
+          <p>成功登入之後，你會被丟到主頁 <code>/home/workflows</code>。畫面分成三塊：<strong>左邊窄側欄</strong>（大約是 Overview／Workflows／Credentials／Executions／Insights／Templates／Help 這幾項，實際看到哪些依你的角色而定，見下一節）、<strong>中間主區塊</strong>（第一次通常是空的 Workflows 列表，或者一張「Get started」的引導卡片）、<strong>右下角一顆頭像</strong>（你的名字縮寫；n8n 的頭像在側欄底部，不是右上角）。</p>
+          <figure class="shot">
+            <img src="../assets/screenshots/ch2/02_overview.png" alt="登入成功後的 n8n 主頁 Overview" />
+            <figcaption><strong>圖 2-2</strong>登入成功後的主頁：左邊窄側欄、中間 Workflows 主區塊、側欄底部你的頭像——看到這三塊就是進對地方了。</figcaption>
+          </figure>
+        </li>
+      </ol>
+
+      <div class="callout tip"><strong>提示：</strong>Chrome／Edge 這種瀏覽器可以按 <kbd>Ctrl</kbd>+<kbd>D</kbd>（Mac 是 <kbd>Cmd</kbd>+<kbd>D</kbd>）把主頁加書籤。之後每次要用 n8n 直接點書籤就好。</div>
+    </section>
+
+    <section id="success" data-nav="看到什麼代表成功">
+      <h2 data-icon="done">看到什麼代表你真的登入成功了</h2>
+      <p>登入這件事，「畫面切換」只是表面的成功。你要確認的是：真的進到自己的工作區、有你該有的權限。用這張核對表：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>檢查項目</th><th>OK 的樣子</th><th>NG 的樣子</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>網址列</td>
+            <td>停在 <code>https://n8n.woowtech.io/workflows</code> 或類似路徑</td>
+            <td>還停在 <code>/signin</code> 或跳去別的網址</td>
+          </tr>
+          <tr>
+            <td>左邊側欄</td>
+            <td>看得到 Workflows、Executions、Credentials、Templates 這幾個項目</td>
+            <td>整片側欄沒出來，或只剩幾個灰色不能點</td>
+          </tr>
+          <tr>
+            <td>側欄左下角</td>
+            <td>有一顆圓形頭像（通常是你名字第一個字或 email 首字母），點下去可展開 Settings / Sign out</td>
+            <td>整個頭像區沒出來、或還顯示 Sign in 按鈕</td>
+          </tr>
+          <tr>
+            <td>頁面頂部</td>
+            <td>沒有紅色 error banner，也沒有「You do not have access」訊息</td>
+            <td>紅底白字的錯誤條，或整片畫面被錯誤蓋住</td>
+          </tr>
+          <tr>
+            <td>Workflows 列表</td>
+            <td>空的（第一次登入很正常），或已經有 IT 幫你放的示範 workflow</td>
+            <td>看到一整排看起來不認識的別人的 workflow ← 這其實不是 NG（可能是 workspace 共用），但你要小心不要亂改</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout"><strong>觀念：</strong>第一次進來 Workflows 列表通常是空的，這是正常的。不代表你出錯，只是還沒人幫你放東西。往下讀就會學到怎麼開第一個。</div>
+    </section>
+
+    <section id="visibility" data-nav="看不到某東西的原因">
+      <h2 data-icon="warning">「我看不到那個功能耶」——三種常見原因</h2>
+      <p>登入完之後，最常見的困惑是：<em>「同事說要點左邊的 Credentials，可是我根本沒有這一項欸？」</em> 這通常不是 n8n 壞掉，而是你的權限、workspace 或帳號狀態的關係。對照表：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>症狀</th><th>可能的原因</th><th>怎麼辦</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sign in 按了沒反應／畫面卡在登入頁</td>
+            <td>帳號被 disabled、email 沒開通、密碼打錯</td>
+            <td>找 IT 說「我的 n8n 帳號 <code>xxx@woowtech.io</code> 登不進去，Sign in 沒反應」，請他們檢查帳號狀態</td>
+          </tr>
+          <tr>
+            <td>進得去，但同事講的「Admin 面板 / Users 管理」你沒有</td>
+            <td>那是 <strong>Owner</strong>（實例第一個建立的人）或 <strong>Admin 角色</strong>才看得到，而 Admin 角色只在 n8n Cloud Pro / Enterprise 版才存在。Woow 這一版是 Community 版（實測 <code>enterprise.saml/ldap/oidc</code> 都是 false），只有 Owner 與 Member 兩種角色</td>
+            <td>正常現象；管理實例的事丟給 Owner 處理即可</td>
+          </tr>
+          <tr>
+            <td>進去看到一堆別人的 workflow</td>
+            <td>你被加進的是共享 workspace／專案，這些是同事的作品</td>
+            <td><strong>不要亂點 Delete，也不要亂改欄位。</strong>要練習就自己按 <em>New workflow</em> 開新的，或在 Personal 空間裡練</td>
+          </tr>
+          <tr>
+            <td>Credentials 列表是空的，或看不到同事建的 credential</td>
+            <td>Member 角色只看得到「別人分享給你的」＋「自己建的」credentials，看不到別人 personal 空間裡沒分享的</td>
+            <td>要用就請對方按 <em>Share</em> 分享給你，或請他把 credential 移到 Team project 底下</td>
+          </tr>
+          <tr>
+            <td>看到紅色 banner「You do not have access to this workspace / project」</td>
+            <td>你的帳號存在，但沒被加到那個 project</td>
+            <td>找 Owner，說「請把我加到 XX project」——講清楚專案名稱</td>
+          </tr>
+          <tr>
+            <td>看不到 <strong>Insights</strong>、<strong>Variables</strong>、<strong>Source Control</strong> 這種進階項目</td>
+            <td>這些是 Enterprise / Cloud Pro 才有的功能。Woow 是 Community 版，這些通通沒有</td>
+            <td>正常現象，不用擔心；本教程用得到的功能都在 Community 版可用範圍內</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout warn"><strong>注意：</strong>n8n 的<strong>實例級角色（instance role）</strong>官方只有三種：<strong>Owner</strong>、<strong>Admin</strong>、<strong>Member</strong>（其中 Admin 是 Enterprise/Cloud Pro 才有）。網路上常看到的 <em>Editor</em>、<em>Viewer</em> 是<strong>專案級角色（project role）</strong>，只在 Enterprise 有 team projects 時才會出現。<strong>Woow 這一版沒有 Editor／Viewer 這種角色，不要照搬 n8n 官方文件截圖的角色名稱來要求 IT。</strong></div>
+    </section>
+
+    <section id="multi-device" data-nav="手機能用嗎">
+      <h2 data-icon="companion">手機、平板、公司電腦——多裝置能不能用</h2>
+      <p>n8n 是純網頁 app，不用裝任何程式。理論上任何裝置只要有瀏覽器就打得開。但「打得開」跟「用得順」是兩回事：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>裝置</th><th>能做什麼</th><th>不建議做什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>公司／家裡電腦（≥ 13 吋螢幕）</td>
+            <td>做 workflow、拉節點、debug、看 execution、改欄位——全部功能</td>
+            <td>沒有</td>
+          </tr>
+          <tr>
+            <td>平板（iPad、Android tablet）</td>
+            <td>看 execution history、看 workflow 長怎樣、手動按 Execute 觸發</td>
+            <td>拉節點、大量編輯（觸控在 canvas 上很難精準）</td>
+          </tr>
+          <tr>
+            <td>手機</td>
+            <td>看今天的執行有沒有紅、按 <em>Execute workflow</em> 手動觸發、看通知</td>
+            <td>編輯 workflow（節點會擠成一團），或第一次登入設密碼（欄位太小容易打錯）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip"><strong>提示：</strong>手機看畫面破版時，Chrome 右上角選「桌面版網站（Desktop site）」通常會好一點，但也只是勉強能看。真的要做事情還是回電腦。</div>
+
+      <p>登入 session 也要注意：<strong>一個瀏覽器同時只能登一個 n8n 帳號</strong>。如果你要同時用兩個帳號（比如自己的 + 一個測試帳號），要嘛開<em>無痕視窗（Incognito）</em>，要嘛裝一個不同的瀏覽器（Chrome 一個、Firefox 一個）。</p>
+    </section>
+
+    <section id="tour" data-nav="兩個必記位置">
+      <h2 data-icon="tabs">兩個一定要記住的位置</h2>
+      <p>登入後的介面之後會在<a href="ch3_workspace_tour.html">第 3 章「工作區導覽」</a>逐塊拆解。這裡只先講兩個你「隨時要用得到」的按鈕，記住它們，你就不會迷路：</p>
+
+      <ol class="steps">
+        <li>
+          <h3>左上角的 n8n logo ＝「回主頁」</h3>
+          <p>不管你在編輯某個 workflow、還是在看某個 execution 的錯誤細節，點左上角那顆 n8n logo 或側欄的 <strong>Workflows</strong>，就回到 workflow 列表主頁。這是你的「Home」按鈕。</p>
+        </li>
+        <li>
+          <h3>側欄左下角頭像 ＝「Settings / Sign out」</h3>
+          <p>側欄最下面那顆圓形頭像（n8n 的頭像放<strong>左側欄底部</strong>，不是右上角，容易誤找）點下去，會展開一個小選單，裡面有 <strong>Settings</strong>（改密碼、改個人偏好等）和 <strong>Sign out</strong>（登出）。</p>
+          <div class="callout warn"><strong>注意：</strong>用公司公用電腦的話，離開座位前一定要點 <strong>Sign out</strong>。n8n session 預設會存挺久，不登出下一個用電腦的人就能直接進你的 workflow。</div>
+        </li>
+      </ol>
+
+      <p>其他側欄的每一項（Executions、Credentials、Templates、Insights、Admin panel……）是什麼、什麼時候用，在<a href="ch3_workspace_tour.html">下一章</a>會全部拆解。這章只要求你「登得進去、認得出主頁、找得到登出」。</p>
+    </section>
+
+    <section id="troubleshoot" data-nav="卡關排錯">
+      <h2 data-icon="troubleshoot">常見卡關</h2>
+      <p>登入這一關看起來簡單，但公司環境變數多，卡關的組合也多。下面是最常見的四種，照著試一遍通常能解掉：</p>
+
+      <ol class="steps">
+        <li>
+          <h3>登入頁一直轉圈、或整片白</h3>
+          <p>先排除是不是你這邊的問題：<br>
+          （1）按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>（Mac 是 <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>）強制重新載入。<br>
+          （2）換一個瀏覽器試試看（Chrome 不行就試 Edge）。<br>
+          （3）換一台裝置（手機開 4G，不走公司 wifi）試試看。<br>
+          三個都不行，才回報給 IT 說「n8n.woowtech.io 全平台都連不上」——這時候通常是伺服器或 Cloudflare 那邊出事。</p>
+        </li>
+        <li>
+          <h3>登入完看到「You do not have access」的紅色訊息</h3>
+          <p>你的帳號通了，但沒被加到任何 workspace／專案。<strong>不要一直重試登入</strong>，重試也是一樣。截圖那個訊息，貼給 IT 或 workspace 管理員，說「請把我加到 XX 這個 workspace」。權限一開，重新整理頁面就進得去。</p>
+        </li>
+        <li>
+          <h3>忘記密碼</h3>
+          <p>登入頁 Sign in 按鈕下方有 <strong>Forgot my password</strong> 連結。點下去輸入 email，n8n 會顯示「已寄出重設信」的訊息。<br>
+          <strong>但這封信在 Woow 這一版寄不出去</strong>——實測 <code>https://n8n.woowtech.io/rest/settings</code> 回 <code>smtpSetup: false</code>，代表這個實例根本沒接 SMTP。畫面雖然顯示「已寄出」但你不會收到任何東西。唯一的解法是找 Owner／IT 用 CLI（<code>n8n user-management:reset</code> 之類）幫你手動重設。訊息模板：「請幫我重設 n8n.woowtech.io 的密碼，我的帳號是 <code>xxx@woowtech.io</code>，實例沒開 SMTP，麻煩用 CLI 或直接在後台改。」</p>
+        </li>
+        <li>
+          <h3>手機看畫面破版、按鈕點不到</h3>
+          <p>先試 Chrome 的「桌面版網站」模式。還是不行的話直接放棄，換電腦操作。n8n 的 canvas 本來就不是給小螢幕用的，這是設計上的限制，不是 bug。手機上就當是「查看工具」，不要期待能編輯。</p>
+        </li>
+        <li>
+          <h3>兩個帳號同時登入，登著登著就把彼此踢掉</h3>
+          <p>同一個瀏覽器只能保持一個 session。要同時用兩個帳號，開一個<strong>無痕視窗</strong>（Chrome：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>N</kbd>），或裝第二個瀏覽器分開用。不要在同一個一般視窗開兩個分頁登兩個帳號，會互相蓋掉。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+
+      <details class="faq">
+        <summary>一定要用公司的 n8n.woowtech.io 嗎？我可以自己註冊 n8n.io 的帳號用嗎？</summary>
+        <div class="body">
+          <p><strong>公事一律用公司的。</strong>理由三個：</p>
+          <ul>
+            <li>公司 credentials（Google／Slack／內部 API 的 token）只存在公司實例，你在 n8n.io 官方註冊的帳號拿不到。</li>
+            <li>你做的 workflow 同事要能接手、要能查執行記錄，只有公司實例做得到。</li>
+            <li>公司資料進到外部雲端服務是資安地雷。</li>
+          </ul>
+          <p>個人玩、學習用途，你想自架 n8n 或用 n8n.io 的免費雲端方案完全 OK，但那些跟公司 workflow 是分開的世界。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>密碼多久要換一次？</summary>
+        <div class="body">
+          <p>Woow n8n 本身沒強制固定週期。但因為你的 credentials（等於幫公司代辦所有 SaaS 操作的鑰匙）都存在裡面，建議每三到六個月自己主動去 <em>左下頭像 → Settings → Personal → Change password</em> 換一次。發現有人可能拿到過你的密碼（比如共用電腦忘記登出），<strong>當下立刻換</strong>。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>兩個帳號可以同時登入嗎？</summary>
+        <div class="body">
+          <p>同一個瀏覽器一次只能一個帳號 session。想同時用兩個帳號：一個開<strong>無痕視窗（Incognito）</strong>、或用<strong>不同瀏覽器</strong>（一個 Chrome 一個 Firefox）分開登。同一個瀏覽器一般視窗開兩個分頁登兩個帳號，會互相把對方登出，得不償失。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>有 SSO 嗎？可以直接用 Google 帳號登入嗎？</summary>
+        <div class="body">
+          <p>n8n 官方支援 SAML、LDAP、OIDC 三種 SSO 登入方式，但<strong>全都是 Enterprise（付費企業版）功能</strong>。<strong>Woow 這一份是 Community（免費社群版），實測 <code>/rest/settings</code> 的 <code>enterprise.saml / ldap / oidc</code> 全都是 false，SSO 功能沒授權也開不了。</strong>所以：只能用 email + 密碼登入，沒有「Sign in with SSO」也沒有 Google 一鍵登入按鈕。如果將來 IT 升級到 Enterprise，登入頁才會多一顆 SSO 按鈕。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>我的手機能收 n8n 的通知嗎？</summary>
+        <div class="body">
+          <p>n8n 本身不推 push 通知到手機。你會看到「通知」通常是<strong>你自己做的 workflow</strong>把訊息推到 Slack／Line／Email，然後那些 app 通知你。這章講的是登入介面本身，通知的做法之後在<a href="ch11_saas_integrations.html">第 11 章「熱門 SaaS 整合」</a>會教。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>Personal settings 裡面有很多東西，我可以亂改嗎？</summary>
+        <div class="body">
+          <p>頭像展開的 <strong>Settings</strong> 分兩層：<em>Personal</em>（改自己的密碼、API keys、個人偏好）跟 <em>Instance</em>（Users、External Secrets、Log Streaming……會影響全實例）。前者可以放心試，後者<strong>只有 Owner 才看得到、也才點得動</strong>——Member 角色連進去都不會出現那些選項，所以你其實想亂點也點不到。詳細差別在<a href="appendix_settings_ref.html">附錄 A · 設定速查</a>整理成表。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>我在家能連 n8n.woowtech.io 嗎？要開 VPN 嗎？</summary>
+        <div class="body">
+          <p>不用。<code>n8n.woowtech.io</code> 走 Cloudflare Proxy 對外開放，家裡、咖啡店、客戶那邊都連得到。但因為對外開放，<strong>密碼強度更重要</strong>，不要用「Woow1234」這種好猜的。</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>登入成功了，下一步要做什麼？</summary>
+        <div class="body">
+          <p>建議路線：先看<a href="ch3_workspace_tour.html">第 3 章「工作區導覽」</a>把每個側欄項目跟中間畫面搞清楚，然後跳到<a href="ch13_credentials.html">第 13 章「Credentials 管理」</a>把你會用到的第一組帳號（例如 Slack、Google）先設好，這樣後面章節做第一個 workflow 才有素材。急著動手也可以直接跳到第 8 章。</p>
+        </div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="ch1_what_is_n8n.html">
+        <span class="label">← Previous</span>
+        <span class="title">01 · 什麼是 n8n</span>
+      </a>
+      <a class="next" href="ch3_workspace_tour.html">
+        <span class="label">Next →</span>
+        <span class="title">03 · 工作區導覽</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+    </footer>
+  </main>
+</div>
+<script id="ui-strings" type="application/json">{"tocToggle":"Contents","tocExpand":"Expand chapter navigation","tocCollapse":"Collapse chapter navigation"}</script>
+<script src="../assets/js/toc.js"></script>
+</body>
+</html>

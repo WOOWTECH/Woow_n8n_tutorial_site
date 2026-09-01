@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Appendix B · 常見錯誤排錯 · Woow n8n 入住指南</title>
+  <meta name="description" content="n8n 常見錯誤症狀對照表：節點紅色框、Timeout、Credential 失效、429 rate limit、Webhook 找不到、Sub-workflow 執行錯誤，每個症狀對應 2-3 個解法。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://n8n-guide.woowtech.io/en/appendix_errors.html" />
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
+  <meta property="og:title" content="Appendix B · 常見錯誤排錯 · Woow n8n 入住指南" />
+  <meta property="og:description" content="n8n 常見錯誤症狀對照表：節點紅色框、Timeout、Credential 失效、429 rate limit、Webhook 找不到、Sub-workflow 執行錯誤，每個症狀對應 2-3 個解法。" />
+  <meta property="og:url" content="https://n8n-guide.woowtech.io/en/appendix_errors.html" />
+  <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/appx_b/01_executions_history.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Appendix B · 常見錯誤排錯 · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="n8n 常見錯誤症狀對照表：節點紅色框、Timeout、Credential 失效、429 rate limit、Webhook 找不到、Sub-workflow 執行錯誤，每個症狀對應 2-3 個解法。" />
+  <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/appx_b/01_executions_history.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/i18n.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="tutorial.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <nav class="lang-switch" aria-label="Language"><a href="../appendix_errors.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="appendix_errors.html" lang="en" aria-current="page">EN</a></nav>
+    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <h2>Chapters</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
+      <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>This chapter</h2>
+      <a href="#why">為什麼要有這附錄</a>
+      <a href="#steps">先跑三個快速自檢</a>
+      <a href="#warning">節點紅色框</a>
+      <a href="#url">401 Unauthorized</a>
+      <a href="#assign">403 Forbidden</a>
+      <a href="#advanced">404 Not Found</a>
+      <a href="#modes">429 Rate limit</a>
+      <a href="#restore">5xx / Timeout</a>
+      <a href="#remote">Webhook 收不到</a>
+      <a href="#integration">Sub-workflow 找不到</a>
+      <a href="#labels">Expression undefined</a>
+      <a href="#troubleshoot">其他常見卡關</a>
+      <a href="#companion">求救的正確方式</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>Appendices</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html" class="active">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../appendix_errors.html" hreflang="zh-Hant">Open the Chinese version</a></div>
+    <div class="chapter-header">
+      <div class="kicker">Appendix B</div>
+      <h1>常見錯誤排錯</h1>
+      <p class="lead">節點紅色框、Timeout、Credential 失效、429 Rate limit、Sub-workflow 找不到——這附錄是「當你卡住了」的速查表。書籤存起來，每次遇到不對就翻到這裡對症狀、抄解法，把 workflow 拉回綠色。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼要有這附錄">
+      <h2 data-icon="why">為什麼要有這附錄</h2>
+      <p>這附錄<strong>不是教學章</strong>——是一本「症狀 → 該做什麼」的速查手冊。前面 <a href="ch17_error_handling.html">第 17 章</a>教你怎麼<em>建立</em>錯誤處理機制（Error workflow、Retry、Wait）；這附錄補的是另一半：<strong>當錯誤已經跳出來</strong>，你要怎麼從錯誤訊息反推「是哪一類問題、下一步做什麼」。</p>
+      <p>使用方式：</p>
+      <ul>
+        <li><strong>存書籤</strong>——你 workflow 掛的時候，第一件事就是回到這頁。</li>
+        <li><strong>對症狀，不要對訊息字面</strong>——同一個錯誤 n8n 有時顯示成 <code>ETIMEDOUT</code>、有時顯示成 <code>Request timed out</code>，看下面各段的「症狀」欄找最像的。</li>
+        <li><strong>先做「三個快速自檢」</strong>——下一段。八成的問題不需要看完整份速查表，三步就能定位。</li>
+      </ul>
+      <div class="callout"><strong>觀念：</strong>n8n 的錯誤訊息 90% 是<em>外部系統回你的</em>——Slack 說你 token 過期、Google Sheets 說 rate limit、你打的 API 說 404。這附錄的每一段都會告訴你「錯的其實是誰」，你才不會白費力氣改自己的節點。</div>
+    </section>
+
+    <section id="steps" data-nav="先跑三個快速自檢">
+      <h2 data-icon="steps">遇到錯誤，先跑三個快速自檢</h2>
+      <p>不管什麼錯誤，先花 30 秒做這三件事，八成能直接定位問題：</p>
+
+      <ol class="steps">
+        <li>
+          <h3>workflow 是不是 Active（右上角 toggle 綠色）？</h3>
+          <p>打開該 workflow → 看右上角 <strong>Active toggle</strong>。如果是灰色（Inactive），Schedule Trigger 不會跑、Webhook 只有 Test URL 能收——這是「明明沒錯但也沒動」的第一名原因。切成綠色（Active）。</p>
+        </li>
+        <li>
+          <h3>Executions 頁最新一筆是紅還是綠？</h3>
+          <p>左側主導覽 <strong>Executions</strong>（或該 workflow 內的 Executions tab）。紅色 = 錯了，點進去看是哪個節點爆的、錯誤訊息寫什麼。綠色 = 有跑成功，那你其實沒錯，可能只是誤會（例：Schedule 還沒到時間）。</p>
+          <figure class="shot">
+            <img src="../assets/screenshots/appx_b/01_executions_history.png" alt="n8n Executions history 頁面，列出每筆執行的狀態與時間，紅色列代表失敗" />
+            <figcaption><strong>圖 附B-1</strong>Executions history：一列一筆執行，<strong>紅色 = 失敗</strong>，點進去可看是哪個節點爆的與錯誤訊息。</figcaption>
+          </figure>
+        </li>
+        <li>
+          <h3>該節點的 Credential 還通嗎？</h3>
+          <p>左側 <strong>Credentials</strong> → 找到該節點用的 credential → 點進去 → 右上有個 <strong>Reconnect</strong> 或測試按鈕。跑一次看綠色 tick 還在不在。八成的「跑很久突然開始錯」都是 credential 過期。</p>
+        </li>
+      </ol>
+
+      <div class="callout tip"><strong>提示：</strong>三步都做完還沒頭緒，才往下對症狀查。這三步排除的問題比後面所有段落加起來還多。</div>
+    </section>
+
+    <section id="warning" data-nav="節點紅色框">
+      <h2 data-icon="warning">症狀 1：節點紅色框</h2>
+      <p><strong>症狀</strong>：打開 workflow canvas，發現某個節點外框是<em>紅色</em>（不是連線紅，是節點本身框紅），或節點右上角有紅色驚嘆號。點進去參數面板，某些欄位有紅字說明。</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>可能原因</th><th>發生頻率</th><th>怎麼看出來</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Credential 沒選或選到被刪掉的</td>
+            <td>約 60%</td>
+            <td>參數面板頂端 Credential 欄空白，或顯示 <code>No credential selected</code></td>
+          </tr>
+          <tr>
+            <td>必填欄位（Required）沒填</td>
+            <td>約 25%</td>
+            <td>某欄位下方紅字寫 <code>This field is required</code></td>
+          </tr>
+          <tr>
+            <td>節點版本升級，舊參數對應不上</td>
+            <td>約 10%</td>
+            <td>參數面板頂端有黃色 banner「Newer version available」或參數欄消失</td>
+          </tr>
+          <tr>
+            <td>Expression 語法錯（大括號沒閉合等）</td>
+            <td>約 5%</td>
+            <td>Expression 欄位下方有紅字，preview 顯示 <code>[Expression error]</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>修法</strong>：</p>
+      <ol class="steps">
+        <li>
+          <h3>點該節點打開參數面板</h3>
+          <p>看到底哪個欄位是紅字——n8n 會直接告訴你缺什麼。</p>
+        </li>
+        <li>
+          <h3>Credential 欄空白就先補</h3>
+          <p>下拉選現成的、或按右邊 <strong>+</strong> 現場新建（參考 <a href="ch13_credentials.html">第 13 章</a>）。</p>
+        </li>
+        <li>
+          <h3>必填欄位補齊</h3>
+          <p>每一個底下有紅字的欄位都要填。Expression 模式 vs Fixed 模式搞混也會噴這個錯。</p>
+        </li>
+        <li>
+          <h3>版本升級的話，重新選節點</h3>
+          <p>刪掉舊節點 → Tab 叫節點抽屜 → 搜尋同樣的節點名（例：<code>Slack</code>）→ 選新版重連——n8n 不會自動幫你搬參數，通常要重填一次。</p>
+        </li>
+      </ol>
+
+      <div class="callout tip"><strong>提示：</strong>Function 節點在新版 n8n 已改名為 <strong>Code node</strong>，舊 workflow 匯入後 Function 節點會顯示紅框並提示升級。跟著 UI 提示按「Update」，多數情況能自動搬。搬完 <a href="ch5_import_workflow.html">第 5 章</a>教的重新驗證一次。</div>
+    </section>
+
+    <section id="url" data-nav="401 Unauthorized">
+      <h2 data-icon="url">症狀 2：401 Unauthorized</h2>
+      <p><strong>症狀</strong>：Executions 紅色 → 點該節點 → 錯誤訊息含 <code>401</code>、<code>Unauthorized</code>、<code>Invalid credentials</code>、<code>Authentication failed</code>。最常出現在 HTTP Request、Slack、Gmail、Google Sheets 這類節點。</p>
+
+      <p><strong>意思</strong>：對方 API 說「你是誰？我不認識你」——不是你打錯位址，是<em>認證沒過</em>。三種可能：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>可能原因</th><th>典型情況</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Credential 一開始就填錯</td>
+            <td>API key 貼漏字、密碼打錯、Bearer token 少了 <code>Bearer </code> 前綴</td>
+          </tr>
+          <tr>
+            <td>OAuth token 過期沒 refresh</td>
+            <td>Slack、Google、Notion 等 OAuth 授權跑了幾週後突然 401，通常是 refresh token 也過期或被 revoke</td>
+          </tr>
+          <tr>
+            <td>API key 被對方後台 revoke</td>
+            <td>同事去 API 後台按了「重生 key」、rotate 政策自動換 key、被安全系統偵測異常自動禁用</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>修法</strong>：</p>
+      <ol class="steps">
+        <li>
+          <h3>左側 Credentials → 找到該 credential</h3>
+          <p>從節點面板 Credential 欄的名字回找。</p>
+        </li>
+        <li>
+          <h3>OAuth 類型：按 Reconnect 重新授權</h3>
+          <p>會彈出對方（Slack / Google）的授權視窗，走完流程 → 回來看綠色 tick。</p>
+        </li>
+        <li>
+          <h3>API key 類型：去對方後台重新產生 key，貼回來</h3>
+          <p>例：Notion → Settings → Integrations → 產生新 secret；貼進 n8n 該 credential → Save → 按 <strong>Test</strong>。</p>
+        </li>
+        <li>
+          <h3>回到 workflow 重跑一次</h3>
+          <p>Executions 頁點 <strong>Retry</strong>（該次 execution 右上），或直接 Execute Workflow 手動觸發一次。</p>
+        </li>
+      </ol>
+
+      <div class="callout warn"><strong>注意：</strong>401 <em>不要開 Retry on fail</em>——再打 100 次一樣過期，只是浪費時間跟 rate limit 配額。這種錯要走 <a href="ch17_error_handling.html">Error workflow</a> 通知你手動處理，才是對的。</div>
+    </section>
+
+    <section id="assign" data-nav="403 Forbidden">
+      <h2 data-icon="assign">症狀 3：403 Forbidden</h2>
+      <p><strong>症狀</strong>：錯誤訊息含 <code>403</code>、<code>Forbidden</code>、<code>Insufficient permissions</code>、<code>Missing scope</code>。</p>
+
+      <p><strong>意思</strong>：對方認識你（credential 對），但說「你沒<em>權限</em>做這件事」。跟 401 的差別很重要：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>錯誤碼</th><th>意思</th><th>修哪裡</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>401</code> Unauthorized</td>
+            <td>不知道你是誰</td>
+            <td>Credential（重連 / 換 key）</td>
+          </tr>
+          <tr>
+            <td><code>403</code> Forbidden</td>
+            <td>知道你是誰但你不能做這件事</td>
+            <td>對方後台的權限 / OAuth scope</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>常見情境</strong>：</p>
+      <ul>
+        <li>OAuth 授權時只給了 <em>read</em> scope，但你在 workflow 要 <em>write</em>——例：Google Sheets 只授權 read-only，你節點卻選 <em>Append Row</em>。</li>
+        <li>你的公司 Google Workspace 管理員關掉了某 API 的存取（例：Gmail API 對 service account 不開放）。</li>
+        <li>Slack bot 沒被邀請進頻道——bot 有 <code>chat:write</code> 但頻道沒它就不能發。</li>
+        <li>API 後台把該 key 的權限降級了。</li>
+      </ul>
+
+      <p><strong>修法</strong>：</p>
+      <ol class="steps">
+        <li>
+          <h3>看錯誤訊息裡的 missing scope 名字</h3>
+          <p>對方通常會明講缺哪個 scope，例：<code>Missing scope: files.write</code>。</p>
+        </li>
+        <li>
+          <h3>回 Credentials 頁 → Reconnect，勾更多 scope</h3>
+          <p>OAuth 授權視窗會列出要授權哪些權限——這次多勾。</p>
+        </li>
+        <li>
+          <h3>不是 OAuth 就去對方後台加權限</h3>
+          <p>Slack: 邀 bot 進頻道；Notion: 分享 page 給 integration；Google Workspace: 找 IT 開放。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="advanced" data-nav="404 Not Found">
+      <h2 data-icon="advanced">症狀 4：404 Not Found</h2>
+      <p><strong>症狀</strong>：錯誤訊息含 <code>404</code>、<code>Not Found</code>、<code>Resource not found</code>。<strong>最常出現在 <a href="ch12_http_request.html">HTTP Request 節點</a></strong>——你打了一個對方伺服器上不存在的位址。</p>
+
+      <p><strong>90% 的原因是 URL 拼錯</strong>。檢查清單：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>檢查項</th><th>常見錯法</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>URL typo</td>
+            <td><code>/user/</code> vs <code>/users/</code>、少一個 s、多一個 <code>/</code></td>
+          </tr>
+          <tr>
+            <td>API 版本前綴</td>
+            <td>官方文件寫 <code>/v1/messages</code>，你只打 <code>/messages</code></td>
+          </tr>
+          <tr>
+            <td>環境搞混</td>
+            <td>打 production URL 但 credential 是 sandbox（或反過來）</td>
+          </tr>
+          <tr>
+            <td>Expression 塞的 ID 是空</td>
+            <td>URL 是 <code>/users/{{ $json.id }}</code>，但上游沒有 <code>id</code> 欄位，結果打成 <code>/users/undefined</code></td>
+          </tr>
+          <tr>
+            <td>API 真的下線／改路徑</td>
+            <td>舊文件寫的 endpoint 已 deprecate，該去對方文件看新版</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>修法</strong>：</p>
+      <ol class="steps">
+        <li>
+          <h3>把 URL 貼到 Postman / curl 手動打一次</h3>
+          <p>用一樣的 header、一樣的 auth，看是否 404。如果 Postman 也 404 → 是 URL 問題；如果 Postman 200 但 n8n 404 → 是 n8n 的 Expression 塞錯了。</p>
+        </li>
+        <li>
+          <h3>Expression 塞的部分——打開節點 Output 面板核對</h3>
+          <p>看上一個節點的實際 <code>$json</code> 有沒有你抓的那個欄位。<a href="ch14_expressions.html">第 14 章</a>教過怎麼看。</p>
+        </li>
+        <li>
+          <h3>查對方 API 官方文件確認 endpoint</h3>
+          <p>Google 搜 <em>「[服務名] API [動作]」</em>找最新的官方文件——第三方部落格文章常常過時。</p>
+        </li>
+      </ol>
+
+      <div class="callout tip"><strong>提示：</strong>寫 HTTP Request 節點時養成習慣：先在 Postman 打通再貼進 n8n。省下超多 debug 時間。</div>
+    </section>
+
+    <section id="modes" data-nav="429 Rate limit">
+      <h2 data-icon="modes">症狀 5：429 Too Many Requests</h2>
+      <p><strong>症狀</strong>：錯誤訊息含 <code>429</code>、<code>Too Many Requests</code>、<code>rate limit exceeded</code>、<code>quota exceeded</code>。</p>
+
+      <p><strong>意思</strong>：你打太快了，對方 SaaS 為了保護服務、要你降速。<em>不是你錯了</em>——只是打的節奏跟對方限速政策不合。</p>
+
+      <p><strong>三種修法（可以並用）</strong>：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>做法</th><th>適用情境</th><th>怎麼設</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>加 Wait 節點降速</td>
+            <td>批量處理多筆資料（例：對 500 個客戶各發一封通知）</td>
+            <td>每筆之後加 <strong>Wait 1 second</strong>，或每 N 筆 wait 一次</td>
+          </tr>
+          <tr>
+            <td>用 Split In Batches 分批</td>
+            <td>大量資料一次來（例：從 Sheet 讀 1000 列）</td>
+            <td><a href="ch11_saas_integrations.html">Split In Batches</a> 節點 → batch size 10 → 迴圈中間夾 Wait</td>
+          </tr>
+          <tr>
+            <td>節點開 Retry on fail</td>
+            <td>偶發 429（大部分時候不會，但偶爾撞到）</td>
+            <td>節點 Settings → Retry On Fail = ON → Max Tries 3 → Wait Between Tries 5000ms 以上</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>典型的組合 pattern</strong>：</p>
+      <pre class="code-block"><code>Google Sheets (讀 500 列)
+    ↓
+Split In Batches (batch size = 10)
+    ↓
+HTTP Request (打對方 API)  ← 開 Retry on fail, 5000ms
+    ↓
+Wait (1 second)
+    ↓
+(回到 Split In Batches 下一批)</code></pre>
+
+      <div class="callout"><strong>觀念：</strong>不同 SaaS 的 rate limit 差很多——Slack tier 1 method 每分鐘約 1 次、Notion 平均每秒 3 個 request、Gmail 每秒 250 quota units。<em>不知道對方限速就先假設 1 req/sec</em>，跑順了再加速。另外對方 429 回應常帶 <code>Retry-After</code> header（秒數或 HTTP date）——HTTP Request 節點可以在 Error output 讀 <code>$response.headers['retry-after']</code> 動態決定 Wait 多久，比死等一個固定秒數精準。</div>
+    </section>
+
+    <section id="restore" data-nav="5xx / Timeout">
+      <h2 data-icon="restore">症狀 6：5xx 錯誤 與 Timeout</h2>
+      <p><strong>症狀</strong>：錯誤訊息含 <code>500</code>／<code>502 Bad Gateway</code>／<code>503 Service Unavailable</code>／<code>504 Gateway Timeout</code>，或 <code>ETIMEDOUT</code>／<code>ECONNRESET</code>／<code>Request timed out</code>／<code>Execution timed out</code>／<code>Socket hang up</code>。</p>
+
+      <p><strong>意思</strong>：這一堆<em>幾乎都不是你的錯</em>——對方 server 掛了／過載、或網路連不通、或你等對方等太久放棄。判斷是哪一種：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>錯誤特徵</th><th>是什麼</th><th>怎麼修</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>500</code>／<code>502</code>／<code>503</code>／<code>504</code></td>
+            <td>對方 server 暫時掛掉／過載</td>
+            <td>等幾分鐘 → Executions 頁 <strong>Retry</strong>；查對方 status page；節點開 Retry on fail</td>
+          </tr>
+          <tr>
+            <td><code>ETIMEDOUT</code>／<code>Request timed out</code>（單一節點）</td>
+            <td>對方 API 太慢，超過節點 timeout 設定</td>
+            <td>節點 <strong>Add Option → Timeout</strong> 拉大（例：<code>30000</code>ms）</td>
+          </tr>
+          <tr>
+            <td><code>Execution timed out</code>（整條 workflow）</td>
+            <td>workflow 跑太久整體被切</td>
+            <td>Workflow Settings → <strong>Timeout Workflow</strong> 拉長；治本要拆 <a href="ch19_subworkflow.html">sub-workflow</a></td>
+          </tr>
+          <tr>
+            <td><code>ECONNREFUSED</code>／<code>ENOTFOUND</code></td>
+            <td>網路連不到對方（DNS 錯、防火牆擋）</td>
+            <td>檢查 URL 拼字、對方 IP 是否在 allowlist、公司防火牆 outbound 有沒有擋</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>對付 5xx 的黃金 pattern</strong>：</p>
+      <ol class="steps">
+        <li>
+          <h3>先重跑一次</h3>
+          <p>Executions 頁該筆 → 右上 <strong>Retry</strong>；5xx 大多幾分鐘後對方就恢復了。</p>
+        </li>
+        <li>
+          <h3>查對方 Status Page</h3>
+          <p>Google 搜 <em>「[服務名] status」</em>。常用：<code>status.slack.com</code>、<code>www.githubstatus.com</code>、<code>www.google.com/appsstatus</code>。有 outage 就等對方修好，沒的話再往下查。</p>
+        </li>
+        <li>
+          <h3>節點開 Retry on fail</h3>
+          <p>5xx 大多是<em>暫時性</em>錯誤，開 Retry（Max Tries 3、Wait Between Tries 2000ms）通常自動好——之後根本不會通知你。<a href="ch17_error_handling.html">第 17 章</a>教的最實用 pattern。</p>
+        </li>
+      </ol>
+
+      <div class="callout tip"><strong>提示：</strong>Timeout 常跟 429 一起出現——你打太快 → 對方過載 → 開始慢慢回 / 直接不回。先修 429，Timeout 通常也會跟著好。</div>
+
+      <div class="callout warn"><strong>注意：</strong>同一個 5xx 錯誤<em>持續超過 1 小時</em>就不太可能是暫時性了——可能對方 API 改版、你的 request 觸發對方 bug、或對方永久掛掉。用 Postman 打相同 request 交叉驗證，決定是報 bug 還是改 workflow。另外，<strong>401 也常在 workflow 跑順幾週後突然出現</strong>——是 credential 過期（OAuth refresh token 到期、API key 被 revoke、公司密碼輪換政策）。修法看<a href="#url">前面 401 段</a>：Credentials → Reconnect → Test 綠 tick 就好。可以把到期時間標在 credential 名字裡（例：<code>Slack (renew 2027-01)</code>）proactive 提前換。</div>
+    </section>
+
+    <section id="remote" data-nav="Webhook 收不到">
+      <h2 data-icon="remote">症狀 7：Webhook 收不到 / Webhook not found</h2>
+      <p><strong>症狀</strong>：外部系統打 <a href="ch22_webhook.html">Webhook</a> URL 但 workflow 沒動——Executions 頁沒新紀錄、Slack 沒發、什麼都沒發生。或對方 HTTP client 直接收到 <code>404 Webhook not registered</code> / <code>The requested webhook is not registered</code> 錯誤訊息。</p>
+
+      <p><strong>三種常見原因</strong>：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>原因</th><th>怎麼判斷</th><th>怎麼修</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>workflow 沒 Active</td>
+            <td>右上角 toggle 灰色（Inactive）</td>
+            <td>切成綠色 Active</td>
+          </tr>
+          <tr>
+            <td>對方打的是 Test URL 不是 Production URL</td>
+            <td>Test URL 路徑含 <code>/webhook-test/</code>、Production URL 路徑是 <code>/webhook/</code>；對方拿到含 <code>-test</code> 的網址就會遇到「聽一次就失效」</td>
+            <td>把 <em>Production URL</em> 交給對方（節點面板上方切到 Production URL 分頁複製）</td>
+          </tr>
+          <tr>
+            <td>網路／防火牆擋掉</td>
+            <td>你自己 curl 打 URL 也不通</td>
+            <td>self-hosted n8n 的話檢查 reverse proxy 設定、對外開放的 port、SSL 憑證</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>debug 步驟</strong>：</p>
+      <ol class="steps">
+        <li>
+          <h3>Webhook 節點 → 複製 Production URL</h3>
+          <p>不是 Test URL！差別在路徑：Test URL 是 <code>/webhook-test/xxx</code>、Production URL 是 <code>/webhook/xxx</code>。Test URL 只有你按 <strong>Listen for Test Event</strong> 時才收；workflow 設 Active 之後就只認 Production URL。</p>
+        </li>
+        <li>
+          <h3>從<em>外部網路</em>用 curl 打一次</h3>
+          <p>用手機熱點（避免走公司內網）：<code>curl -X POST https://your-n8n.com/webhook/xxx -d 'test'</code>。收到 200 = URL 通；連不上 = 網路問題。</p>
+        </li>
+        <li>
+          <h3>curl 通了但 Executions 沒紀錄</h3>
+          <p>檢查 workflow 是不是 Active、Webhook 節點的 HTTP Method（GET vs POST）跟對方用的一致、path 有沒有拼錯。</p>
+        </li>
+        <li>
+          <h3>curl 通了、workflow 也跑了，但下游沒動</h3>
+          <p>那不是 Webhook 收不到——是下游節點的問題，回去看 Executions 是哪個節點掛的。</p>
+        </li>
+      </ol>
+
+      <div class="callout warn"><strong>注意：</strong>Test URL 只有你在 canvas 上按了 <strong>Listen for Test Event</strong> 才會 alive，聽一次或約 120 秒後自動關；再打一次就會回 <code>Webhook not registered</code>。給外部系統設定 URL 時<em>一定要用 Production URL</em>（路徑 <code>/webhook/</code> 沒 <code>-test</code>），且 workflow 必須 Active。這是 Webhook 節點的第一名踩雷。</div>
+    </section>
+
+    <section id="integration" data-nav="Sub-workflow 找不到">
+      <h2 data-icon="integration">症狀 8：Sub-workflow 找不到 / Sub-workflow 內部錯誤</h2>
+      <p><strong>症狀 A（找不到）</strong>：<a href="ch19_subworkflow.html">Execute Workflow 節點</a>報錯 <code>Workflow not found</code>、<code>Could not find workflow with ID</code>。</p>
+      <p><strong>症狀 B（內部炸但 parent 分不清是誰）</strong>：sub-workflow 裡某節點掛了，parent 的 Execute Workflow 節點統一顯示 <code>Error executing sub-workflow</code> 或 <code>Problem in sub-workflow</code>——你看不到是哪個節點爆的，得回 Executions 找 sub-workflow 那筆單獨看。</p>
+
+      <p><strong>意思</strong>：這個 Execute Workflow 節點原本指定的 sub-workflow，現在找不到——被刪、被搬 workspace、或 workflow ID 換了。</p>
+
+      <p><strong>常見原因</strong>：</p>
+      <ul>
+        <li>Sub-workflow 被人（不小心）刪掉。</li>
+        <li>Sub-workflow 從 Personal 搬到 Workspace（或反過來），ID 保持但存取權變了。</li>
+        <li>你從 A 環境（例：測試）export，import 到 B 環境（例：正式）——原本引用的 workflow ID 在 B 環境不存在。</li>
+        <li>Sub-workflow 換了個新版本，舊 ID 被砍了。</li>
+      </ul>
+
+      <p><strong>修法</strong>：</p>
+      <ol class="steps">
+        <li>
+          <h3>打開 Execute Workflow 節點</h3>
+          <p>看 <strong>Workflow</strong> 下拉欄目前指到誰。如果是空白或紅字說找不到，就是這個問題。</p>
+        </li>
+        <li>
+          <h3>下拉重選正確的 sub-workflow</h3>
+          <p>從清單挑目前存在的那條——名字對了就選。</p>
+        </li>
+        <li>
+          <h3>Save 主 workflow</h3>
+          <p>Ctrl+S 存檔——workflow ID 對應會刷新。</p>
+        </li>
+        <li>
+          <h3>環境搬遷的話，import 後全掃一次</h3>
+          <p>從 A export 的 workflow 匯到 B 之後，所有 Execute Workflow 節點都要人工重選一次；n8n 不會自動對應 ID。</p>
+        </li>
+        <li>
+          <h3>症狀 B：sub 的錯誤要進 sub 的 Executions 看</h3>
+          <p>Execute Workflow 節點的錯誤訊息只是 wrapper——真正原因在 sub-workflow 自己的 Executions 那筆。Executions 頁最上方切到 sub-workflow 名稱，找同時間戳那筆進去看。sub-workflow 錯誤預設會<em>往上冒</em>讓 parent 也失敗；如果不希望 parent 也掛，把 sub-workflow 的 Error workflow 設好，或 parent 端 Execute Workflow 節點 Settings 開 <strong>Continue On Fail</strong>——sub 錯了但 parent 繼續跑。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="labels" data-nav="Expression undefined">
+      <h2 data-icon="labels">症狀 9：Expression 跑出 <code>undefined</code></h2>
+      <p><strong>症狀</strong>：Slack 訊息或 email 內文出現 <code>undefined</code>、<code>[object Object]</code>、或空字串——workflow 沒錯，就是資料塞進去長歪。</p>
+
+      <p><strong>意思</strong>：你在 <a href="ch14_expressions.html">Expression</a> 抓的欄位路徑，實際 <code>$json</code> 裡不存在。三個典型錯法：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>錯法</th><th>症狀</th><th>修法</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>上游節點根本沒吐這個欄位</td>
+            <td><code>{{ $json.name }}</code> → <code>undefined</code></td>
+            <td>打開上游節點 Output panel 看實際欄位叫什麼，改 Expression</td>
+          </tr>
+          <tr>
+            <td>路徑打錯（大小寫、底線）</td>
+            <td>API 回的是 <code>userName</code>，你寫 <code>username</code></td>
+            <td>Output panel 複製精確欄位名（或用 n8n 的 fx picker 點）</td>
+          </tr>
+          <tr>
+            <td>item 是 array 但你當 object 抓</td>
+            <td>上游是 <code>[{id:1}, {id:2}]</code>，你寫 <code>{{ $json.id }}</code> 拿到 undefined</td>
+            <td>改成 <code>{{ $json[0].id }}</code>，或前面加 Split Out 節點把 array 拆成多個 item</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>debug 步驟</strong>：</p>
+      <ol class="steps">
+        <li>
+          <h3>Executions 頁點紅色那筆進去</h3>
+          <p>或者手動 Execute Workflow 一次讓錯誤重現。</p>
+        </li>
+        <li>
+          <h3>點該節點的<em>上一個</em>節點</h3>
+          <p>看 Output 欄長什麼樣——JSON 結構是 <code>{name: "..."}</code> 還是 <code>{user: {name: "..."}}</code> 還是 <code>[{name: "..."}]</code>？</p>
+        </li>
+        <li>
+          <h3>用 fx picker 重選欄位</h3>
+          <p>Expression 欄旁邊的 <strong>fx</strong> 按鈕 → 打開 picker → 從上游節點的實際輸出點你要的欄位。picker 產出的 Expression 一定對。</p>
+        </li>
+        <li>
+          <h3>加 Set 節點做預設值</h3>
+          <p>如果上游偶爾沒該欄位，前面加 <a href="ch11_saas_integrations.html">Set 節點</a>幫欄位補預設值（例：<code>name = {{ $json.name || "無名氏" }}</code>）——避免下游又噴 undefined。</p>
+        </li>
+      </ol>
+
+      <div class="callout tip"><strong>提示：</strong>Expression 出 <code>[object Object]</code> 通常是你把整個 object 當字串塞（例：<code>{{ $json }}</code>）。要看整個 object 內容用 <code>{{ JSON.stringify($json) }}</code>；只要某欄用 <code>{{ $json.field }}</code>。</div>
+    </section>
+
+    <section id="troubleshoot" data-nav="其他常見卡關">
+      <h2 data-icon="troubleshoot">其他常見卡關</h2>
+      <p>上面 9 種是「有明確錯誤訊息」的症狀。剩下這幾種是「沒明顯錯訊但不對勁」——判斷方式跟修法：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>症狀</th><th>原因</th><th>怎麼救</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>整個 n8n 網站打不開</td>
+            <td>n8n instance 掛了；或你網路連不上；或 SSL 憑證過期</td>
+            <td>先用手機熱點試（排除你自己網路）；還是不行找 IT——通常是 self-hosted 的 container 掛了要重啟</td>
+          </tr>
+          <tr>
+            <td>Executions 頁空白</td>
+            <td>(1) workflow 從沒真的跑過；(2) 保留期限（<code>EXECUTIONS_DATA_MAX_AGE</code>，單位<em>小時</em>、預設 336 = 14 天）已過期舊紀錄被清；(3) 篩選器把記錄擋住了；(4) <code>EXECUTIONS_DATA_SAVE_ON_SUCCESS</code> / <code>_ON_ERROR</code> 被關掉，成功／失敗那類不留</td>
+            <td>手動 Execute Workflow 觸發一次；清掉頂部的 filter；找 IT 看 retention 設定與 save 政策</td>
+          </tr>
+          <tr>
+            <td>兩個人同時改同一 workflow，改的東西不見了</td>
+            <td>n8n 沒有內建 merge——後 save 的人整份覆蓋前 save 的人的改動</td>
+            <td>約定好一次一個人改；重要 workflow 改前先 export JSON 備份；用 Git 存 JSON 做版本控制</td>
+          </tr>
+          <tr>
+            <td>改壞了想 rollback，但沒 versioning</td>
+            <td>n8n Community 沒 native workflow versioning</td>
+            <td>從最近的 backup 還原；養成習慣改大改動前 export JSON 存一份；重要 workflow 用 Git repo 追</td>
+          </tr>
+          <tr>
+            <td>Cron 排程沒到時間跑</td>
+            <td>Timezone 沒設對——n8n instance 時區跟你 Cron 表達式的時區不一樣</td>
+            <td>Workflow Settings → Timezone 明確設；或 Schedule Trigger 內的 Timezone 欄自己指定</td>
+          </tr>
+          <tr>
+            <td>手動 Execute Workflow 成功，Schedule 觸發時卻失敗</td>
+            <td>手動跑時你的登入 session 帶著權限，Schedule 觸發時是 workflow owner 的權限——owner 帳號的 credential 沒設全</td>
+            <td>把 workflow owner 切成 credential 齊全的帳號；或該 workflow 用的 credential 都設成 workspace 共用</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout warn"><strong>注意：</strong>Community 版真的沒有 workflow versioning，這是常見不便。所有<em>正在服役</em>的重要 workflow，強烈建議每次大改前手動 export JSON 存到 Git（或至少你電腦某個資料夾），檔名帶日期。這是唯一可靠的 rollback 手段。</div>
+    </section>
+
+    <section id="companion" data-nav="求救的正確方式">
+      <h2 data-icon="companion">求救的正確方式</h2>
+      <p>速查表對完還是卡住，就要問人了。三個管道，依速度／正式程度排：</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>管道</th><th>URL / 位置</th><th>回覆速度</th><th>適合什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>內部 Slack #n8n-help</td>
+            <td>公司 Slack（如果 IT 有開）</td>
+            <td>幾分鐘～幾小時</td>
+            <td>本公司 instance 設定、共用 credential、其他同事踩過的坑</td>
+          </tr>
+          <tr>
+            <td>n8n Community forum</td>
+            <td><code>https://community.n8n.io/</code></td>
+            <td>1～3 天</td>
+            <td>怎麼設節點、Expression 寫法、how-to 問題</td>
+          </tr>
+          <tr>
+            <td>n8n GitHub Issues</td>
+            <td><code>https://github.com/n8n-io/n8n/issues</code></td>
+            <td>1 週～數週</td>
+            <td>正式 bug 回報（附完整 reproduction 步驟）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>發問時附上這些，別人才幫得了你</strong>：</p>
+      <ul>
+        <li><strong>workflow 名字</strong>（內部 Slack 才貼；forum 別貼公司名）</li>
+        <li><strong>Executions 錯誤訊息截圖</strong>（把該節點錯誤面板整個截下來）</li>
+        <li><strong>n8n 版本號</strong>（右下角有；forum 一定要附）</li>
+        <li><strong>你已經試過什麼</strong>（避免別人叫你做你早試過的事）</li>
+        <li><strong>重現步驟</strong>（GitHub Issues 必備）</li>
+      </ul>
+
+      <p><strong>絕對不要貼</strong>：</p>
+      <div class="callout danger"><strong>危險：</strong>發到<em>外部</em>（Community forum、GitHub、Stack Overflow）時，<strong>絕對不要貼</strong>：credential 的實際值（API key、密碼、token）、公司內部 API 端點 URL、客戶資料、員工個資、Slack channel ID。要貼 workflow JSON 前先手動打開檔案<em>把所有敏感值換成 <code>REDACTED</code></em>——n8n 的 workflow export 預設<em>不會</em>帶 credential 值，但 URL 和內部 API endpoint 會帶。</div>
+
+      <div class="callout tip"><strong>提示：</strong>問問題前先<em>用你的錯誤訊息當關鍵字</em> Google 一次。n8n community forum 上八成的問題早就有人問過了——直接找到答案比開新帖快。</div>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+
+      <details class="faq">
+        <summary>n8n 官方支援回覆快嗎？</summary>
+        <div class="body">分兩種：<strong>Community forum</strong>（<code>https://community.n8n.io/</code>）通常 1～3 天有人回，但回你的人是社群志願者不是官方員工，品質不定。<strong>GitHub Issues</strong> 通常 1 週～數週，是 n8n 團隊直接處理但只管 bug 不管 how-to 問題。<strong>付費 Cloud / Enterprise 版</strong>才有官方 SLA 保證回覆時間（Cloud Pro 通常 24 小時內、Enterprise 更快）。內部同仁最快是 Slack 找同事——別人踩過的坑通常你也在踩。</div>
+      </details>
+
+      <details class="faq">
+        <summary>公司有付費支援方案嗎？</summary>
+        <div class="body">要看你們公司訂閱的 n8n 版本：<strong>Community</strong>（self-hosted 免費版）——沒有官方支援，只有 community forum；<strong>Cloud（Starter/Pro/Enterprise）</strong>——付費版有官方 email 支援，Pro 以上有 SLA；<strong>Enterprise Self-Hosted</strong>——有專屬 CSM。不確定用哪種找 IT 問。多數公司用 Community self-host 或 Cloud Pro。</div>
+      </details>
+
+      <details class="faq">
+        <summary>內部 n8n 掛了誰負責？</summary>
+        <div class="body">Self-hosted 的話是 IT / DevOps 團隊。你能自救的：先看 n8n 網站是完全打不開（instance 掛）還是能登入但特定 workflow 錯（workflow 問題）。前者立刻找 IT，後者先自己對這附錄的速查表。IT 通常不會幫你 debug 個別 workflow 邏輯——那是使用者責任。</div>
+      </details>
+
+      <details class="faq">
+        <summary>怎麼上報 bug 給 n8n 官方？</summary>
+        <div class="body">去 <code>https://github.com/n8n-io/n8n/issues</code> → 按 <strong>New issue</strong> → 選 Bug report 模板。要附：<strong>(1) n8n 版本號</strong>、<strong>(2) 你做了什麼</strong>（重現步驟一步步寫）、<strong>(3) 預期發生什麼</strong>、<strong>(4) 實際發生什麼</strong>（錯誤訊息 copy 進來，別只截圖）、<strong>(5) 精簡的 workflow JSON</strong>（把敏感值刪掉，只留能重現 bug 的最小範例）。不附完整 reproduction 的 bug report 通常會被關掉沒下文。</div>
+      </details>
+
+      <details class="faq">
+        <summary>錯誤訊息看不懂全英文怎麼辦？</summary>
+        <div class="body">兩招：<strong>(1)</strong> 錯誤訊息前面幾個字通常是 HTTP 狀態碼（401、404、500 等）——直接對這附錄的段落；<strong>(2)</strong> 把整段錯誤訊息複製丟給 ChatGPT / Claude 問「這個錯誤是什麼意思、我該做什麼」，AI 對這類技術訊息翻譯很準。但不要把 credential 值也一起丟進去。</div>
+      </details>
+
+      <details class="faq">
+        <summary>Executions 一直 running 停不下來怎麼辦？</summary>
+        <div class="body">先看該 execution 停在哪個節點——通常是 <strong>Wait 節點</strong>（可能設了很長的時間、或 On Webhook Call 模式在等外部 callback）、或 <strong>HTTP Request 節點</strong>（對方 server 沒回應但也沒 timeout）。強制停：Executions 頁該筆右邊選 <strong>Stop</strong>；如果 Stop 按了沒動，找 IT 從 backend 幹掉（可能是 queue mode 卡住）。</div>
+      </details>
+
+      <details class="faq">
+        <summary>我改一改突然所有節點都紅色，怎麼救？</summary>
+        <div class="body">大機率是 n8n 版本升級後<em>整批節點</em>都要升版。先<strong>不要繼續改</strong>——按 <kbd>Ctrl</kbd>+<kbd>Z</kbd> 撤銷你剛剛的動作。還是紅色的話：(1) 頂部 banner 通常會提示「Newer version available」，按 Update；(2) 每個節點分別 hover 看提示；(3) 最壞情況從 backup 還原這條 workflow。因此附錄一直強調——<em>改大改動前先 export JSON 存一份</em>。</div>
+      </details>
+
+      <details class="faq">
+        <summary>錯誤訊息在 n8n 顯示跟對方文件不一樣，該信哪個？</summary>
+        <div class="body">信對方文件。n8n 只是把對方 API 回的錯誤訊息包一層轉給你——真正權威的是對方 SaaS。例：Slack 節點顯示 <code>invalid_auth</code>，你 Google 這個字串進 Slack 官方 API 文件會查到完整原因跟修法。<a href="ch12_http_request.html">HTTP Request 節點</a>更明顯，錯誤訊息直接是對方 raw response。</div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="appendix_settings_ref.html">
+        <span class="label">← Appendix A</span>
+        <span class="title">附錄 A · 設定速查</span>
+      </a>
+      <a class="next" href="appendix_internals.html">
+        <span class="label">Next appendix →</span>
+        <span class="title">附錄 C · 底層架構</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+    </footer>
+  </main>
+</div>
+<script id="ui-strings" type="application/json">{"tocToggle":"Contents","tocExpand":"Expand chapter navigation","tocCollapse":"Collapse chapter navigation"}</script>
+<script src="../assets/js/toc.js"></script>
+</body>
+</html>

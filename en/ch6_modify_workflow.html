@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter 6 · 動一動別人做好的：改欄位、換觸發、跑一次 · Woow n8n 入住指南</title>
+  <meta name="description" content="改別人做好的 n8n workflow：換掉節點的欄位、換觸發時機、換 credentials、按 Execute Workflow 手動跑一次。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch6_modify_workflow.html" />
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
+  <meta property="og:title" content="Chapter 6 · 動一動別人做好的：改欄位、換觸發、跑一次 · Woow n8n 入住指南" />
+  <meta property="og:description" content="改別人做好的 n8n workflow：換掉節點的欄位、換觸發時機、換 credentials、按 Execute Workflow 手動跑一次。" />
+  <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch6_modify_workflow.html" />
+  <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch6/01_existing_workflow.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Chapter 6 · 動一動別人做好的：改欄位、換觸發、跑一次 · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="改別人做好的 n8n workflow：換掉節點的欄位、換觸發時機、換 credentials、按 Execute Workflow 手動跑一次。" />
+  <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch6/01_existing_workflow.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/i18n.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="tutorial.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <nav class="lang-switch" aria-label="Language"><a href="../ch6_modify_workflow.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch6_modify_workflow.html" lang="en" aria-current="page">EN</a></nav>
+    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <h2>Chapters</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html" class="active">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
+      <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>This chapter</h2>
+      <a href="#why">為什麼要改</a>
+      <a href="#concept">改的三個層次</a>
+      <a href="#steps">Level 1 改參數</a>
+      <a href="#what">改欄位對照</a>
+      <a href="#advanced">Level 2 加節點</a>
+      <a href="#modes">換觸發時機</a>
+      <a href="#test">改完必做檢查</a>
+      <a href="#warning">改壞了怎麼看</a>
+      <a href="#troubleshoot">卡關救援</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>Appendices</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch6_modify_workflow.html" hreflang="zh-Hant">Open the Chinese version</a></div>
+    <div class="chapter-header">
+      <div class="kicker">Chapter 6</div>
+      <h1>動一動別人做好的：改欄位、換觸發、跑一次</h1>
+      <p class="lead">你在 <a href="ch4_templates.html">第 4 章</a>找到模板、在 <a href="ch5_import_workflow.html">第 5 章</a>把 JSON 貼進來——現在畫布上躺著一條「別人的 workflow」。這章教你把它改成「你自己的」：換掉 Google Form 綁到自己的表單、Slack 通知改成自己的 channel、觸發時機從排程改成 Webhook。改完手動跑一次，看到綠色勾勾就算你的了。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼要改">
+      <h2 data-icon="why">為什麼要改，不能直接用</h2>
+      <p>Templates 是別人為了他自己的工作情境做的。你把它貼進來以後，畫布上的每一塊節點都指向「別人的東西」——別人的 Google 帳號、別人的 Slack 頻道、別人的欄位名稱、別人習慣的觸發時間。你按 Execute 一定失敗，因為那些東西你根本沒有存取權。</p>
+      <p>所以 template 不是「拿來就跑」，是「拿來當骨架」。骨架已經幫你決定好用哪幾塊節點、怎麼接、資料怎麼流——你要做的是把骨架上的參數換成自己的：</p>
+      <ul>
+        <li>Google Sheet ID 換成自己的表格；</li>
+        <li>Slack channel 從 <code>#example-channel</code> 換成 <code>#my-team</code>；</li>
+        <li>credentials 從別人的授權換成用你自己的帳號登入；</li>
+        <li>觸發時機從「每天早上 8:00」換成「有表單填了才跑」。</li>
+      </ul>
+      <div class="callout"><strong>觀念：</strong>把 template 想成 IKEA 說明書——它教你把幾塊板子拼成一個櫃子，但螺絲跟板子還是你自己的。你的工作是「照著拼」，不是「拿別人拼好的櫃子搬回家」。</div>
+      <p>這章帶你走一次完整流程：改參數、改欄位對照、加分支、換觸發。動手章，全程照做就會有感覺。</p>
+    </section>
+
+    <section id="concept" data-nav="改的三個層次">
+      <h2 data-icon="concept">改一個 workflow 有三個層次</h2>
+      <p>不是每種改動的成本都一樣。動手前先把要改的事情分級，才不會踩雷。</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>層次</th>
+            <th>你在做什麼</th>
+            <th>要花的時間</th>
+            <th>本章教嗎</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Level 1</strong>：改參數值</td>
+            <td>換節點裡的 Sheet ID、channel 名稱、觸發時間、credential——節點種類、線的接法通通不動。</td>
+            <td>5 分鐘</td>
+            <td>教（占這章大半篇幅）</td>
+          </tr>
+          <tr>
+            <td><strong>Level 2</strong>：加／移除節點</td>
+            <td>加一個 IF 分支、多接一個 Gmail 通知、刪掉用不到的 Airtable 節點。線要重接、可能要新的 credential。</td>
+            <td>30 分鐘</td>
+            <td>教（後半段一個示範）</td>
+          </tr>
+          <tr>
+            <td><strong>Level 3</strong>：改邏輯</td>
+            <td>把觸發時機從排程改 Webhook、把一整段抽成 sub-workflow、拆成兩條 workflow 互打。</td>
+            <td>幾小時</td>
+            <td>換觸發本章帶一小段，其他到 <a href="ch19_subworkflow.html">第 19 章</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout tip"><strong>提示：</strong>初學者建議只做 Level 1。先把 template 改成能跑的樣子、上線用一週，等你對 n8n 有感覺再去加分支、換觸發。躁進去改邏輯，很容易一改就壞。</div>
+      <p>下面各段就照這個順序來——先教 Level 1，再教 Level 2，Level 3 只講「換觸發」一種最常見的。</p>
+    </section>
+
+    <section id="steps" data-nav="Level 1 改參數">
+      <h2 data-icon="steps">Level 1：改參數值（示範「表單通知 Slack」模板）</h2>
+      <p>假設你剛從 <a href="ch5_import_workflow.html">第 5 章</a>匯入了一條 workflow，長這樣：<code>Google Form Trigger → Slack</code>——有人填表單就丟一則訊息到 Slack。原本作者用他的 Google 帳號、他的表單、他的 <code>#general</code> 頻道。我們要全部換成你的。</p>
+      <ol class="steps">
+        <li>
+          <h3>打開匯入進來的 workflow</h3>
+          <p>回到 Workflows 列表，點你剛匯入的那條。畫布會展開，看得到兩個節點跟中間的一條線。第一個節點左上角可能有紅色小圓點，代表「這個節點還沒 config 好」——這就是要修的地方。</p>
+          <figure class="shot">
+            <img src="../assets/screenshots/ch6/01_existing_workflow.png" alt="打開現成的 Unlimited Website Down Checker workflow，畫布上有 21 個節點" />
+            <figcaption><strong>圖 6-1</strong>打開一條現成的 workflow：畫布上滿滿都是別人接好的節點，你的工作是把裡面的參數換成自己的。</figcaption>
+          </figure>
+        </li>
+        <li>
+          <h3>點第一個節點 Google Form Trigger，右邊出現 Parameters 面板</h3>
+          <p>雙擊節點（或單擊一次）會打開一個大面板，左邊是輸入資料、中間是 Parameters、右邊是輸出資料。中間的 Parameters 就是你要改的地方。目前上面應該還沒選 credential，會有一行紅字提示 "No credential selected"。</p>
+        </li>
+        <li>
+          <h3>換 Google 帳號 credential</h3>
+          <p>找到 <strong>Credential to connect with</strong> 這個 dropdown。點開它有兩種情況：</p>
+          <ul>
+            <li>如果你之前已經接過 Google 帳號（例如做過別的 workflow），會看到你的 credential 名稱例如 <code>Google API - Elmo</code>，選它就好。</li>
+            <li>如果第一次接，選 <strong>+ Create new credential</strong>，會跳到 OAuth 授權頁，登入 Google 允許 n8n 讀寫。詳細流程看 <a href="ch13_credentials.html">第 13 章</a>。</li>
+          </ul>
+          <p>credential 選好後，紅字提示會消失，下面的欄位（Form / Trigger On）才會亮起可以選。</p>
+        </li>
+        <li>
+          <h3>選你自己的 Google Form</h3>
+          <p>底下的 <strong>Form</strong> 欄位會列出你帳號底下所有 Google Form。找到你要監聽的那份，點下去。旁邊的 <strong>Trigger On</strong> 保持預設 <code>Form Submitted</code>（有人填就觸發）就好。</p>
+        </li>
+        <li>
+          <h3>點下一個 Slack 節點，一樣先換 credential</h3>
+          <p>Slack 節點同一招——右邊 Parameters 的 <strong>Credential to connect with</strong> 換成你的 Slack workspace 帳號。第一次接會叫你去 slack.com 授權。授權完回來，下面的欄位（Channel / Message）才能選。</p>
+        </li>
+        <li>
+          <h3>換 Channel</h3>
+          <p>Channel 欄位可以用兩種方式：<code>From list</code> 從 dropdown 選（推薦，n8n 會直接列出你所在的所有頻道）、或 <code>By ID</code> 貼 channel ID。把原本 template 裡的 <code>#general</code> 或 <code>#example-channel</code> 換成你要通知的頻道，例如 <code>#my-team</code>。</p>
+        </li>
+        <li>
+          <h3>右上角按 <kbd>Save</kbd> 存起來</h3>
+          <p>畫布右上角有個 <strong>Save</strong> 按鈕（或 <kbd>Ctrl</kbd>+<kbd>S</kbd> / <kbd>Cmd</kbd>+<kbd>S</kbd>）。按下去按鈕會由亮藍色 <strong>Save</strong> 變成灰色反白（有些版本會在標題旁短暫顯示綠色 saved 提示）——按鈕失去強調色就代表已存。若你直接切頁面，n8n 會跳一個「有未儲存變更」的確認框，別按錯就好。</p>
+        </li>
+      </ol>
+      <div class="callout warn"><strong>注意：</strong>credential 換完不會自動 propagate。同一個 workflow 裡有三個 Slack 節點，你要一個一個節點都去換 credential。這是最常見的「改一半」錯誤。</div>
+    </section>
+
+    <section id="what" data-nav="改欄位對照">
+      <h2 data-icon="what">Level 1 續：改欄位對照（Expression 初體驗）</h2>
+      <p>Slack 節點裡通常會有一格 <strong>Message</strong>，template 作者寫了大概像這樣：</p>
+      <pre class="code-block"><code>新表單: {{ $json['field1'] }}</code></pre>
+      <p>兩個大括號 <code>{{ }}</code> 包住的東西叫 <strong>Expression</strong>（表達式）——它會被替換成上一個節點傳來的資料。<code>$json</code> 代表「當前這筆 item 的 JSON」，<code>['field1']</code> 是取叫 <code>field1</code> 的欄位。</p>
+      <p>問題來了：作者的 Google Form 欄位叫 <code>field1</code>，你的表單欄位可能叫 <code>applicant_name</code>——執行時 n8n 找不到 <code>field1</code>，Slack 就會傳出「新表單: undefined」這種尷尬訊息。要改成正確的欄位名稱。</p>
+      <ol class="steps">
+        <li>
+          <h3>先看上一個節點的輸出長什麼樣</h3>
+          <p>回到 Google Form Trigger 節點，按底下的 <strong>Execute step</strong>（單獨執行這個節點）測試一下。它會等你去填一次那份表單，填完會在右邊 Output 面板看到一筆 JSON。看看實際欄位叫什麼名字——例如 <code>applicant_name</code>、<code>email</code>、<code>vip</code>。</p>
+        </li>
+        <li>
+          <h3>回到 Slack 節點，把 Expression 改成正確欄位名</h3>
+          <p>點 Slack 節點、找到 Message 欄位。把 <code>{{ $json['field1'] }}</code> 改成 <code>{{ $json['applicant_name'] }}</code>。</p>
+        </li>
+        <li>
+          <h3>用「拉線 hint」偷懶</h3>
+          <p>更快的方法：把游標移到 Message 欄位左邊，畫面會出現一個小的資料樹（左側 Input 面板）列出上一個節點的所有欄位。直接拖 <code>applicant_name</code> 拉到 Message 欄位裡，n8n 會自動幫你補成 <code>{{ $json.applicant_name }}</code>——連 Expression 語法都不用背。</p>
+        </li>
+        <li>
+          <h3>寫多欄位的訊息</h3>
+          <p>訊息裡可以塞多個 Expression 跟一般文字混搭：</p>
+          <pre class="code-block"><code>新表單來了 :bell:
+姓名：{{ $json.applicant_name }}
+Email：{{ $json.email }}
+是否 VIP：{{ $json.vip }}</code></pre>
+          <p>純文字直接寫、要抓資料的地方用 <code>{{ }}</code> 包起來。</p>
+        </li>
+        <li>
+          <h3>按 Execute step 預覽</h3>
+          <p>Slack 節點也可以單獨執行（Execute step）——它會用剛才 Google Form 那筆測試資料當輸入，實際傳一則訊息到你的 Slack channel。開 Slack 看到訊息才算成功。</p>
+        </li>
+      </ol>
+      <div class="callout"><strong>觀念：</strong>Expression 語法完整版看 <a href="ch14_expressions.html">第 14 章</a>。這章你只要記住兩件事——<code>{{ $json.欄位名 }}</code> 取當前 item 的欄位、用拉線 hint 讓 n8n 幫你補。</div>
+    </section>
+
+    <section id="advanced" data-nav="Level 2 加節點">
+      <h2 data-icon="advanced">Level 2：加節點（加一個 VIP 分支）</h2>
+      <p>現在你的表單通知能跑了。但老闆多了一個需求：「VIP 客戶填了表單，除了 Slack 通知之外，還要寄一封信給業務經理」。這需要多一個節點跟一個分支邏輯。</p>
+      <p>目標流程：</p>
+      <pre class="code-block"><code>Google Form Trigger
+       ↓
+       IF (vip == true?)
+       ├─ true  → Gmail (寄給經理) → Slack (通知團隊)
+       └─ false → Slack (通知團隊)</code></pre>
+      <ol class="steps">
+        <li>
+          <h3>在 Google Form 節點跟 Slack 節點中間插一個 IF 節點</h3>
+          <p>把游標移到 Google Form → Slack 中間那條線上，會出現一個 <strong>+</strong> 按鈕。點下去、在節點抽屜搜尋 "IF"、選 <strong>IF</strong>（在 Flow 分類下）。n8n 會自動把 IF 節點插在線中間，Google Form 的輸出接到 IF，IF 的其中一個輸出接到 Slack。</p>
+        </li>
+        <li>
+          <h3>設定 IF 的 Condition</h3>
+          <p>點 IF 節點，Parameters 面板會有 <strong>Conditions</strong>。加一條條件：</p>
+          <ul>
+            <li>左邊：拖左側 Input 面板的 <code>vip</code> 欄位過來（或手打 <code>{{ $json.vip }}</code>）</li>
+            <li>中間：選 <code>is equal to</code></li>
+            <li>右邊：填 <code>true</code>（如果 vip 欄位是 boolean）或 <code>是</code>／<code>Y</code>（如果是文字）</li>
+          </ul>
+          <p>存好之後，IF 節點會有兩個輸出點——上面是 <strong>true</strong>、下面是 <strong>false</strong>。</p>
+        </li>
+        <li>
+          <h3>把 true 分支接一個 Gmail 節點</h3>
+          <p>從 IF 的 true 輸出點拉一條線出來、在末端會出現節點抽屜、搜 "Gmail"、選 <strong>Send a message</strong>（傳訊息）。設 credential、收件人填業務經理的 email、Subject 例如 <code>VIP 客戶: {{ $json.applicant_name }}</code>、Body 寫想寫的內容。</p>
+        </li>
+        <li>
+          <h3>Gmail 節點後面再接原本的 Slack</h3>
+          <p>從 Gmail 的輸出拉一條線接到原本的 Slack 節點——這樣 VIP 的分支會先寄 Email、再傳 Slack。<br>IF 的 false 輸出也拉一條線到同一個 Slack 節點——非 VIP 只走 Slack。兩條線可以接同一個節點，n8n 會依序執行。</p>
+        </li>
+        <li>
+          <h3>手動 Execute 測試兩個分支</h3>
+          <p>先在 Google Form Trigger 節點按 Execute step、填一次 vip=true 的假資料——應該會看到 IF 節點 true 分支亮綠、Gmail 送信、Slack 傳訊。再測一次 vip=false——只有 Slack 亮綠。兩邊都跑對才算完成。</p>
+        </li>
+        <li>
+          <h3>按 Save，別忘了</h3>
+          <p>加節點跟改參數一樣要 Save。右上角 Save 按鈕變灰、切頁面時沒跳「Unsaved changes」，才算存了。</p>
+        </li>
+      </ol>
+      <div class="callout tip"><strong>提示：</strong>IF 節點很萬用，你之後會一直用到。詳細用法（多條件、AND/OR、Switch 三分支以上）看 <a href="ch15_if_switch.html">第 15 章</a>。</div>
+    </section>
+
+    <section id="modes" data-nav="換觸發時機">
+      <h2 data-icon="modes">Level 3 小試身手：換觸發時機</h2>
+      <p>Template 用的觸發時機不一定合你意。常見的情況：template 用 <strong>Schedule Trigger</strong> 每天早上 8:00 跑；但你想改成「前端有人按按鈕才跑」——這種要換成 Webhook Trigger。</p>
+      <ol class="steps">
+        <li>
+          <h3>刪掉原本的 Schedule Trigger 節點</h3>
+          <p>單擊 Schedule Trigger 節點、按 <kbd>Delete</kbd> 鍵（或右鍵選 Delete）。節點消失，跟它相接的線也會斷開。這一步等一下就會補回來。</p>
+        </li>
+        <li>
+          <h3>從節點抽屜加 Webhook Trigger</h3>
+          <p>按畫布左上角的 <strong>+</strong>（或按 <kbd>Tab</kbd>）叫出節點抽屜，在最上面的分類 Trigger 裡找 <strong>Webhook</strong>，拖到畫布上原本 Schedule 的位置。</p>
+        </li>
+        <li>
+          <h3>把 Webhook 的輸出接到下游節點</h3>
+          <p>從 Webhook 節點的右邊小圓點拉一條線出來、拉到下一個節點（原本被 Schedule 觸發的那個）的左邊小圓點。線接上、下游節點會亮起代表「有輸入源了」。</p>
+        </li>
+        <li>
+          <h3>拿到 Webhook 的 Test URL</h3>
+          <p>點 Webhook 節點，Parameters 面板上會顯示兩個 URL：<strong>Test URL</strong>（給你在 n8n 裡按 Execute step 時用的暫時 URL）跟 <strong>Production URL</strong>（workflow 設為 Active 後永久有效的正式 URL）。複製 Test URL、丟給前端工程師或用 <code>curl</code> 打進來試。</p>
+        </li>
+      </ol>
+      <div class="callout"><strong>觀念：</strong>Webhook 的兩個 URL 差別、authentication、Response 模式是個大主題，這裡只帶概念。實際部署上線看 <a href="ch22_webhook.html">第 22 章</a>。</div>
+      <p>換完觸發時機，記得回頭把整個 workflow 手動 Execute 一次確認沒斷。下一段講「改完的三個必做檢查」。</p>
+    </section>
+
+    <section id="test" data-nav="改完必做檢查">
+      <h2 data-icon="test">改完的三個必做檢查</h2>
+      <p>改動存好之後、把 workflow 打開 Active 之前，這三件事一定要做。跳過就等於埋雷。</p>
+      <ol class="steps">
+        <li>
+          <h3>按 Save，確認 Save 按鈕變灰</h3>
+          <p>Save 按下去，右上角的藍色 <strong>Save</strong> 按鈕會變灰、失去強調色——這代表沒有未儲存變更。如果按鈕還是亮藍、或試著切頁面時 n8n 跳出「Unsaved changes」對話框，就是沒存到。最常見的原因是你剛在某個節點欄位裡打字、還沒點空白處讓值 commit。點一下畫布空白處再按 Save。</p>
+        </li>
+        <li>
+          <h3>按 Execute Workflow 手動跑一次全流程</h3>
+          <p>畫布下方中間有 <strong>Execute Workflow</strong> 大按鈕，按下去 n8n 會從頭跑一次（觸發器會用假的觸發資料或叫你即時觸發一次）。看每個節點是不是都變綠框、有沒有節點變紅框。</p>
+        </li>
+        <li>
+          <h3>去 Executions 頁確認每個節點都綠色勾勾</h3>
+          <p>左側選單有 <strong>Executions</strong>（執行歷史）。剛剛跑的那次會出現在最上面。點進去看細節——每個節點都應該有綠色的 ✓ 圖示。有紅色 ✗ 的節點點開會顯示錯誤訊息。</p>
+        </li>
+      </ol>
+      <p>三件事都過關，才可以按右上角的 <strong>Active</strong> toggle 讓 workflow 正式上線。Active 開了之後，Schedule Trigger 會按排程跑、Webhook Trigger 會接受外部呼叫。</p>
+      <div class="callout warn"><strong>注意：</strong>Execute Workflow 是「用手戳一次」，不會把 Active toggle 打開。所以你可以放心改、放心 Execute，只要沒按 Active，外面根本不會有人被通知到。這是新手最好的安全網。</div>
+    </section>
+
+    <section id="warning" data-nav="改壞了怎麼看">
+      <h2 data-icon="warning">常見的「改壞了」情境</h2>
+      <p>改一半發現不對勁，先對照這張表——多半是這幾種。</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>你看到的症狀</th>
+            <th>白話原因</th>
+            <th>怎麼修</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>節點左上角紅色小圓點</td>
+            <td>該節點還有必填欄位空著、或 credential 沒選。</td>
+            <td>點該節點看 Parameters 面板，紅字的欄位補上。</td>
+          </tr>
+          <tr>
+            <td>節點框線是紅色的（執行後）</td>
+            <td>執行時報錯——例如 API 呼叫失敗、Expression 抓不到欄位、credential 過期。</td>
+            <td>去 Executions 頁點該節點看錯誤訊息，多半是欄位名寫錯或 credential 要重新授權。</td>
+          </tr>
+          <tr>
+            <td>兩個節點中間沒有線</td>
+            <td>你剛拖節點移位置時碰掉了線，或是刪掉舊節點時線斷了沒補回來。</td>
+            <td>從上一個節點的右邊小圓點拉一條線到下一個節點的左邊小圓點。</td>
+          </tr>
+          <tr>
+            <td>按 Execute Workflow 沒動靜</td>
+            <td>觸發器類型不對——例如你放的是 Schedule Trigger、它只在到時間才會自己跑，手動戳不會馬上執行。</td>
+            <td>用 Manual Trigger 節點暫時替換測試、或在 Trigger 節點按 <strong>Execute step</strong> 而不是整個 workflow。</td>
+          </tr>
+          <tr>
+            <td>Slack 訊息變成「undefined」</td>
+            <td>Expression 的欄位名稱寫錯，n8n 找不到那個 key。</td>
+            <td>回到上一個節點的 Output 面板看實際欄位名，把 Expression 裡的欄位改對。</td>
+          </tr>
+          <tr>
+            <td>Save 按了但重新開又變回原樣</td>
+            <td>Save 時 Save 按鈕沒真的變灰——很可能還在欄位裡有未 commit 的編輯，或點空白處之前就切頁面了。</td>
+            <td>點空白處讓欄位失焦、再按 Save、確認按鈕變灰、才切走。</td>
+          </tr>
+          <tr>
+            <td>IF 分支永遠只走 false</td>
+            <td>Condition 的資料型別對不上——例如你比 <code>vip == true</code> 但實際資料是字串 <code>"true"</code>。</td>
+            <td>把右邊條件值也改成字串 <code>true</code>，或用 <code>is equal to (string)</code> vs <code>is equal to (boolean)</code> 選對比較器。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="troubleshoot" data-nav="卡關救援">
+      <h2 data-icon="troubleshoot">卡關救援</h2>
+      <ol class="steps">
+        <li>
+          <h3>「我不小心刪了一個節點」</h3>
+          <p>先按 <kbd>Ctrl</kbd>+<kbd>Z</kbd>（Mac 是 <kbd>Cmd</kbd>+<kbd>Z</kbd>）撤銷——n8n 的 Canvas 支援 undo/redo（前提是你還沒重新整理頁面；重整後 undo stack 會清空）。如果已經按 Save 又 reload、撤銷回不去，就要靠下一段的 <strong>Workflow History</strong>：workflow 列表點 workflow → 右上角 <strong>⋮</strong> → <strong>Workflow history</strong>（自架版預設有開，Cloud 依方案不同保留天數）就能看到過去的版本並還原。</p>
+        </li>
+        <li>
+          <h3>「Save 按了但重開又沒 save 到」</h3>
+          <p>Save 按鈕按完要「變灰」才算成功——按鈕若還是亮藍色，就是還有未 commit 的欄位編輯。先點一下畫布空白處把游標移出欄位、再按 Save，或用 <kbd>Ctrl</kbd>+<kbd>S</kbd>（Mac <kbd>Cmd</kbd>+<kbd>S</kbd>）快捷鍵。</p>
+        </li>
+        <li>
+          <h3>「我想從一個 template 開兩個版本測試」</h3>
+          <p>回到 Workflows 列表、找到那條 workflow、右邊的 <strong>⋮</strong>（三點選單）選 <strong>Duplicate</strong>（複製）。會產生一份完全一樣的 workflow、名稱後面自動加 "copy"。你可以在複製版隨便改、原版留著當備份。</p>
+        </li>
+        <li>
+          <h3>「Executions 面板一片紅、我不知道從哪一個開始修」</h3>
+          <p>Executions 頁的每一列都會顯示失敗在哪個節點。從最上面（最新的失敗）開始點、看錯誤訊息、修那個節點的欄位、再按 Execute Workflow 重試。修好一個下一個常常就自動過了。不要一次改五個地方——改一個、跑一次、看結果。</p>
+        </li>
+        <li>
+          <h3>「我想比對修改前後的差異」</h3>
+          <p>n8n 沒有畫布內的視覺化 diff 工具。<strong>Workflow History</strong>（自架 Community 版也有，用環境變數 <code>N8N_WORKFLOW_HISTORY_PRUNE_TIME</code> 控保留時間；Cloud 依方案給 5–無限天）可以並排看兩版並還原，但看的是「哪個節點被改到」而不是逐字 diff。要逐行比對，最實用是把 workflow 匯出成 JSON（<strong>⋮</strong> → <strong>Download</strong>）存檔，用 VS Code 比對兩個 JSON。Enterprise 的 Source Control 則是把整個 instance 綁 Git 做 pull request 級的 review，不是「單條 workflow diff 按鈕」。</p>
+        </li>
+        <li>
+          <h3>「改完後 Webhook URL 打不通」</h3>
+          <p>Webhook 有 Test URL 跟 Production URL 兩個。Test URL 只在你人在 n8n 編輯器、按 <strong>Execute step / Listen for test event</strong> 期間有效，會過期。Production URL 要 workflow 打開 <strong>Active</strong> 才會生效。搞混這兩個是 debug Webhook 最常見的坑，詳情看 <a href="ch22_webhook.html">第 22 章</a>。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>改到亂七八糟，能不能還原到 template 原本的樣子？</summary>
+        <div class="body">
+          <p>兩種做法：</p>
+          <ul>
+            <li><strong>事前預防</strong>：改之前先 Duplicate 一份原版當備份，你在複製版改。搞砸了就把複製版刪掉、再從原版 Duplicate 一次重來。這是最推薦的做法。</li>
+            <li><strong>事後救援</strong>：回到 <a href="ch4_templates.html">第 4 章</a>提到的 Templates gallery 或 <a href="ch5_import_workflow.html">第 5 章</a>的 n8n.io/workflows，把原始 template 重新匯入一次覆蓋掉。你改的東西會沒掉，但至少回到起點。</li>
+          </ul>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>Save 有版本歷史嗎？可以看昨天的版本嗎？</summary>
+        <div class="body">
+          <p>有——n8n <strong>內建 Workflow History</strong>，Community 自架版也有（不是 Enterprise 才有）。位置在 workflow 編輯畫面右上角 <strong>⋮</strong> → <strong>Workflow history</strong>，會列出每次 Save 的快照，可以預覽、還原、或 clone 成新 workflow。</p>
+          <ul>
+            <li><strong>自架 Community</strong>：預設保留無限筆，用環境變數 <code>N8N_WORKFLOW_HISTORY_PRUNE_TIME</code>（小時）控制刪除週期。</li>
+            <li><strong>n8n Cloud</strong>：Starter 通常沒有、Pro 給 5 天、Enterprise 更長——依方案而異，以 <a href="https://n8n.io/pricing/" rel="noopener">pricing 頁</a>為準。</li>
+            <li><strong>Enterprise 加碼</strong>：Source Control 把整個 instance 綁 Git，可以做 branch/PR 級別的版本控管，不只是單條 workflow 歷史。</li>
+            <li><strong>最踏實的個人備份</strong>：重要 workflow 改完就 <strong>⋮</strong> → <strong>Download</strong> 存一份 JSON 到自己的 Git。</li>
+          </ul>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>多人一起改同一個 workflow 會不會打架？</summary>
+        <div class="body">
+          <p>會。目前 n8n <strong>沒有多人即時協作</strong>（不像 Google Docs）——兩個人同時開同一條 workflow，兩邊各自改各自的，<strong>後 Save 的會蓋掉先 Save 的</strong>。實務上：</p>
+          <ul>
+            <li>團隊共用的 workflow 要約好「同一個時段只有一個人改」，用 Slack 講一聲 "我在改 XX workflow"。</li>
+            <li>比較穩健的作法是每個人在自己的 Personal folder 開發，測好再 Duplicate 到 Team workspace。</li>
+          </ul>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>改到一半想暫時「不上線」怎麼做？</summary>
+        <div class="body">
+          <p>畫布右上角的 <strong>Active</strong> toggle 關掉——workflow 不會被排程或 Webhook 觸發，只有你手動按 Execute Workflow 才會跑。這是 n8n 傳統的「Inactive」狀態，功能上等同「草稿」，但介面上並沒有一個叫做 <em>Draft mode</em> 的按鈕（新版某些方案陸續加了 draft/publish 分離的流程，但 UI 標籤仍是 Active/Inactive）。想改多久都可以，直到你按下 Active 才真的上線。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>改參數要不要重新授權 credential？</summary>
+        <div class="body">
+          <p>看你改什麼：</p>
+          <ul>
+            <li>換 Sheet ID、換 channel、改 Expression → <strong>不用</strong>重授權，用同一個 credential 就好。</li>
+            <li>換 Google 帳號、換 Slack workspace → 要建<strong>新的 credential</strong>，去 <a href="ch13_credentials.html">Credentials 頁面</a>新增。</li>
+            <li>Credential 過期（例如 OAuth token 失效）→ 到 Credentials 頁點該 credential、按 <strong>Reconnect</strong> 重新授權即可。</li>
+          </ul>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>改完 template 我可以把它當成自己的貢獻分享出去嗎？</summary>
+        <div class="body">
+          <p>可以，但要看你動了多少。純換參數（credential、channel、Sheet ID）算是「使用 template」，不算原創。加了新分支、換了觸發、加了 Code node 客製化就算你的貢獻。分享時建議在描述裡註明「改編自 xxx 的 template」，這是 n8n 社群的慣例。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>下一步做什麼？</summary>
+        <div class="body">
+          <p>你已經會「拿別人做好的改成自己的」了——這是 n8n 最實用的入門技能。接下來 <a href="ch7_node_types.html">第 7 章</a>教你認清 n8n 的節點抽屜——那幾百個節點其實只分三大類（Trigger / Action / Core），認得類別找節點就快了。認完之後 <a href="ch8_first_workflow.html">第 8 章</a>就從零拉出一條自己的 workflow，不再靠別人的骨架。</p>
+        </div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="ch5_import_workflow.html">
+        <span class="label">← Previous</span>
+        <span class="title">05 · 匯入 workflow</span>
+      </a>
+      <a class="next" href="ch7_node_types.html">
+        <span class="label">Next →</span>
+        <span class="title">07 · 三種節點</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+    </footer>
+  </main>
+</div>
+<script id="ui-strings" type="application/json">{"tocToggle":"Contents","tocExpand":"Expand chapter navigation","tocCollapse":"Collapse chapter navigation"}</script>
+<script src="../assets/js/toc.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+{
+  "_readme": "code 區塊的例外清單：只有列在這裡的 <pre>/<code>/<kbd> 才允許與 zh 不同（通常是程式碼裡的中文註解或中文佔位值）。zh 那邊改了就會對不上而紅燈。由 scripts/apply_code_translations.js 維護。",
+  "allow": []
+}

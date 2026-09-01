@@ -1,0 +1,102 @@
+name: bootstrap-locale
+
+# 一次性引導，做兩件事，都只在「東西還沒在版控裡」時才動作：
+#   1. i18n/locales.json 列出的語系如果還沒有 site root，就從 zh 原文產生鏡像殼並 commit 回同一個分支。
+#   2. chapters.json 指定的分享卡（assets/og/*.png）如果不在 repo 裡，就用 Playwright 產出來並 commit。
+#      分享卡是二進位檔，沙箱裡的 MCP 推不上來，所以由 CI 產一次就好。
+# 兩件都齊了就完全不做事，可以在合併前刪掉這個檔。
+#
+# 這麼做的用意：讓「乾淨 checkout + 跑一次腳本 = 完整的 en/ 與分享卡」被實際驗證一次，
+# 而不是把 30 個產生檔手動搬上來。
+
+on:
+  push:
+    branches: ['i18n/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bootstrap-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: What still needs bootstrapping
+        id: todo
+        run: |
+          # kit 檔案分批推上來的期間先什麼都不做，等整套到齊才引導
+          for f in scripts/lib/i18n.js scripts/build_nav.js scripts/check_links.js scripts/check_i18n.js \
+                   scripts/mirror_locale.js scripts/build_og.js i18n/locales.json i18n/strings.en.json; do
+            if [ ! -f "$f" ]; then
+              echo "kit 還沒推完（缺 $f），這輪不引導"
+              echo "codes=" >> "$GITHUB_OUTPUT"
+              echo "cards=" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+          todo=""
+          for code in $(node -e "const l=require('./i18n/locales.json');console.log(Object.keys(l).filter(k=>!k.startsWith('_')).join(' '))"); do
+            dir=$(node -e "const l=require('./i18n/locales.json');console.log(l['$code'].dir||'$code')")
+            if [ ! -f "$dir/chapters.json" ]; then todo="$todo $code"; fi
+          done
+          echo "codes=$(echo $todo | xargs)" >> "$GITHUB_OUTPUT"
+          echo "要引導的語系：'$(echo $todo | xargs)'"
+          # 分享卡：build_og.js --check 缺檔就 exit 1
+          if node scripts/build_og.js --check >/dev/null 2>&1; then
+            echo "cards=" >> "$GITHUB_OUTPUT"
+            echo "分享卡都在，不用產"
+          else
+            echo "cards=1" >> "$GITHUB_OUTPUT"
+            echo "分享卡有缺，這輪會產"
+          fi
+
+      - name: Install playwright (only for the OG cards)
+        if: steps.todo.outputs.codes != '' || steps.todo.outputs.cards != ''
+        run: |
+          npm i --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Mirror, render OG cards, rebuild both roots
+        if: steps.todo.outputs.codes != '' || steps.todo.outputs.cards != ''
+        run: |
+          set -e
+          for code in ${{ steps.todo.outputs.codes }}; do
+            node scripts/mirror_locale.js "$code"
+          done
+          node scripts/build_og.js
+          node scripts/build_nav.js
+          node scripts/check_links.js
+          for dir in $(node -e "const l=require('./i18n/locales.json');console.log(Object.keys(l).filter(k=>!k.startsWith('_')).map(k=>l[k].dir||k).join(' '))"); do
+            SITE_ROOT="$dir" node scripts/build_nav.js
+            SITE_ROOT="$dir" node scripts/check_links.js
+          done
+          node scripts/build_og.js --check
+          node scripts/check_i18n.js
+
+      - name: Commit what was generated
+        if: steps.todo.outputs.codes != '' || steps.todo.outputs.cards != ''
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name  'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add -A
+            git commit -m "chore(i18n): bootstrap locale roots (${{ steps.todo.outputs.codes }}) + OG cards [skip ci]"
+            git push
+          else
+            echo "沒有產生任何檔案，這不對，請看上一步的輸出"
+            exit 1
+          fi

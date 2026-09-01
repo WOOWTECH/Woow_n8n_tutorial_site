@@ -19,8 +19,16 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..');
+const i18n = require('./lib/i18n');
+const { repoRoot: REPO_ROOT, root: ROOT, subdir: SUBDIR, isPrimary: IS_PRIMARY } = i18n.resolveRoot(); // SITE_ROOT=en 時檢查 en/
 const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'chapters.json'), 'utf8'));
+const LEDGER = i18n.loadLedger(REPO_ROOT);
+const LOCALES = i18n.loadLocales(REPO_ROOT);
+const LOCALE = IS_PRIMARY ? null : cfg.site.localeCode || SUBDIR;
+const pageStatus = (f) => (IS_PRIMARY ? 'complete' : i18n.pageStatus(LEDGER, LOCALE, f));
+// 與 build_nav.js 同一條規則：語系還沒 published，或該頁還沒翻完，就整頁不進 sitemap。
+const LOCALE_LIVE = IS_PRIMARY || !!(LOCALES[LOCALE] && LOCALES[LOCALE].published);
+const indexable = (f) => LOCALE_LIVE && pageStatus(f) !== 'pending';
 const BASE_PREFIX = new URL(cfg.site.baseUrl).pathname.replace(/\/$/, '') + '/'; // 自訂網域時為 "/"
 
 // hub 模式：index.html = 資源總覽、catalog = 教學目錄、hub.pages = 自帶樣式的獨立單檔手冊。
@@ -65,7 +73,7 @@ for (const file of htmlFiles) {
 }
 
 // 6. data-icon 必須在 style.css 有對應字符，否則會顯示成空白方塊
-const cssPath = path.join(ROOT, 'assets', 'css', 'style.css');
+const cssPath = [path.join(ROOT, 'assets', 'css', 'style.css'), path.join(REPO_ROOT, 'assets', 'css', 'style.css')].find((p) => fs.existsSync(p)) || '';
 if (fs.existsSync(cssPath)) {
   const css = fs.readFileSync(cssPath, 'utf8');
   const defined = new Set(
@@ -113,7 +121,11 @@ if (fs.existsSync(path.join(ROOT, 'sitemap.xml'))) {
   if (CATALOG !== 'index.html') covered.push(CATALOG);
   covered.forEach((f) => {
     const loc = cfg.site.baseUrl.replace(/\/$/, '') + '/' + (f === 'index.html' ? '' : f);
-    if (!sitemap.includes(`<loc>${loc}</loc>`)) errors.push(`sitemap.xml 沒有涵蓋 ${f}`);
+    const inMap = sitemap.includes(`<loc>${loc}</loc>`);
+    // 其他語系尚未翻譯（pending）的頁面刻意不進 sitemap；反過來出現了就是錯
+    if (!indexable(f)) {
+      if (inMap) errors.push(`sitemap.xml 不該列出尚未上線的 ${f}`);
+    } else if (!inMap) errors.push(`sitemap.xml 沒有涵蓋 ${f}`);
   });
 } else {
   errors.push('缺少 sitemap.xml（跑 node scripts/build_nav.js 產生）');
@@ -125,4 +137,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`✓ ${htmlFiles.length} 個頁面的站內連結、錨點、id 與 sitemap 都正常`);
+console.log(`✓ ${SUBDIR ? SUBDIR + '/ ' : ''}${htmlFiles.length} 個頁面的站內連結、錨點、id 與 sitemap 都正常`);

@@ -14,6 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # zh-TW（repo 根目錄）：維持原本的檢查與自動重生，不依賴 i18n job。
   build-and-check:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
@@ -36,8 +37,14 @@ jobs:
       - name: Regenerate & commit (push to main)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
+          # 順序固定：zh 重生 → 帳本標 stale → 其他語系重生（橫幅／hreflang／sitemap 才會反映最新狀態）
           node scripts/build_nav.js
           node scripts/check_links.js
+          node scripts/check_i18n.js --update-ledger || true
+          for d in $(node -e "const l=require('./i18n/locales.json');console.log(Object.keys(l).filter(k=>!k.startsWith('_')).map(k=>l[k].dir||k).join(' '))"); do
+            SITE_ROOT=$d node scripts/build_nav.js
+            SITE_ROOT=$d node scripts/check_links.js
+          done
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name  'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -46,4 +53,31 @@ jobs:
             git push
           else
             echo "沒有漂移，無需 commit"
+          fi
+
+  # 其他語系（en/ …）：獨立 job，紅燈不擋 zh 發布；PR 上把「zh 改了 en 沒跟」擋下來。
+  i18n:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Locale roots — drift, links, gates
+        run: |
+          node scripts/build_og.js --check
+          for d in $(node -e "const l=require('./i18n/locales.json');console.log(Object.keys(l).filter(k=>!k.startsWith('_')).map(k=>l[k].dir||k).join(' '))"); do
+            SITE_ROOT=$d node scripts/build_nav.js --check
+            SITE_ROOT=$d node scripts/check_links.js
+          done
+          if [ "${{ github.event_name }}" = "pull_request" ] && [ "${{ contains(github.event.pull_request.labels.*.name, 'i18n-defer') }}" = "true" ]; then
+            echo "label i18n-defer：本 PR 允許 zh 先行，帳本漂移只警告"
+            node scripts/check_i18n.js
+          else
+            node scripts/check_i18n.js --strict
           fi

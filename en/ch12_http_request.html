@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter 12 · HTTP Request 節點：碰所有沒官方整合的 API · Woow n8n 入住指南</title>
+  <meta name="description" content="n8n HTTP Request 節點完整教學：GET/POST/PUT/DELETE、headers、body、auth、分頁、常見錯誤處理。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch12_http_request.html" />
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
+  <meta property="og:title" content="Chapter 12 · HTTP Request 節點：碰所有沒官方整合的 API · Woow n8n 入住指南" />
+  <meta property="og:description" content="n8n HTTP Request 節點完整教學：GET/POST/PUT/DELETE、headers、body、auth、分頁、常見錯誤處理。" />
+  <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch12_http_request.html" />
+  <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch12/01_http_workflow.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Chapter 12 · HTTP Request 節點：碰所有沒官方整合的 API · Woow n8n 入住指南" />
+  <meta name="twitter:description" content="n8n HTTP Request 節點完整教學：GET/POST/PUT/DELETE、headers、body、auth、分頁、常見錯誤處理。" />
+  <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch12/01_http_workflow.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/i18n.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="tutorial.html">n8n 入住指南</a>
+    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <nav class="lang-switch" aria-label="Language"><a href="../ch12_http_request.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch12_http_request.html" lang="en" aria-current="page">EN</a></nav>
+    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <h2>Chapters</h2>
+    <ol>
+      <li class="part-label">起步認識</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
+      <li class="part-label">從別人做好的起步</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
+      <li class="part-label">動手做第一個</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
+      <li class="part-label">常用整合</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html" class="active">HTTP Request 節點</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
+      <li class="part-label">流程控制</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
+      <li class="part-label">資料整形與重用</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
+      <li class="part-label">拔高進階</li>
+      <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
+      <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
+      <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>This chapter</h2>
+      <a href="#why">為什麼要會這個</a>
+      <a href="#concept">HTTP 呼叫四要素</a>
+      <a href="#what">看 API 文件三關鍵</a>
+      <a href="#steps">打第一個 API</a>
+      <a href="#auth">Authentication 三種寫法</a>
+      <a href="#post">POST 送 JSON 給 API</a>
+      <a href="#patterns">常見 API pattern</a>
+      <a href="#pagination">分頁處理</a>
+      <a href="#credentials">建 credential 給節點用</a>
+      <a href="#options">其他常用選項</a>
+      <a href="#troubleshoot">常見錯誤排除</a>
+      <a href="#faq">常見問題</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>Appendices</h2>
+      <a href="appendix_settings_ref.html">A · 設定速查</a>
+      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
+      <a href="appendix_internals.html">C · 底層架構</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch12_http_request.html" hreflang="zh-Hant">Open the Chinese version</a></div>
+    <div class="chapter-header">
+      <div class="kicker">Chapter 12</div>
+      <h1>HTTP Request 節點：碰所有沒官方整合的 API</h1>
+      <p class="lead">你在<a href="ch11_saas_integrations.html">第 11 章</a>學會把 Slack、Gmail、Google Sheets 這幾家熱門 SaaS 串起來——它們都有現成節點所以填一填就會動。但世界上不只這幾家 SaaS。你在公司要串的那家 CRM、那家台灣本土記帳系統、那個 IoT 廠商的 API，n8n 八成沒有現成節點。這章教你打開 n8n 的萬用鑰匙——<strong>HTTP Request 節點</strong>，只要對方有 REST API，你就打得到。</p>
+    </div>
+
+    <section id="why" data-nav="為什麼要會這個">
+      <h2 data-icon="why">為什麼要會這個節點</h2>
+      <p>n8n 官方支援 400+ 個節點，包了大部分你聽過的知名 SaaS。但把鏡頭拉遠——<strong>全世界有 API 的服務大概有幾十萬個</strong>：</p>
+      <ul>
+        <li>你們公司自架的內部系統（工單、進銷存、CRM）——n8n 當然不會做</li>
+        <li>台灣本土 SaaS（例如某本土記帳、某本土物流、某本土發票 API）——太小眾</li>
+        <li>剛推出的新服務——n8n 還來不及做節點</li>
+        <li>大家都有但 n8n 剛好沒做的（例如某冷門的 CI/CD）</li>
+        <li>你自己寫的服務、部門內部的 microservice</li>
+      </ul>
+      <p>只要它有一個 <strong>REST API</strong>（就是網址打進去會回 JSON 那種），你就能用 HTTP Request 節點打。這個節點的地位跟 Code node 一樣，是 n8n 的<strong>逃生口</strong>——現成節點做不到的，這個節點都能兜出來。</p>
+      <div class="callout"><strong>觀念：</strong>你在<a href="ch7_node_types.html">第 7 章</a>認識 Core 節點分類的時候看過它一眼。HTTP Request 嚴格講其實橫跨 Action 跟 Core——它不綁特定 SaaS（放 Core 分類），但功能上是打外部 API（行為像 Action）。這章就是把它拆開來看清楚。</div>
+      <p>一句話學會這章：<strong>看到「n8n 沒這家的節點」不要慌，翻對方 API 文件、開 HTTP Request 節點、填四個欄位、就打通了</strong>。</p>
+    </section>
+
+    <section id="concept" data-nav="HTTP 呼叫四要素">
+      <h2 data-icon="concept">HTTP 呼叫的四要素</h2>
+      <p>不管哪家 API，打一次 HTTP 呼叫都要決定四件事。學過 HTTP 的可以跳過，沒學過的花三分鐘看完就永久受用——</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>要素</th><th>問你什麼</th><th>典型值</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>URL</strong></td>
+            <td>要往哪打？</td>
+            <td><code>https://api.example.com/users</code></td>
+          </tr>
+          <tr>
+            <td><strong>Method</strong></td>
+            <td>要做什麼動作？</td>
+            <td><code>GET</code>、<code>POST</code>、<code>PUT</code>、<code>DELETE</code>、<code>PATCH</code></td>
+          </tr>
+          <tr>
+            <td><strong>Headers</strong></td>
+            <td>附帶什麼資訊？</td>
+            <td><code>Authorization: Bearer xxx</code>、<code>Content-Type: application/json</code></td>
+          </tr>
+          <tr>
+            <td><strong>Body</strong></td>
+            <td>帶什麼資料過去？</td>
+            <td>JSON payload（只有 POST/PUT/PATCH 才要填）</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><strong>Method（方法）</strong>其實就是動詞，講你想對那個 URL 做什麼——</p>
+      <ul>
+        <li><code>GET</code>：<strong>拿</strong>——去讀一份資料，不會改任何東西（例：抓客戶清單）</li>
+        <li><code>POST</code>：<strong>建立</strong>——新增一筆資料（例：建一個新使用者）</li>
+        <li><code>PUT</code>：<strong>整筆覆蓋</strong>——用你傳的 body 蓋掉原本那筆</li>
+        <li><code>PATCH</code>：<strong>部分更新</strong>——只改幾個欄位，其他保留</li>
+        <li><code>DELETE</code>：<strong>刪除</strong>——一筆走人（例：刪掉那個使用者）</li>
+      </ul>
+      <div class="callout tip"><strong>提示：</strong>看 API 文件時，這五個動詞出現在 endpoint 前面（例：<code>POST /users</code>）就是告訴你這個 endpoint 要用哪個 method。API 文件的表格格式通常是 <strong>Method + 路徑 + 說明</strong> 三欄。</div>
+      <p><strong>Headers（標頭）</strong>是附帶資訊，最常見的兩個：</p>
+      <ul>
+        <li><code>Authorization: Bearer &lt;你的 token&gt;</code>——認證你是誰</li>
+        <li><code>Content-Type: application/json</code>——告訴對方「我送 JSON 過去」</li>
+      </ul>
+      <p><strong>Body（本體）</strong>只有 <code>POST</code>、<code>PUT</code>、<code>PATCH</code> 才要填——就是你要傳過去的資料，通常是一坨 JSON。GET 跟 DELETE 不帶 body（有些 API 例外，但少見）。</p>
+    </section>
+
+    <section id="what" data-nav="看 API 文件三關鍵">
+      <h2 data-icon="what">看 API 文件的三個關鍵</h2>
+      <p>拿到一份陌生 API 的文件——不管是 Stripe、Notion、還是你們公司內部系統——你要在文件裡找三件事，其他都是花絮：</p>
+      <ol class="steps">
+        <li>
+          <h3>Endpoint URL（往哪打）</h3>
+          <p>通常在文件的側欄或表格會列出所有可打的網址，例如 <code>https://api.example.com/v1/users</code>、<code>https://api.example.com/v1/orders/{id}</code>。網址裡的 <code>{id}</code> 這種括號代表要換成實際的值。</p>
+        </li>
+        <li>
+          <h3>Method（用什麼動詞）</h3>
+          <p>每個 endpoint 旁邊會標 <code>GET</code>、<code>POST</code>、<code>PUT</code>、<code>DELETE</code>——就是這個 endpoint 該用什麼 method。同一個 URL 有時候會支援多個 method（例：<code>GET /users</code> 拿清單、<code>POST /users</code> 建新的），要看清楚別搞混。</p>
+        </li>
+        <li>
+          <h3>Auth（怎麼認證）</h3>
+          <p>文件開頭一定會有 <strong>Authentication</strong> 章節，告訴你這家用哪種認證。常見三種：<strong>Header 帶 Bearer Token</strong>（多數現代 API）、<strong>URL 後面帶 <code>?api_key=xxx</code></strong>（比較老派）、<strong>OAuth 走一輪流程</strong>（Google、Facebook 那種）。看清楚是哪種，才知道要怎麼填。</p>
+        </li>
+      </ol>
+      <div class="callout tip"><strong>提示：</strong>好的 API 文件通常會附一段 <code>curl</code> 範例，例如 <code>curl -H "Authorization: Bearer xxx" https://api.example.com/users</code>。看懂這行你就知道 URL、method（沒寫 <code>-X</code> 就是 GET）、header 都在哪。<strong>會看 curl 就會用 HTTP Request 節點</strong>。</div>
+      <p>不同家 API 的文件長相不太一樣，但這三件事一定寫得到。找不到就代表文件寫得爛，或是你要去問對方 support。</p>
+    </section>
+
+    <section id="steps" data-nav="打第一個 API">
+      <h2 data-icon="steps">動手：打第一個 API（GitHub 公開資料）</h2>
+      <p>先用一個不用 auth 的公開 API 熟練節點介面。目標：抓 GitHub 使用者 <code>octocat</code>（吉祥物章魚貓）的公開資料。</p>
+      <figure class="shot">
+        <img src="../assets/screenshots/ch12/01_http_workflow.png" alt="Website Down Checker workflow — 用 HTTP Request 打各站健康檢查" />
+        <figcaption><strong>圖 12-1</strong>Website Down Checker 實例：用一連串 HTTP Request 節點對多個網站做健康檢查，示範 GET 呼叫怎麼串進 workflow。</figcaption>
+      </figure>
+      <ol class="steps">
+        <li>
+          <h3>在 Canvas 加 HTTP Request 節點</h3>
+          <p>Canvas 空白處按 <strong>+</strong> 開節點抽屜，搜尋 <code>http</code>，選 <strong>HTTP Request</strong>。它會出現在你 workflow 上，左右兩邊都有圓點（跟 Action 節點一樣）。前面如果沒有 Trigger 節點，先加一個 <strong>Manual Trigger</strong>（給你手動按執行）串起來。</p>
+        </li>
+        <li>
+          <h3>Method 選 GET</h3>
+          <p>節點右邊面板打開，最上面的 <strong>Method</strong> 下拉選 <code>GET</code>（預設就是 GET，通常不用改）。</p>
+        </li>
+        <li>
+          <h3>URL 填 <code>https://api.github.com/users/octocat</code></h3>
+          <p>下方 <strong>URL</strong> 欄位貼入這串網址。這是 GitHub 官方的公開 REST API，抓某使用者的資料。</p>
+        </li>
+        <li>
+          <h3>Authentication 保留 <code>None</code></h3>
+          <p>因為公開資料不用 auth。真實情況多半要選 <code>Generic Credential Type</code> 或 <code>Predefined Credential Type</code>，這章後面會詳講，第一次先跳過。</p>
+        </li>
+        <li>
+          <h3>按 <code>Execute step</code></h3>
+          <p>節點右上角有 <strong>Execute step</strong> 按鈕（有些版本叫 <strong>Test step</strong>）。按下去，n8n 會實際打這隻 API。</p>
+        </li>
+        <li>
+          <h3>看右邊 output pane 的 JSON</h3>
+          <p>幾秒內右邊會出現章魚貓的資料——<code>login: "octocat"</code>、<code>id: 583231</code>、<code>name: "The Octocat"</code>、<code>avatar_url: "..."</code>、<code>public_repos: 8</code>——一整包 JSON。這代表你成功打了一次 API。</p>
+        </li>
+        <li>
+          <h3>下一個節點就能用 <code>{{ $json.login }}</code> 取欄位</h3>
+          <p>在這個 HTTP Request 後面接一個 Slack 或 Set 節點，訊息欄位打 <code>使用者 {{ $json.login }} 有 {{ $json.public_repos }} 個 repo</code>，跑起來就會替換成實際值。這叫 Expression，<a href="ch14_expressions.html">第 14 章</a>會專門講。</p>
+        </li>
+      </ol>
+      <div class="callout tip"><strong>提示：</strong>GitHub、Bitbucket、CoinGecko、OpenWeatherMap 都有公開的 GET endpoint 不用 auth，很適合當練習對象。你可以先用它們熟悉「打 API → 收 JSON → 下游用」這個節奏，再去挑戰要 auth 的。</div>
+    </section>
+
+    <section id="auth" data-nav="Authentication 三種寫法">
+      <h2 data-icon="security">Authentication 常見三種寫法</h2>
+      <p>公開 API 是少數，實務上多半要 auth。你會遇到的三種寫法對照：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>方式</th><th>怎麼寫</th><th>常見於</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Bearer Token</strong></td>
+            <td>Header 加 <code>Authorization: Bearer &lt;token&gt;</code></td>
+            <td>OpenAI、Anthropic、Notion、大多數現代 API</td>
+          </tr>
+          <tr>
+            <td><strong>API Key in Query</strong></td>
+            <td>URL 後加 <code>?api_key=xxx</code> 或 <code>?key=xxx</code></td>
+            <td>Google Maps、OpenWeatherMap、部分老 API</td>
+          </tr>
+          <tr>
+            <td><strong>Basic Auth</strong></td>
+            <td>Header 加 <code>Authorization: Basic &lt;base64(user:pass)&gt;</code></td>
+            <td>Jira、部分自架系統、內部工具</td>
+          </tr>
+          <tr>
+            <td><strong>API Key in Header</strong></td>
+            <td>Header 加自訂欄位如 <code>X-API-Key: xxx</code></td>
+            <td>Stripe（舊）、部分企業 API</td>
+          </tr>
+          <tr>
+            <td><strong>OAuth 2.0</strong></td>
+            <td>走一輪授權流程拿 token（自動 refresh）</td>
+            <td>Google、Slack、Facebook（通常有專屬節點）</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>節點裡的 <strong>Authentication</strong> 下拉有幾個選項：</p>
+      <ul>
+        <li><code>None</code>——公開 API 不用 auth</li>
+        <li><code>Predefined Credential Type</code>——n8n 有預設幫你設定好的，選對應的服務就好（例如 <code>OpenAI</code>、<code>Notion</code>、<code>HubSpot</code>）</li>
+        <li><code>Generic Credential Type</code>——自己指定認證方式，下拉出現 <code>Basic Auth</code>、<code>Custom Auth</code>、<code>Digest Auth</code>、<code>Header Auth</code>、<code>OAuth1 API</code>、<code>OAuth2 API</code>、<code>Query Auth</code> 七種（有些版本另有 <code>Simplified Custom Auth</code>）</li>
+      </ul>
+      <div class="callout"><strong>觀念：</strong>選 <code>Generic Credential Type</code> 後，再選 <code>Header Auth</code>，會請你建立一組 credential——填 Name（例：<code>Authorization</code>）跟 Value（例：<code>Bearer sk-xxxxx</code>）。存起來後，任何節點都可以引用這組 credential，不用把 token 到處貼。<a href="ch13_credentials.html">第 13 章</a>會專門講 credential 管理。</div>
+      <div class="callout warn"><strong>注意：</strong><strong>不要把 token 直接貼在 URL 或 Header 欄位</strong>。要用 credential 存——存進去 n8n 會加密，也不會出現在 workflow 匯出的 JSON。硬貼在欄位裡的話，同事 export 你 workflow 就會拿到你的 token。</div>
+    </section>
+
+    <section id="post" data-nav="POST 送 JSON 給 API">
+      <h2 data-icon="steps">動手：POST 送 JSON 給 API</h2>
+      <p>GET 是拿，POST 是送。實務上你要「用 n8n 建立一筆資料到別家 SaaS」的時候就用 POST。假設某訊息 API 的 endpoint 是 <code>POST /messages</code>，body 要傳 <code>{"text": "訊息內容", "to": "user@example.com"}</code>——步驟如下：</p>
+      <ol class="steps">
+        <li>
+          <h3>Method 改 <code>POST</code></h3>
+          <p>右邊面板最上面 Method 下拉選 <code>POST</code>。選了 POST，下面會多出 <strong>Send Body</strong> 選項。</p>
+        </li>
+        <li>
+          <h3>URL 填 endpoint</h3>
+          <p>例如 <code>https://api.example.com/v1/messages</code>。這串在對方文件都會告訴你。</p>
+        </li>
+        <li>
+          <h3>Authentication 設好</h3>
+          <p>依對方要求選——多數是 <code>Generic Credential Type</code> → <code>Header Auth</code>，填一組 <code>Authorization: Bearer &lt;你的 token&gt;</code>。</p>
+        </li>
+        <li>
+          <h3>Send Body 打勾</h3>
+          <p>要傳 body 的話，把 <strong>Send Body</strong> 開關打開。</p>
+        </li>
+        <li>
+          <h3>Body Content Type 選 <code>JSON</code></h3>
+          <p>會出現 <strong>Body Content Type</strong> 選單，n8n 提供五個選項：<code>JSON</code>、<code>Form URLencoded</code>、<code>Form-Data</code>、<code>n8n Binary File</code>、<code>Raw</code>。多數現代 API 都用 <code>JSON</code>；上傳檔案的表單用 <code>Form-Data</code>；上傳純二進位（例如 PDF 直傳）用 <code>n8n Binary File</code>；對方要 XML 或自訂 MIME 用 <code>Raw</code>。看對方文件說什麼就選什麼。</p>
+        </li>
+        <li>
+          <h3>Specify Body 選 <code>Using JSON</code>，貼入 payload</h3>
+          <p>會出現一個大文字框，貼進：</p>
+          <pre class="code-block"><code>{
+  "text": "{{ $json.message }}",
+  "to": "user@example.com"
+}</code></pre>
+          <p>裡面 <code>{{ $json.message }}</code> 就是 Expression，會抓上一個節點的 <code>message</code> 欄位。要寫死也可以，直接打 <code>"你好"</code>。</p>
+        </li>
+        <li>
+          <h3>Execute step 看回應</h3>
+          <p>按執行。右邊 output pane 會出現對方 API 的回應——通常是 <code>{"id": "msg_xxx", "status": "sent"}</code> 這種確認訊息。如果收到 <code>{"error": "..."}</code>，看 <code>troubleshoot</code> 段。</p>
+        </li>
+      </ol>
+      <div class="callout tip"><strong>提示：</strong>Body 欄位支援 Expression。你可以整份 body 都用 Expression 動態組出來，例如 <code>{{ JSON.stringify($json) }}</code> 把整個 item 當 body 送出去。要注意跟外層雙引號的引號跳脫。</div>
+    </section>
+
+    <section id="patterns" data-nav="常見 API pattern">
+      <h2 data-icon="compare">常見 API pattern 對照表</h2>
+      <p>幾乎每家 REST API 都長類似的樣子——CRUD（Create、Read、Update、Delete）四種操作對應到四個 method。認得這個 pattern，你翻對方文件會快很多：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>你想做的</th><th>Method + URL 慣例</th><th>要不要 Body</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>拉一份資料清單</td>
+            <td><code>GET /items?limit=100</code></td>
+            <td>不用</td>
+          </tr>
+          <tr>
+            <td>拉單一筆資料</td>
+            <td><code>GET /items/{id}</code></td>
+            <td>不用</td>
+          </tr>
+          <tr>
+            <td>新增一筆資料</td>
+            <td><code>POST /items</code></td>
+            <td>要（新資料的 JSON）</td>
+          </tr>
+          <tr>
+            <td>整筆覆蓋一筆</td>
+            <td><code>PUT /items/{id}</code></td>
+            <td>要（完整新內容）</td>
+          </tr>
+          <tr>
+            <td>部分更新一筆</td>
+            <td><code>PATCH /items/{id}</code></td>
+            <td>要（只放要改的欄位）</td>
+          </tr>
+          <tr>
+            <td>刪除一筆</td>
+            <td><code>DELETE /items/{id}</code></td>
+            <td>不用</td>
+          </tr>
+          <tr>
+            <td>用條件查詢</td>
+            <td><code>GET /items?status=active&amp;created_after=2026-08-01</code></td>
+            <td>不用（條件在 query string）</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><strong>Query 參數</strong>（URL 問號後面那串 <code>?a=1&amp;b=2</code>）在 HTTP Request 節點裡不用手打，可以用 <strong>Send Query Parameters</strong> 開關，然後一列一個 Name/Value 填。n8n 會幫你組出正確的 URL，包括 URL encode（例：中文、空白會自動轉義）。</p>
+      <div class="callout"><strong>觀念：</strong>Path 裡的 <code>{id}</code> 這種要動態換值，在節點裡 URL 欄位直接寫 <code>https://api.example.com/items/{{ $json.id }}</code>——n8n 會執行時把 Expression 替換成實際值。這是最常見的用法之一。</div>
+    </section>
+
+    <section id="pagination" data-nav="分頁處理">
+      <h2 data-icon="records">分頁（Pagination）處理</h2>
+      <p>大部分 API 一次不會回全部資料——會限制一次最多回 100 筆（有的 50、有的 25）。你要撈 500 筆客戶，就得<strong>連打 5 次</strong>，每次拿一頁。這叫分頁（pagination）。</p>
+      <p>好消息：n8n HTTP Request 節點內建分頁機制，不用自己寫迴圈。步驟：</p>
+      <ol class="steps">
+        <li>
+          <h3>打開節點的 <code>Pagination</code> 分頁</h3>
+          <p>節點右邊面板往下滑，找到 <strong>Pagination</strong> 區塊，把 <strong>Pagination Mode</strong> 從 <code>Off</code> 改成你要的 mode。</p>
+        </li>
+        <li>
+          <h3>選 mode——依 API 文件說明</h3>
+          <p>兩種常見：</p>
+          <ul>
+            <li><strong>Response Contains Next URL</strong>——API 回傳的 JSON 裡有一個 <code>next</code> 或 <code>next_url</code> 欄位，n8n 自動抓下去打</li>
+            <li><strong>Update a Parameter in Each Request</strong>——你告訴 n8n 每次要改哪個 query 參數（例：<code>page=1, 2, 3...</code> 或 <code>cursor=xxx</code>）</li>
+          </ul>
+        </li>
+        <li>
+          <h3>設 <code>Complete Expression</code>（什麼時候停）</h3>
+          <p>n8n 用一個布林 Expression 判斷是否停止——欄位叫 <strong>Complete Expression</strong>，填類似 <code>{{ $response.body.results.length === 0 }}</code>（回空陣列就停）或 <code>{{ !$response.body.next_page }}</code>（沒下一頁就停）。另可設 <strong>Limit Pages Fetched</strong> 給一個上限頁數當防呆（例：最多 20 頁）。</p>
+        </li>
+        <li>
+          <h3>執行，看 output</h3>
+          <p>執行後 n8n 會自動連續打幾次，把所有頁的資料<strong>合併成一整包</strong> output。下一個節點看到的就是完整的 500 筆，不用你關心分頁。</p>
+        </li>
+      </ol>
+      <div class="callout warn"><strong>注意：</strong>分頁模式很容易打爆對方 rate limit。看到 429 error（Too Many Requests）就代表打太快——在 Pagination 設定裡有 <strong>Interval Between Requests (ms)</strong>，加個 500-1000 ms 讓它慢一點。或用 Wait 節點手動控制。</div>
+      <p>官方分頁文件寫得很詳細（各種 pattern 都有範例）：<a href="https://docs.n8n.io/code/cookbook/http-node/pagination/" target="_blank" rel="noopener">docs.n8n.io/code/cookbook/http-node/pagination</a>。</p>
+    </section>
+
+    <section id="credentials" data-nav="建 credential 給節點用">
+      <h2 data-icon="advanced">建 credential 給 HTTP Request 節點用</h2>
+      <p>如果你會反覆用同一組 API key 打同一家 SaaS 的多個 endpoint（例：先 GET 客戶清單、再對每個客戶 POST 訊息、再 DELETE 過期的），與其每個節點都貼一次 token，不如<strong>把 token 存成 credential，多個節點共用</strong>。</p>
+      <ol class="steps">
+        <li>
+          <h3>左側 <code>Credentials</code> → <code>Create Credential</code></h3>
+          <p>左側主導覽選 <strong>Credentials</strong>，右上角按 <strong>Create Credential</strong>（或第一次建立的引導按鈕）。</p>
+        </li>
+        <li>
+          <h3>搜尋 <code>Header Auth</code></h3>
+          <p>credential 類型清單搜 <code>header</code>，選 <strong>Header Auth</strong>（舊版介面顯示為 <code>HTTP Header Auth</code>，同一個東西）。這是最通用的一種（Bearer Token、X-API-Key 都用這個）。</p>
+        </li>
+        <li>
+          <h3>Name 填 <code>Authorization</code>，Value 填 <code>Bearer &lt;你的 token&gt;</code></h3>
+          <p>Name 是 header 欄位名稱，Value 是欄位值。整組存下來給這組 credential 取個好記的名字，例如 <code>MyCompany CRM Bearer</code>。</p>
+        </li>
+        <li>
+          <h3>回節點，Authentication 選 <code>Generic Credential Type</code> → <code>Header Auth</code> → 選剛建的那組</h3>
+          <p>之後這個節點打的每一次 request 都會自動帶那個 header。多個節點都選同一組 credential，改 token 只要改一個地方。</p>
+        </li>
+      </ol>
+      <div class="callout tip"><strong>提示：</strong>credential 存進去後 <strong>看不到原始值</strong>——n8n 會蓋掉。這是安全設計。要換 token 就重編 credential；忘了原本 token 值也沒關係，反正你不會再看到它。<a href="ch13_credentials.html">第 13 章</a>會講 credential 的分享、權限、匯出時會發生什麼。</div>
+    </section>
+
+    <section id="options" data-nav="其他常用選項">
+      <h2 data-icon="tabs">節點其他常用選項一次認</h2>
+      <p>節點下拉最下面有 <strong>Add Option</strong> 按鈕，可以打開更多進階選項。這幾個你早晚會遇到：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>選項</th><th>做什麼</th><th>什麼時候需要</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Response &gt; Response Format</code></td>
+            <td>指定回應解析方式，選項有 <code>Autodetect</code>（預設）、<code>JSON</code>、<code>Text</code>、<code>File</code></td>
+            <td>下載 PDF、圖片、CSV 時要選 <code>File</code>；對方回純字串時選 <code>Text</code></td>
+          </tr>
+          <tr>
+            <td><code>Response &gt; Full Response</code></td>
+            <td>output 除了 body 也包含 headers、status code</td>
+            <td>需要看 HTTP status code 或 response headers 時</td>
+          </tr>
+          <tr>
+            <td><code>Response &gt; Never Error</code></td>
+            <td>就算 API 回 4xx/5xx 也不讓節點紅色</td>
+            <td>你要自己判斷 status code 做不同處理時</td>
+          </tr>
+          <tr>
+            <td><code>Timeout</code></td>
+            <td>等對方回應的最長毫秒數（不填就用 n8n 內建預設，通常是 300000 ms）</td>
+            <td>對方 API 慢或不穩、或你想快速失敗</td>
+          </tr>
+          <tr>
+            <td><code>Batching</code></td>
+            <td>每 N 個 item 打一次、每次間隔多少毫秒</td>
+            <td>你 workflow 進來 500 個 item 要一個一個打 API，這裡設 rate limit</td>
+          </tr>
+          <tr>
+            <td><code>Redirects</code></td>
+            <td>是否自動跟隨 3xx 導向</td>
+            <td>對方 API 用 URL 短網址或會導向登入頁時要調整</td>
+          </tr>
+          <tr>
+            <td><code>Proxy</code></td>
+            <td>透過 HTTP proxy 打</td>
+            <td>公司內網要走 proxy 才能出去打外部 API</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>觀念：</strong>對節點右邊<strong>每個節點</strong>都會反覆執行——如果你上游進來 100 個 item，這個節點就會打 100 次 API。這是 n8n 的 item flow 特性（<a href="ch7_node_types.html">第 7 章</a>提過）。要控制打的速率，用 Batching 選項或前面加 <strong>Split In Batches</strong> 節點。</div>
+    </section>
+
+    <section id="troubleshoot" data-nav="常見錯誤排除">
+      <h2 data-icon="troubleshoot">常見錯誤排除</h2>
+      <p>API 打不通時，錯誤訊息通常是 HTTP status code——認得幾個常見的省很多時間：</p>
+      <ol class="steps">
+        <li>
+          <h3>401 Unauthorized（沒認證或 token 錯）</h3>
+          <p>Auth 沒設對或 token 過期。<strong>先在 Postman、Insomnia、或 <code>curl</code> 打通一次</strong>再回來對照——把能跑的 curl 完全複製，n8n 節點的 Method、URL、Header 一格一格填成一樣。這樣就能孤立問題（是 n8n 設定問題、還是 token/URL 問題）。</p>
+        </li>
+        <li>
+          <h3>403 Forbidden（有登入但沒權限）</h3>
+          <p>Token 對了，但這個 endpoint 你沒權限打。看對方 API 文件的 <strong>scope</strong> 或 <strong>role</strong> 段——通常要開特定權限（例：OpenAI 要有 read 或 write scope、Slack 要 <code>chat:write</code>）。重新產一組有正確權限的 token。</p>
+        </li>
+        <li>
+          <h3>404 Not Found（URL 錯或資料不存在）</h3>
+          <p>URL 拼錯、少寫 <code>/v1/</code>、path 裡的 <code>{id}</code> 值錯（那筆資料不存在）。仔細比對文件的 URL；用 Expression 動態組 URL 時特別容易多一斜線或少一斜線。</p>
+        </li>
+        <li>
+          <h3>429 Too Many Requests（打太快）</h3>
+          <p>對方 API 有 rate limit（例：每分鐘 60 次）你超過了。三個解法：<strong>（1）</strong>節點 <code>Options → Batching</code> 設 interval；<strong>（2）</strong>前面加 <strong>Wait</strong> 節點降速；<strong>（3）</strong>節點打開 <code>Retry on Fail</code> 加上 <code>Retry Wait</code>（<a href="ch17_error_handling.html">第 17 章</a>詳講）。</p>
+        </li>
+        <li>
+          <h3>500 / 502 / 503（對方伺服器爛掉）</h3>
+          <p>不是你的問題，對方 API 掛了。開 <code>Retry on Fail</code>（重試 3 次，每次等 5 秒）通常就會過。持續 500 就是對方真的壞了，去 twitter 搜對方 status page。</p>
+        </li>
+        <li>
+          <h3>200 但回 HTML 不是 JSON</h3>
+          <p>你的 URL 打錯了——可能是被 302 導向到登入頁或錯誤頁。看 output 是不是一堆 <code>&lt;html&gt;</code>、<code>&lt;body&gt;</code> tag。仔細對 URL、確認 auth 有設好、確認 API base URL 正確。有時候 <code>https</code> vs <code>http</code> 也會導。</p>
+        </li>
+        <li>
+          <h3>成功但 body 是空的</h3>
+          <p>看看 status code 是不是 <code>204 No Content</code>——這是「成功但沒東西回」，正常。<code>DELETE</code> 常常回 204。或是 API 設計就這樣（成功不回 body）。要看是否成功，把 <code>Options → Response → Full Response</code> 打開，就能看到 status code 判斷。</p>
+        </li>
+        <li>
+          <h3>SSL 憑證錯誤</h3>
+          <p>公司內部 API 常常用自簽 SSL 憑證。到節點 <code>Options → Add Option → Ignore SSL Issues (Insecure)</code> 打開能繞過驗證。<strong>只有內部服務才這樣做</strong>——打公網 API 千萬不要關 SSL 驗證，會被中間人攻擊。</p>
+        </li>
+      </ol>
+      <div class="callout danger"><strong>危險：</strong>不要把 token 貼在 <strong>Query Parameter</strong> 而不是 <strong>Header</strong>（除非 API 明確要求）。Query 會被記在對方 access log 裡，token 曝光風險比 Header 高。多數現代 API 都建議用 <code>Authorization: Bearer</code> 走 Header。</div>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>HTTP Request 節點跟官方 SaaS 節點，哪個好？</summary>
+        <div class="body">
+          <p>有官方就用官方。官方節點通常包好三件事：<strong>（1）</strong>auth 幫你走 OAuth（不用手動貼 token）、<strong>（2）</strong>分頁自動處理、<strong>（3）</strong>常用 operation 有 UI（不用查 API endpoint）。HTTP Request 是<strong>沒有官方節點才用</strong>的逃生口。硬要對已經有節點的 Slack、Gmail 用 HTTP Request，你會多花很多時間。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>我手上有一段 curl 指令，怎麼轉成 n8n 節點？</summary>
+        <div class="body">
+          <p>三招：<strong>（1）</strong>用 Postman——貼 curl 進 Postman 的 Import 就會拆成 Method、URL、Header、Body 四塊，對照填進 n8n。<strong>（2）</strong>手動對照——curl 的 <code>-X</code> 是 Method、<code>-H</code> 是 Header、<code>-d</code> 是 Body、URL 就是 URL。<strong>（3）</strong>n8n 節點本身有 <strong>Import cURL</strong> 按鈕（在節點 <em>Parameters</em> 分頁的最上方），貼 curl 進去它會自動填四塊——最快。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>API 回的是檔案（圖片 / PDF），HTTP Request 會怎麼處理？</summary>
+        <div class="body">
+          <p>預設會把 binary 資料當 JSON 處理，會爛。要把 <code>Options → Response → Response Format</code> 改成 <code>File</code>——這時 output 會變成 binary 欄位（右邊 output pane 會顯示可下載的檔案），下游可以接 Google Drive 節點上傳、或 Set Binary Data 節點處理。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>Webhook 節點跟 HTTP Request 節點，是不是同一件事？</summary>
+        <div class="body">
+          <p>剛好相反。<strong>Webhook 節點是「收」</strong>（別人打進 n8n），<strong>HTTP Request 節點是「打」</strong>（n8n 主動打出去）。方向對調。<a href="ch22_webhook.html">第 22 章</a>會專講 Webhook。實務上兩個常常一起用——例如某系統 Webhook 打進 n8n（收），n8n 加工後用 HTTP Request 打到另一個系統（送）。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>API 文件裡的 <code>{{ }}</code> 跟 n8n Expression 的 <code>{{ }}</code> 一樣嗎？</summary>
+        <div class="body">
+          <p>不一樣，只是碰巧長得像。API 文件裡的 <code>{{ variable }}</code> 通常是<strong>要你替換的佔位符</strong>（例：<code>Bearer {{ token }}</code> 是要你把 <code>{{ token }}</code> 整段換成實際 token）。n8n Expression 的 <code>{{ $json.field }}</code> 是<strong>真正會被 n8n 執行的語法</strong>。看到 API 文件裡的佔位符請自己手動替換成實際值，別誤會了。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>可以在 URL、Header、Body 裡都用 Expression 嗎？</summary>
+        <div class="body">
+          <p>可以。每個文字欄位左邊都有一個小齒輪或雙大括號圖示，切成 Expression 模式就能寫 <code>{{ $json.xxx }}</code>。URL 動態組（例：<code>/users/{{ $json.userId }}</code>）、Header 動態帶（例：Authorization 值來自上一個節點）、Body 整份動態組（<code>{{ JSON.stringify($json) }}</code>）都行。<a href="ch14_expressions.html">第 14 章</a>會系統介紹 Expression 語法。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>對方 API 沒文件怎麼辦？</summary>
+        <div class="body">
+          <p>三招：<strong>（1）</strong>去對方網站的 Settings / Developer 頁找——很多 SaaS 把 API 文件藏在後台。<strong>（2）</strong>看對方前端有沒有用同一個 API——用 Chrome DevTools 開 Network 分頁，觀察前端打了哪些 endpoint，模仿。<strong>（3）</strong>直接寫信問對方 support 要 API doc。真的沒 API 的話，只能爬他們網頁（headless browser）或放棄自動化。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>打 API 需要注意費用嗎？</summary>
+        <div class="body">
+          <p>要。有些 API 按呼叫次數計費（OpenAI、Google Maps、Twilio），你 workflow 一循環就打 500 次，帳單會嚇死你。上線前一定要：<strong>（1）</strong>看清楚對方的計費方式（每次多少錢、每月免費額度）；<strong>（2）</strong>在 API provider 後台設 <strong>usage cap</strong>（花超過 X 元就停）；<strong>（3）</strong>先用小資料量測試，估算成本再全量跑。</p>
+        </div>
+      </details>
+      <details class="faq">
+        <summary>下一步做什麼？</summary>
+        <div class="body">
+          <p>兩個方向：<strong>（1）</strong>去<a href="ch13_credentials.html">第 13 章</a>學好 credential 的完整管理（分享、權限、匯出時安全）；<strong>（2）</strong>去<a href="ch14_expressions.html">第 14 章</a>學 Expression 語法，讓你的 HTTP Request 節點的 URL / Header / Body 能動態抓上一個節點的資料。最快實戰是找一個你們公司真的在用、n8n 沒現成節點的內部系統，試著用 HTTP Request 打通一個 endpoint——遇到<a href="appendix_errors.html">附錄 B</a>的 status code 錯誤就對照解法。</p>
+        </div>
+      </details>
+    </section>
+
+    <div class="pager">
+      <a class="prev" href="ch11_saas_integrations.html">
+        <span class="label">← Previous</span>
+        <span class="title">11 · 熱門 SaaS</span>
+      </a>
+      <a class="next" href="ch13_credentials.html">
+        <span class="label">Next →</span>
+        <span class="title">13 · Credentials</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+    </footer>
+  </main>
+</div>
+<script id="ui-strings" type="application/json">{"tocToggle":"Contents","tocExpand":"Expand chapter navigation","tocCollapse":"Collapse chapter navigation"}</script>
+<script src="../assets/js/toc.js"></script>
+</body>
+</html>
