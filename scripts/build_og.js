@@ -20,6 +20,7 @@ const i18n = require('./lib/i18n');
 
 const REPO_ROOT = i18n.REPO_ROOT;
 const CHECK = process.argv.includes('--check');
+const FORCE = process.argv.includes('--force'); // 預設只補缺的卡；--force 全部重畫（會動到已入版控的 zh 卡，慎用）
 const OUT_DIR = path.join(REPO_ROOT, 'assets', 'og');
 
 // 每個語系一張：kicker（小標）、script（Yellowtail 暖色詞，各語系共用）、tag（網址）
@@ -29,15 +30,16 @@ for (const [code, loc] of Object.entries(i18n.loadLocales(REPO_ROOT))) {
   roots.push({ code, dir: loc.dir || code, cfgPath: path.join(REPO_ROOT, loc.dir || code, 'chapters.json') });
 }
 
-const SCRIPT_WORD = 'your network, your home';
+const SCRIPT_WORD_DEFAULT = 'your network, your home'; // 各站可用 chapters.json site.ogScript 換成自己的暖色詞
 
 const cards = [];
 for (const r of roots) {
   if (!fs.existsSync(r.cfgPath)) continue;
   const cfg = JSON.parse(fs.readFileSync(r.cfgPath, 'utf8'));
   const s = cfg.site;
-  const file = (s.ogImage || '').replace(/^assets\/og\//, '');
-  if (!file) continue;
+  // 只有指向 assets/og/ 的 root 才由這支產卡；用截圖當 og:image 的 zh 站維持原樣（那是站主的選擇，不改）。
+  if (!/^assets\/og\//.test(s.ogImage || '')) continue;
+  const file = s.ogImage.replace(/^assets\/og\//, '');
   cards.push({
     out: path.join(OUT_DIR, file),
     kicker: `${s.license.holder} · ${s.brand}`,
@@ -45,6 +47,7 @@ for (const r of roots) {
     sub: `${s.subtitle} · ${(cfg.chapters || []).length}${r.code === null ? ' 章教學' : '-chapter tutorial'}`,
     tag: s.baseUrl.replace(/^https?:\/\//, '').replace(/\/$/, ''),
     lang: s.lang,
+    script: s.ogScript || SCRIPT_WORD_DEFAULT,
     titleSize: r.code === null ? '56px' : '60px',
   });
 }
@@ -56,7 +59,7 @@ if (CHECK) {
     missing.forEach((c) => console.error('  · ' + path.relative(REPO_ROOT, c.out)));
     process.exit(1);
   }
-  console.log(`✓ ${cards.length} 張分享卡都在`);
+  console.log(cards.length ? `✓ ${cards.length} 張分享卡都在` : '· 沒有任何 root 用 assets/og/ 分享卡，略過');
   process.exit(0);
 }
 
@@ -77,7 +80,7 @@ h1{font:700 ${c.titleSize}/1.1 Poppins,"Noto Sans TC",sans-serif;letter-spacing:
 .wm span{color:#6183FC}
 </style></head><body><div class="card">
 <div class="kicker">${c.kicker}</div>
-<div class="script">${SCRIPT_WORD}</div>
+<div class="script">${c.script}</div>
 <h1>${c.title}</h1>
 <div class="sub">${c.sub}</div>
 <div class="tile"><svg viewBox="0 0 24 24"><path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.1 14.8,9.5V11C15.4,11 16,11.6 16,12.3V15.8C16,16.4 15.4,17 14.7,17H9.2C8.6,17 8,16.4 8,15.7V12.2C8,11.6 8.6,11 9.2,11V9.5C9.2,8.1 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,9.5V11H13.5V9.5C13.5,8.7 12.8,8.2 12,8.2Z"/></svg></div>
@@ -96,6 +99,10 @@ h1{font:700 ${c.titleSize}/1.1 Poppins,"Noto Sans TC",sans-serif;letter-spacing:
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const browser = await chromium.launch();
   for (const c of cards) {
+    if (!FORCE && fs.existsSync(c.out)) {
+      console.log('· ' + path.relative(REPO_ROOT, c.out) + ' 已存在，略過（--force 重畫）');
+      continue;
+    }
     const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
     await page.setContent(tpl(c), { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);

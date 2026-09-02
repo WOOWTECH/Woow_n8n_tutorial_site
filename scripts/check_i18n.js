@@ -189,7 +189,8 @@ for (const [code, loc] of Object.entries(locales)) {
         const a = skeleton(zu.html);
         const b = skeleton(eu.html);
         if (a.join('|') !== b.join('|')) {
-          const at = a.findIndex((t, i2) => t !== b[i2]);
+          let at = a.findIndex((t, i2) => t !== b[i2]);
+          if (at < 0) at = Math.min(a.length, b.length); // 只差在尾巴：多出或少掉的那個 tag
           err(`${code}/${f}${zu.key}: [A] tag 骨架不同（第 ${at + 1} 個 tag：zh=${a[at] || '∅'} ${code}=${b[at] || '∅'}）`);
         }
         /* B. code freeze */

@@ -9,7 +9,7 @@
     "locale": "en_US",
     "description": "22 章＋3 附錄的繁體中文 n8n 教學：從打開登入、用別人的 template、做出第一個 workflow，一路帶到 Expression、Code node、AI Agent 與 Webhook，把公司的重複工作外包給流程自動化。",
     "footerMeta": "截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。",
-    "ogImage": "assets/screenshots/ch3/01_workspace.en.png",
+    "ogImage": "assets/og/n8n-guide.en.png",
     "license": {
       "name": "CC BY 4.0",
       "url": "https://creativecommons.org/licenses/by/4.0/deed.en",

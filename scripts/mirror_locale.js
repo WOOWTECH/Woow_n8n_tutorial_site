@@ -50,7 +50,10 @@ if (!fs.existsSync(cfgPath) || FORCE) {
   const base = rootCfg.site.baseUrl.replace(/\/$/, '');
   // 分享卡一定要換一張：zh 的卡上有中文，直接沿用等於英文站的分享卡是中文。
   // 命名規則 <name>.<locale>.<ext>，由 scripts/build_og.js 依各 root 的 chapters.json 產圖。
-  const ogImage = (rootCfg.site.ogImage || '').replace(/(\.[a-z0-9]+)$/i, `.${code}$1`);
+  // zh 用截圖當 og:image 的站：截圖上常有中文 UI，英文站另產一張 assets/og/<站名>.<locale>.png（build_og.js 依此路徑產圖）。
+  const zhOg = rootCfg.site.ogImage || '';
+  const slug = new URL(rootCfg.site.baseUrl).hostname.split('.')[0];
+  const ogImage = /^assets\/og\//.test(zhOg) ? zhOg.replace(/(\.[a-z0-9]+)$/i, `.${code}$1`) : `assets/og/${slug}.${code}.png`;
   cfg._readme = `Single source for the ${code}/ site root (nav, SEO, catalog, sitemap). Human-readable fields are translation units tracked in i18n/ledger.json. Rebuild with: SITE_ROOT=${code} node scripts/build_nav.js`;
   cfg.site = {
     ...rootCfg.site,
@@ -72,10 +75,18 @@ if (!fs.existsSync(cfgPath) || FORCE) {
 }
 
 /* 2. pages */
+// assets/ 一律改指上一層；此外手冊頁偶爾會連到 repo 根目錄的非頁面檔（STYLE.md、LICENSE…），
+// 那些檔不會鏡像進 en/，所以也改指上一層。頁面本身（chapters.json 列的、hub 頁、index/404）留在 en/ 內互連。
+const mirroredPages = new Set(files);
 const rewriteAssets = (html) =>
   html
     .replace(/(href|src)="assets\//g, '$1="../assets/')
-    .replace(/url\((['"]?)assets\//g, 'url($1../assets/');
+    .replace(/url\((['"]?)assets\//g, 'url($1../assets/')
+    .replace(/href="([^"#?:\/][^"#?:]*)"/g, (m, target) => {
+      if (mirroredPages.has(target) || target.startsWith('../')) return m;
+      if (/\.html$/.test(target)) return m; // 頁面：交給 check_links 判斷
+      return fs.existsSync(path.join(REPO_ROOT, target)) ? `href="../${target}"` : m;
+    });
 
 let copied = 0;
 for (const f of files) {
