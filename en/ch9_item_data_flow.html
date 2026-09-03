@@ -210,7 +210,7 @@
       <p>See the point? <strong>The item count is multiplied by the node in the middle.</strong> Manual Trigger pushes in 1 empty item, Google Sheets expands it into 5 items, and Slack is run 5 times in a row automatically. There is not one line of for-loop code in the whole thing; the item model does the expanding.</p>
       <figure class="shot">
         <img src="../assets/screenshots/ch9/01_data_flow_canvas.png" alt="AI×Odoo stage1 workflow: data flowing through 14 chained nodes, showing items expanded, filtered and aggregated along the way" />
-        <figcaption><strong>Figure 9-1</strong>A real 14-node workflow: data comes in from the Trigger on the left and is read, filtered, classified by AI and written back to Odoo — every line carries an array of items.</figcaption>
+        <figcaption><strong>Figure 9-1</strong> A real 14-node workflow: data comes in from the Trigger on the left and is read, filtered, classified by AI and written back to Odoo — every line carries an array of items.</figcaption>
       </figure>
       <div class="callout tip"><strong>Tip:</strong> Most Trigger nodes (Manual, Schedule) emit only 1 item when they first fire. What actually multiplies the data is <strong>the reading node that comes after</strong> (Google Sheets Read, Gmail Trigger fetching new mail, a database SELECT). So when you check whether a workflow's item count is right, look at <strong>which node is the data source</strong>, not at the Trigger.</div>
     </section>

@@ -374,7 +374,7 @@
       <p>That is the Set node's typical working pattern: <strong>comb the messy JSON the upstream node threw at you into something the downstream node can digest</strong>. Sheets, Slack, Notion and Airtable are all fussy about field formats; put a Set in the middle to tidy the data and the downstream node becomes much easier to configure.</p>
       <figure class="shot">
         <img src="../assets/screenshots/ch18/01_form_runner.png" alt="The four-node Universal Form Runner workflow, showing how Set/Edit Fields is used" />
-        <figcaption><strong>Figure 18-1</strong>A worked example: Universal Form Runner has only 4 nodes, and the Set / Edit Fields node in the middle reshapes the form data into the field format the downstream nodes need.</figcaption>
+        <figcaption><strong>Figure 18-1</strong> A worked example: Universal Form Runner has only 4 nodes, and the Set / Edit Fields node in the middle reshapes the form data into the field format the downstream nodes need.</figcaption>
       </figure>
       <div class="callout tip"><strong>Tip:</strong> Make it a habit — in a complex workflow, drop in a Set node as a waypoint every two or three nodes. Readability goes up a lot and debugging gets faster. When a node further along breaks, the first step is to open the nearest Set node and check whether the JSON it emits is right.</div>
     </section>

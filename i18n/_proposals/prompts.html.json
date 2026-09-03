@@ -3,8 +3,23 @@
   "entries": [
     {
       "unit": "#header",
+      "zh": "<code>POST /workflows</code>",
+      "en": "<code>POST /api/v1/workflows</code>"
+    },
+    {
+      "unit": "#header",
       "zh": "<code>PATCH /workflows/:id</code>",
       "en": "<code>PUT /api/v1/workflows/:id</code>"
+    },
+    {
+      "unit": "#header",
+      "zh": "<code>POST /workflows/:id/activate</code>",
+      "en": "<code>POST /api/v1/workflows/:id/activate</code>"
+    },
+    {
+      "unit": "#cat-trigger",
+      "zh": "<code>lastNode</code>",
+      "en": "<code>responseNode</code>"
     },
     {
       "unit": "#howto",

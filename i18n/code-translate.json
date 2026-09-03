@@ -1008,6 +1008,24 @@
       "unit": "#safety",
       "zh": "<code>generate_audit</code>",
       "en": "<code>n8n_audit_instance</code>"
+    },
+    {
+      "file": "prompts.html",
+      "unit": "#header",
+      "zh": "<code>POST /workflows</code>",
+      "en": "<code>POST /api/v1/workflows</code>"
+    },
+    {
+      "file": "prompts.html",
+      "unit": "#header",
+      "zh": "<code>POST /workflows/:id/activate</code>",
+      "en": "<code>POST /api/v1/workflows/:id/activate</code>"
+    },
+    {
+      "file": "prompts.html",
+      "unit": "#cat-trigger",
+      "zh": "<code>lastNode</code>",
+      "en": "<code>responseNode</code>"
     }
   ]
 }

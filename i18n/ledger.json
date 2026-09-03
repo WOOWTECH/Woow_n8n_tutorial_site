@@ -32,7 +32,7 @@
   "en:ch1_what_is_n8n.html#concept": {
    "status": "complete",
    "sourceHash": "bc1675179bee2541",
-   "targetHash": "bb8bb884d2d7755f",
+   "targetHash": "6ff7b784124bba83",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -116,7 +116,7 @@
   "en:ch2_login.html#steps": {
    "status": "complete",
    "sourceHash": "2efabea087b23499",
-   "targetHash": "f3274f2d6a01965a",
+   "targetHash": "d1e9a9dd65a425df",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -179,14 +179,14 @@
   "en:ch3_workspace_tour.html#concept": {
    "status": "complete",
    "sourceHash": "dcdb2804025c6d03",
-   "targetHash": "907a528145c2e7f9",
+   "targetHash": "e60a2f15ded67150",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:ch3_workspace_tour.html#workflow_page": {
    "status": "complete",
    "sourceHash": "656b1f8c4f2126fe",
-   "targetHash": "7b183a2105469e7a",
+   "targetHash": "25bdd23781476f80",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -207,7 +207,7 @@
   "en:ch3_workspace_tour.html#executions": {
    "status": "complete",
    "sourceHash": "59795d43c068c7bb",
-   "targetHash": "f31799e29915234c",
+   "targetHash": "f10789d159e3751a",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -221,7 +221,7 @@
   "en:ch3_workspace_tour.html#credentials_entry": {
    "status": "complete",
    "sourceHash": "5536bf08d5106e30",
-   "targetHash": "5ed792f1af48cf82",
+   "targetHash": "afa7e495b92c64ed",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -263,7 +263,7 @@
   "en:ch4_templates.html#concept": {
    "status": "complete",
    "sourceHash": "f0fe1b0771232256",
-   "targetHash": "6e7df28c1ee5ee69",
+   "targetHash": "83c12421859cf61f",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -347,7 +347,7 @@
   "en:ch5_import_workflow.html#advanced": {
    "status": "complete",
    "sourceHash": "5ea391f4b2fb05b5",
-   "targetHash": "79939d7db1a3b999",
+   "targetHash": "73522990cd86b44c",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -403,7 +403,7 @@
   "en:ch6_modify_workflow.html#steps": {
    "status": "complete",
    "sourceHash": "3c456df973f296f0",
-   "targetHash": "18e4bc2edf506731",
+   "targetHash": "99929b77a098047a",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -466,7 +466,7 @@
   "en:ch7_node_types.html#why": {
    "status": "complete",
    "sourceHash": "c938c6f586725dec",
-   "targetHash": "255999465bf63fd3",
+   "targetHash": "51f04024f56fdd14",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -557,7 +557,7 @@
   "en:ch8_first_workflow.html#steps": {
    "status": "complete",
    "sourceHash": "352b5492c9c3566d",
-   "targetHash": "6019915d4b7167e8",
+   "targetHash": "f47053fa0a4eed8e",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -655,7 +655,7 @@
   "en:ch9_item_data_flow.html#walkthrough": {
    "status": "complete",
    "sourceHash": "fb89d38c638ca670",
-   "targetHash": "a8ffaeb16850c702",
+   "targetHash": "1cc225246a1ea4ba",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -725,7 +725,7 @@
   "en:ch10_triggers.html#auto": {
    "status": "localized",
    "sourceHash": "d5c8d8905b55f67d",
-   "targetHash": "016f54c2d28073dd",
+   "targetHash": "0bf0162be6046bf0",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -830,7 +830,7 @@
   "en:ch11_saas_integrations.html#auto": {
    "status": "complete",
    "sourceHash": "315a97c0cb25122f",
-   "targetHash": "f1d30715d3256c14",
+   "targetHash": "4136ef1a69250673",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -886,7 +886,7 @@
   "en:ch12_http_request.html#steps": {
    "status": "complete",
    "sourceHash": "a5b9792ae78c6322",
-   "targetHash": "38ccadd25403549a",
+   "targetHash": "7ce55115300bf255",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -963,7 +963,7 @@
   "en:ch13_credentials.html#concept": {
    "status": "complete",
    "sourceHash": "d98567b2f1320bbc",
-   "targetHash": "873423eca5af3247",
+   "targetHash": "4044b1050ff5fe00",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1082,7 +1082,7 @@
   "en:ch14_expressions.html#use_cases": {
    "status": "complete",
    "sourceHash": "0e1f5c76b5b9d813",
-   "targetHash": "42356724bdf63b65",
+   "targetHash": "f05e785e380f508e",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1166,7 +1166,7 @@
   "en:ch15_if_switch.html#tips": {
    "status": "complete",
    "sourceHash": "7b493fc1030d2215",
-   "targetHash": "f3e8e906ce7416bb",
+   "targetHash": "a47f09ce58987763",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1250,7 +1250,7 @@
   "en:ch16_merge_split.html#combos": {
    "status": "complete",
    "sourceHash": "de1638bcf725859e",
-   "targetHash": "89405b9ab61265e7",
+   "targetHash": "79ea4422cb2fe334",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1327,7 +1327,7 @@
   "en:ch17_error_handling.html#records": {
    "status": "complete",
    "sourceHash": "1ec8b835a8526f16",
-   "targetHash": "709ef45fcf025966",
+   "targetHash": "7fd84986e19dc3f9",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1411,7 +1411,7 @@
   "en:ch18_set_function.html#records": {
    "status": "complete",
    "sourceHash": "34d47847fc5c9fcf",
-   "targetHash": "5a4b63e69322407f",
+   "targetHash": "fa0d19fb9e00b40e",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1509,7 +1509,7 @@
   "en:ch19_subworkflow.html#advanced": {
    "status": "localized",
    "sourceHash": "db4190bda9251664",
-   "targetHash": "77687241cfb0c5e2",
+   "targetHash": "e74dd293ef93e87f",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1537,7 +1537,7 @@
   "en:ch20_code_node.html#why": {
    "status": "complete",
    "sourceHash": "d37cf3eba378cb80",
-   "targetHash": "cf8ec432f50c80d9",
+   "targetHash": "831a78832417c1c2",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1663,7 +1663,7 @@
   "en:ch21_ai_agent.html#tools": {
    "status": "complete",
    "sourceHash": "135fd66abbda4538",
-   "targetHash": "471a8f36c80fda56",
+   "targetHash": "f5ca881344f250b7",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1733,7 +1733,7 @@
   "en:ch22_webhook.html#steps": {
    "status": "complete",
    "sourceHash": "59988f37e80a11e1",
-   "targetHash": "5a64eb9b987712cc",
+   "targetHash": "0bd770d28e48f60c",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1817,7 +1817,7 @@
   "en:appendix_settings_ref.html#personal": {
    "status": "complete",
    "sourceHash": "3b59d43a0d2b81ab",
-   "targetHash": "ef8f2da27ae5c5b6",
+   "targetHash": "34faebc0aac3c93e",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1887,7 +1887,7 @@
   "en:appendix_errors.html#steps": {
    "status": "complete",
    "sourceHash": "c6e40858431d43d5",
-   "targetHash": "53832c7ac06d99fd",
+   "targetHash": "af5b0eb989cfbc30",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1985,7 +1985,7 @@
   "en:appendix_internals.html#why": {
    "status": "complete",
    "sourceHash": "16d3bacd62e5f6de",
-   "targetHash": "e406fdf63012cec4",
+   "targetHash": "a3435522267c33e5",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2160,7 +2160,7 @@
   "en:prompts.html#header": {
    "status": "complete",
    "sourceHash": "cd373a17e7efdb38",
-   "targetHash": "929d4fbe22010e98",
+   "targetHash": "88e7c4aa53ca1615",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2181,28 +2181,28 @@
   "en:prompts.html#cat-create": {
    "status": "complete",
    "sourceHash": "2a877612476b795d",
-   "targetHash": "f456210d7585796a",
+   "targetHash": "4441d14e6d31aea1",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-trigger": {
    "status": "complete",
    "sourceHash": "961dd06bf08bd6e5",
-   "targetHash": "57fe8a0fd96aebf0",
+   "targetHash": "4493310259e4b1bc",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-transform": {
    "status": "complete",
    "sourceHash": "f9ec4140e0ce10b8",
-   "targetHash": "12a97542e43ecbba",
+   "targetHash": "9ce4a3e705f698b6",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-integration": {
    "status": "complete",
    "sourceHash": "90f214167a0a3dac",
-   "targetHash": "4fa2c99f95c84bb3",
+   "targetHash": "8eb6073b94e3f5ea",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2223,7 +2223,7 @@
   "en:prompts.html#cat-debug": {
    "status": "complete",
    "sourceHash": "fa45cb33f2d5e7eb",
-   "targetHash": "571a88ab0152fca3",
+   "targetHash": "848b3bbe1350d915",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2279,7 +2279,7 @@
   "en:skills.html#picks": {
    "status": "complete",
    "sourceHash": "042ba01ac2efb5a9",
-   "targetHash": "43db4bb53851fc6d",
+   "targetHash": "b35ff313856d3130",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2300,7 +2300,7 @@
   "en:skills.html#compat": {
    "status": "complete",
    "sourceHash": "9849bdd701085b44",
-   "targetHash": "63f720f8da3c19b4",
+   "targetHash": "ece2077a219773b2",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },

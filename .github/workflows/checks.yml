@@ -73,6 +73,8 @@ jobs:
 
       - name: Locale roots — drift, links, gates
         run: |
+          node scripts/tests/apply_code_translations.test.js
+          node scripts/tests/english_content.test.js
           node scripts/build_og.js --check
           for d in $(node -e "const l=require('./i18n/locales.json');console.log(Object.keys(l).filter(k=>!k.startsWith('_')).map(k=>l[k].dir||k).join(' '))"); do
             SITE_ROOT=$d node scripts/build_nav.js --check
