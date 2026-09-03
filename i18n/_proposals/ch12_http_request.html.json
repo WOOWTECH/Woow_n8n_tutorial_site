@@ -1,0 +1,35 @@
+{
+  "file": "ch12_http_request.html",
+  "entries": [
+    {
+      "unit": "#concept",
+      "zh": "<code>Authorization: Bearer &lt;你的 token&gt;</code>",
+      "en": "<code>Authorization: Bearer &lt;your-token&gt;</code>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<code>使用者 {{ $json.login }} 有 {{ $json.public_repos }} 個 repo</code>",
+      "en": "<code>User {{ $json.login }} has {{ $json.public_repos }} repos</code>"
+    },
+    {
+      "unit": "#post",
+      "zh": "<code>{\"text\": \"訊息內容\", \"to\": \"user@example.com\"}</code>",
+      "en": "<code>{\"text\": \"message body\", \"to\": \"user@example.com\"}</code>"
+    },
+    {
+      "unit": "#post",
+      "zh": "<code>Authorization: Bearer &lt;你的 token&gt;</code>",
+      "en": "<code>Authorization: Bearer &lt;your-token&gt;</code>"
+    },
+    {
+      "unit": "#post",
+      "zh": "<code>\"你好\"</code>",
+      "en": "<code>\"hello\"</code>"
+    },
+    {
+      "unit": "#credentials",
+      "zh": "<code>Bearer &lt;你的 token&gt;</code>",
+      "en": "<code>Bearer &lt;your-token&gt;</code>"
+    }
+  ]
+}

@@ -70,17 +70,17 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要學這個</a>
-      <a href="#concept">三大類 Trigger</a>
+      <a href="#why">Why this matters</a>
+      <a href="#concept">Three trigger types</a>
       <a href="#what">Manual Trigger</a>
       <a href="#auto">Schedule Trigger</a>
-      <a href="#location">時區怎麼設</a>
+      <a href="#location">Setting the timezone</a>
       <a href="#integration">Event Trigger</a>
-      <a href="#advanced">Trigger vs Poll</a>
-      <a href="#tabs">一條 workflow 多個 Trigger</a>
-      <a href="#steps">把 Manual 換成 Schedule</a>
-      <a href="#troubleshoot">Trigger 常見卡關</a>
-      <a href="#faq">常見問題</a>
+      <a href="#advanced">Trigger vs poll</a>
+      <a href="#tabs">Multiple triggers</a>
+      <a href="#steps">Manual to Schedule</a>
+      <a href="#troubleshoot">Trigger pitfalls</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -94,410 +94,410 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch10_triggers.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 10</div>
-      <h1>三種觸發：Manual / Schedule / Event</h1>
-      <p class="lead">workflow 要跑，總得有個「開頭」告訴 n8n「什麼時候開始」。這章一次把三種主要的 Trigger 類型講白：<strong>Manual</strong>（你按按鈕才跑）、<strong>Schedule</strong>（時間到自動跑）、<strong>Event</strong>（外部發生事情就跑）。順便把 Schedule 最容易踩的時區坑講清楚，免得你排半天沒動靜。</p>
+      <h1>Three triggers: Manual / Schedule / Event</h1>
+      <p class="lead">A workflow only runs if something at the front tells n8n when to start. This chapter lays out the three main trigger types in one pass: <strong>Manual</strong> (it runs when you press the button), <strong>Schedule</strong> (it runs by itself when the time comes), and <strong>Event</strong> (it runs when something happens outside). It also settles the timezone trap that catches most people using Schedule, so you do not spend half a day waiting for a schedule that never fires.</p>
     </div>
 
-    <section id="why" data-nav="為什麼要學這個">
-      <h2 data-icon="why">為什麼要搞懂三種觸發</h2>
-      <p>到<a href="ch8_first_workflow.html">第 8 章</a>為止，你已經拉出一條「Schedule Trigger + Google Calendar + Slack」的 workflow，也知道<a href="ch9_item_data_flow.html">第 9 章</a>資料怎麼從節點流到節點。但仔細想想：<strong>workflow 是「什麼時候」開始跑的？</strong></p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why the three trigger types matter</h2>
+      <p>Up to <a href="ch8_first_workflow.html">Chapter 8</a> you have built a workflow of "Schedule Trigger + Google Calendar + Slack", and from <a href="ch9_item_data_flow.html">Chapter 9</a> you know how data moves from node to node. But stop and think for a second: <strong>when does a workflow actually start running?</strong></p>
       <ul>
-        <li>你按 Execute Workflow 按鈕才跑？</li>
-        <li>還是每天 8:00 自動跑？</li>
-        <li>還是一收到某封 Gmail、或某個 URL 被打，才跑？</li>
+        <li>Only when you press the Execute Workflow button?</li>
+        <li>Or automatically at 8:00 every day?</li>
+        <li>Or the moment a particular Gmail arrives, or a particular URL is called?</li>
       </ul>
-      <p>這三種答案對應到 n8n 的三大類 Trigger 節點——<strong>每一條 workflow 一開頭一定要選一個</strong>（沒有 Trigger 節點的 workflow，n8n 根本不知道什麼時候要幫你辦事）。挑錯 Trigger 的後果很直接：明明想每天自動跑，卻放了 Manual Trigger，於是「怎麼沒動？」變成一週後才發現。這章就是把三種類型攤在你面前，讓你一次挑對。</p>
-      <div class="callout"><strong>觀念：</strong>Trigger 節點永遠是 workflow 的最左邊、第一個節點。canvas 上如果沒有任何 Trigger 節點，右上角的 Active toggle 打不開；就算你按 Execute Workflow 也會跳「Please add a Trigger node」的錯。</div>
+      <p>Those three answers map onto n8n's three families of Trigger node — <strong>every workflow has to pick one at the front</strong> (with no Trigger node, n8n has no idea when it is supposed to do the work for you). Picking the wrong one costs you directly: you wanted a daily run but dropped in a Manual Trigger, and "why did nothing happen?" only surfaces a week later. This chapter lays all three types out in front of you so you pick right the first time.</p>
+      <div class="callout"><strong>Concept:</strong> A Trigger node is always the leftmost, first node in a workflow. If there is no Trigger node on the canvas, the Active toggle at the top right will not switch on, and even pressing Execute Workflow raises a "Please add a Trigger node" error.</div>
     </section>
 
-    <section id="concept" data-nav="三大類 Trigger">
-      <h2 data-icon="concept">三大類 Trigger 一次看完</h2>
-      <p>n8n 節點抽屜的「On app event」與「On a schedule」分類底下有幾十個 Trigger 節點，但骨子裡就是三種類型的變形：</p>
+    <section id="concept" data-nav="Three trigger types">
+      <h2 data-icon="concept">All three trigger families at a glance</h2>
+      <p>The "On app event" and "On a schedule" groups in the n8n nodes panel hold dozens of Trigger nodes, but underneath they are variations on three types:</p>
       <table class="data-table">
         <thead>
-          <tr><th>類型</th><th>誰決定 workflow 跑</th><th>典型節點</th><th>什麼時候該選</th></tr>
+          <tr><th>Type</th><th>What decides that the workflow runs</th><th>Typical nodes</th><th>When to pick it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Manual</strong>（手動）</td>
-            <td>你自己按按鈕</td>
-            <td>Manual Trigger（When clicking "Execute workflow"）</td>
-            <td>開發／測試階段、需要人工按一下才要跑的臨時任務</td>
+            <td><strong>Manual</strong> (by hand)</td>
+            <td>You press the button yourself</td>
+            <td>Manual Trigger (When clicking "Execute workflow")</td>
+            <td>While you are building or testing, and one-off jobs that should only run when a person clicks</td>
           </tr>
           <tr>
-            <td><strong>Schedule</strong>（排程）</td>
-            <td>時間到就跑（Cron）</td>
+            <td><strong>Schedule</strong> (on a schedule)</td>
+            <td>It runs when the time comes (Cron)</td>
             <td>Schedule Trigger</td>
-            <td>每天／每小時／每週固定時間要跑的固定任務（日報、備份、對帳）</td>
+            <td>Fixed jobs that run at a fixed time daily / hourly / weekly (daily reports, backups, reconciliation)</td>
           </tr>
           <tr>
-            <td><strong>Event</strong>（事件）</td>
-            <td>外部發生事情就跑</td>
-            <td>Webhook、Gmail Trigger、Slack Trigger、Sheets Trigger、GitHub Trigger、RSS Feed Trigger……</td>
-            <td>要即時反應外部事件（收到郵件、表單被填、程式碼被 push、Sheet 被改）</td>
+            <td><strong>Event</strong> (an event)</td>
+            <td>It runs when something happens outside</td>
+            <td>Webhook, Gmail Trigger, Slack Trigger, Sheets Trigger, GitHub Trigger, RSS Feed Trigger…</td>
+            <td>When you need to react to an outside event right away (mail arrives, a form is filled in, code is pushed, a Sheet is edited)</td>
           </tr>
         </tbody>
       </table>
-      <p>三種類型在同一條 workflow 裡<strong>可以並存</strong>——後面第 6 節會講怎麼一條 workflow 同時有 Schedule + Manual，白天自動跑、需要時你也能手動點一下。</p>
-      <div class="callout tip"><strong>提示：</strong>不知道要挑哪種？想成：「這件事發生的頻率是<em>固定時間</em>還是<em>外部觸發</em>？」——固定時間走 Schedule，外部觸發走 Event。開發階段全部先用 Manual，測完再換。</div>
+      <p>The three types <strong>can coexist</strong> in one workflow — section 6 below shows how a single workflow carries Schedule and Manual at once, so it runs by itself during the day and you can still click it manually when you need to.</p>
+      <div class="callout tip"><strong>Tip:</strong> Not sure which one to pick? Think of it this way: "does this thing happen at a <em>fixed time</em>, or is it <em>triggered from outside</em>?" Fixed time means Schedule, outside means Event. While you are building, use Manual for everything and swap it out once the tests pass.</div>
     </section>
 
     <section id="what" data-nav="Manual Trigger">
-      <h2 data-icon="what">Manual Trigger：開發階段的最好朋友</h2>
-      <p>Manual Trigger 是所有 Trigger 中<strong>最簡單的</strong>——它沒有任何參數，就一個節點放在那。用法就一句話：<em>右上角按 Execute Workflow，這條 workflow 就從頭跑一次</em>。</p>
+      <h2 data-icon="what">Manual Trigger: your best friend while building</h2>
+      <p>Manual Trigger is <strong>the simplest</strong> of all the triggers — it has no parameters at all, it is one node sitting there. One sentence covers how to use it: <em>press Execute Workflow at the top right and the workflow runs once from the start</em>.</p>
 
-      <h3>什麼時候該用</h3>
+      <h3>When to use it</h3>
       <ul>
-        <li><strong>開發／測試時</strong>：拉好 workflow 想馬上看效果，Manual 最快。按一下、看結果、改節點、再按一下。</li>
-        <li><strong>一次性任務</strong>：例如「幫我把這個月的所有客戶名單 export 出來」——一次性的批次工作，設 Schedule 太麻煩，Manual 按一下就好。</li>
-        <li><strong>要人工把關的流程</strong>：例如「主管檢查完報表才發出去」，這種需要人為判斷的場合，Manual Trigger 讓「按下按鈕」變成一種簽核動作。</li>
+        <li><strong>While building or testing</strong>: you have wired the workflow up and want to see the result now, and Manual is the fastest way. Click, look at the result, change a node, click again.</li>
+        <li><strong>One-off jobs</strong>: for example "export the full customer list for this month" — for a batch job you run once, setting up a Schedule is more trouble than it is worth; one click on Manual is enough.</li>
+        <li><strong>Flows that need a human gate</strong>: for example "the report only goes out after the manager has checked it". Where a person has to make the call, Manual Trigger turns pressing the button into an approval step.</li>
       </ul>
 
-      <h3>什麼時候<em>不該</em>用</h3>
+      <h3>When <em>not</em> to use it</h3>
       <ul>
-        <li>workflow 已經上線、要 24 小時自動跑：這時候 Manual 就是災難，因為<em>你不按就永遠不會跑</em>。上線後主要 Trigger 應該換成 Schedule 或 Webhook。</li>
-        <li>需要外部系統打進來（例：Line Bot 收訊息）：這種 Manual 完全做不到，要走 Webhook / Event Trigger。</li>
+        <li>The workflow is live and has to run around the clock: Manual is a disaster here, because <em>it never runs unless you press it</em>. Once a workflow is live, the main trigger should become Schedule or Webhook.</li>
+        <li>An outside system has to call in (for example a LINE bot receiving a message): Manual cannot do this at all, you need Webhook / an Event Trigger.</li>
       </ul>
 
-      <div class="callout warn"><strong>注意：</strong>Manual Trigger 的節點<em>不會</em>因為你按了右上角的 Active toggle 就自動跑。Active toggle 是給 Schedule 與 Webhook 用的——Manual 永遠只能靠你按 Execute Workflow 才跑。看到 workflow 已 Active 但 Manual 沒動，這是<em>正常的</em>。</div>
+      <div class="callout warn"><strong>Warning:</strong> A Manual Trigger node <em>does not</em> start running by itself just because you flipped the Active toggle at the top right. The Active toggle is there for Schedule and Webhook — Manual only ever runs when you press Execute Workflow. Seeing a workflow that is already Active while the Manual Trigger sits still is <em>normal</em>.</div>
     </section>
 
     <section id="auto" data-nav="Schedule Trigger">
-      <h2 data-icon="auto">Schedule Trigger：像 Cron 一樣定時跑</h2>
-      <p>Schedule Trigger 是自動化最常用的 Trigger——你設一個時間規則，n8n 就會按規則到點自動幫你跑 workflow。適用範例：早上 8:00 把行事曆推 Slack、每小時同步一次資料庫、每週一 9:00 寄週報。</p>
+      <h2 data-icon="auto">Schedule Trigger: runs on a clock, like cron</h2>
+      <p>Schedule Trigger is the trigger automation uses most — you set a time rule and n8n runs the workflow for you when that time comes around. Typical uses: push the calendar to Slack at 8:00 in the morning, sync a database once an hour, send the weekly report at 9:00 every Monday.</p>
       <figure class="shot">
-        <img src="../assets/screenshots/ch10/01_trigger_workflow.png" alt="Website Down Checker workflow 起點：Schedule Trigger 節點在最左邊定時啟動整條流程" />
-        <figcaption><strong>圖 10-1</strong>Schedule Trigger 永遠站在 workflow 的最左邊：時間一到就自動點燃下游整條網站健檢流程。</figcaption>
+        <img src="../assets/screenshots/ch10/01_trigger_workflow.png" alt="The start of the Website Down Checker workflow: the Schedule Trigger node on the far left starts the whole workflow on a schedule" />
+        <figcaption><strong>Figure 10-1</strong>Schedule Trigger always stands at the far left of a workflow: when the time comes, it lights up the whole downstream website health check.</figcaption>
       </figure>
 
-      <h3>Trigger Interval 有幾種設法</h3>
+      <h3>The ways you can set Trigger Interval</h3>
       <table class="data-table">
         <thead>
-          <tr><th>Trigger Interval</th><th>意思</th><th>你要填什麼</th></tr>
+          <tr><th>Trigger Interval</th><th>What it means</th><th>What you fill in</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Seconds</strong></td>
-            <td>每 X 秒跑一次</td>
-            <td>Seconds Between Triggers（例：30 秒）</td>
+            <td>Runs every X seconds</td>
+            <td>Seconds Between Triggers (for example 30 seconds)</td>
           </tr>
           <tr>
             <td><strong>Minutes</strong></td>
-            <td>每 X 分鐘跑一次</td>
-            <td>Minutes Between Triggers（例：15 分鐘）</td>
+            <td>Runs every X minutes</td>
+            <td>Minutes Between Triggers (for example 15 minutes)</td>
           </tr>
           <tr>
             <td><strong>Hours</strong></td>
-            <td>每 X 小時跑一次；可指定「跑在第幾分」</td>
-            <td>Hours Between Triggers、Trigger at Minute</td>
+            <td>Runs every X hours; you can say which minute of the hour it runs on</td>
+            <td>Hours Between Triggers, Trigger at Minute</td>
           </tr>
           <tr>
             <td><strong>Days</strong></td>
-            <td>每 X 天跑一次；可指定「跑在幾點幾分」</td>
-            <td>Days Between Triggers、Trigger at Hour、Trigger at Minute</td>
+            <td>Runs every X days; you can say at which hour and minute</td>
+            <td>Days Between Triggers, Trigger at Hour, Trigger at Minute</td>
           </tr>
           <tr>
             <td><strong>Weeks</strong></td>
-            <td>每 X 週跑一次；可指定星期幾</td>
-            <td>Weeks Between Triggers、Trigger on Weekdays（勾 Mon/Tue/…）、Trigger at Hour/Minute</td>
+            <td>Runs every X weeks; you can say which days of the week</td>
+            <td>Weeks Between Triggers, Trigger on Weekdays (tick Mon/Tue/…), Trigger at Hour/Minute</td>
           </tr>
           <tr>
             <td><strong>Months</strong></td>
-            <td>每 X 個月跑一次；可指定日期</td>
-            <td>Months Between Triggers、Trigger at Day of Month、Trigger at Hour/Minute</td>
+            <td>Runs every X months; you can say which day of the month</td>
+            <td>Months Between Triggers, Trigger at Day of Month, Trigger at Hour/Minute</td>
           </tr>
           <tr>
             <td><strong>Custom (Cron)</strong></td>
-            <td>用 Cron 表達式寫更複雜的規則</td>
-            <td>Expression（例：<code>0 8 * * 1-5</code>）</td>
+            <td>Write a more complex rule as a Cron expression</td>
+            <td>Expression (for example <code>0 8 * * 1-5</code>)</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>最常用的兩種設定範例</h3>
-      <p><strong>每天早上 8:00 跑</strong>：Trigger Interval 選 <code>Days</code>、Days Between Triggers 填 <code>1</code>、Trigger at Hour 填 <code>8</code>、Trigger at Minute 填 <code>0</code>。</p>
-      <p><strong>週一到週五 9:30 跑</strong>：Trigger Interval 選 <code>Weeks</code>、Weeks Between Triggers 填 <code>1</code>、Trigger on Weekdays 勾 Mon/Tue/Wed/Thu/Fri、Trigger at Hour <code>9</code>、Trigger at Minute <code>30</code>。或直接走 <code>Custom (Cron)</code> 填 <code>0 30 9 * * 1-5</code>（六欄位：秒 分 時 日 月 週），一行搞定。</p>
+      <h3>The two setups you will use most</h3>
+      <p><strong>Run at 8:00 every morning</strong>: set Trigger Interval to <code>Days</code>, Days Between Triggers to <code>1</code>, Trigger at Hour to <code>8</code>, Trigger at Minute to <code>0</code>.</p>
+      <p><strong>Run at 9:30 Monday to Friday</strong>: set Trigger Interval to <code>Weeks</code>, Weeks Between Triggers to <code>1</code>, tick Mon/Tue/Wed/Thu/Fri under Trigger on Weekdays, Trigger at Hour <code>9</code>, Trigger at Minute <code>30</code>. Or go straight to <code>Custom (Cron)</code> and enter <code>0 30 9 * * 1-5</code> (six fields: second minute hour day month weekday), one line and you are done.</p>
 
-      <div class="callout warn"><strong>注意（Cron 欄位數）：</strong>n8n Schedule Trigger 的 Custom Cron 是<strong>六個欄位</strong>，最前面多一個「秒」——不是傳統 Linux crontab 的五欄位。順序是：<code>秒 分 時 日 月 週</code>。到處抄來的 <code>0 8 * * *</code>（五欄位）貼進 n8n 會被當成不同意思，甚至直接報錯。要記得補一個秒欄，例如「每天 8:00」應該寫 <code>0 0 8 * * *</code>。</div>
+      <div class="callout warn"><strong>Warning (number of cron fields):</strong> The Custom Cron in n8n's Schedule Trigger takes <strong>six fields</strong>, with an extra "second" at the front — not the five fields of a traditional Linux crontab. The order is: <code>秒 分 時 日 月 週</code>. A <code>0 8 * * *</code> (five fields) copied from somewhere else means something different once you paste it into n8n, and may error out outright. Remember to add the seconds field: "every day at 8:00" should be written <code>0 0 8 * * *</code>.</div>
 
-      <div class="callout danger"><strong>危險（時區大坑）：</strong>Schedule Trigger 判斷「幾點」用的是 <strong>workflow 的 timezone 設定</strong>，預設是 UTC。台灣是 UTC+8，意思是你設「8:00」如果沒改時區，實際會在<em>台灣時間下午 4:00</em> 才跑。這是 n8n 新手第一名踩雷。改設定的方法看下一節。</div>
+      <div class="callout danger"><strong>Danger (the timezone trap):</strong> Schedule Trigger reads the clock from <strong>the workflow's timezone setting</strong>, which defaults to UTC. Taiwan is UTC+8, so if you set "8:00" without changing the timezone, it actually runs at <em>4:00 pm Taipei time</em>. This is the number-one thing n8n beginners trip over. The next section covers how to change the setting.</div>
     </section>
 
-    <section id="location" data-nav="時區怎麼設">
-      <h2 data-icon="location">Schedule 的時區怎麼設</h2>
-      <p>時區設定有兩個層級，會互相蓋。搞清楚你在哪一層改，是省下半天疑惑的關鍵：</p>
+    <section id="location" data-nav="Setting the timezone">
+      <h2 data-icon="location">How to set the timezone for a schedule</h2>
+      <p>There are two levels of timezone setting, and one overrides the other. Knowing which level you are editing is what saves you half a day of confusion:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>層級</th><th>影響範圍</th><th>怎麼改</th></tr>
+          <tr><th>Level</th><th>What it affects</th><th>How to change it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Workflow 層</strong>（每條 workflow 各自設）</td>
-            <td>只影響<em>這條</em> workflow 的 Schedule Trigger 判斷時間</td>
-            <td>打開 workflow → 右上角 Settings（或 <kbd>Ctrl</kbd>+<kbd>,</kbd>）→ Timezone 選 <code>Asia/Taipei</code></td>
+            <td><strong>Workflow level</strong> (set separately on each workflow)</td>
+            <td>Affects only how <em>this</em> workflow's Schedule Trigger reads the time</td>
+            <td>Open the workflow → Settings at the top right (or <kbd>Ctrl</kbd>+<kbd>,</kbd>) → set Timezone to <code>Asia/Taipei</code></td>
           </tr>
           <tr>
-            <td><strong>Instance 層</strong>（整台 n8n 全域）</td>
-            <td>整台 n8n 上所有沒特別設 workflow 層時區的 workflow 都吃這個</td>
-            <td>環境變數 <code>GENERIC_TIMEZONE=Asia/Taipei</code>；同時建議把 Node.js 的 <code>TZ=Asia/Taipei</code> 也一起設，兩者要一致，否則 <code>new Date()</code> 之類的顯示會跟排程判斷差 8 小時（要動 server 設定，一般人請找 IT）</td>
+            <td><strong>Instance level</strong> (global to the whole n8n instance)</td>
+            <td>Every workflow on the instance that has no workflow-level timezone of its own falls back to this</td>
+            <td>The environment variable <code>GENERIC_TIMEZONE=Asia/Taipei</code>; set Node.js's <code>TZ=Asia/Taipei</code> to match as well, because if the two disagree, things like <code>new Date()</code> display 8 hours away from what the schedule uses (this means changing server settings — if that is not your job, ask IT)</td>
           </tr>
         </tbody>
       </table>
 
-      <p>優先順序：<strong>Workflow 層 > Instance 層 > 預設 UTC</strong>。也就是說：</p>
+      <p>Precedence: <strong>workflow level > instance level > the UTC default</strong>. Which means:</p>
       <ol class="steps">
         <li>
-          <h3>Woow n8n 的 Instance 層可能已經設好了</h3>
-          <p>Woow n8n 的管理員通常已經把 <code>GENERIC_TIMEZONE</code> 設成 <code>Asia/Taipei</code>，這樣所有人設 8:00 就是台灣的 8:00。你可以先建一個測試 workflow，設「每分鐘跑一次」，看 Executions 頁面時間對不對——如果對，代表 Instance 層 OK，之後你根本不用管時區。</p>
+          <h3>Woow n8n may already have the instance level set</h3>
+          <p>The Woow n8n admin has usually already set <code>GENERIC_TIMEZONE</code> to <code>Asia/Taipei</code>, so when anyone sets 8:00 it means 8:00 in Taiwan. Build a test workflow first, set it to run every minute, and check whether the times on the Executions page look right — if they do, the instance level is fine and you never have to think about timezones again.</p>
         </li>
         <li>
-          <h3>不對的話，就設 Workflow 層</h3>
-          <p>打開 workflow 右上角三點選單 → <strong>Settings</strong> → 中間有個 <strong>Timezone</strong> 下拉，選 <code>Asia/Taipei</code>。設完 Save。</p>
+          <h3>If they are wrong, set the workflow level</h3>
+          <p>Open the workflow's three-dot menu at the top right → <strong>Settings</strong> → there is a <strong>Timezone</strong> dropdown in the middle; pick <code>Asia/Taipei</code>. Save when you are done.</p>
         </li>
         <li>
-          <h3>每一條有 Schedule Trigger 的 workflow 都要確認</h3>
-          <p>Workflow 層的設定是<em>各自獨立</em>的：即使你設好了 workflow A，新開一條 workflow B 一樣要再設一次（如果 Instance 層是 UTC 的話）。</p>
+          <h3>Check every workflow that has a Schedule Trigger</h3>
+          <p>Workflow-level settings are <em>independent of each other</em>: even with workflow A set, a new workflow B has to be set again (if the instance level is UTC).</p>
         </li>
       </ol>
 
-      <div class="callout tip"><strong>提示：</strong>不確定 workflow 現在吃什麼時區？打開 Schedule Trigger 節點，n8n 通常會顯示「Next execution at: XXXX-XX-XX 08:00 (Asia/Taipei)」——那個括號裡就是它現在用的時區，一眼看清楚。</div>
+      <div class="callout tip"><strong>Tip:</strong> Not sure which timezone a workflow is on right now? Open the Schedule Trigger node and n8n usually shows "Next execution at: XXXX-XX-XX 08:00 (Asia/Taipei)" — whatever is in the parentheses is the timezone it is using, visible at a glance.</div>
     </section>
 
     <section id="integration" data-nav="Event Trigger">
-      <h2 data-icon="integration">Event Trigger：外部發生事情才跑</h2>
-      <p>Event Trigger 是最有魔法感的一類：<em>不是你在動，是外部世界在動</em>。有人填了表單、有郵件進來、Sheet 被改、GitHub 有人 push——這些事發生，n8n 就自動跑。常用的 Event Trigger 節點：</p>
+      <h2 data-icon="integration">Event triggers: they run when something happens outside</h2>
+      <p>Event triggers are the family that feels most like magic: <em>you are not the one acting, the outside world is</em>. Someone fills in a form, mail arrives, a Sheet is edited, someone pushes to GitHub — when those things happen, n8n runs on its own. The Event Trigger nodes you will use most:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>節點</th><th>什麼事會觸發</th><th>典型場景</th></tr>
+          <tr><th>Node</th><th>What sets it off</th><th>Typical use</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Webhook</strong></td>
-            <td>你給的 URL 被 HTTP 打</td>
-            <td>Line Bot 收訊息、Typeform 提交、HA 自動化打進來、第三方系統回 callback</td>
+            <td>An HTTP call hits the URL you handed out</td>
+            <td>A LINE bot receiving a message, a Typeform submission, a Home Assistant automation calling in, a third-party system posting back a callback</td>
           </tr>
           <tr>
             <td><strong>Gmail Trigger</strong></td>
-            <td>Gmail 收到新郵件（可設 label / 寄件人過濾）</td>
-            <td>客戶信一進來就抓資料建單、發票郵件自動存 Drive</td>
+            <td>New mail arrives in Gmail (you can filter by label / sender)</td>
+            <td>Pull the data out of a customer email and open a ticket the moment it lands; file invoice emails into Drive automatically</td>
           </tr>
           <tr>
             <td><strong>Slack Trigger</strong></td>
-            <td>Slack 有新訊息／@我／新頻道／表情反應</td>
-            <td>@bot 就查資料、看到某關鍵字自動回覆</td>
+            <td>A new Slack message / an @-mention of you / a new channel / an emoji reaction</td>
+            <td>@ the bot and it looks something up; auto-reply whenever a keyword shows up</td>
           </tr>
           <tr>
             <td><strong>Google Sheets Trigger</strong></td>
-            <td>Sheet 新增列或某列改動</td>
-            <td>表單登記就自動發歡迎信、報價表改了就通知業務</td>
+            <td>A row is added to a Sheet, or a row changes</td>
+            <td>Send a welcome email as soon as someone signs up on the form; tell sales when the quote sheet changes</td>
           </tr>
           <tr>
             <td><strong>Airtable Trigger</strong></td>
-            <td>Airtable 新記錄或改動</td>
-            <td>CRM 有新客戶就開 Slack 頻道、任務狀態變 Done 就寄結案信</td>
+            <td>A new or changed Airtable record</td>
+            <td>Open a Slack channel when the CRM gets a new customer; send a closing email when a task turns Done</td>
           </tr>
           <tr>
             <td><strong>GitHub Trigger</strong></td>
-            <td>push / PR opened / issue 建立 / release</td>
-            <td>PR merged 自動部署、有 issue 就通知團隊</td>
+            <td>push / PR opened / issue created / release</td>
+            <td>Deploy automatically when a PR is merged; tell the team when an issue is filed</td>
           </tr>
           <tr>
             <td><strong>RSS Feed Trigger</strong></td>
-            <td>RSS 有新項目</td>
-            <td>Blog 有新文自動貼 Slack、新聞網站有更新就寄摘要</td>
+            <td>A new item in an RSS feed</td>
+            <td>Post to Slack when the blog publishes something; email a digest when a news site updates</td>
           </tr>
           <tr>
             <td><strong>Chat Trigger</strong></td>
-            <td>n8n 的 chat 介面被輸入訊息</td>
-            <td>做內部 chatbot / AI Agent 助手（<a href="ch22_webhook.html">ch22</a> 之後會用到）</td>
+            <td>Someone types a message into n8n's chat interface</td>
+            <td>Building an internal chatbot or AI Agent assistant (used from <a href="ch22_webhook.html">ch22</a> onwards)</td>
           </tr>
         </tbody>
       </table>
 
-      <p>Webhook 是 Event Trigger 之王，能接任何用 HTTP 打進來的系統——這是<a href="ch22_webhook.html">第 22 章</a>整章專講的東西，這裡先知道它存在就好。</p>
+      <p>Webhook is the king of event triggers: it takes anything that can call in over HTTP — that is what all of <a href="ch22_webhook.html">Chapter 22</a> is about, so for now it is enough to know it exists.</p>
 
-      <div class="callout"><strong>觀念：</strong>Event Trigger 的 workflow 一定要按右上角 <strong>Active toggle</strong> 轉綠才會實際監聽外部事件。沒 Active 的 Event Trigger 只是「準備好但沒上工」——即使你設好 Gmail Trigger，Active OFF 時新郵件進來 n8n 完全不理。</div>
+      <div class="callout"><strong>Concept:</strong> A workflow with an Event Trigger only listens for outside events once you flip the <strong>Active toggle</strong> at the top right to green. An Event Trigger that is not Active is "ready but off duty" — even with Gmail Trigger set up correctly, n8n ignores new mail entirely while Active is OFF.</div>
     </section>
 
-    <section id="advanced" data-nav="Trigger vs Poll">
-      <h2 data-icon="advanced">Trigger 節點 vs Poll 節點——為什麼 Gmail 收信慢半拍</h2>
-      <p>Event Trigger 底下其實還分兩種底層機制，決定它反應多快：</p>
+    <section id="advanced" data-nav="Trigger vs poll">
+      <h2 data-icon="advanced">Trigger nodes vs poll nodes — why Gmail is always a beat behind</h2>
+      <p>Underneath, event triggers split into two mechanisms, and that is what decides how fast they react:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>機制</th><th>怎麼運作</th><th>反應速度</th><th>誰是這種</th></tr>
+          <tr><th>Mechanism</th><th>How it works</th><th>Response speed</th><th>Which nodes work this way</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Push（Webhook 型）</strong></td>
-            <td>對方系統發生事情就主動 HTTP 打你的 URL</td>
-            <td>即時（幾百毫秒）</td>
-            <td>Webhook、GitHub Trigger、Slack Trigger（有部分走 events API）</td>
+            <td><strong>Push (the Webhook kind)</strong></td>
+            <td>When something happens on the other system, it calls your URL over HTTP</td>
+            <td>Immediate (a few hundred milliseconds)</td>
+            <td>Webhook, GitHub Trigger, Slack Trigger (parts of it go through the events API)</td>
           </tr>
           <tr>
-            <td><strong>Poll（輪詢型）</strong></td>
-            <td>n8n 定時去對方 API 問「有沒有新東西」</td>
-            <td>間隔多久看設定，通常 1 分鐘～1 小時</td>
-            <td>Gmail Trigger、Google Sheets Trigger、Airtable Trigger、RSS Feed Trigger</td>
+            <td><strong>Poll (the polling kind)</strong></td>
+            <td>n8n asks the other API on a timer whether there is anything new</td>
+            <td>Depends on the interval you set, usually 1 minute to 1 hour</td>
+            <td>Gmail Trigger, Google Sheets Trigger, Airtable Trigger, RSS Feed Trigger</td>
           </tr>
         </tbody>
       </table>
 
-      <p>這個差別很重要：<strong>Gmail Trigger 不是收到郵件就馬上跑</strong>，它是 n8n 每 X 分鐘去 Gmail API 問「上次問完到現在有新信嗎」。你設 poll interval = 5 分鐘，新郵件進來最壞情況要等 5 分鐘 workflow 才啟動。想更快就把 poll interval 縮到 1 分鐘（Community 版最短限制），但 API 呼叫次數會增加、可能撞到對方的 rate limit。</p>
+      <p>The difference matters: <strong>Gmail Trigger does not run the moment mail arrives</strong>. Every X minutes n8n asks the Gmail API whether anything new has come in since it last asked. With a poll interval of 5 minutes, new mail waits up to 5 minutes before the workflow starts. To go faster, drop the poll interval to 1 minute (the shortest the Community edition allows), but you make more API calls and may run into the other side's rate limit.</p>
 
-      <div class="callout tip"><strong>提示：</strong>需要毫秒級即時反應？找有 Webhook 的方案。例如「Slack 有新訊息就跑」——用 Slack Trigger（走 Slack 的 events API 是 push）比 Gmail Trigger 型的 poll 快非常多。做設計時先問一句「這個服務有 webhook 嗎？」</div>
+      <div class="callout tip"><strong>Tip:</strong> Need millisecond-level reaction? Look for an option that has a webhook. For "run when a new Slack message arrives", Slack Trigger (which goes through Slack's events API, a push) is far faster than a Gmail-Trigger-style poll. When you design, ask first: "does this service have a webhook?"</div>
     </section>
 
-    <section id="tabs" data-nav="一條 workflow 多個 Trigger">
-      <h2 data-icon="tabs">一條 workflow 能有多個 Trigger 嗎？可以</h2>
-      <p>n8n 允許一條 workflow 上放多個 Trigger 節點，它們<strong>並列</strong>（不是串聯）——任何一個被觸發，都會跑同一條下游 workflow。這是很好用的 pattern：</p>
+    <section id="tabs" data-nav="Multiple triggers">
+      <h2 data-icon="tabs">Can one workflow have several triggers? Yes</h2>
+      <p>n8n lets you put several Trigger nodes on one workflow. They sit <strong>side by side</strong> (not in series) — whichever one fires, the same downstream workflow runs. It is a useful pattern:</p>
 
-      <h3>Pattern 一：Schedule + Manual（最常見）</h3>
-      <p>每天 8:00 自動發日報，但你臨時想「現在馬上再發一次」——加一個 Manual Trigger 跟 Schedule Trigger 並列，你按 Execute Workflow 就能立刻跑一次。canvas 上會長成這樣：</p>
+      <h3>Pattern 1: Schedule + Manual (the most common)</h3>
+      <p>The daily report goes out automatically at 8:00, but you suddenly want to send it again right now — add a Manual Trigger beside the Schedule Trigger, and pressing Execute Workflow runs it immediately. On the canvas it looks like this:</p>
       <pre class="code-block"><code>[Schedule Trigger]  ─┐
                        ├──▶ [下游節點 A] ─▶ [下游節點 B]
 [Manual Trigger]    ─┘</code></pre>
 
-      <h3>Pattern 二：Webhook + Schedule（雙保險）</h3>
-      <p>正常情況靠 webhook 即時反應，但為了防 webhook 漏掉，額外加一個 Schedule 每小時掃一次資料庫「有沒有漏處理的」，補跑一遍。</p>
+      <h3>Pattern 2: Webhook + Schedule (a safety net)</h3>
+      <p>Normally the webhook reacts in real time, but in case a webhook is ever missed, add a Schedule that sweeps the database once an hour for anything left unprocessed and runs it again.</p>
 
-      <h3>Pattern 三：多個 Event Trigger 匯流</h3>
-      <p>「Gmail 或 Slack 收到訊息都要建同一種單」——放 Gmail Trigger + Slack Trigger 並列，下游共用一組處理邏輯，兩邊來的資料都會走同一條路。</p>
+      <h3>Pattern 3: several event triggers converging</h3>
+      <p>"A message from Gmail or from Slack should open the same kind of ticket" — put a Gmail Trigger and a Slack Trigger side by side, share one set of downstream logic, and data from both sides takes the same path.</p>
 
-      <div class="callout warn"><strong>注意：</strong>並列 Trigger 的下游節點會拿到不同來源的資料格式（Gmail item 跟 Slack item 的 JSON 結構完全不一樣）。用<a href="ch14_expressions.html">第 14 章</a>的 Expression 或<a href="ch18_set_function.html">第 18 章</a>的 Set 節點先統一欄位，下游才好處理。</div>
+      <div class="callout warn"><strong>Warning:</strong> Downstream nodes fed by parallel triggers receive data in different shapes (a Gmail item and a Slack item have completely different JSON structures). Normalize the fields first with an expression from <a href="ch14_expressions.html">Chapter 14</a> or the Set node from <a href="ch18_set_function.html">Chapter 18</a>, so the downstream nodes have something consistent to work with.</div>
     </section>
 
-    <section id="steps" data-nav="把 Manual 換成 Schedule">
-      <h2 data-icon="steps">動手做：把既有 workflow 從 Manual 換成 Schedule</h2>
-      <p>假設你在<a href="ch8_first_workflow.html">第 8 章</a>做的 workflow 一開始用 Manual Trigger 測試（合理，測試階段就該用 Manual），現在測完想改成每天早上 9:30 自動跑：</p>
+    <section id="steps" data-nav="Manual to Schedule">
+      <h2 data-icon="steps">Hands-on: switch an existing workflow from Manual to Schedule</h2>
+      <p>Say the workflow you built in <a href="ch8_first_workflow.html">Chapter 8</a> started with a Manual Trigger for testing (fair enough, Manual is the right choice while testing), and now that the testing is over you want it to run by itself at 9:30 every morning:</p>
 
       <ol class="steps">
         <li>
-          <h3>打開那條 workflow</h3>
-          <p>從左側 Workflows 清單點進去。目前一開頭是 Manual Trigger 節點，右邊接著你原本的下游。</p>
+          <h3>Open that workflow</h3>
+          <p>Go in through the Workflows list on the left. Right now it starts with a Manual Trigger node, with your existing downstream nodes to its right.</p>
         </li>
         <li>
-          <h3>刪掉 Manual Trigger 節點</h3>
-          <p>在 Manual Trigger 節點上<strong>右鍵</strong>→ <strong>Delete</strong>（或選中它按 <kbd>Delete</kbd> / <kbd>Backspace</kbd>）。原本連到下游的線會斷掉，下游第一個節點變成「浮」在 canvas 上，別緊張。</p>
+          <h3>Delete the Manual Trigger node</h3>
+          <p><strong>Right-click</strong> the Manual Trigger node → <strong>Delete</strong> (or select it and press <kbd>Delete</kbd> / <kbd>Backspace</kbd>). The connection to the downstream nodes breaks and the first downstream node is left "floating" on the canvas. Do not panic.</p>
         </li>
         <li>
-          <h3>加一個 Schedule Trigger</h3>
-          <p>Canvas 左上角按 <strong>+</strong>（或空白處按 <kbd>Tab</kbd>）叫出節點抽屜 → 選 <strong>On a schedule</strong> → 「<strong>Schedule Trigger</strong>」。它會落到 canvas 上。</p>
+          <h3>Add a Schedule Trigger</h3>
+          <p>Click <strong>+</strong> at the top left of the canvas (or press <kbd>Tab</kbd> on an empty spot) to open the nodes panel → pick <strong>On a schedule</strong> → <strong>Schedule Trigger</strong>. It drops onto the canvas.</p>
         </li>
         <li>
-          <h3>設 Schedule Trigger 的時間</h3>
-          <p>點開節點面板：Trigger Interval 選 <code>Days</code>、Days Between Triggers <code>1</code>、Trigger at Hour <code>9</code>、Trigger at Minute <code>30</code>。看節點底下顯示的 Next execution，確認括號內時區是 <code>Asia/Taipei</code>（不是就照上一節去設）。</p>
+          <h3>Set the time on the Schedule Trigger</h3>
+          <p>Open the node panel: set Trigger Interval to <code>Days</code>, Days Between Triggers <code>1</code>, Trigger at Hour <code>9</code>, Trigger at Minute <code>30</code>. Look at the Next execution shown under the node and check that the timezone in the parentheses is <code>Asia/Taipei</code> (if it is not, set it as described in the previous section).</p>
         </li>
         <li>
-          <h3>把 Schedule Trigger 連到原本的下游</h3>
-          <p>拖 Schedule Trigger 右邊的圓點，連到下游第一個節點左邊的圓點。連線成功會是實線。</p>
+          <h3>Connect the Schedule Trigger to your existing downstream nodes</h3>
+          <p>Drag from the connector dot on the right of the Schedule Trigger to the dot on the left of the first downstream node. A successful connection shows as a solid line.</p>
         </li>
         <li>
-          <h3>Save + 打開右上 Active toggle</h3>
-          <p>按 <kbd>Ctrl</kbd>+<kbd>S</kbd> 存檔，然後右上角 Active toggle 拉成綠色。<strong>這一步最容易忘</strong>——Active OFF 的 Schedule 永遠不會自動跑，你哭到明天也沒用。</p>
+          <h3>Save, then switch on the Active toggle at the top right</h3>
+          <p>Press <kbd>Ctrl</kbd>+<kbd>S</kbd> to save, then drag the Active toggle at the top right to green. <strong>This is the step everyone forgets</strong> — a Schedule with Active OFF never runs by itself, and crying about it tomorrow will not help.</p>
         </li>
         <li>
-          <h3>驗證：按一次 Execute Workflow 手動跑</h3>
-          <p>Active 之後，你按 Execute Workflow 一樣可以手動跑一次，等於測試「Schedule Trigger 這條路能不能走到底」。跑成功就代表明天 9:30 一定會自動跑。</p>
+          <h3>Verify: press Execute Workflow once for a manual run</h3>
+          <p>Once it is Active you can still press Execute Workflow for a manual run, which tests whether the Schedule Trigger path makes it all the way through. If that run succeeds, tomorrow at 9:30 it will fire on its own.</p>
         </li>
         <li>
-          <h3>隔天檢查 Executions 頁</h3>
-          <p>左側 Executions（或該 workflow 內的 Executions 分頁），會看到隔天 9:30 那筆自動跑的紀錄。有紀錄 = 排程活著；沒紀錄 = 去下一節排錯。</p>
+          <h3>Check the Executions page the next day</h3>
+          <p>In Executions on the left (or the Executions tab inside that workflow) you will see the record of the automatic run at 9:30 the next day. A record means the schedule is alive; no record means go to the next section and troubleshoot.</p>
         </li>
       </ol>
     </section>
 
-    <section id="troubleshoot" data-nav="Trigger 常見卡關">
-      <h2 data-icon="troubleshoot">Trigger 常見卡關</h2>
-      <p>Trigger 沒動、動錯時間、動了但下游沒跑——把下面這五種對照一次，八成能自己救回來。</p>
+    <section id="troubleshoot" data-nav="Trigger pitfalls">
+      <h2 data-icon="troubleshoot">Common trigger pitfalls</h2>
+      <p>The trigger did not fire, it fired at the wrong time, or it fired but nothing downstream ran — work through the five below and you can usually get yourself out of it.</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>症狀</th><th>可能原因</th><th>怎麼救</th></tr>
+          <tr><th>Symptom</th><th>Likely cause</th><th>How to fix it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>Schedule 到時間了沒跑</td>
-            <td>右上角 Active toggle 是 OFF</td>
-            <td>打開 workflow，Active 拉成綠色。這是第一名踩雷。</td>
+            <td>The Schedule time came and went with no run</td>
+            <td>The Active toggle at the top right is OFF</td>
+            <td>Open the workflow and drag Active to green. This is the number-one gotcha.</td>
           </tr>
           <tr>
-            <td>Schedule 有跑但時間差 8 小時</td>
-            <td>Timezone 沒設，走預設 UTC</td>
-            <td>Workflow → Settings → Timezone 選 <code>Asia/Taipei</code>，Save 再看下次 Next execution</td>
+            <td>The Schedule runs, but 8 hours off</td>
+            <td>No Timezone set, so it falls back to UTC</td>
+            <td>Workflow → Settings → set Timezone to <code>Asia/Taipei</code>, save, then look at the next Next execution</td>
           </tr>
           <tr>
-            <td>Webhook Trigger URL 被打了但沒動</td>
-            <td>你拿的是 <strong>Test URL</strong>；Test URL 只在你按「Listen for test event」的期間、或在 workflow 未 Active 時執行過一次的當下才活，關掉 canvas 就死</td>
-            <td>用 <strong>Production URL</strong>（Webhook 節點面板可切換），並確保 workflow 是 Active。細節看<a href="ch22_webhook.html">第 22 章</a>。</td>
+            <td>The Webhook Trigger URL was called but nothing ran</td>
+            <td>What you have is the <strong>Test URL</strong>; a Test URL is only alive while you have pressed "Listen for test event", or for the moment right after a single run while the workflow is not Active, and it dies when you close the canvas</td>
+            <td>Use the <strong>Production URL</strong> (switch between them in the Webhook node panel) and make sure the workflow is Active. <a href="ch22_webhook.html">Chapter 22</a> has the details.</td>
           </tr>
           <tr>
-            <td>Gmail Trigger 明明收到信卻沒觸發</td>
-            <td>(1) Poll interval 太長還沒到、(2) Gmail 端有 filter 把信直接歸檔或垃圾桶、(3) OAuth scope 授權範圍不含 label</td>
-            <td>先把 Poll Times 改成 Every Minute 排除間隔問題；再檢查 Gmail 側 filter；最後重新授權 OAuth credential</td>
+            <td>Gmail clearly received the mail but the trigger did not fire</td>
+            <td>(1) The poll interval is long and has not come round yet, (2) a filter on the Gmail side archived the mail or sent it to spam, (3) the OAuth scope you authorized does not cover that label</td>
+            <td>Set Poll Times to Every Minute first to rule out the interval; then check the filters on the Gmail side; finally reconnect the OAuth credential</td>
           </tr>
           <tr>
-            <td>時間對、Active 也開，但 workflow 就是沒跑</td>
-            <td>(1) Workflow 沒 Save 就切走、(2) Trigger 節點被右鍵 Disable 了（灰色）、(3) 該 workflow 是<em>複製過來</em>的但 Trigger 沒重新設定</td>
-            <td>Save 一次；右鍵 Trigger 節點看是否 Disabled，選 Enable；重新打開 Trigger 節點按一次 Save 確保設定寫入</td>
+            <td>The time is right and Active is on, but the workflow still does not run</td>
+            <td>(1) You navigated away without saving the workflow, (2) the Trigger node was right-click Disabled (it looks gray), (3) the workflow was <em>copied</em> from another one and the trigger was never set up again</td>
+            <td>Save once; right-click the Trigger node to see whether it is Disabled and pick Enable; reopen the Trigger node and save again so the settings are written</td>
           </tr>
           <tr>
-            <td>Manual Trigger 按了 Execute Workflow 沒反應</td>
-            <td>Canvas 上有多個 Trigger 節點但 Manual Trigger 沒接到下游</td>
-            <td>檢查連線：Manual Trigger 右邊的圓點必須連到下游節點左邊的圓點</td>
+            <td>Pressing Execute Workflow on a Manual Trigger does nothing</td>
+            <td>There are several Trigger nodes on the canvas and the Manual Trigger is not connected to anything downstream</td>
+            <td>Check the connection: the dot on the right of the Manual Trigger has to reach the dot on the left of the downstream node</td>
           </tr>
           <tr>
-            <td>Schedule 一分鐘跑一次太頻繁，想關掉</td>
-            <td>忘記 workflow Active 是 ON</td>
-            <td>把 Active toggle 關掉即可；不用刪 Trigger 節點</td>
+            <td>A Schedule running every minute is too often and you want to stop it</td>
+            <td>You forgot that the workflow's Active is ON</td>
+            <td>Just switch the Active toggle off; there is no need to delete the Trigger node</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
 
       <details class="faq">
-        <summary>Schedule Trigger 最短能設多久跑一次？</summary>
-        <div class="body">n8n Community 版理論上可以設到 <strong>每 1 秒跑一次</strong>（Seconds Between Triggers = 1），但實務上這樣會把 CPU 吃爆、Executions 歷史也會爆炸。合理範圍是<strong>每分鐘以上</strong>（Minutes Between Triggers = 1）；需要更即時就別用 Schedule，改走 Webhook。n8n Cloud 版依方案不同有最小間隔限制（例如某些方案是 1 分鐘），詳情看你們家的訂閱條款。</div>
+        <summary>What is the shortest interval a Schedule Trigger can run at?</summary>
+        <div class="body">In theory the n8n Community edition lets you go down to <strong>once every 1 second</strong> (Seconds Between Triggers = 1), but in practice that pins the CPU and the Executions history explodes. A sane range is <strong>one minute or longer</strong> (Minutes Between Triggers = 1); if you need it faster than that, do not use Schedule, go to Webhook instead. n8n Cloud has a minimum interval that varies by plan (1 minute on some plans), so check your own subscription terms.</div>
       </details>
 
       <details class="faq">
-        <summary>我想一次設全部 workflow 的時區，不要每條都改，可以嗎？</summary>
-        <div class="body">可以，但需要動 server 環境變數 <code>GENERIC_TIMEZONE=Asia/Taipei</code>，這是 Instance 層設定，只有管理員（或有 IT 權限的人）能改。Woow n8n 的 admin 通常已經幫你設好台北時區了，你先建個「每分鐘跑一次」的測試 workflow 看 Executions 時間對不對就知道。詳細環境變數清單看<a href="appendix_settings_ref.html">附錄 A · 設定速查</a>與<a href="https://docs.n8n.io/hosting/configuration/configuration-examples/time-zone/">n8n 官方時區文件</a>。</div>
+        <summary>Can I set the timezone for every workflow at once instead of changing them one by one?</summary>
+        <div class="body">Yes, but it means changing the server environment variable <code>GENERIC_TIMEZONE=Asia/Taipei</code>. That is an instance-level setting, so only an admin (or someone with IT access) can change it. The Woow n8n admin has usually set the Taipei timezone for you already; build a test workflow that runs every minute and check whether the times on Executions look right. For the full list of environment variables see <a href="appendix_settings_ref.html">Appendix A · Settings reference</a> and the <a href="https://docs.n8n.io/hosting/configuration/configuration-examples/time-zone/">n8n timezone documentation</a>.</div>
       </details>
 
       <details class="faq">
-        <summary>一個 Trigger 節點能同時服務多個 workflow 嗎？</summary>
-        <div class="body">不能。<strong>每個 Trigger 節點只屬於它所在的那條 workflow</strong>。如果兩條 workflow 都想在早上 8:00 跑，就各自放一個 Schedule Trigger。想避免重複，可以把共用邏輯抽成 <strong>Sub-workflow</strong>（<a href="ch19_subworkflow.html">第 19 章</a>會講）——各自的 Trigger 呼叫同一個 sub-workflow，就達成「一段邏輯多個入口」。</div>
+        <summary>Can one Trigger node serve several workflows at the same time?</summary>
+        <div class="body">No. <strong>A Trigger node belongs only to the workflow it sits in.</strong> If two workflows both want to run at 8:00 in the morning, each one gets its own Schedule Trigger. To avoid the duplication, pull the shared logic out into a <strong>Sub-workflow</strong> (covered in <a href="ch19_subworkflow.html">Chapter 19</a>) — each trigger calls the same sub-workflow, which gives you one piece of logic with several entry points.</div>
       </details>
 
       <details class="faq">
-        <summary>Webhook Trigger 的 URL 每次都會變嗎？</summary>
-        <div class="body">不會，<strong>Production URL 是固定的</strong>——一旦 workflow Active，URL 就會綁在那條 workflow 上不變。但要注意：<strong>Test URL 是每次進 canvas 監聽時才活</strong>，你關掉 canvas 或切走頁面就死。開發時用 Test URL 快速看資料，上線用 Production URL 貼給對方系統。第 22 章詳細講。</div>
+        <summary>Does a Webhook Trigger's URL change every time?</summary>
+        <div class="body">No. <strong>The Production URL is fixed</strong> — once the workflow is Active, the URL is bound to that workflow and stays put. Watch out for one thing though: <strong>the Test URL is only alive while you are on the canvas listening</strong>, and it dies when you close the canvas or navigate away. Use the Test URL to look at data while you build, and hand the Production URL to the other system when you go live. Chapter 22 covers this in detail.</div>
       </details>
 
       <details class="faq">
-        <summary>Trigger 跑起來會消耗 execution 額度嗎？</summary>
-        <div class="body">n8n <strong>Cloud 版</strong>：每一次 Trigger 引發的 workflow 執行都算一次 execution，計入你的月度額度（依方案不同 5,000 / 10,000 / 更多不等）。<strong>Community / self-hosted 版</strong>（Woow n8n 屬於這種）：<em>沒有</em>次數限制，你想 Schedule 每分鐘跑一次都行，只要伺服器扛得住。Executions 歷史保留幾天可以設，看<a href="appendix_settings_ref.html">附錄 A</a>。</div>
+        <summary>Does firing a trigger use up execution quota?</summary>
+        <div class="body">n8n <strong>Cloud</strong>: every workflow run a trigger sets off counts as one execution against your monthly quota (5,000 / 10,000 / more, depending on the plan). <strong>Community / self-hosted</strong> (Woow n8n is one of these): there is <em>no</em> limit on the number of runs — schedule it every minute if you want, as long as the server can take it. How many days of Executions history to keep is configurable; see <a href="appendix_settings_ref.html">Appendix A</a>.</div>
       </details>
 
       <details class="faq">
-        <summary>Schedule Trigger 跟排程系統的 Cron 是同一個東西嗎？</summary>
-        <div class="body">語法很像但<strong>欄位數不同</strong>。傳統 Linux crontab 是五欄位（分 時 日 月 週），n8n Schedule Trigger 的 <code>Custom (Cron)</code> 是<strong>六欄位</strong>：<code>秒 分 時 日 月 週</code>——最前面多一個「秒」。常用範例（記得補秒）：<code>0 0 8 * * *</code>（每天 8:00）、<code>0 0 8 * * 1-5</code>（週一到週五 8:00）、<code>0 */15 * * * *</code>（每 15 分鐘）、<code>0 0 9 1 * *</code>（每月 1 號 9:00）。從 <code>crontab.guru</code> 抄五欄位表達式時，記得<em>前面補一個 <code>0</code></em>，否則語意會整個跑掉或報錯。</div>
+        <summary>Is Schedule Trigger the same thing as the Cron in a scheduling system?</summary>
+        <div class="body">The syntax is close, but <strong>the number of fields differs</strong>. A traditional Linux crontab has five fields (minute hour day month weekday); the <code>Custom (Cron)</code> in n8n's Schedule Trigger has <strong>six fields</strong>: <code>秒 分 時 日 月 週</code> — an extra "second" at the front. Common examples (remember the seconds field): <code>0 0 8 * * *</code> (8:00 every day), <code>0 0 8 * * 1-5</code> (8:00 Monday to Friday), <code>0 */15 * * * *</code> (every 15 minutes), <code>0 0 9 1 * *</code> (9:00 on the 1st of every month). When you copy a five-field expression from <code>crontab.guru</code>, remember to <em>add a <code>0</code> at the front</em>, or the meaning shifts completely or it errors out.</div>
       </details>
 
       <details class="faq">
-        <summary>如果我的 workflow 遇到錯誤沒跑完，下一次 Schedule 到還會跑嗎？</summary>
-        <div class="body">會。<strong>Schedule Trigger 不管上一次結果</strong>——時間到就再啟動一次新的 execution。上一次失敗的資料不會自動 retry。想要錯誤自動處理（重試、通知、backup 手段），需要另外設 Error workflow 或節點層的 Retry on fail——這是<a href="ch17_error_handling.html">第 17 章</a>整章的主題。</div>
+        <summary>If my workflow hits an error and does not finish, will it still run at the next Schedule?</summary>
+        <div class="body">Yes. <strong>Schedule Trigger does not care about the previous result</strong> — when the time comes it starts another new execution. The data from the failed run is not retried automatically. For automatic error handling (retries, notifications, a fallback), you set up an Error workflow or node-level Retry on fail separately — that is what all of <a href="ch17_error_handling.html">Chapter 17</a> is about.</div>
       </details>
 
       <details class="faq">
-        <summary>Manual Trigger 節點裡看到 "When clicking 'Test workflow'" 跟 "When clicking 'Execute workflow'" 差在哪？</summary>
-        <div class="body">n8n 早期版本按鈕叫 "Execute Workflow"，較新版本改成 "Test workflow"（或兩者並存），指的都是同一個動作：<strong>你按下去、workflow 從 Manual Trigger 開始跑一次</strong>。名字改了但功能沒變，看你這台 n8n 是哪個版本、右上角按鈕寫什麼就是什麼。</div>
+        <summary>What is the difference between "When clicking 'Test workflow'" and "When clicking 'Execute workflow'" in the Manual Trigger node?</summary>
+        <div class="body">Older n8n versions called the button "Execute Workflow"; newer ones renamed it "Test workflow" (or carry both). They mean the same action: <strong>you press it and the workflow runs once, starting from the Manual Trigger</strong>. The name changed, the function did not — whatever your n8n's version puts on that top-right button is what it is called for you.</div>
       </details>
     </section>
 

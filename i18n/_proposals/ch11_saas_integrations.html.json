@@ -1,0 +1,75 @@
+{
+  "file": "ch11_saas_integrations.html",
+  "entries": [
+    {
+      "unit": "#app",
+      "zh": "<code>*重要*</code>",
+      "en": "<code>*important*</code>"
+    },
+    {
+      "unit": "#app",
+      "zh": "<code>_斜體_</code>",
+      "en": "<code>_italic_</code>"
+    },
+    {
+      "unit": "#app",
+      "zh": "<code>~刪除線~</code>",
+      "en": "<code>~strikethrough~</code>"
+    },
+    {
+      "unit": "#app",
+      "zh": "<code>`程式碼`</code>",
+      "en": "<code>`code`</code>"
+    },
+    {
+      "unit": "#login",
+      "zh": "<code>訂單 #{{ $json.order_id }} 已成立</code>",
+      "en": "<code>Order #{{ $json.order_id }} confirmed</code>"
+    },
+    {
+      "unit": "#login",
+      "zh": "<code>subject:報價</code>",
+      "en": "<code>subject:quote</code>"
+    },
+    {
+      "unit": "#records",
+      "zh": "<code>{ email: \"a@b.com\", status: \"已付款\" }</code>",
+      "en": "<code>{ email: \"a@b.com\", status: \"paid\" }</code>"
+    },
+    {
+      "unit": "#auto",
+      "zh": "<code>{{ $json[\"附件\"].split(\"id=\")[1] }}</code>",
+      "en": "<code>{{ $json[\"Attachment\"].split(\"id=\")[1] }}</code>"
+    },
+    {
+      "unit": "#auto",
+      "zh": "<code>*有新表單來了！*\\n姓名：{{ $('Google Sheets Trigger').item.json[\"姓名\"] }}\\nEmail：{{ $('Google Sheets Trigger').item.json[\"Email\"] }}\\n主旨：{{ $('Google Sheets Trigger').item.json[\"諮詢主旨\"] }}\\n已自動寄出感謝信 :white_check_mark:</code>",
+      "en": "<code>*New form submission!*\\nName: {{ $('Google Sheets Trigger').item.json[\"Name\"] }}\\nEmail: {{ $('Google Sheets Trigger').item.json[\"Email\"] }}\\nSubject: {{ $('Google Sheets Trigger').item.json[\"Subject\"] }}\\nThank-you email sent automatically :white_check_mark:</code>"
+    },
+    {
+      "unit": "#advanced",
+      "zh": "<code>Slack 個人 workspace</code>",
+      "en": "<code>Slack personal workspace</code>"
+    },
+    {
+      "unit": "#advanced",
+      "zh": "<code>Slack 公司 workspace</code>",
+      "en": "<code>Slack company workspace</code>"
+    },
+    {
+      "unit": "#advanced",
+      "zh": "<code>Slack 客戶 A workspace</code>",
+      "en": "<code>Slack customer A workspace</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>Slack - 個人</code>",
+      "en": "<code>Slack - Personal</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>Slack - 公司</code>",
+      "en": "<code>Slack - Company</code>"
+    }
+  ]
+}

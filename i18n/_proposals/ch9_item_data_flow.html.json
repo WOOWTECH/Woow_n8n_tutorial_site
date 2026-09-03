@@ -1,0 +1,15 @@
+{
+  "file": "ch9_item_data_flow.html",
+  "entries": [
+    {
+      "unit": "#expression_core",
+      "zh": "<code>訂單編號</code>",
+      "en": "<code>Order ID</code>"
+    },
+    {
+      "unit": "#expression_core",
+      "zh": "<code>$('節點名稱')</code>",
+      "en": "<code>$('Node Name')</code>"
+    }
+  ]
+}

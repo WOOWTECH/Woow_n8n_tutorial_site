@@ -1,0 +1,20 @@
+{
+  "file": "ch10_triggers.html",
+  "entries": [
+    {
+      "unit": "#auto",
+      "zh": "<code>秒 分 時 日 月 週</code>",
+      "en": "<code>second minute hour day month weekday</code>"
+    },
+    {
+      "unit": "#tabs",
+      "zh": "<pre class=\"code-block\"><code>[Schedule Trigger]  ─┐\n                       ├──▶ [下游節點 A] ─▶ [下游節點 B]\n[Manual Trigger]    ─┘</code></pre>",
+      "en": "<pre class=\"code-block\"><code>[Schedule Trigger]  ─┐\n                       ├──▶ [Downstream node A] ─▶ [Downstream node B]\n[Manual Trigger]    ─┘</code></pre>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>秒 分 時 日 月 週</code>",
+      "en": "<code>second minute hour day month weekday</code>"
+    }
+  ]
+}

@@ -70,16 +70,16 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼是這四家</a>
-      <a href="#concept">SaaS 節點的三層結構</a>
-      <a href="#app">Slack 節點</a>
-      <a href="#login">Gmail 節點</a>
-      <a href="#records">Google Sheets 節點</a>
-      <a href="#docker">Google Drive 節點</a>
-      <a href="#auto">實例：四家全串一遍</a>
-      <a href="#advanced">同節點多個帳號</a>
-      <a href="#troubleshoot">常見卡關</a>
-      <a href="#faq">常見問題</a>
+      <a href="#why">Why these four</a>
+      <a href="#concept">Three dropdowns</a>
+      <a href="#app">Slack node</a>
+      <a href="#login">Gmail node</a>
+      <a href="#records">Google Sheets node</a>
+      <a href="#docker">Google Drive node</a>
+      <a href="#auto">All four together</a>
+      <a href="#advanced">Several accounts</a>
+      <a href="#troubleshoot">Common pitfalls</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -93,444 +93,444 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch11_saas_integrations.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 11</div>
-      <h1>熱門 SaaS 整合：Slack、Gmail、Google 表格與 Drive</h1>
-      <p class="lead">辦公室 90% 的自動化都繞著這四家轉：<strong>Slack</strong> 發通知、<strong>Gmail</strong> 寄信、<strong>Google Sheets</strong> 記錄、<strong>Google Drive</strong> 存檔。這章一次把四家最常用的節點、credential 設定、每家的地雷坑一次講完，最後串一個完整實例：新表單來就自動寄信＋附 Drive 檔案＋Slack 通知。</p>
+      <h1>Popular SaaS integrations: Slack, Gmail, Google Sheets and Drive</h1>
+      <p class="lead">90% of office automation revolves around these four: <strong>Slack</strong> for notifications, <strong>Gmail</strong> for mail, <strong>Google Sheets</strong> for records, <strong>Google Drive</strong> for storage. This chapter covers the node you will use most from each one, how to set up their credentials and the traps each one hides, then wires all four into one complete worked example: a new form entry sends an email, attaches a Drive file and posts to Slack.</p>
     </div>
 
-    <section id="why" data-nav="為什麼是這四家">
-      <h2 data-icon="why">為什麼上班族一定要會這四家</h2>
-      <p>你在 <a href="ch7_node_types.html">第 7 章</a>看過節點的九個大分類，也在 <a href="ch8_first_workflow.html">第 8 章</a>親手拉了第一條 workflow。可是回到真實辦公室，你會發現：</p>
+    <section id="why" data-nav="Why these four">
+      <h2 data-icon="why">Why every office worker needs these four</h2>
+      <p>In <a href="ch7_node_types.html">Chapter 7</a> you saw the nine broad node categories, and in <a href="ch8_first_workflow.html">Chapter 8</a> you built your first workflow by hand. Back in a real office, though, here is what you run into:</p>
       <ul>
-        <li>老闆要「有新客戶就 Slack 通知業務群」</li>
-        <li>行銷要「Google 表單填完自動寄 Gmail 感謝信」</li>
-        <li>行政要「每天把 CRM 資料備份到 Google Sheets」</li>
-        <li>設計要「客戶上傳的檔案自動歸檔到 Google Drive 的專屬資料夾」</li>
+        <li>Your boss wants "a Slack message to the sales channel whenever a new customer arrives"</li>
+        <li>Marketing wants "a Gmail thank-you note sent automatically when someone completes a Google Form"</li>
+        <li>Admin wants "the CRM data backed up to Google Sheets every day"</li>
+        <li>Design wants "files that customers upload filed automatically into their own folder on Google Drive"</li>
       </ul>
-      <p>這四家幾乎壟斷了所有中小型辦公室的日常工具。學會這四家的節點怎麼設，你八成的工作場景就搞定了。剩下的比較冷門服務（Notion、Airtable、Zoom）大同小異，或者可以用<a href="ch12_http_request.html">第 12 章</a>的 HTTP Request 節點自己打 API。</p>
-      <div class="callout"><strong>觀念：</strong>「Slack + Gmail + Google Sheets + Google Drive」是辦公室自動化的四大金剛。把這一章讀熟，你已經可以應付 80% 的內部需求。</div>
+      <p>These four have a near monopoly on the everyday tools of small and mid-sized offices. Learn how to set up their nodes and you have covered 80% of what work throws at you. The less common services that are left (Notion, Airtable, Zoom) work much the same way, or you can call their API yourself with the HTTP Request node from <a href="ch12_http_request.html">Chapter 12</a>.</p>
+      <div class="callout"><strong>Concept:</strong> "Slack + Gmail + Google Sheets + Google Drive" is the big four of office automation. Read this chapter closely and you can already handle 80% of internal requests.</div>
     </section>
 
-    <section id="concept" data-nav="SaaS 節點的三層結構">
-      <h2 data-icon="concept">共通觀念：每個 SaaS 節點都有三層下拉</h2>
-      <p>不管是 Slack、Gmail 還是 Google Sheets，你點進節點以後，最上面永遠會看到<strong>三個下拉選單</strong>。認清這三層，四家都會用了：</p>
+    <section id="concept" data-nav="Three dropdowns">
+      <h2 data-icon="concept">The shared idea: every SaaS node has three dropdowns</h2>
+      <p>Whether it is Slack, Gmail or Google Sheets, once you open the node you always find <strong>three dropdown menus</strong> at the top. Get those three layers straight and you can drive all four:</p>
       <table class="data-table">
         <thead>
-          <tr><th>下拉層級</th><th>它在問什麼</th><th>Slack 舉例</th><th>Gmail 舉例</th></tr>
+          <tr><th>Dropdown level</th><th>What it is asking</th><th>Slack example</th><th>Gmail example</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>1. Credential</strong>（帳號）</td>
-            <td>你要用哪個帳號連？</td>
-            <td>Slack 個人 workspace、公司 workspace</td>
-            <td>你的 Gmail、公司 Gmail</td>
+            <td><strong>1. Credential</strong> (the account)</td>
+            <td>Which account do you want to connect with?</td>
+            <td>Your personal Slack workspace, the company workspace</td>
+            <td>Your Gmail, the company Gmail</td>
           </tr>
           <tr>
-            <td><strong>2. Resource</strong>（大類）</td>
-            <td>這家 SaaS 你要操作哪一種東西？</td>
-            <td>Message（訊息）、Channel（頻道）、User（用戶）</td>
-            <td>Message（郵件）、Draft（草稿）、Label（標籤）</td>
+            <td><strong>2. Resource</strong> (the category)</td>
+            <td>Which kind of thing in this SaaS do you want to work on?</td>
+            <td>Message, Channel, User</td>
+            <td>Message, Draft, Label</td>
           </tr>
           <tr>
-            <td><strong>3. Operation</strong>（動作）</td>
-            <td>對這個大類要做什麼動作？</td>
-            <td>Send、Update、Delete、Get</td>
-            <td>Send、Get Many、Reply、Delete</td>
+            <td><strong>3. Operation</strong> (the action)</td>
+            <td>What do you want to do to that category?</td>
+            <td>Send, Update, Delete, Get</td>
+            <td>Send, Get Many, Reply, Delete</td>
           </tr>
         </tbody>
       </table>
-      <p>這個結構是 n8n 為所有 SaaS 節點設計的共通語言。看到一個新節點不會用？先看它有哪些 Resource、每個 Resource 底下能做什麼 Operation，你就掌握這節點的地圖了。</p>
-      <div class="callout tip"><strong>提示：</strong>選錯 Resource 或 Operation 會讓下面的欄位跟著全部換掉，這是正常的——每個組合有它專屬的參數。切換時看到欄位一直變不要慌。</div>
+      <p>This structure is the common language n8n designed for all of its SaaS nodes. Faced with a new node you do not know? Look first at which Resources it has and which Operations sit under each Resource, and you have the map of that node.</p>
+      <div class="callout tip"><strong>Tip:</strong> Choosing a different Resource or Operation swaps out every field below it. That is normal — each combination has its own parameters. Do not panic when the fields keep changing as you switch.</div>
     </section>
 
-    <section id="app" data-nav="Slack 節點">
-      <h2 data-icon="app">Slack 節點：辦公室通知第一名</h2>
-      <p>Slack 是 n8n 最常被用來「通知人」的節點。無論是老闆要盯業績、開發要盯 CI、行政要盯訂單，Slack 節點都是最快速把訊息推到大家眼前的方式。</p>
+    <section id="app" data-nav="Slack node">
+      <h2 data-icon="app">The Slack node: the office notification workhorse</h2>
+      <p>Slack is the node people reach for most often in n8n when they want to tell someone something. Whether your boss is watching sales numbers, developers are watching CI or admin is watching orders, the Slack node is the fastest way to put a message in front of everyone.</p>
 
-      <h3>最常用的 Resource / Operation 組合</h3>
-      <p>Slack 節點在 n8n v1 的 Resource 完整清單有 <strong>Channel、File、Message、Reaction、Star、User、User Group</strong> 七種。日常最常用的組合：</p>
+      <h3>The most-used Resource / Operation combinations</h3>
+      <p>In n8n v1 the Slack node's full Resource list has seven entries: <strong>Channel, File, Message, Reaction, Star, User, User Group</strong>. The combinations you will use day to day:</p>
       <table class="data-table">
         <thead>
-          <tr><th>Resource</th><th>Operation</th><th>什麼時候用</th></tr>
+          <tr><th>Resource</th><th>Operation</th><th>When to use it</th></tr>
         </thead>
         <tbody>
-          <tr><td>Message</td><td>Send</td><td>發一則訊息到頻道或某人 DM（最常用）</td></tr>
-          <tr><td>Message</td><td>Get Many</td><td>撈某頻道最近的訊息，做搜尋或分析</td></tr>
-          <tr><td>Message</td><td>Update</td><td>編輯已經送出的訊息（例：把「處理中」改成「完成」）</td></tr>
-          <tr><td>User</td><td>Get</td><td>用 email 反查 Slack user ID，才能在訊息裡 <code>@</code> 對方</td></tr>
-          <tr><td>Channel</td><td>Create</td><td>自動幫每個新客戶開一個專屬 channel</td></tr>
-          <tr><td>File</td><td>Upload</td><td>把 binary 檔案傳到某頻道</td></tr>
-          <tr><td>Reaction</td><td>Add</td><td>對訊息加 emoji 反應（例：處理完自動打勾）</td></tr>
+          <tr><td>Message</td><td>Send</td><td>Post a message to a channel or someone's DM (the most common)</td></tr>
+          <tr><td>Message</td><td>Get Many</td><td>Pull recent messages from a channel to search or analyze them</td></tr>
+          <tr><td>Message</td><td>Update</td><td>Edit a message you already sent (for example, change "In progress" to "Done")</td></tr>
+          <tr><td>User</td><td>Get</td><td>Look up a Slack user ID from an email address, so you can <code>@</code> that person in a message</td></tr>
+          <tr><td>Channel</td><td>Create</td><td>Open a dedicated channel automatically for every new customer</td></tr>
+          <tr><td>File</td><td>Upload</td><td>Send a binary file to a channel</td></tr>
+          <tr><td>Reaction</td><td>Add</td><td>Add an emoji reaction to a message (for example, a check mark once it is handled)</td></tr>
         </tbody>
       </table>
 
-      <h3>Credential 兩種選法</h3>
+      <h3>Two ways to do the credential</h3>
       <table class="data-table">
         <thead>
-          <tr><th>選項</th><th>設定難度</th><th>建議情境</th></tr>
+          <tr><th>Option</th><th>Setup effort</th><th>When to choose it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Slack API</strong>（Access Token）</td>
-            <td>中：要先去 Slack 建一個 App、拿到 Bot User OAuth Token（<code>xoxb-…</code>）或 User OAuth Token（<code>xoxp-…</code>）貼進 Access Token 欄</td>
-            <td>你有 workspace 管理權、想要固定機器人身分發訊息（用 <code>xoxb-</code>）；或想用真人身分發訊息（用 <code>xoxp-</code>）</td>
+            <td><strong>Slack API</strong> (Access Token)</td>
+            <td>Medium: you have to create an App in Slack first, take the Bot User OAuth Token (<code>xoxb-…</code>) or the User OAuth Token (<code>xoxp-…</code>) and paste it into the Access Token field</td>
+            <td>You administer the workspace and want messages to go out under a fixed bot identity (use <code>xoxb-</code>); or you want them to go out as a real person (use <code>xoxp-</code>)</td>
           </tr>
           <tr>
             <td><strong>Slack OAuth2 API</strong></td>
-            <td>低：點一下跳出授權頁，登入你的帳號就好</td>
-            <td>你是 workspace 一般成員，想用「自己身分」發訊息</td>
+            <td>Low: one click opens the authorization page and you just sign in with your account</td>
+            <td>You are an ordinary member of the workspace and want to post "as yourself"</td>
           </tr>
         </tbody>
       </table>
-      <p class="hint">兩種在節點裡的 <em>Authentication</em> 下拉分別叫 <code>Access Token</code> 跟 <code>OAuth2</code>。同一個 Slack 節點可以任意切換。</p>
+      <p class="hint">In the node's <em>Authentication</em> dropdown the two are called <code>Access Token</code> and <code>OAuth2</code>. The same Slack node can switch between them at will.</p>
 
-      <h3>Text 欄位可以打的東西</h3>
-      <p>Message → Send 的 Text 欄位不只是純文字，Slack 有它自己的 markdown 語法：</p>
+      <h3>What you can type into the Text field</h3>
+      <p>The Text field on Message → Send is not just plain text — Slack has its own markdown syntax:</p>
       <table class="data-table">
         <thead>
-          <tr><th>你打</th><th>顯示效果</th></tr>
+          <tr><th>What you type</th><th>How it renders</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>*重要*</code></td><td><strong>粗體</strong>（Slack 用一個星號，不是兩個）</td></tr>
-          <tr><td><code>_斜體_</code></td><td><em>斜體</em></td></tr>
-          <tr><td><code>~刪除線~</code></td><td>刪除線</td></tr>
-          <tr><td><code>`程式碼`</code></td><td>行內 code style</td></tr>
-          <tr><td><code>&lt;@U01ABC2DEF&gt;</code></td><td>@ 提及某位用戶（用 user ID 不是 email）</td></tr>
-          <tr><td><code>&lt;#C01XYZ&gt;</code></td><td>連結到某頻道</td></tr>
-          <tr><td><code>&lt;!channel&gt;</code></td><td>整個頻道通知（會震動所有人手機，慎用）</td></tr>
+          <tr><td><code>*重要*</code></td><td><strong>Bold</strong> (Slack uses one asterisk, not two)</td></tr>
+          <tr><td><code>_斜體_</code></td><td><em>Italic</em></td></tr>
+          <tr><td><code>~刪除線~</code></td><td>Strikethrough</td></tr>
+          <tr><td><code>`程式碼`</code></td><td>Inline code style</td></tr>
+          <tr><td><code>&lt;@U01ABC2DEF&gt;</code></td><td>@-mention a user (by user ID, not by email)</td></tr>
+          <tr><td><code>&lt;#C01XYZ&gt;</code></td><td>Link to a channel</td></tr>
+          <tr><td><code>&lt;!channel&gt;</code></td><td>Notify the whole channel (it buzzes everyone's phone, so use it sparingly)</td></tr>
         </tbody>
       </table>
 
-      <h3>要附檔案怎麼辦</h3>
-      <p>Slack 的 <em>Message → Send</em> 本身不接 binary 附件。要傳檔案要另開一個 <strong>Slack → File → Upload</strong> 節點，Channel 選要傳的頻道、Input Data Field Name 填 <code>data</code>（對上上一個節點的 binary property），上傳完會產生一則帶檔案的訊息。想同時發文字＋檔案就把 Message Send 跟 File Upload 兩個節點串起來。</p>
+      <h3>What to do when you need to attach a file</h3>
+      <p>Slack's <em>Message → Send</em> does not take binary attachments itself. To send a file, add a separate <strong>Slack → File → Upload</strong> node: pick the channel in Channel and put <code>data</code> in Input Data Field Name (matching the binary property from the node before it). The upload produces a message with the file on it. If you want text and a file at the same time, chain a Message Send node and a File Upload node together.</p>
 
-      <div class="callout warn"><strong>注意：</strong>Channel 欄位有兩種寫法：<code>#general</code>（頻道名，加井字號）或 <code>C01XYZ123</code>（channel ID，Slack 頻道右鍵複製連結拿得到）。channel 名字改過或有中文字時，用 ID 才穩。</div>
+      <div class="callout warn"><strong>Warning:</strong> The Channel field takes two forms: <code>#general</code> (the channel name, with the hash) or <code>C01XYZ123</code> (the channel ID, which you get by right-clicking the Slack channel and copying the link). When a channel has been renamed, or its name contains Chinese characters, only the ID is reliable.</div>
     </section>
 
-    <section id="login" data-nav="Gmail 節點">
-      <h2 data-icon="login">Gmail 節點：一切從寄信開始</h2>
-      <p>Gmail 節點是「寄信」和「抓信」的萬用工具。行銷寄感謝信、支援寄回覆、業務盯客戶回覆，都靠這個。</p>
+    <section id="login" data-nav="Gmail node">
+      <h2 data-icon="login">The Gmail node: it all starts with sending mail</h2>
+      <p>The Gmail node is the all-purpose tool for sending mail and fetching mail. Marketing sending thank-you notes, support sending replies, sales watching for a customer's answer — they all run on this node.</p>
 
-      <h3>最常用的 Resource / Operation 組合</h3>
+      <h3>The most-used Resource / Operation combinations</h3>
       <table class="data-table">
         <thead>
-          <tr><th>Resource</th><th>Operation</th><th>什麼時候用</th></tr>
+          <tr><th>Resource</th><th>Operation</th><th>When to use it</th></tr>
         </thead>
         <tbody>
-          <tr><td>Message</td><td>Send</td><td>寄一封新信（最常用）</td></tr>
-          <tr><td>Message</td><td>Reply</td><td>回覆已存在的信（保留 thread）</td></tr>
-          <tr><td>Message</td><td>Get Many</td><td>抓收件匣的信，配 Search 找特定寄件人／主旨</td></tr>
-          <tr><td>Message</td><td>Add Label</td><td>自動幫某封信貼標籤分類（Label 是掛在 Message 上的動作）</td></tr>
-          <tr><td>Draft</td><td>Create</td><td>建草稿讓真人再確認一次才寄（審核流程用）</td></tr>
-          <tr><td>Label</td><td>Create</td><td>建立一個新標籤（Label resource 只有 Create/Delete/Get/Get Many，本身沒有 Add）</td></tr>
+          <tr><td>Message</td><td>Send</td><td>Send a new email (the most common)</td></tr>
+          <tr><td>Message</td><td>Reply</td><td>Reply to an existing email (it keeps the thread)</td></tr>
+          <tr><td>Message</td><td>Get Many</td><td>Fetch mail from the inbox; pair it with Search to find a particular sender or subject</td></tr>
+          <tr><td>Message</td><td>Add Label</td><td>Label an email automatically to file it (Label is an operation that hangs off Message)</td></tr>
+          <tr><td>Draft</td><td>Create</td><td>Create a draft so a person confirms it before it goes out (for review workflows)</td></tr>
+          <tr><td>Label</td><td>Create</td><td>Create a new label (the Label resource only has Create/Delete/Get/Get Many — it has no Add of its own)</td></tr>
         </tbody>
       </table>
 
-      <h3>Credential 只有一種：Google OAuth2</h3>
-      <p>Gmail 節點的 credential 只支援 <strong>Google OAuth2</strong>。第一次設會跳出 Google 授權頁，登入你的 Google 帳號、勾同意授權 Gmail 讀寫權限。整個過程不到 30 秒。<a href="ch13_credentials.html">第 13 章</a>會詳細講 OAuth 到底在做什麼。</p>
+      <h3>Only one credential type: Google OAuth2</h3>
+      <p>The Gmail node's credential only supports <strong>Google OAuth2</strong>. The first time you set it up a Google authorization page opens: sign in to your Google account and agree to read and write access for Gmail. The whole thing takes under 30 seconds. <a href="ch13_credentials.html">Chapter 13</a> goes into what OAuth is actually doing.</p>
 
-      <h3>Send 訊息可以做什麼</h3>
+      <h3>What Send can do</h3>
       <ul>
-        <li><strong>純文字 or HTML</strong>：Email Type 下拉切換。HTML 可以貼完整 HTML，設計出有樣式的信</li>
-        <li><strong>To / CC / BCC / Reply-To</strong>：四個收件人欄位都能填多個地址（逗號分隔）</li>
-        <li><strong>附件</strong>：Binary Data 開關，property name 對上上一個節點吐出的檔案</li>
-        <li><strong>Subject 用 expression</strong>：主旨可以動態拼，例 <code>訂單 #{{ $json.order_id }} 已成立</code>（expression 語法看<a href="ch14_expressions.html">第 14 章</a>）</li>
+        <li><strong>Plain text or HTML</strong>: switch with the Email Type dropdown. With HTML you can paste a complete HTML document and design a styled email</li>
+        <li><strong>To / CC / BCC / Reply-To</strong>: all four recipient fields take several addresses (comma-separated)</li>
+        <li><strong>Attachments</strong>: the Binary Data toggle, with the property name matching the file the node before it produced</li>
+        <li><strong>A Subject built from an expression</strong>: the subject line can be assembled dynamically, for example <code>訂單 #{{ $json.order_id }} 已成立</code> (expression syntax is in <a href="ch14_expressions.html">Chapter 14</a>)</li>
       </ul>
 
-      <h3>抓信：Google 的搜尋語法你都能用</h3>
-      <p>Message → Get Many 底下的 Filters 區塊有個 <strong>Search</strong> 欄位（不是叫 Filter，別找錯），用的就是 Gmail 網頁版那條搜尋列的語法，一模一樣：</p>
+      <h3>Fetching mail: all of Google's search syntax works here</h3>
+      <p>The Filters block under Message → Get Many has a <strong>Search</strong> field (it is not called Filter, so do not go hunting for that). It takes exactly the syntax of the search bar in Gmail on the web:</p>
       <table class="data-table">
         <thead>
-          <tr><th>Search 值</th><th>意思</th></tr>
+          <tr><th>Search value</th><th>What it means</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>is:unread</code></td><td>只抓未讀</td></tr>
-          <tr><td><code>from:boss@company.com</code></td><td>只抓老闆寄來的</td></tr>
-          <tr><td><code>subject:報價</code></td><td>主旨含「報價」</td></tr>
-          <tr><td><code>has:attachment</code></td><td>有附件的</td></tr>
-          <tr><td><code>newer_than:1d</code></td><td>一天內的新信</td></tr>
-          <tr><td><code>from:@customer.com is:unread</code></td><td>組合：客戶域名寄來的未讀信</td></tr>
+          <tr><td><code>is:unread</code></td><td>Unread only</td></tr>
+          <tr><td><code>from:boss@company.com</code></td><td>Only what your boss sent</td></tr>
+          <tr><td><code>subject:報價</code></td><td>Subject contains "quote"</td></tr>
+          <tr><td><code>has:attachment</code></td><td>Has an attachment</td></tr>
+          <tr><td><code>newer_than:1d</code></td><td>Mail from the last day</td></tr>
+          <tr><td><code>from:@customer.com is:unread</code></td><td>Combined: unread mail from a customer domain</td></tr>
         </tbody>
       </table>
 
-      <h3>Trigger 版：Gmail Trigger 節點</h3>
-      <p>另一個節點叫 <strong>Gmail Trigger</strong>（不是 Gmail），這是 trigger 節點，可以設「有新信就跑 workflow」。它是<em>輪詢式</em>，Poll Times 下拉可以選 Every Minute / Every Hour / Every Day 等；預設一次拉 <strong>10 封</strong>（Options → Limit 可調到 50）。要即時就選 Every Minute，但太密加上大帳號會被 Google API 限速。</p>
+      <h3>The trigger version: the Gmail Trigger node</h3>
+      <p>A separate node called <strong>Gmail Trigger</strong> (not Gmail) is the trigger node, and it can be set to run the workflow when new mail arrives. It is a <em>polling</em> node: the Poll Times dropdown offers Every Minute / Every Hour / Every Day and so on, and by default it pulls <strong>10 messages</strong> at a time (Options → Limit takes that up to 50). Pick Every Minute if you want it near-instant, but polling that often on a large account will get you rate-limited by the Google API.</p>
 
-      <div class="callout warn"><strong>注意：</strong>Google 一般帳號一天 <strong>500 封</strong>寄送額度，Workspace 帳號是 2000 封。做群發自動化前先估量，超過會被 Google 暫時鎖帳號。</div>
+      <div class="callout warn"><strong>Warning:</strong> An ordinary Google account has a sending quota of <strong>500 messages</strong> a day; a Workspace account gets 2000. Do the arithmetic before you automate a mass send — go over the quota and Google locks the account temporarily.</div>
     </section>
 
-    <section id="records" data-nav="Google Sheets 節點">
-      <h2 data-icon="records">Google Sheets 節點：辦公室的萬用資料庫</h2>
-      <p>對很多中小公司來說，Google Sheets 就是他們的資料庫。CRM 是 Sheets、庫存表是 Sheets、活動報名表是 Sheets。學會這節點就等於學會了「怎麼讓 n8n 讀寫辦公室資料」。</p>
+    <section id="records" data-nav="Google Sheets node">
+      <h2 data-icon="records">The Google Sheets node: the office's all-purpose database</h2>
+      <p>For a lot of small and mid-sized companies, Google Sheets is the database. The CRM is a Sheet, the stock list is a Sheet, the event sign-up list is a Sheet. Learn this node and you have learned how to let n8n read and write the office's data.</p>
 
-      <h3>最常用的 Resource / Operation 組合</h3>
+      <h3>The most-used Resource / Operation combinations</h3>
       <table class="data-table">
         <thead>
-          <tr><th>Resource</th><th>Operation</th><th>什麼時候用</th></tr>
+          <tr><th>Resource</th><th>Operation</th><th>When to use it</th></tr>
         </thead>
         <tbody>
-          <tr><td>Sheet Within Document</td><td>Append Row</td><td>新增一列（最常用：新客戶進 Sheets、log 一筆事件）</td></tr>
-          <tr><td>Sheet Within Document</td><td>Append or Update Row</td><td>如果指定 key 已存在就 update，不存在就 append（upsert）</td></tr>
-          <tr><td>Sheet Within Document</td><td>Get Row(s)</td><td>把整張表或符合條件的列讀出來（<em>不是「Read」</em>，是 Get Row(s)）</td></tr>
-          <tr><td>Sheet Within Document</td><td>Update Row</td><td>用 Column to Match On 找到某一列去更新它</td></tr>
-          <tr><td>Sheet Within Document</td><td>Delete Rows or Columns</td><td>刪掉指定的列或欄（少用，破壞性）</td></tr>
-          <tr><td>Sheet Within Document</td><td>Clear</td><td>清空指定範圍的內容但保留欄框</td></tr>
+          <tr><td>Sheet Within Document</td><td>Append Row</td><td>Add a row (the most common: a new customer into Sheets, an event logged)</td></tr>
+          <tr><td>Sheet Within Document</td><td>Append or Update Row</td><td>Update the row if the key you name already exists, append it if it does not (an upsert)</td></tr>
+          <tr><td>Sheet Within Document</td><td>Get Row(s)</td><td>Read the whole sheet, or the rows that match a condition (<em>it is not called "Read"</em>, it is Get Row(s))</td></tr>
+          <tr><td>Sheet Within Document</td><td>Update Row</td><td>Find a row with Column to Match On and update it</td></tr>
+          <tr><td>Sheet Within Document</td><td>Delete Rows or Columns</td><td>Delete the rows or columns you name (rarely used, and destructive)</td></tr>
+          <tr><td>Sheet Within Document</td><td>Clear</td><td>Empty the contents of a range but keep the column structure</td></tr>
         </tbody>
       </table>
 
-      <h3>Credential 兩種選</h3>
+      <h3>Two credential choices</h3>
       <table class="data-table">
         <thead>
-          <tr><th>選項</th><th>建議情境</th></tr>
+          <tr><th>Option</th><th>When to choose it</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Google OAuth2</strong></td>
-            <td>個人／小團隊。設定快，用你自己的 Google 帳號授權</td>
+            <td>Individuals and small teams. Quick to set up, and you authorize with your own Google account</td>
           </tr>
           <tr>
             <td><strong>Service Account</strong></td>
-            <td>企業推薦。開一個「不是真人」的機器帳號、把要用的 Sheets 分享給這個機器 email。人員離職不影響 automation</td>
+            <td>The recommendation for companies. Create a machine account that is not a real person and share the Sheets you need with that machine email address. People leaving does not break the automation</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>Append Row：新增一列</h3>
-      <p>Append Row 是最常用的動作。設定重點：</p>
+      <h3>Append Row: add a row</h3>
+      <p>Append Row is the operation you will use most. The settings that matter:</p>
       <ol class="steps">
         <li>
-          <h3>選 Document</h3>
-          <p>下拉會列出你帳號下所有 Google Sheets 檔案，直接挑一個。也可以貼 URL 或 Sheet ID。</p>
+          <h3>Pick the Document</h3>
+          <p>The dropdown lists every Google Sheets file on your account, so just pick one. You can also paste a URL or a Sheet ID.</p>
         </li>
         <li>
-          <h3>選 Sheet（分頁）</h3>
-          <p>一個 Sheets 檔案裡可能有好幾個分頁，選對那一個 tab。</p>
+          <h3>Pick the Sheet (the tab)</h3>
+          <p>One Sheets file can hold several tabs, so pick the right one.</p>
         </li>
         <li>
-          <h3>Mapping Column Mode 選手動</h3>
-          <p>Mapping Column Mode 下拉有三個選項：<strong>Map Automatically</strong>（自動對應，只要 upstream JSON 的 key 跟 Sheets header 完全一致就自動塞）、<strong>Map Each Column Manually</strong>（手動，一格一格填 expression）、<strong>Nothing</strong>。<em>沒把握對齊時推薦手動</em>——自動模式只要有一個 key 名不同，那欄就會漏。</p>
+          <h3>Set Mapping Column Mode to manual</h3>
+          <p>The Mapping Column Mode dropdown has three options: <strong>Map Automatically</strong> (it fills the row on its own, as long as the keys in the upstream JSON match the Sheets headers exactly), <strong>Map Each Column Manually</strong> (you write an expression into each box yourself) and <strong>Nothing</strong>. <em>When you are not sure the names line up, go manual</em> — in automatic mode a single key with a different name leaves that column empty.</p>
         </li>
         <li>
-          <h3>逐欄填 expression</h3>
-          <p>下方會列出 Sheets 的每個 header（假設是「姓名／Email／註冊時間」），每個欄位對應輸入框拉一條 expression：<code>{{ $json.name }}</code>、<code>{{ $json.email }}</code>、<code>{{ $now }}</code>。</p>
+          <h3>Fill in an expression per column</h3>
+          <p>Below that, n8n lists every header in the Sheet (say "Name / Email / Signed up at") with an input box for each one, where you drop in an expression: <code>{{ $json.name }}</code>, <code>{{ $json.email }}</code>, <code>{{ $now }}</code>.</p>
         </li>
       </ol>
 
-      <h3>Update：找到某一列去改</h3>
-      <p>Update 動作有個關鍵欄位叫 <strong>Column to Match On</strong>，你選「用哪一欄當 key 去找那一列」。例：客戶狀態表用 Email 當 key，upstream 傳來 <code>{ email: "a@b.com", status: "已付款" }</code>，Sheets 節點會去找 Email 欄 = <code>a@b.com</code> 的那一列，把 status 欄改成「已付款」。</p>
+      <h3>Update: find a row and change it</h3>
+      <p>The Update operation has one field that decides everything, <strong>Column to Match On</strong>, where you choose which column acts as the key for finding the row. For example: a customer status sheet keyed on Email, with upstream sending <code>{ email: "a@b.com", status: "已付款" }</code>. The Sheets node looks for the row whose Email column is <code>a@b.com</code> and sets its status column to "paid".</p>
 
-      <div class="callout warn"><strong>注意：</strong>Sheets 節點三個經典地雷：<strong>(1)</strong> 欄位名字有<em>前後空格</em>會找不到（Sheets 眼裡「Email 」跟「Email」是不同欄）；<strong>(2)</strong> Auto-map 會誤把 header 列當資料列處理；<strong>(3)</strong> 日期／時間格式跑掉——建議在 Sheets 那邊先把整欄設成「純文字」，寫入的 ISO 字串就不會被自動轉成本地時區。</div>
+      <div class="callout warn"><strong>Warning:</strong> Three classic Sheets-node traps: <strong>(1)</strong> a column name with <em>a leading or trailing space</em> will not be found (to Sheets, "Email " and "Email" are two different columns); <strong>(2)</strong> auto-map can treat the header row as a data row; <strong>(3)</strong> date and time formats drift — set the whole column to "Plain text" on the Sheets side first, and the ISO strings you write will not be converted into the local timezone.</div>
     </section>
 
-    <section id="docker" data-nav="Google Drive 節點">
-      <h2 data-icon="docker">Google Drive 節點：檔案的家</h2>
-      <p>Drive 節點主要拿來「存檔」跟「取檔」。客戶上傳的檔案自動歸檔、每天備份的 CSV 上雲、把附件下載下來給下一個節點用——都靠這個。</p>
+    <section id="docker" data-nav="Google Drive node">
+      <h2 data-icon="docker">The Google Drive node: where the files live</h2>
+      <p>The Drive node is mainly there to store files and to fetch them. Filing customer uploads automatically, putting a daily backup CSV in the cloud, downloading an attachment for the next node to use — all of that runs through this node.</p>
 
-      <h3>最常用的 Resource / Operation 組合</h3>
+      <h3>The most-used Resource / Operation combinations</h3>
       <table class="data-table">
         <thead>
-          <tr><th>Resource</th><th>Operation</th><th>什麼時候用</th></tr>
+          <tr><th>Resource</th><th>Operation</th><th>When to use it</th></tr>
         </thead>
         <tbody>
-          <tr><td>File</td><td>Upload</td><td>把上一節點的 binary 存進 Drive</td></tr>
-          <tr><td>File</td><td>Download</td><td>拿 file ID 抓檔案內容（吐 binary 給下一節點）</td></tr>
-          <tr><td>File</td><td>Copy</td><td>複製一份到其他資料夾</td></tr>
-          <tr><td>File</td><td>Move</td><td>把檔案搬到另一個資料夾</td></tr>
-          <tr><td>File</td><td>Share</td><td>建立分享權限（例：給某 email 讀取）</td></tr>
-          <tr><td>File</td><td>Create from Text</td><td>直接用一段字串當內容生一個檔案（例：把 JSON 存成 .txt）</td></tr>
-          <tr><td>File/Folder</td><td>Search</td><td>用檔名／MIME type 找檔案或資料夾（Search 屬於 <em>File/Folder</em> 這個複合 resource，不是 File）</td></tr>
-          <tr><td>Folder</td><td>Create / Delete / Share</td><td>資料夾也有自己的 CRUD 動作</td></tr>
-          <tr><td>Shared Drive</td><td>Create / Get / Get Many / Update / Delete</td><td>操作共用雲端硬碟本身（不是裡面的檔案）</td></tr>
+          <tr><td>File</td><td>Upload</td><td>Store the previous node's binary in Drive</td></tr>
+          <tr><td>File</td><td>Download</td><td>Fetch a file's contents by file ID (it hands binary to the next node)</td></tr>
+          <tr><td>File</td><td>Copy</td><td>Copy it into another folder</td></tr>
+          <tr><td>File</td><td>Move</td><td>Move the file to a different folder</td></tr>
+          <tr><td>File</td><td>Share</td><td>Grant a sharing permission (for example, read access for one email address)</td></tr>
+          <tr><td>File</td><td>Create from Text</td><td>Create a file straight from a string of text (for example, save JSON as a .txt)</td></tr>
+          <tr><td>File/Folder</td><td>Search</td><td>Find files or folders by file name / MIME type (Search belongs to the combined <em>File/Folder</em> resource, not to File)</td></tr>
+          <tr><td>Folder</td><td>Create / Delete / Share</td><td>Folders have their own CRUD operations too</td></tr>
+          <tr><td>Shared Drive</td><td>Create / Get / Get Many / Update / Delete</td><td>Work on the shared drive itself, not on the files inside it</td></tr>
         </tbody>
       </table>
 
-      <h3>Credential：Google OAuth2</h3>
-      <p>跟 Gmail 一樣，用 Google OAuth2 授權。如果你 Gmail credential 已經設過，可以在 Drive 節點直接選同一組（不用重新授權）。</p>
+      <h3>Credential: Google OAuth2</h3>
+      <p>The same as Gmail: you authorize with Google OAuth2. If you already set up a Gmail credential, you can pick that same one in the Drive node without authorizing again.</p>
 
-      <h3>Upload：把檔案存進 Drive</h3>
-      <p>Upload 需要三個東西：</p>
+      <h3>Upload: put a file into Drive</h3>
+      <p>Upload needs three things:</p>
       <table class="data-table">
         <thead>
-          <tr><th>欄位</th><th>要填什麼</th></tr>
+          <tr><th>Field</th><th>What to enter</th></tr>
         </thead>
         <tbody>
-          <tr><td>Input Data Field Name</td><td>上一節點吐出來的 binary property name（通常是 <code>data</code>）</td></tr>
-          <tr><td>File Name</td><td>存進去以後要叫什麼名字（可用 expression 動態拼）</td></tr>
-          <tr><td>Parent（Drive + Folder）</td><td>要存到哪個磁碟／資料夾——這是 <em>Resource Locator</em> 欄位，有三種模式可切</td></tr>
+          <tr><td>Input Data Field Name</td><td>The binary property name the node before it produced (usually <code>data</code>)</td></tr>
+          <tr><td>File Name</td><td>What it should be called once it is stored (an expression can build it dynamically)</td></tr>
+          <tr><td>Parent (Drive + Folder)</td><td>Which drive / folder to store it in — this is a <em>Resource Locator</em> field, with three modes you can switch between</td></tr>
         </tbody>
       </table>
 
-      <h3>Parent 欄位的三種選法（Resource Locator）</h3>
-      <p>n8n v1 之後，Google Drive 節點的 Drive 跟 Folder 欄位都是 <strong>Resource Locator（RLC）</strong>——同一個欄位裡有三個切換模式：</p>
+      <h3>Three ways to fill in the Parent field (Resource Locator)</h3>
+      <p>From n8n v1 on, the Drive and Folder fields on the Google Drive node are both <strong>Resource Locator (RLC)</strong> fields — one field with three modes to switch between:</p>
       <table class="data-table">
         <thead>
-          <tr><th>模式</th><th>要填什麼</th></tr>
+          <tr><th>Mode</th><th>What to enter</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>From list</strong></td><td>下拉列出你 Drive 裡所有資料夾／磁碟，直接點</td></tr>
-          <tr><td><strong>By URL</strong></td><td>貼資料夾網址，例：<code>https://drive.google.com/drive/folders/1aBcDeFg…</code>，n8n 自己抽 ID</td></tr>
-          <tr><td><strong>By ID</strong></td><td>直接貼 Folder ID（<code>folders/</code> 後面那串）</td></tr>
+          <tr><td><strong>From list</strong></td><td>A dropdown lists every folder / drive in your Drive; just click one</td></tr>
+          <tr><td><strong>By URL</strong></td><td>Paste the folder URL, for example <code>https://drive.google.com/drive/folders/1aBcDeFg…</code>, and n8n pulls the ID out of it</td></tr>
+          <tr><td><strong>By ID</strong></td><td>Paste the folder ID directly (the string after <code>folders/</code>)</td></tr>
         </tbody>
       </table>
-      <p>三種都能達到同樣結果。<em>不能</em>填「資料夾名字」——名字不通，非 ID／URL／list 選擇一律拒收。</p>
+      <p>All three get you the same result. What you <em>cannot</em> enter is the folder name — a name will not do, and anything that is not an ID, a URL or a pick from the list is rejected.</p>
 
-      <h3>Download：從 Drive 抓檔案</h3>
-      <p>Download 只需要一個 <strong>File ID</strong>。File ID 通常是上一個節點（例：Drive Search 或 Trigger）給的，或者你自己從檔案的分享連結抓：連結 <code>drive.google.com/file/d/1xxx/view</code> 中間那串就是 file ID。抓完會吐 binary 給下游用，例如接 Slack 節點當附件、或接 Gmail 節點當寄信附件。</p>
+      <h3>Download: pull a file out of Drive</h3>
+      <p>Download needs only a <strong>File ID</strong>. The file ID usually comes from the node before it (Drive Search or a trigger, say), or you take it from the file's share link yourself: in the link <code>drive.google.com/file/d/1xxx/view</code>, the string in the middle is the file ID. The download hands binary downstream, for a Slack node to attach or a Gmail node to send with an email.</p>
 
-      <div class="callout warn"><strong>注意：</strong>如果你要存到<em>共用雲端硬碟</em>（Shared Drive，以前叫 Team Drive），要在 Google OAuth2 credential 設定裡勾 <strong>Include Shared Drives</strong>——沒勾的話 Drive 節點看不到共用硬碟。這是 Google 的 API 設計，不是 n8n 的問題。</div>
+      <div class="callout warn"><strong>Warning:</strong> If you want to store files on a <em>shared drive</em> (Shared Drive, formerly Team Drive), tick <strong>Include Shared Drives</strong> in the Google OAuth2 credential settings — without it, the Drive node cannot see shared drives at all. That is how Google's API is designed; it is not an n8n problem.</div>
     </section>
 
-    <section id="auto" data-nav="實例：四家全串一遍">
-      <h2 data-icon="auto">實例：新表單來就寄 Gmail + 附 Drive 檔案 + Slack 通知</h2>
-      <p>把這章學的四家全串起來做一條真實 workflow。情境：客戶填了 Google Form（帶附件），你要自動寄封感謝信給對方＋附上他上傳的檔案＋在 Slack 通知業務群「有新客戶進來」。</p>
+    <section id="auto" data-nav="All four together">
+      <h2 data-icon="auto">Worked example: a new form entry sends a Gmail, attaches a Drive file and posts to Slack</h2>
+      <p>Wire all four services from this chapter into one real workflow. The scenario: a customer fills in a Google Form and uploads a file with it, and you want to send them a thank-you email automatically, attach the file they uploaded, and tell the sales channel on Slack that a new customer has come in.</p>
       <figure class="shot">
-        <img src="../assets/screenshots/ch11/01_saas_workflow.png" alt="智能家居 AI 顧問 workflow 七節點畫面" />
-        <figcaption><strong>圖 11-1</strong>實際的多節點 SaaS 整合範例：一條 workflow 把觸發、AI 處理與多家外部服務串成一條龍。</figcaption>
+        <img src="../assets/screenshots/ch11/01_saas_workflow.png" alt="Seven-node view of a smart home AI advisor workflow" />
+        <figcaption><strong>Figure 11-1</strong>A real multi-node SaaS integration: one workflow chaining the trigger, the AI step and several outside services end to end.</figcaption>
       </figure>
 
       <ol class="steps">
         <li>
-          <h3>Trigger：Google Forms Trigger 或 Google Sheets Trigger</h3>
-          <p>拉一個 <strong>Google Sheets Trigger</strong>（大部分 Google Form 都會自動把回覆寫進一個 Sheets），設定「有新列出現就觸發」。Trigger On 選 <code>Row Added</code>，Document 跟 Sheet 用 RLC 挑到那個表單回覆的 Sheets。Poll Times 選 Every Minute 就好。</p>
+          <h3>Trigger: Google Forms Trigger or Google Sheets Trigger</h3>
+          <p>Drop in a <strong>Google Sheets Trigger</strong> (most Google Forms write their responses into a Sheet automatically) and set it to fire when a new row appears. Set Trigger On to <code>Row Added</code>, and use the RLC to point Document and Sheet at the Sheet holding the form responses. Every Minute is fine for Poll Times.</p>
         </li>
         <li>
-          <h3>Google Drive Download：抓客戶上傳的檔案</h3>
-          <p>表單如果有「上傳檔案」題目，Sheets 那一列會存一個 Drive 檔案的分享連結。加一個 <strong>Google Drive → File → Download</strong> 節點，File ID 用 expression 從上一步的 URL 抽出來：<code>{{ $json["附件"].split("id=")[1] }}</code>。這一步跑完會吐 binary，下游可以拿去當附件。</p>
+          <h3>Google Drive Download: fetch the file the customer uploaded</h3>
+          <p>If the form has a file-upload question, that row in the Sheet holds a share link to a Drive file. Add a <strong>Google Drive → File → Download</strong> node and use an expression to pull the file ID out of the URL from the previous step: <code>{{ $json["附件"].split("id=")[1] }}</code>. When this step finishes it emits binary, which the rest of the workflow can use as an attachment.</p>
         </li>
         <li>
-          <h3>Gmail Send：寄感謝信給填表人</h3>
-          <p>加 <strong>Gmail → Message → Send</strong> 節點。To 欄填 <code>{{ $('Google Sheets Trigger').item.json["Email"] }}</code>（引用第一步表單裡的 Email 欄），Subject 打「感謝您填寫表單 - {{ $('Google Sheets Trigger').item.json["姓名"] }} 您好」，Message 打感謝內容。展開 <em>Options</em> → <strong>Attachments</strong>，Property Name（Binary）填 <code>data</code>——就會把上一步 Drive 下載的檔案一起寄出去。</p>
+          <h3>Gmail Send: email the person who filled in the form</h3>
+          <p>Add a <strong>Gmail → Message → Send</strong> node. Put <code>{{ $('Google Sheets Trigger').item.json["Email"] }}</code> in the To field (referring to the Email column of the form from step one), type "Thank you for your submission - Hello {{ $('Google Sheets Trigger').item.json["Name"] }}" into Subject, and write your thank-you text into Message. Expand <em>Options</em> → <strong>Attachments</strong> and put <code>data</code> in Property Name (Binary) — that sends the file downloaded from Drive in the previous step along with the email.</p>
         </li>
         <li>
-          <h3>Slack Message Send：通知業務群</h3>
-          <p>加 <strong>Slack → Message → Send</strong> 節點。Channel 選 <code>#new-forms</code>（或它的 channel ID），Text 用 expression 拼：<code>*有新表單來了！*\n姓名：{{ $('Google Sheets Trigger').item.json["姓名"] }}\nEmail：{{ $('Google Sheets Trigger').item.json["Email"] }}\n主旨：{{ $('Google Sheets Trigger').item.json["諮詢主旨"] }}\n已自動寄出感謝信 :white_check_mark:</code>。</p>
+          <h3>Slack Message Send: tell the sales channel</h3>
+          <p>Add a <strong>Slack → Message → Send</strong> node. Pick <code>#new-forms</code> as the Channel (or its channel ID), and build the Text with an expression: <code>*有新表單來了！*\n姓名：{{ $('Google Sheets Trigger').item.json["姓名"] }}\nEmail：{{ $('Google Sheets Trigger').item.json["Email"] }}\n主旨：{{ $('Google Sheets Trigger').item.json["諮詢主旨"] }}\n已自動寄出感謝信 :white_check_mark:</code>.</p>
         </li>
         <li>
-          <h3>Save + Execute Workflow 測一次</h3>
-          <p>右上角 <kbd>Ctrl</kbd>+<kbd>S</kbd> 存檔。手動去 Google Form 填一筆假資料，回 n8n 按 <strong>Execute Workflow</strong>。四個節點都變綠打勾以後，去信箱看寄達了沒、去 Slack 看通知進了沒。</p>
+          <h3>Save, then Execute Workflow to test it once</h3>
+          <p>Save with <kbd>Ctrl</kbd>+<kbd>S</kbd> at the top right. Go and fill in the Google Form by hand with some fake data, come back to n8n and press <strong>Execute Workflow</strong>. Once all four nodes have turned green with a check, look in the mailbox to see whether the email arrived, and in Slack to see whether the notification landed.</p>
         </li>
         <li>
-          <h3>Activate toggle 打開</h3>
-          <p>測試 OK 以後，右上角把 <strong>Active</strong> toggle 打開。從這一刻起，任何人填表單，n8n 都會自動幫你跑這條流。</p>
+          <h3>Turn on the Activate toggle</h3>
+          <p>Once the test is fine, flip the <strong>Active</strong> toggle at the top right. From that moment on, whenever anyone fills in the form, n8n runs this workflow for you.</p>
         </li>
       </ol>
 
-      <div class="callout tip"><strong>提示：</strong>這個 workflow 完全示範了 SaaS 節點怎麼互相接力：<em>Trigger 拿到資料 → Drive 抓檔案 → Gmail 用資料＋檔案寄信 → Slack 通知同事</em>。四家串成一條，就是辦公室最典型的自動化樣板。</div>
+      <div class="callout tip"><strong>Tip:</strong> This workflow is a full demonstration of how SaaS nodes hand off to each other: <em>the trigger picks up the data → Drive fetches the file → Gmail sends the mail with the data and the file → Slack tells your colleagues</em>. Four services on one line is the most typical office automation template there is.</div>
     </section>
 
-    <section id="advanced" data-nav="同節點多個帳號">
-      <h2 data-icon="advanced">同一個節點想連好幾個帳號</h2>
-      <p>你可以在 n8n 的 <strong>Credentials</strong> 頁面（左側選單）開好幾個同款 credential。舉例：</p>
+    <section id="advanced" data-nav="Several accounts">
+      <h2 data-icon="advanced">Using several accounts on the same node</h2>
+      <p>On n8n's <strong>Credentials</strong> page (in the left-hand menu) you can create several credentials of the same kind. For example:</p>
       <ul>
         <li><code>Slack 個人 workspace</code></li>
         <li><code>Slack 公司 workspace</code></li>
         <li><code>Slack 客戶 A workspace</code></li>
       </ul>
-      <p>每個 Slack 節點的 <strong>Credential</strong> 下拉就可以選要用哪一組。同一條 workflow 也可以有兩個 Slack 節點各用不同 workspace——例如「內部通知打公司 workspace，對客回覆打客戶 workspace」。Gmail、Sheets、Drive 同理。</p>
-      <p>Credential 的完整管理（怎麼命名、怎麼共用、怎麼撤銷）在<a href="ch13_credentials.html">第 13 章</a>詳細講。</p>
+      <p>The <strong>Credential</strong> dropdown on each Slack node then lets you pick which one it uses. One workflow can even hold two Slack nodes on different workspaces — internal notices going to the company workspace, customer replies going to the customer's workspace, say. Gmail, Sheets and Drive work the same way.</p>
+      <p>Managing credentials in full — how to name them, how to share them, how to revoke them — is covered in <a href="ch13_credentials.html">Chapter 13</a>.</p>
     </section>
 
-    <section id="troubleshoot" data-nav="常見卡關">
-      <h2 data-icon="troubleshoot">常見卡關與怎麼救</h2>
+    <section id="troubleshoot" data-nav="Common pitfalls">
+      <h2 data-icon="troubleshoot">Common pitfalls and fixes</h2>
       <table class="data-table">
         <thead>
-          <tr><th>症狀</th><th>原因</th><th>怎麼救</th></tr>
+          <tr><th>Symptom</th><th>Cause</th><th>How to fix it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>Slack 節點回 <code>401 invalid_auth</code> 或 <code>not_authed</code></td>
-            <td>Bot Token 過期，或這個 Bot 沒被邀請進要發訊息的 channel</td>
-            <td>回 Slack workspace 把 Bot 加進頻道：頻道右鍵 → View channel details → Integrations → Add app。Token 過期就重新生成一組貼回 credential</td>
+            <td>The Slack node returns <code>401 invalid_auth</code> or <code>not_authed</code></td>
+            <td>The bot token has expired, or the bot was never invited into the channel you are posting to</td>
+            <td>Go back to the Slack workspace and add the bot to the channel: right-click the channel → View channel details → Integrations → Add app. If the token has expired, generate a new one and paste it back into the credential</td>
           </tr>
           <tr>
-            <td>Slack 訊息說發送成功但頻道裡看不到</td>
-            <td>你把訊息發到自己的 DM 或錯的 channel（channel 打成了 <code>general</code> 而不是 <code>#general</code>）</td>
-            <td>Channel 欄用 channel ID（<code>C01XYZ</code>）而不是名字，最不會出錯。ID 從頻道詳情頁最下面複製</td>
+            <td>Slack says the message was sent, but it is nowhere in the channel</td>
+            <td>You sent it to your own DM or to the wrong channel (you typed <code>general</code> instead of <code>#general</code>)</td>
+            <td>Put the channel ID (<code>C01XYZ</code>) in the Channel field instead of the name — that goes wrong least often. Copy the ID from the bottom of the channel details page</td>
           </tr>
           <tr>
-            <td>Gmail 節點 <code>Insufficient Permission</code></td>
-            <td>OAuth 授權時 scope 沒包含 send 權限（例：只勾了讀）</td>
-            <td>去 credential 頁把這組 Gmail OAuth 刪掉重新授權，這次要注意勾選畫面的 checkbox 全部勾</td>
+            <td>The Gmail node returns <code>Insufficient Permission</code></td>
+            <td>The OAuth grant did not include the send scope (you only ticked read, for instance)</td>
+            <td>Go to the credentials page, delete this Gmail OAuth credential and authorize again, this time ticking every checkbox on the consent screen</td>
           </tr>
           <tr>
-            <td>Gmail 一天寄很多信之後突然寄不出去</td>
-            <td>超過 Google 每日寄送額度（一般帳號 500 封／天）</td>
-            <td>等 24 小時，或換 Google Workspace 帳號（2000 封／天）。要長期大量寄改用 SendGrid、Postmark 這類專業寄送服務</td>
+            <td>Gmail sends a lot of mail in one day and then suddenly stops sending</td>
+            <td>You went past Google's daily sending quota (500 a day on an ordinary account)</td>
+            <td>Wait 24 hours, or move to a Google Workspace account (2000 a day). For sustained bulk sending, switch to a dedicated sending service such as SendGrid or Postmark</td>
           </tr>
           <tr>
-            <td>Sheets Append 執行成功，但那一列少了某些欄位</td>
-            <td>你 Map 時 column 名字打錯，或 Sheets 那邊 header 有前後空格；大小寫也要一致</td>
-            <td>回 Sheets 檢查 header 列每個 cell 有沒有空格。n8n 節點裡的 column 名字必須跟 Sheets 完全一模一樣（包含大小寫）</td>
+            <td>The Sheets Append runs fine, but that row is missing some of its columns</td>
+            <td>You mistyped a column name while mapping, or the header in Sheets has a leading or trailing space; the capitalization has to match too</td>
+            <td>Go back to Sheets and check every cell in the header row for spaces. The column names in the n8n node have to match Sheets exactly, capitalization included</td>
           </tr>
           <tr>
-            <td>Sheets Update 找不到要更新的列，執行沒錯但沒動到</td>
-            <td>Column to Match 選的欄位在 Sheets 找不到 match 的值——通常是型別問題（Sheets 存數字 <code>123</code>，你傳字串 <code>"123"</code>）</td>
-            <td>把 expression 加上型別轉換：<code>{{ String($json.id) }}</code>，或反過來把 Sheets 那欄先改成純文字格式</td>
+            <td>Sheets Update cannot find the row to update: the run reports no error but nothing changed</td>
+            <td>The column chosen in Column to Match has no matching value in Sheets — usually a type problem (Sheets holds the number <code>123</code> and you sent the string <code>"123"</code>)</td>
+            <td>Add a type conversion to the expression: <code>{{ String($json.id) }}</code>, or go the other way and set that Sheets column to plain text first</td>
           </tr>
           <tr>
-            <td>Drive Upload 成功但檔案落在「My Drive」根目錄而不是指定資料夾</td>
-            <td>Parent 欄位模式選錯——留在 <em>By ID</em> 卻貼了資料夾網址，或反過來留在 <em>By URL</em> 卻貼了純 ID</td>
-            <td>把 RLC 切成 <em>From list</em> 從下拉挑最保險；或改成 <em>By URL</em> 貼完整 <code>drive.google.com/drive/folders/…</code>；ID 模式只能貼 ID</td>
+            <td>Drive Upload succeeds, but the file lands in the root of "My Drive" instead of the folder you named</td>
+            <td>The Parent field is in the wrong mode — left on <em>By ID</em> with a folder URL pasted in, or the reverse: left on <em>By URL</em> with a bare ID</td>
+            <td>Switching the RLC to <em>From list</em> and picking from the dropdown is safest; or use <em>By URL</em> and paste the full <code>drive.google.com/drive/folders/…</code>; the ID mode takes an ID and nothing else</td>
           </tr>
           <tr>
-            <td>Drive 節點看不到共用硬碟（Shared Drive）的檔案</td>
-            <td>Google OAuth2 credential 沒勾 Include Shared Drives</td>
-            <td>回 credential 設定頁把這個選項打勾、存檔，再回節點刷新 Document/Folder 下拉</td>
+            <td>The Drive node cannot see the files on a shared drive (Shared Drive)</td>
+            <td>Include Shared Drives is not ticked on the Google OAuth2 credential</td>
+            <td>Go back to the credential settings, tick that option and save, then return to the node and refresh the Document/Folder dropdown</td>
           </tr>
           <tr>
-            <td>Gmail Trigger 明明有新信但 workflow 沒觸發</td>
-            <td>Poll Times 選了 Every Hour/Day 要等太久，或 Filters 區塊（Sender、Label IDs、Read Status、Search）把新信過濾掉了</td>
-            <td>先把 Filters 清空、Poll Times 切成 Every Minute 測試，確定 trigger 有反應以後再慢慢加 filter</td>
+            <td>There is clearly new mail, but the Gmail Trigger does not fire the workflow</td>
+            <td>Poll Times is on Every Hour or Every Day, so the wait is too long, or the Filters block (Sender, Label IDs, Read Status, Search) filtered the new mail out</td>
+            <td>Clear the Filters and set Poll Times to Every Minute to test; once you are sure the trigger reacts, add the filters back one at a time</td>
           </tr>
           <tr>
-            <td>執行看似成功但下游節點抓不到欄位（<code>undefined</code>）</td>
-            <td>SaaS 節點吐出的欄位名跟你以為的不一樣（Sheets 的欄位名有中文空格、Gmail 的欄位是 <code>subject</code> 不是 <code>Subject</code>）</td>
-            <td>在下游節點按 Execute Node 看實際吐出來的 JSON 長什麼樣，用它真正的欄位名寫 expression</td>
+            <td>The run looks like a success, but a downstream node cannot read the field (<code>undefined</code>)</td>
+            <td>The field names the SaaS node emits are not the ones you assumed (a Sheets column name with a full-width space in it, or Gmail's field being <code>subject</code> rather than <code>Subject</code>)</td>
+            <td>Press Execute Node on the downstream node to see what the JSON actually looks like, and write the expression with its real field names</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
 
       <details class="faq">
-        <summary>一定要用官方節點嗎？我可以自己寫 API call 嗎？</summary>
-        <div class="body">不用。這四家都有公開的 REST API，你可以完全用 <a href="ch12_http_request.html">第 12 章</a>教的 HTTP Request 節點自己打，效果一樣。<strong>但官方節點的價值在「已經幫你包好」</strong>——OAuth 授權、常見動作的欄位、錯誤處理都內建了。用 HTTP Request 你要自己組 header、處理 token 換發、看 API doc 拼 payload。日常用官方節點，遇到官方節點沒支援的偏門動作再改 HTTP Request 就好。</div>
+        <summary>Do I have to use the official nodes? Can I write the API call myself?</summary>
+        <div class="body">You do not have to. All four have public REST APIs, and you can call them yourself with the HTTP Request node from <a href="ch12_http_request.html">Chapter 12</a> for exactly the same result. <strong>What the official nodes are worth is that the wrapping is already done for you</strong> — OAuth authorization, fields for the common operations and error handling are all built in. With HTTP Request you assemble the headers yourself, handle the token refresh yourself, and read the API docs to put the payload together. Use the official nodes day to day, and move to HTTP Request when you hit an obscure operation they do not support.</div>
       </details>
 
       <details class="faq">
-        <summary>Slack 我有兩個 workspace（個人跟公司）怎麼辦？</summary>
-        <div class="body">在 Credentials 頁建兩組 Slack credential，命名清楚（例：<code>Slack - 個人</code>、<code>Slack - 公司</code>）。每個 Slack 節點裡就可以選要用哪一組。甚至同一條 workflow 都可以有多個 Slack 節點分別接不同 workspace——超方便，客戶 Slack、內部 Slack 一次全通知。</div>
+        <summary>I have two Slack workspaces, a personal one and the company one. What do I do?</summary>
+        <div class="body">Create two Slack credentials on the Credentials page and name them clearly (for example <code>Slack - 個人</code> and <code>Slack - 公司</code>). Each Slack node then lets you pick which one it uses. One workflow can even hold several Slack nodes on different workspaces — very handy indeed, notifying the customer's Slack and your internal Slack in one go.</div>
       </details>
 
       <details class="faq">
-        <summary>Gmail 一天可以寄幾封？</summary>
-        <div class="body">Google 一般個人帳號（<code>@gmail.com</code>）一天 <strong>500 封</strong>寄送額度；Google Workspace 帳號（公司自訂域名，例 <code>@yourcompany.com</code>）是 <strong>2000 封</strong>。這是 Google 帳號的硬限制，不是 n8n 的。如果你在做電子報群發、行銷大量寄送，用 <strong>SendGrid</strong>、<strong>Postmark</strong>、<strong>Mailgun</strong> 這類專業 email 服務比較妥當（一天可以幾萬封），n8n 也有它們的節點。</div>
+        <summary>How many emails can Gmail send in a day?</summary>
+        <div class="body">An ordinary Google personal account (<code>@gmail.com</code>) has a sending quota of <strong>500</strong> a day; a Google Workspace account (a company's own domain, for example <code>@yourcompany.com</code>) gets <strong>2000</strong>. That is a hard limit on the Google account, not on n8n. If you are sending a newsletter or a large marketing blast, a dedicated email service such as <strong>SendGrid</strong>, <strong>Postmark</strong> or <strong>Mailgun</strong> is the sounder choice (tens of thousands a day), and n8n has nodes for those too.</div>
       </details>
 
       <details class="faq">
-        <summary>Google Sheets 一次能讀多少列？會不會超級大表就爛掉？</summary>
-        <div class="body">技術上 Google Sheets 一份檔案可以到 <strong>1000 萬 cells</strong>（新版）、單一 sheet 可以到幾十萬列。<em>但 n8n Sheets 節點單次 Read 建議控制在 5000 列以內</em>比較穩，超過會慢、記憶體吃很大、有時 API 會 timeout。要處理大量資料建議：<strong>(1)</strong> 用 Range 分段讀（<code>A1:D1000</code>、<code>A1001:D2000</code>）；<strong>(2)</strong> 資料量真的大就改用 Airtable、Notion、或真的資料庫（Postgres / MySQL 節點）。</div>
+        <summary>How many rows can Google Sheets read at once? Does a huge sheet break it?</summary>
+        <div class="body">Technically one Google Sheets file can hold <strong>10 million cells</strong> (in the newer version), and a single sheet can run to hundreds of thousands of rows. <em>But keep a single read from the n8n Sheets node under 5000 rows</em> to stay on safe ground; beyond that it gets slow, eats a lot of memory, and the API sometimes times out. For large volumes: <strong>(1)</strong> read in slices with Range (<code>A1:D1000</code>, <code>A1001:D2000</code>); <strong>(2)</strong> if the data really is large, move to Airtable, Notion or an actual database (the Postgres / MySQL nodes).</div>
       </details>
 
       <details class="faq">
-        <summary>Drive Upload 大檔案（幾百 MB 的影片）會不會有問題？</summary>
-        <div class="body">Drive API 支援大檔案（單檔上限 5TB），但 n8n 節點會把整個檔案讀進記憶體再上傳，所以看你的 n8n instance 給多少 RAM。Woow n8n 這種共用環境建議單檔控制在 <strong>100 MB 以內</strong>；再大要考慮直接讓使用者上傳到 Drive、n8n 只負責搬 fileId／改權限。</div>
+        <summary>Will Drive Upload struggle with a large file, say a video of a few hundred MB?</summary>
+        <div class="body">The Drive API handles large files (5TB per file), but the n8n node reads the whole file into memory before uploading it, so it depends on how much RAM your n8n instance has. On a shared environment like Woow n8n, keep a single file under <strong>100 MB</strong>; beyond that, consider having the user upload to Drive directly and letting n8n only move the fileId around and change permissions.</div>
       </details>
 
       <details class="faq">
-        <summary>OAuth 授權有效期多久？會不會過期要重接？</summary>
-        <div class="body">Google OAuth token 有兩個東西：<strong>access token</strong>（1 小時）跟 <strong>refresh token</strong>（永久，除非你在 Google 帳號設定裡撤銷）。n8n 拿到 refresh token 以後會自動幫你換新的 access token，你不用管。<em>會需要重接的情況</em>：你手動去 Google 帳號 → 安全性 → 有權存取的第三方 app 把 n8n 撤銷了、或者你改了 Google 帳號密碼且啟用了兩步驟——這時 n8n 會開始報 <code>401</code>，回 credential 頁重新授權就好。Slack Bot Token 沒有過期日，除非你手動 revoke。</div>
+        <summary>How long does an OAuth grant last? Will it expire and need reconnecting?</summary>
+        <div class="body">A Google OAuth token is two things: an <strong>access token</strong> (one hour) and a <strong>refresh token</strong> (permanent, unless you revoke it in your Google account settings). Once n8n holds the refresh token it swaps in a new access token for you automatically, and you never have to think about it. <em>The cases where you do have to reconnect</em>: you went to Google account → Security → Third-party apps with account access and revoked n8n by hand, or you changed the Google account password with two-step verification turned on — n8n then starts returning <code>401</code>, and reauthorizing on the credentials page is all it takes. A Slack bot token has no expiry date, unless you revoke it yourself.</div>
       </details>
 
       <details class="faq">
-        <summary>Sheets 節點寫入時，欄位順序會不會被打亂？</summary>
-        <div class="body">不會。Append/Update 是<strong>照 header 名字</strong>對齊，不是照順序。所以你未來如果調整 Sheets 的欄位順序（把 C 欄搬到 B 欄），只要 header 名字不變，你的 workflow 完全不受影響。這是好事，也是為什麼「一定要用 Map Each Column Below」的原因——用 Auto-map 或用 Row Number 對齊就會踩到順序問題。</div>
+        <summary>When the Sheets node writes, does the column order get scrambled?</summary>
+        <div class="body">No. Append and Update line up <strong>by header name</strong>, not by position. So if you rearrange the columns in Sheets later on (moving column C to column B), your workflow is entirely unaffected as long as the header names stay the same. That is a good thing, and it is the reason for the rule that you must always use Map Each Column Below — lining up with Auto-map, or with a row number, is exactly where the ordering problems come from.</div>
       </details>
 
       <details class="faq">
-        <summary>四家節點如果同時執行，會不會互相影響？</summary>
-        <div class="body">不會。每個節點 API call 都是獨立的，一個節點出錯不會影響其他節點<em>已經完成的動作</em>——這也是自動化很現實的一面：<strong>已經寄出去的 Gmail 收不回來，已經通知的 Slack 訊息也刪不掉</strong>。所以順序很重要，通常先做「不可逆」的動作前先做好驗證（例：先寫 Sheets log 一筆才寄 Gmail），出錯時看 log 就知道發生什麼。錯誤處理策略在<a href="appendix_errors.html">附錄：錯誤處理</a>會系統性講。</div>
+        <summary>If the four nodes run at the same time, do they interfere with each other?</summary>
+        <div class="body">No. Each node's API call is independent, and one node failing does not undo <em>what other nodes have already done</em> — which is the blunt reality of automation: <strong>a Gmail that has gone out cannot be recalled, and a Slack message that has been posted cannot be deleted</strong>. So the order matters: do your checks before the irreversible steps (write a log row to Sheets before sending the Gmail, say), and when something goes wrong the log tells you what happened. Error-handling strategy is covered systematically in the <a href="appendix_errors.html">appendix on error handling</a>.</div>
       </details>
     </section>
 
