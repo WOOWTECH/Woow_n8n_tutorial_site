@@ -1,0 +1,10 @@
+{
+  "file": "appendix_internals.html",
+  "entries": [
+    {
+      "unit": "#queue-mode",
+      "zh": "<pre class=\"code-block\"><code># main\nEXECUTIONS_MODE=queue\nQUEUE_BULL_REDIS_HOST=redis.internal\nQUEUE_BULL_REDIS_PORT=6379\nDB_TYPE=postgresdb\n# ... 其他 DB 設定\n\n# worker（另一個 container / process）\nEXECUTIONS_MODE=queue\nQUEUE_BULL_REDIS_HOST=redis.internal\n# ... 同樣的 DB 與 Redis 設定\n# 啟動指令：n8n worker</code></pre>",
+      "en": "<pre class=\"code-block\"><code># main\nEXECUTIONS_MODE=queue\nQUEUE_BULL_REDIS_HOST=redis.internal\nQUEUE_BULL_REDIS_PORT=6379\nDB_TYPE=postgresdb\n# ... other DB settings\n\n# worker (a separate container / process)\nEXECUTIONS_MODE=queue\nQUEUE_BULL_REDIS_HOST=redis.internal\n# ... the same DB and Redis settings\n# start command: n8n worker</code></pre>"
+    }
+  ]
+}

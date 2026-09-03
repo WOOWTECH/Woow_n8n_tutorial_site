@@ -1,0 +1,15 @@
+{
+  "file": "appendix_errors.html",
+  "entries": [
+    {
+      "unit": "#modes",
+      "zh": "<pre class=\"code-block\"><code>Google Sheets (讀 500 列)\n    ↓\nSplit In Batches (batch size = 10)\n    ↓\nHTTP Request (打對方 API)  ← 開 Retry on fail, 5000ms\n    ↓\nWait (1 second)\n    ↓\n(回到 Split In Batches 下一批)</code></pre>",
+      "en": "<pre class=\"code-block\"><code>Google Sheets (read 500 rows)\n    ↓\nSplit In Batches (batch size = 10)\n    ↓\nHTTP Request (call their API)  <- Retry on fail enabled, 5000ms\n    ↓\nWait (1 second)\n    ↓\n(back to Split In Batches for the next batch)</code></pre>"
+    },
+    {
+      "unit": "#labels",
+      "zh": "<code>name = {{ $json.name || \"無名氏\" }}</code>",
+      "en": "<code>name = {{ $json.name || \"Anonymous\" }}</code>"
+    }
+  ]
+}
