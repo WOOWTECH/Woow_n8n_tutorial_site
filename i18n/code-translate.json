@@ -755,7 +755,7 @@
       "file": "skills.html",
       "unit": "#install",
       "zh": "<pre class=\"code-block\"><code>{\n  \"mcpServers\": {\n    \"n8n-mcp\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"n8n-mcp\"],\n      \"env\": {\n        \"N8N_URL\": \"https://n8n.woowtech.io\",\n        \"N8N_API_KEY\": \"&lt;你的 API key，在 n8n Settings → API 建立&gt;\"\n      }\n    }\n  }\n}</code></pre>",
-      "en": "<pre class=\"code-block\"><code>{\n  \"mcpServers\": {\n    \"n8n-mcp\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"n8n-mcp\"],\n      \"env\": {\n        \"N8N_URL\": \"https://n8n.woowtech.io\",\n        \"N8N_API_KEY\": \"&lt;your API key, created under n8n Settings → API&gt;\"\n      }\n    }\n  }\n}</code></pre>"
+      "en": "<pre class=\"code-block\"><code>{\n  \"mcpServers\": {\n    \"n8n-mcp\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"n8n-mcp@2.79.0\"],\n      \"env\": {\n        \"N8N_API_URL\": \"https://n8n.example.com\",\n        \"N8N_API_KEY\": \"&lt;your API key, created under n8n Settings → n8n API&gt;\"\n      }\n    }\n  }\n}</code></pre>"
     },
     {
       "file": "skills.html",
@@ -966,6 +966,48 @@
       "unit": "#cat-ops",
       "zh": "<code>dev_abc</code>",
       "en": "<code>n8n-dev.woowtech.io</code>"
+    },
+    {
+      "file": "prompts.html",
+      "unit": "#header",
+      "zh": "<code>PATCH /workflows/:id</code>",
+      "en": "<code>PUT /api/v1/workflows/:id</code>"
+    },
+    {
+      "file": "prompts.html",
+      "unit": "#howto",
+      "zh": "<code>npx n8n-mcp</code>",
+      "en": "<code>npx -y n8n-mcp@2.79.0</code>"
+    },
+    {
+      "file": "prompts.html",
+      "unit": "#howto",
+      "zh": "<code>N8N_URL</code>",
+      "en": "<code>N8N_API_URL</code>"
+    },
+    {
+      "file": "skills.html",
+      "unit": "#install",
+      "zh": "<code>create_workflow</code>",
+      "en": "<code>n8n_create_workflow</code>"
+    },
+    {
+      "file": "skills.html",
+      "unit": "#install",
+      "zh": "<code>list_workflows</code>",
+      "en": "<code>n8n_list_workflows</code>"
+    },
+    {
+      "file": "skills.html",
+      "unit": "#mcp",
+      "zh": "<pre class=\"code-block\"><code>npx n8n-mcp</code></pre>",
+      "en": "<pre class=\"code-block\"><code>npx -y n8n-mcp@2.79.0</code></pre>"
+    },
+    {
+      "file": "skills.html",
+      "unit": "#safety",
+      "zh": "<code>generate_audit</code>",
+      "en": "<code>n8n_audit_instance</code>"
     }
   ]
 }

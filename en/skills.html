@@ -354,7 +354,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <div class="kicker">WoowTech n8n Skill Handbook</div>
       <h1>Install a node or give AI a skill to extend n8n</h1>
       <p class="lead">n8n includes 400+ official nodes. Its global community adds another 2,100+ community nodes and dozens of MCP servers that let AI agents write workflows directly. This handbook selects 10 that homes, small and midsize businesses, and internal teams will actually use, plus 6 popular collections, installation reference, compatibility and safety guidance, and the SKILL.md specification.</p>
-      <div class="callout"><strong>How this list was compiled:</strong>Star counts, downloads, and maintenance status are public npm/GitHub data observed on 2026-08-20 and will change over time. Check the source repository again before installing.</div>
+      <div class="callout"><strong>How this list was compiled:</strong> Star counts, downloads, and maintenance status are public npm/GitHub data observed on 2026-08-20 and will change over time. Check the source repository again before installing.</div>
     </div>
 
     <section id="why" data-nav="Two extension models">
@@ -396,17 +396,17 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
   "mcpServers": {
     "n8n-mcp": {
       "command": "npx",
-      "args": ["-y", "n8n-mcp"],
+      "args": ["-y", "n8n-mcp@2.79.0"],
       "env": {
-        "N8N_URL": "https://n8n.woowtech.io",
-        "N8N_API_KEY": "&lt;your API key, created under n8n Settings → API&gt;"
+        "N8N_API_URL": "https://n8n.example.com",
+        "N8N_API_KEY": "&lt;your API key, created under n8n Settings → n8n API&gt;"
       }
     }
   }
 }</code></pre>
-      <p>Save and restart the AI client. Tools such as  <code>create_workflow</code>, <code>list_workflows</code>  will appear.<a href="prompts.html">Prompt Library</a>contains 44 copy-ready prompts.</p>
+      <p>Save and restart the AI client. With the pinned server release, tools such as <code>n8n_create_workflow</code> and <code>n8n_list_workflows</code> will appear. <a href="prompts.html">Prompt Library</a> contains 44 copy-ready prompts.</p>
 
-      <div class="callout tip"><strong>Tip:</strong>An MCP server usually does not change n8n itself; it lets AI call the API. You can use it with self-hosted, Cloud, or any n8n instance, including  <code>n8n.woowtech.io</code> after your account is created.</div>
+      <div class="callout tip"><strong>Tip:</strong> An MCP server usually does not change n8n itself; it lets AI call the API. You can use it with self-hosted, Cloud, or any n8n instance, including  <code>n8n.woowtech.io</code> after your account is created.</div>
     </section>
 
     <section id="picks" data-nav="Ten picks">
@@ -480,8 +480,8 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         <div class="feature-card">
           <h3><a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a></h3>
           <div class="pnote">22.7k ★ · MIT · Very active (1,193 commits)</div>
-          <p>The n8n MCP server with the most stars and broadest feature set: 7 Core Tools (node search, validation, template discovery, docs) and 16 Management Tools (workflow CRUD, execution, folder, credential, audit, health). It covers  <strong>2,541 n8n nodes</strong> (832 core + 1,709 community)99% property.</p>
-          <pre class="code-block"><code>npx n8n-mcp</code></pre>
+          <p>The server’s v2.79.0 documentation lists 7 core tools and 21 n8n management tools, covering workflow CRUD, execution inspection and triggering through documented trigger methods, credentials, audit, and health. Its catalog covers <strong>2,541 n8n nodes</strong> (832 core + 1,709 community) and reports coverage of 99% of node properties.</p>
+          <pre class="code-block"><code>npx -y n8n-mcp@2.79.0</code></pre>
           <p class="pnote">Installation also supports Docker (<code>ghcr.io/czlonkowski/n8n-mcp</code>), local npm installation, and one-click Railway deployment. <strong>A prominent option in the source snapshot; verify current maintenance and releases before adoption.</strong></p>
         </div>
 
@@ -573,19 +573,19 @@ https://github.com/restyler/awesome-n8n</code></pre>
         <li><strong>Node.js version</strong>: a node using newer syntax such as optional chaining or top-level await will fail when n8n runs on an older Node.js. The HAOS add-on defaults to Node 20 and is usually compatible.</li>
         <li><strong>Additional service dependencies</strong>: Puppeteer, for example, needs a Chromium binary not included in the n8n Docker image. Add a Dockerfile or use the standalone image for  <code>n8n-nodes-puppeteer</code> .</li>
       </ul>
-      <p>MCP server compatibility is simple: if your AI client (Claude Code, Cursor, or Windsurf) supports MCP, it works. It has no direct dependency on the n8n version because it calls the n8n API.</p>
-      <div class="callout"><strong>Concept:</strong>Your first criterion should not be star count. Check whether the maintainer is active: commits in the past 3 months and responses to issues.</div>
+      <p>MCP client support alone is not enough: the server must use routes and features available in your n8n version. For the repository’s pinned n8n v2.32.7, use only the Public API operations documented for that version and omit MCP features whose server documentation requires a later n8n release. Recheck compatibility before upgrading either side.</p>
+      <div class="callout"><strong>Concept:</strong> Your first criterion should not be star count. Check whether the maintainer is active: commits in the past 3 months and responses to issues.</div>
     </section>
 
     <section id="safety" data-nav="Safety rules">
       <h2 data-icon="safety">Safety rules</h2>
-      <div class="callout warn"><strong>Warning:</strong>A community node is an npm package that <strong>can execute arbitrary code</strong>; an MCP server is a process that <strong>can call your n8n API</strong>. Understand the implications before installing either.</div>
+      <div class="callout warn"><strong>Warning:</strong> A community node is an npm package that <strong>can execute arbitrary code</strong>; an MCP server is a process that <strong>can call your n8n API</strong>. Understand the implications before installing either.</div>
       <ul>
         <li><strong>Read the README before installing</strong>: not every package clearly documents the credentials it needs or the requests it sends. Ask Claude to review it if necessary.</li>
-        <li><strong>Pin versions in production</strong>: <code>package.json</code> Use  <code>n8n-nodes-xxx: 1.2.3</code>  rather than  <code>^1.2.3</code> to prevent an unnoticed upgrade from introducing an upstream regression.</li>
-        <li><strong>Use a scoped API key for an MCP server</strong>: create a dedicated n8n API key for MCP and limit access to a specific workflow tag or read-only operations.<strong>Do not use an admin key</strong>.</li>
+        <li><strong>Pin versions in production</strong>: in <code>package.json</code>, use <code>n8n-nodes-xxx: 1.2.3</code> rather than <code>^1.2.3</code> to prevent an unnoticed upgrade from introducing an upstream regression.</li>
+        <li><strong>Apply least privilege to MCP</strong>: on Enterprise, create a dedicated key with only the required scopes and project access. Community/non-Enterprise keys have the creator’s full account capabilities; they cannot be made read-only or tag-scoped. Use a dedicated least-privileged user/project where available, disable write tools, or keep MCP away from production. <strong>Do not use an owner/admin key unless an owner/admin-only operation, such as credential listing, is required.</strong></li>
         <li><strong>Review contributors</strong>: a node with only 1 contributor may stop receiving updates if that person leaves. Packages maintained by an official or commercial organization are safer for production.</li>
-        <li><strong>Run an audit after installation</strong>: MCP servers provide a  <code>generate_audit</code>  tool. Run it once to detect possible leaks from newly installed nodes.</li>
+        <li><strong>Run an audit after installation</strong>: the pinned server provides <code>n8n_audit_instance</code>, backed in part by the documented POST /api/v1/audit route. Review the report after installing a node.</li>
       </ul>
     </section>
 
@@ -617,7 +617,7 @@ description: When a user provides n8n workflow JSON, check its structure—
         </tbody>
       </table>
       <p>Keep SKILL.md concise. Put supporting files under  <code>references/</code>, <code>scripts/</code>, <code>assets/</code> and read them only when needed to avoid filling the AI context.</p>
-      <div class="callout tip"><strong>Tip:</strong>An n8n skill usually maps a workflow pattern to an MCP tool. For a lighter approach, put the example in the  <a href="prompts.html">Prompt Library</a>instead of making it a skill.</div>
+      <div class="callout tip"><strong>Tip:</strong> An n8n skill usually maps a workflow pattern to an MCP tool. For a lighter approach, put the example in the <a href="prompts.html">Prompt Library</a> instead of making it a skill.</div>
     </section>
 
     <section id="faq" data-nav="FAQ">
@@ -650,7 +650,7 @@ description: When a user provides n8n workflow JSON, check its structure—
 
     <section id="download" data-nav="Download">
       <h2 data-icon="download">Take this handbook with you</h2>
-      <p>This handbook is a self-contained single HTML file that works offline. Collection data ages, so before an important decision return to the  <a href="index.html">Resource Hub</a>for the online version.</p>
+      <p>This handbook is a self-contained single HTML file that works offline. Collection data ages, so before an important decision return to the <a href="index.html">Resource Hub</a> for the online version.</p>
       <p>
         <a class="btn-pill" href="skills.html" download="n8n-skill-handbook.html">Download this handbook as HTML</a>
         <a class="btn-ghost" href="index.html">Back to Resource Hub</a>

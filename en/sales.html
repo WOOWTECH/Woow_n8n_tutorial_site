@@ -411,19 +411,19 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <h2 data-icon="why">Why your company needs n8n</h2>
       <p>Every department has repetitive work that someone does but nobody should have to do: manually copying orders from system A to spreadsheet B, routing customer questions by hand, or opening Excel at 8:00 every morning to paste yesterday’s results into a report. These tasks consume 1–2 hours a day, or 300 staff hours a year.</p>
       <p>These tasks have three things in common: <strong>clear rules, data already in systems, and repeated actions</strong>. That is where n8n fits: represent the rules as a workflow, let n8n run it around the clock, and review the reports periodically to confirm it is healthy.</p>
-      <div class="callout"><strong>Concept:</strong>Like Zapier and Make, n8n lets you connect nodes visually. Unlike them, its source is available under a fair-code license: you can self-host it, retain your data, avoid a fixed monthly plan with usage-based infrastructure, and integrate any API. At the source snapshot its GitHub repository showed more than 130k stars; check the repository for the current count and activity.</div>
+      <div class="callout"><strong>Concept:</strong> Like Zapier and Make, n8n lets you connect nodes visually. Unlike them, its source is available under a fair-code license: you can self-host it, retain your data, avoid a fixed monthly plan with usage-based infrastructure, and integrate any API. At the source snapshot its GitHub repository showed more than 130k stars; check the repository for the current count and activity.</div>
     </section>
 
     <section id="what" data-nav="What n8n is">
       <h2 data-icon="what">What n8n is</h2>
       <p>n8n (pronounced “n-eight-n”) is a source-available, fair-code workflow automation engine. On its canvas, connect a Trigger to action nodes to create a workflow:</p>
       <ul>
-        <li><strong>A trigger</strong>can be a schedule (8:00 every morning), a webhook (someone submits a form), or a system event (Gmail receives a message).</li>
-        <li><strong>An action</strong>is what happens next: query Google Sheets, post to Slack, create a Notion page, or send an HTTP request to an internal system.</li>
-        <li><strong>Data</strong>flows from the first node to the last. Along the way, a workflow can evaluate conditions, branch, merge, and transform formats.</li>
+        <li><strong>A trigger</strong> can be a schedule (8:00 every morning), a webhook (someone submits a form), or a system event (Gmail receives a message).</li>
+        <li><strong>An action</strong> is what happens next: query Google Sheets, post to Slack, create a Notion page, or send an HTTP request to an internal system.</li>
+        <li><strong>Data</strong> flows from the first node to the last. Along the way, a workflow can evaluate conditions, branch, merge, and transform formats.</li>
       </ul>
       <p>At the source snapshot, official and community catalogs together listed more than <strong>2,500 integrations and nodes</strong> (Slack, Gmail, Notion, Airtable, Google Workspace, Salesforce, Stripe, LINE, Telegram, Discord, AI Agent, and more); check the live catalog because the total changes. For a service without a ready-made node, use HTTP Request to call its API.</p>
-      <div class="callout tip"><strong>Tip:</strong>You do not need to master those details. Both options hide the n8n implementation. Tell WoowTech what you want to automate, and we handle the rest.</div>
+      <div class="callout tip"><strong>Tip:</strong> You do not need to master those details. Both options hide the n8n implementation. Tell WoowTech what you want to automate, and we handle the rest.</div>
     </section>
 
     <section id="modes" data-nav="Two options">
@@ -461,7 +461,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         </div>
 
       </div>
-      <div class="callout tip"><strong>Tip:</strong>Not sure which option to choose? Many companies trial Option B for one month. After two or three workflows demonstrate value, move sensitive workloads such as customer lists or financial data to Option A.</div>
+      <div class="callout tip"><strong>Tip:</strong> Not sure which option to choose? Many companies trial Option B for one month. After two or three workflows demonstrate value, move sensitive workloads such as customer lists or financial data to Option A.</div>
     </section>
 
     <section id="mode-onprem" data-nav="Option A: self-hosted">
@@ -485,7 +485,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         <li>Sites with unreliable internet that need internal workflows to continue offline</li>
       </ul>
 
-      <div class="callout"><strong>Hardware requirements:</strong>The n8n add-on has modest hardware requirements: an RPi 5 (8GB), NUC, or any x86 machine that runs HAOS. The recommended limit is 30–50 active workflows on one host; beyond that, upgrade the host or use Option B.</div>
+      <div class="callout"><strong>Hardware requirements:</strong> The n8n add-on has modest hardware requirements: an RPi 5 (8GB), NUC, or any x86 machine that runs HAOS. The recommended limit is 30–50 active workflows on one host; beyond that, upgrade the host or use Option B.</div>
     </section>
 
     <section id="mode-cloud" data-nav="Option B: managed by WoowTech">
@@ -509,7 +509,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         <li>Companies that want to use the managed option for six months, then move selected sensitive workflows to Option A</li>
       </ul>
 
-      <div class="callout tip"><strong>Tip:</strong>Both options use the same n8n. Workflows can be exported from one and imported into the other. Export the JSON from a managed workflow to move it to your own add-on.</div>
+      <div class="callout tip"><strong>Tip:</strong> Both options use the same n8n. Workflows can be exported from one and imported into the other. Export the JSON from a managed workflow to move it to your own add-on.</div>
     </section>
 
     <section id="scenarios" data-nav="Real scenarios">
@@ -526,7 +526,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
           <h3>Automated order notifications and recording</h3>
           <p>When a new order reaches the commerce back end, automatically write it to Google Sheets, post to Slack, and notify shipping. Nobody needs to sign in at 10:00 every morning.</p>
           <div class="chips">
-            <div class="chip say"><span class="who">You say</span>“When an order arrives, add a row to the sheet and notify the shipping group in Slack. If the order is over  &gt;10,000 [CURRENCY TBD], also email the sales manager.”</div>
+            <div class="chip say"><span class="who">You say</span>“When an order arrives, add a row to the sheet and notify the shipping group in Slack. If the order is &gt;10,000 [CURRENCY TBD], also email the sales manager.”</div>
             <div class="chip"><span class="who ai">Delivery</span>Webhook trigger → Set reshapes fields → Google Sheets Append → IF checks the amount → Slack + Gmail branches. After deployment, it saves 1.5 hours of copying each day.</div>
           </div>
         </div>
@@ -624,7 +624,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
           </tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>Tip:</strong>Cannot find what you need? Describe the scenario in one sentence when the project starts. WoowTech can build it, then turn it into a template for future customers.</div>
+      <div class="callout tip"><strong>Tip:</strong> Cannot find what you need? Describe the scenario in one sentence when the project starts. WoowTech can build it, then turn it into a template for future customers.</div>
     </section>
 
     <section id="compare" data-nav="Compare options">

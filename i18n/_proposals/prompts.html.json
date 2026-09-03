@@ -2,6 +2,21 @@
   "file": "prompts.html",
   "entries": [
     {
+      "unit": "#header",
+      "zh": "<code>PATCH /workflows/:id</code>",
+      "en": "<code>PUT /api/v1/workflows/:id</code>"
+    },
+    {
+      "unit": "#howto",
+      "zh": "<code>npx n8n-mcp</code>",
+      "en": "<code>npx -y n8n-mcp@2.79.0</code>"
+    },
+    {
+      "unit": "#howto",
+      "zh": "<code>N8N_URL</code>",
+      "en": "<code>N8N_API_URL</code>"
+    },
+    {
       "unit": "#cat-integration",
       "zh": "<code>退款</code>",
       "en": "<code>refund request</code>"

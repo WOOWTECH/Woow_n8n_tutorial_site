@@ -37,6 +37,27 @@ wl._readme =
 wl.allow = wl.allow || [];
 
 const HAN = /[㐀-䶿一-鿿豈-﫿]/;
+
+function unitRange(html, unit) {
+  if (!unit || !unit.startsWith('#')) return { start: 0, end: html.length };
+  const id = unit.slice(1).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const open = new RegExp(`<section\\b[^>]*\\bid=["']${id}["'][^>]*>`, 'i').exec(html);
+  if (!open) return { start: 0, end: html.length };
+  const start = open.index;
+  const close = html.indexOf('</section>', start + open[0].length);
+  return { start, end: close < 0 ? html.length : close + '</section>'.length };
+}
+
+function countInUnit(html, unit, value) {
+  const { start, end } = unitRange(html, unit);
+  return html.slice(start, end).split(value).length - 1;
+}
+
+function replaceInUnit(html, unit, from, to) {
+  const { start, end } = unitRange(html, unit);
+  return html.slice(0, start) + html.slice(start, end).replace(from, to) + html.slice(end);
+}
+
 let applied = 0, skipped = 0, rejected = 0;
 
 for (const f of fs.existsSync(propDir) ? fs.readdirSync(propDir).filter((x) => x.endsWith('.json')) : []) {
@@ -48,7 +69,12 @@ for (const f of fs.existsSync(propDir) ? fs.readdirSync(propDir).filter((x) => x
     continue;
   }
   let html = fs.readFileSync(target, 'utf8');
-  for (const e of prop.entries || []) {
+  const replacements = [];
+  const key = (w) => `${w.file}|${w.unit}|${w.zh}`;
+
+  // Validate against the original file before replacing anything. Applying entries
+  // one by one is order-sensitive when two proposals swap values (A -> B, B -> A).
+  for (const [entryIndex, e] of (prop.entries || []).entries()) {
     if (!e.zh || !e.en) { rejected++; continue; }
     if (e.zh === e.en) { skipped++; continue; }
     if (HAN.test(e.en)) {
@@ -56,16 +82,46 @@ for (const f of fs.existsSync(propDir) ? fs.readdirSync(propDir).filter((x) => x
       rejected++;
       continue;
     }
-    const n = html.split(e.zh).length - 1;
-    if (n !== 1) {
-      console.error(`✗ ${prop.file} ${e.unit}: 原文區塊在 ${code}/ 出現 ${n} 次（需要剛好 1 次），跳過`);
+
+    const entry = { file: prop.file, unit: e.unit, zh: e.zh, [code]: e.en };
+    const idx = wl.allow.findIndex((w) => key(w) === key(entry));
+    const whitelistMatches = idx >= 0 && wl.allow[idx][code] === e.en;
+    const sourceCount = countInUnit(html, e.unit, e.zh);
+    const targetCount = countInUnit(html, e.unit, e.en);
+
+    // A matching whitelist entry and no remaining source means the proposal is
+    // already applied. Some approved entries intentionally translate repeated
+    // blocks in one unit, so the translated form may occur more than once. A true
+    // swap is the other valid case: each target remains as its partner's source.
+    const isSwap = (prop.entries || []).some(
+      (other) => other !== e && other.unit === e.unit && other.zh === e.en && other.en === e.zh,
+    );
+    const completedSwap = isSwap && sourceCount === 1 && targetCount === 1;
+    if (whitelistMatches && targetCount >= 1 && (sourceCount === 0 || completedSwap)) {
+      skipped++;
+      console.log(`= ${prop.file} ${e.unit}（已套用）`);
+      continue;
+    }
+    if (sourceCount !== 1) {
+      const detail = idx >= 0 && !whitelistMatches ? '（白名單譯文不一致）' : '';
+      console.error(`✗ ${prop.file} ${e.unit}: 原文區塊在 ${code}/ 出現 ${sourceCount} 次（需要剛好 1 次）${detail}，跳過`);
       rejected++;
       continue;
     }
-    html = html.replace(e.zh, e.en);
-    const key = (w) => `${w.file}|${w.unit}|${w.zh}`;
-    const entry = { file: prop.file, unit: e.unit, zh: e.zh, [code]: e.en };
-    const idx = wl.allow.findIndex((w) => key(w) === key(entry));
+
+    const marker = `__I18N_CODE_TRANSLATION_${f}_${entryIndex}__`;
+    if (countInUnit(html, e.unit, marker)) {
+      console.error(`✗ ${prop.file} ${e.unit}: 暫存標記與頁面內容衝突，跳過`);
+      rejected++;
+      continue;
+    }
+    replacements.push({ e, entry, idx, marker });
+  }
+
+  // Use unique markers so swaps and chains are applied simultaneously.
+  for (const { e, marker } of replacements) html = replaceInUnit(html, e.unit, e.zh, marker);
+  for (const { e, entry, idx, marker } of replacements) {
+    html = replaceInUnit(html, e.unit, marker, e.en);
     if (idx >= 0) wl.allow[idx] = { ...wl.allow[idx], ...entry };
     else wl.allow.push(entry);
     applied++;

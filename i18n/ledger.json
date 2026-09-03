@@ -2083,49 +2083,49 @@
   "en:sales.html#why": {
    "status": "complete",
    "sourceHash": "ab22c37a984988ed",
-   "targetHash": "6073adf96968a646",
+   "targetHash": "9d659821fc32cdb8",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:sales.html#what": {
    "status": "complete",
    "sourceHash": "04681328bf4a67db",
-   "targetHash": "92b1124c52c06340",
+   "targetHash": "17fc573bbf89a415",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:sales.html#modes": {
    "status": "complete",
    "sourceHash": "cdad6c196f18ffd1",
-   "targetHash": "dd4da01d488cb4dd",
+   "targetHash": "73c253bef08bab19",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:sales.html#mode-onprem": {
    "status": "complete",
    "sourceHash": "6d252cf8075b5558",
-   "targetHash": "853bf059d17f339d",
+   "targetHash": "5baf1a4b07b4b9a7",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:sales.html#mode-cloud": {
    "status": "complete",
    "sourceHash": "75d96a700e479e27",
-   "targetHash": "b7cbb50d157d3428",
+   "targetHash": "96f1b5458b63c8f5",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:sales.html#scenarios": {
    "status": "complete",
    "sourceHash": "ced7596c9fbbb38f",
-   "targetHash": "fb17c0fcbfe48d45",
+   "targetHash": "9953104d6adfe766",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:sales.html#templates": {
    "status": "complete",
    "sourceHash": "4ead2049e06525e9",
-   "targetHash": "98cc407edc10f14d",
+   "targetHash": "be436c2af467367d",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2160,91 +2160,91 @@
   "en:prompts.html#header": {
    "status": "complete",
    "sourceHash": "cd373a17e7efdb38",
-   "targetHash": "bc04f9c4d2a203d7",
+   "targetHash": "929d4fbe22010e98",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#why": {
    "status": "complete",
    "sourceHash": "6b9b8e3bd6e6e151",
-   "targetHash": "e32554b0772a3831",
+   "targetHash": "0a47cf5434cbc337",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#howto": {
    "status": "complete",
    "sourceHash": "8ace209f76c56dcc",
-   "targetHash": "a1af52a275ee01d4",
+   "targetHash": "2e5edcedea389153",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-create": {
    "status": "complete",
    "sourceHash": "2a877612476b795d",
-   "targetHash": "938a32172297be45",
+   "targetHash": "f456210d7585796a",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-trigger": {
    "status": "complete",
    "sourceHash": "961dd06bf08bd6e5",
-   "targetHash": "8be7187323c332b3",
+   "targetHash": "57fe8a0fd96aebf0",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-transform": {
    "status": "complete",
    "sourceHash": "f9ec4140e0ce10b8",
-   "targetHash": "2c3df8489bfcadf8",
+   "targetHash": "12a97542e43ecbba",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-integration": {
    "status": "complete",
    "sourceHash": "90f214167a0a3dac",
-   "targetHash": "3c9aa786d55dd6d0",
+   "targetHash": "4fa2c99f95c84bb3",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-agent": {
    "status": "complete",
    "sourceHash": "c0959c0a4983375a",
-   "targetHash": "9d7e4eec7e9640b8",
+   "targetHash": "d2e1b1764c057bec",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-error": {
    "status": "complete",
    "sourceHash": "9cba174146477dcd",
-   "targetHash": "924703c94de98c20",
+   "targetHash": "7cf76e1fa3920377",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-debug": {
    "status": "complete",
    "sourceHash": "fa45cb33f2d5e7eb",
-   "targetHash": "615a461521dd11b1",
+   "targetHash": "571a88ab0152fca3",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-ops": {
    "status": "complete",
    "sourceHash": "9043c6925ae4eb29",
-   "targetHash": "f720157cf27455b6",
+   "targetHash": "318aecd5bddb0c1a",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#tips": {
    "status": "complete",
    "sourceHash": "0e210880d6fcadc4",
-   "targetHash": "b865c51c172002fe",
+   "targetHash": "b53a8ab378d88dc9",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#faq": {
    "status": "complete",
    "sourceHash": "0627ebccdfa8aab7",
-   "targetHash": "c598c36276b48ad1",
+   "targetHash": "036206ff6323a8f3",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2258,7 +2258,7 @@
   "en:skills.html#header": {
    "status": "complete",
    "sourceHash": "baf62df1b2c4f4fe",
-   "targetHash": "b43e657196b78485",
+   "targetHash": "dd12a58c458f927e",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2272,7 +2272,7 @@
   "en:skills.html#install": {
    "status": "complete",
    "sourceHash": "edd7c72f16b68dd4",
-   "targetHash": "4b36451d86a151cb",
+   "targetHash": "947ee30539d9bde4",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2286,7 +2286,7 @@
   "en:skills.html#mcp": {
    "status": "complete",
    "sourceHash": "204a6a30aced193e",
-   "targetHash": "0ae03d1fe07d7e13",
+   "targetHash": "70af61567033582d",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2300,21 +2300,21 @@
   "en:skills.html#compat": {
    "status": "complete",
    "sourceHash": "9849bdd701085b44",
-   "targetHash": "ea57ba5828cc4b26",
+   "targetHash": "63f720f8da3c19b4",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:skills.html#safety": {
    "status": "complete",
    "sourceHash": "935e9b0e3f08cba4",
-   "targetHash": "ee0c68955572838c",
+   "targetHash": "bef80c8bf5342966",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:skills.html#spec": {
    "status": "complete",
    "sourceHash": "27276a39a088c74c",
-   "targetHash": "0cc3f65eea8caf1f",
+   "targetHash": "cd7959a25922f2f4",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2328,7 +2328,7 @@
   "en:skills.html#download": {
    "status": "complete",
    "sourceHash": "b60008b12b93c732",
-   "targetHash": "4642d63e35b1076e",
+   "targetHash": "98c504d493e8754a",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },

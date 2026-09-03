@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>n8n API/MCP Prompt Library · 44 copy-ready workflow-building prompts · WoowTech</title>
-  <meta name="description" content="n8n workflow-building prompts for Claude and other AI agents: 44 prompts in 8 categories. Each invokes an n8n MCP server tool (n8n-mcp or n8n-workflow-builder) or calls the n8n REST API directly (POST /workflows, PATCH /workflows/:id, or POST /workflows/:id/activate). Includes copy buttons and a clipboard fallback." />
+  <meta name="description" content="44 copy-ready n8n workflow prompts checked against the n8n v2.32.7 Public API and czlonkowski/n8n-mcp v2.79.0, with explicit boundaries for workflow tests, credentials, retries, and API-key scopes." />
   <meta name="author" content="WoowTech" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
@@ -370,18 +370,18 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <span class="kicker-script">just tell claude</span>
       <div class="kicker">WoowTech Prompt Library</div>
       <h1>Have AI build an n8n workflow from one request</h1>
-      <p class="lead">44 copy-ready prompts for AI agents such as Claude, Cursor, and Windsurf. With an n8n MCP server such as <code>czlonkowski/n8n-mcp</code> or the n8n REST API, AI can invoke  <code>POST /workflows</code>, <code>PATCH /workflows/:id</code>, <code>POST /workflows/:id/activate</code> to build, validate, and activate workflows. Select “Copy” in the upper-right corner of any card and paste it into your AI conversation.</p>
+      <p class="lead">44 copy-ready prompts for AI agents such as Claude, Cursor, and Windsurf. Labels for <code>czlonkowski/n8n-mcp</code> v2.79.0 are checked against n8n v2.32.7. The Public API supports <code>POST /workflows</code>, uses <code>PUT /api/v1/workflows/:id</code> for updates, and supports <code>POST /workflows/:id/activate</code>. Tests are MCP- or trigger-specific, not an undocumented REST operation. Select “Copy” on any card and paste it into your AI conversation.</p>
     </div>
 
     <section id="why" data-nav="What this is">
       <h2 data-icon="why">What this is</h2>
-      <p>Dragging n8n nodes is quick, but engineers and PMs who already write code with AI can work faster: let AI produce workflow JSON and put it into n8n. This handbook contains 44 prompts for real work scenarios, each detailed enough to invoke an n8n MCP server or call the n8n REST API.</p>
+      <p>Dragging n8n nodes is quick, but engineers and PMs who already write code with AI can work faster: let AI produce workflow JSON and put it into n8n. This handbook contains 44 prompts for real work scenarios. REST labels name only endpoints documented for n8n v2.32.7; MCP-only behavior is named explicitly and may require the selected server’s additional configuration.</p>
       <p>There are two integration methods:</p>
       <ul>
-        <li><strong>n8n MCP server</strong> (recommended): connect Claude Code or Cursor to  <code>n8n-mcp</code>  or  <code>n8n-workflow-builder</code>. Describe the task and AI invokes  <code>create_workflow</code>, <code>activate_workflow</code>  and related tools.</li>
-        <li><strong>Call the REST API directly</strong>: AI generates a curl or SDK call, authenticates with the  <code>X-N8N-API-KEY</code>  header, and accesses endpoints such as  <code>/api/v1/workflows</code> .</li>
+        <li><strong>n8n MCP server</strong> (recommended): these cards pin <code>n8n-mcp</code>, not <code>n8n-workflow-builder</code>, at v2.79.0. Do not treat generic names such as <code>create_workflow</code> or <code>activate_workflow</code> as portable: the operation labels below use the pinned server’s actual names. Inspect a diff before allowing a write.</li>
+        <li><strong>Call the REST API directly</strong>: generate a curl or SDK call, authenticate with the <code>X-N8N-API-KEY</code> header, and use the documented <code>/api/v1/workflows</code> route printed on the card. On n8n v2.32.7, workflow updates replace the submitted definition with PUT, not PATCH.</li>
       </ul>
-      <div class="callout"><strong>Concept:</strong>Prompts are not magic. Their value is showing which details to provide: the goal, trigger, input and output formats, and error-handling strategy. Copy them as written or adapt them to your scenario.</div>
+      <div class="callout"><strong>Concept:</strong> Prompts are not magic. Their value is showing which details to provide: the goal, trigger, input and output formats, and error-handling strategy. Tool names and capabilities differ between MCP servers, so do not substitute another server without checking its documentation.</div>
     </section>
 
     <section id="howto" data-nav="How to use it">
@@ -389,11 +389,11 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <ol class="steps">
         <li>
           <h3>Install an n8n MCP server (recommended)</h3>
-          <p>Add this to the MCP settings in Claude Code or Cursor: <code>npx n8n-mcp</code> (<a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a>, 22.7k★) or  <code>npx @makafeli/n8n-workflow-builder</code> (<a href="https://github.com/makafeli/n8n-workflow-builder" rel="noopener">makafeli/n8n-workflow-builder</a>, 540★). After startup, you will see tools such as  <code>create_workflow</code>/<code>activate_workflow</code> .</p>
+          <p>Add <code>npx -y n8n-mcp@2.79.0</code> (<a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a>, pinned here). Do not substitute <code>npx @makafeli/n8n-workflow-builder</code> (<a href="https://github.com/makafeli/n8n-workflow-builder" rel="noopener">a different server</a>) without rechecking every operation. Older generic labels such as <code>create_workflow</code> and <code>activate_workflow</code> are not the pinned tool names printed below.</p>
         </li>
         <li>
           <h3>Set the n8n API environment variables</h3>
-          <p>The MCP server needs two variables: <code>N8N_URL</code> (for example, <code>https://n8n.woowtech.io</code>) and  <code>N8N_API_KEY</code> (create it under n8n  <em>Settings → API</em> ).</p>
+          <p>This MCP version needs <code>N8N_API_URL</code> (for example, <code>https://n8n.woowtech.io</code>) and <code>N8N_API_KEY</code> (create it under <em>Settings → n8n API</em>). Confirm that the target instance is v2.32.7 before relying on the route labels below.</p>
         </li>
         <li>
           <h3>Choose a prompt and select “Copy”</h3>
@@ -404,7 +404,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
           <p>For requests that build workflows, keep the instruction “show me the JSON structure before creating it.” This prevents AI from running unpredictably with real credentials.</p>
         </li>
       </ol>
-      <div class="callout tip"><strong>Tip:</strong>You can work without an MCP server. Paste a prompt into Claude or ChatGPT, ask for n8n workflow JSON, then paste it into n8n manually (in the editor, select the whole canvas with Ctrl+A and paste to replace it).<a href="ch5_import_workflow.html">Chapter 5</a>has the complete JSON import process.</div>
+      <div class="callout tip"><strong>Tip:</strong> You can work without an MCP server. Paste a prompt into Claude or ChatGPT, ask for n8n workflow JSON, then paste it into n8n manually (in the editor, select the whole canvas with Ctrl+A and paste to replace it). <a href="ch5_import_workflow.html">Chapter 5</a> has the complete JSON import process.</div>
     </section>
 
     <section id="cat-create" data-nav="Workflow generation">
@@ -412,39 +412,39 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <p>The most direct category creates a workflow from one request. AI calls  <code>POST /api/v1/workflows</code> to create it and decide whether to activate it.</p>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">In n8n, create a workflow named “Order notifications”: Webhook trigger (POST /order-in) → Set extracts order_id/total/email → Google Sheets Append to sheet ID  <code>1abcdef</code> , tab “orders” → Slack sends “New order {{ $json.order_id }}, ${{ $json.total }}” to #sales. Show me the workflow JSON for approval before calling create_workflow. Respond in English.</p>
-        <span class="call">→ create_workflow / POST /api/v1/workflows</span>
+        <p class="ptext">In n8n, create a workflow named “Order notifications”: Webhook trigger (POST /order-in) → Set extracts order_id/total/email → Google Sheets Append to sheet ID  <code>1abcdef</code> , tab “orders” → Slack sends “New order {{ $json.order_id }}, ${{ $json.total }}” to #sales. Show me the workflow JSON for approval before calling n8n_create_workflow. Respond in English.</p>
+        <span class="call">→ n8n_create_workflow / POST /api/v1/workflows</span>
         <p class="pnote">Example: reviewing JSON before creation is a basic safety practice.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">List all workflows currently in n8n, sorted by updatedAt with the most recently changed first. Output: id, name, active status, last update time, and tags. Respond in English.</p>
-        <span class="call">→ list_workflows / GET /api/v1/workflows</span>
+        <span class="call">→ n8n_list_workflows / GET /api/v1/workflows</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Get the complete definition of workflow ID  <code>xyz789</code>  from n8n. Compare it with the JSON below in diff format and identify changed fields and added nodes. Respond in English.</p>
-        <span class="call">→ get_workflow / GET /api/v1/workflows/:id</span>
+        <span class="call">→ n8n_get_workflow / GET /api/v1/workflows/:id</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">In workflow ID  <code>abc123</code> , change the Slack channel from #sales to #sales-regional and change nothing else. Show me the before/after diff and wait for approval before patching. Respond in English.</p>
-        <span class="call">→ update_workflow / PATCH /api/v1/workflows/:id</span>
+        <p class="ptext">In workflow ID <code>abc123</code>, change the Slack channel from #sales to #sales-regional and change nothing else. Retrieve the complete workflow, show me the before/after diff, and wait for approval before replacing it. Respond in English.</p>
+        <span class="call">→ n8n_update_full_workflow / PUT /api/v1/workflows/:id</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Duplicate workflow id <code>abc123</code>  into a new workflow with the suffix  <code>-staging</code>. In the copy, change every Slack channel to #staging-alerts and the Google Sheet ID to  <code>1STAGING</code>. Keep it inactive. Respond in English.</p>
-        <span class="call">→ get_workflow → create_workflow</span>
+        <span class="call">→ n8n_get_workflow → n8n_create_workflow</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Activate workflow ID  <code>abc123</code>, then run 3 test executions to confirm it works. If an error occurs, report the failed node so I can decide whether to deactivate it. Respond in English.</p>
-        <span class="call">→ activate_workflow → run_workflow → list_executions</span>
+        <p class="ptext">Keep workflow ID <code>abc123</code> inactive while testing. If it has a Webhook, Form, or Chat trigger, use n8n_test_workflow with its documented trigger method three times; otherwise give me the editor steps to run it manually three times. Then list those executions and report any failed node. Activate only after I approve the results. Respond in English.</p>
+        <span class="call">→ n8n_test_workflow (MCP/trigger-specific) → n8n_executions; no Public API run route</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Find all workflows with “test” or “staging” in the name and list them. After I approve the list, deactivate them all. I will issue a separate instruction for deletion. Respond in English.</p>
-        <span class="call">→ list_workflows → deactivate_workflow (bulk)</span>
+        <p class="ptext">List all workflows and filter names containing “test” or “staging.” Show me the candidates. After I approve, loop over the approved IDs and deactivate them one at a time; report each result and stop on any failure. I will issue a separate instruction for deletion. Respond in English.</p>
+        <span class="call">→ GET /api/v1/workflows (paginate) → POST /api/v1/workflows/:id/deactivate (explicit loop)</span>
         <p class="pnote">Safety: deactivate first; do not delete proactively.</p>
       </div>
 
@@ -455,28 +455,28 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <p>A trigger is the entry point to a workflow. These prompts show how to specify different trigger types.</p>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Create a workflow: Webhook Trigger listens for  <code>POST /line-webhook</code>, response mode is  <code>lastNode</code>, and authentication verifies an HMAC using header  <code>X-Line-Signature</code>  (the secret uses credential ID  <code>line-secret</code>). Then add a Code node that reads the current item from $json and extracts $json.body.events[0]. Respond in English.</p>
-        <span class="call">→ create_workflow (Webhook node)</span>
+        <p class="ptext">Create a workflow whose Webhook listens for <code>POST /line-webhook</code>, uses response mode <code>lastNode</code>, enables Raw Body, and does not pretend that built-in Webhook authentication can verify LINE HMAC. In a downstream Code node, calculate LINE’s base64 HMAC-SHA256 over the original raw bytes, compare it with <code>X-Line-Signature</code> using a timing-safe comparison and credential <code>line-secret</code>, then branch: return 401 and stop on mismatch; only the success branch parses and processes events[0]. Never calculate the HMAC from re-serialized JSON. Respond in English.</p>
+        <span class="call">→ n8n_create_workflow (Webhook Raw Body + Code + IF + Respond to Webhook)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a Schedule Trigger workflow that runs at 8:00 every weekday (Monday–Friday) in your timezone. Skip public holidays by calling sub-workflow  <code>holiday-check</code> . Note: replace the timezone and holiday calendar with those for your location. Respond in English.</p>
-        <span class="call">→ create_workflow (Schedule + Execute Workflow)</span>
+        <span class="call">→ n8n_create_workflow (Schedule + Execute Workflow)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Use Gmail Trigger to poll every 5 minutes for new messages with label  <code>invoice</code> . Add an IF downstream that continues only when an attachment is a PDF. Use credential  <code>gmail-corp</code>. Respond in English.</p>
-        <span class="call">→ create_workflow (Gmail Trigger)</span>
+        <span class="call">→ n8n_create_workflow (Gmail Trigger)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Google Drive Trigger watches folder ID  <code>1FOLDER</code>, with event  <code>fileCreated</code>, checking every 10 minutes. When a new file appears, extract its text → save it to Airtable base ID  <code>appBASE</code> , table  <code>Docs</code> table. Respond in English.</p>
-        <span class="call">→ create_workflow (Drive Trigger + Airtable)</span>
+        <p class="ptext">Google Drive Trigger watches folder ID <code>1FOLDER</code>, with event <code>fileCreated</code>, checking every 10 minutes. When a new file appears, extract its text → save it to Airtable base ID <code>appBASE</code>, table <code>Docs</code>. Respond in English.</p>
+        <span class="call">→ n8n_create_workflow (Drive Trigger + Airtable)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create  <strong>two connected</strong> workflows: (A) every 15 minutes, Cron queries Notion database ID  <code>DB1</code>  for pages with status=Ready; (B) Execute Workflow calls another workflow to process each page and writes the result back to Notion. Keep them separate to avoid one overly complex workflow. Respond in English.</p>
-        <span class="call">→ create_workflow ×2</span>
+        <span class="call">→ n8n_create_workflow ×2</span>
       </div>
 
     </section>
@@ -487,27 +487,27 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">In existing workflow ID  <code>abc123</code> , insert a Set node (Edit Fields) after Webhook. Use n8n expressions based on $json to lowercase $json.body.customer.email, convert $json.body.total to a number, and convert $json.body.created_at to ISO 8601 UTC. Discard other fields. Respond in English.</p>
-        <span class="call">→ update_workflow (Set node)</span>
+        <span class="call">→ n8n_update_full_workflow / PUT /api/v1/workflows/:id (Edit Fields node)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Insert a Code node (JavaScript). Flatten the previous node’s items, including the nested orders array, to one row per order. Keep the original customer_id in every item, expand each order into a separate item, and map its fields from orders[i]. Respond in English.</p>
-        <span class="call">→ update_workflow (Code node)</span>
+        <span class="call">→ n8n_update_full_workflow / PUT /api/v1/workflows/:id (Code node)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">If the API returns one item containing a records array, use Split Out on records to create one item per record. Route categories A/B/C with Switch, process each route with Loop Over Items in batches of 20 to respect rate limits, then use Aggregate to collect processed IDs for one summary message. Respond in English.</p>
-        <span class="call">→ update_workflow (Split Out + Switch + Loop Over Items + Aggregate)</span>
+        <span class="call">→ n8n_update_full_workflow / PUT /api/v1/workflows/:id</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Write a Code node that deduplicates by email. For duplicates in one batch, keep only the item with the latest created_at. Provide JavaScript with detailed comments and a separate Python version. Respond in English.</p>
-        <span class="call">→ update_workflow (Code node)</span>
+        <span class="call">→ n8n_update_full_workflow / PUT /api/v1/workflows/:id (Code node)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Use Edit Fields after merging three upstream nodes (A, B, and C) into one item. Prefix field names with  <code>a_*</code>/<code>b_*</code>/<code>c_*</code>  to avoid collisions. Fill missing fields with  <code>null</code>  instead of dropping them. Configure Merge with Number of Inputs = 3, Mode = Combine, and Combine By = Position. Respond in English.</p>
-        <span class="call">→ update_workflow (Set + Merge)</span>
+        <span class="call">→ n8n_update_full_workflow / PUT /api/v1/workflows/:id (Edit Fields + Merge)</span>
       </div>
 
     </section>
@@ -518,32 +518,32 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a workflow: Slack Trigger listens for  <code>message</code>  events in #customer-support. If a message contains keyword  <code>refund</code>  or  <code>refund request</code>, use Notion to create a page in database ID  <code>refunds</code> , with user ID, message content, and time in properties. Reply in the original Slack thread: “Ticket created and being tracked.” Respond in English.</p>
-        <span class="call">→ create_workflow (Slack Trigger + Notion)</span>
+        <span class="call">→ n8n_create_workflow (Slack Trigger + Notion)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a Gmail receipt → Airtable record workflow: Gmail Trigger label=<code>leads</code>; use AI Agent to extract name/company/phone/interest; write to Airtable base=<code>appLEADS</code>, table=<code>Leads</code>; if nobody replies within 24 hours after record creation, send an automated reminder using Wait + Gmail send. Respond in English.</p>
-        <span class="call">→ create_workflow (Gmail + AI + Airtable + Wait)</span>
+        <span class="call">→ n8n_create_workflow (Gmail + AI + Airtable + Wait)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a Google Sheets read/write workflow: every day at 8:00, Cron reads sheet  <code>1ORDERS</code>  range A2:F → filter yesterday’s orders → total revenue by region → write to tab  <code>daily-summary</code>  in the same sheet (append mode, one row per day). Respond in English.</p>
-        <span class="call">→ create_workflow (Sheets Read + Code + Sheets Append)</span>
+        <span class="call">→ n8n_create_workflow (Sheets Read + Code + Sheets Append)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a Slack Approval workflow. After a webhook trigger, send an interactive message with Approve/Reject buttons to #approvals. Wait for up to 24 hours. Approve takes the upper branch and calls the internal payout API; Reject takes the lower branch and replies to the requester in Slack; timeout takes a third branch and escalates to a manager. Respond in English.</p>
-        <span class="call">→ create_workflow (Slack Interactive + Wait + IF)</span>
+        <span class="call">→ n8n_create_workflow (Slack Interactive + Wait + IF)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">HTTP Request calls a custom API: POST  <code>https://api.internal.com/v1/tickets</code>, with headers including  <code>Authorization: Bearer</code> (using credential  <code>internal-api-key</code>) and Content-Type: application/json. Map the body from the previous node’s item fields. Add 3 retries with exponential backoff, only for 429 or 5xx. Respond in English.</p>
-        <span class="call">→ update_workflow (HTTP Request + retry)</span>
+        <p class="ptext">Build this explicit request loop: HTTP Request sends POST <code>https://api.internal.com/v1/tickets</code> with <code>Authorization: Bearer</code> using credential <code>internal-api-key</code> and a JSON body mapped from the previous item. Return the full response without throwing on HTTP status. Switch on status: succeed for 2xx; for 429 or 5xx, increment attempt, stop after 3 retries, otherwise Wait for 2 raised to the attempt count seconds and loop back; fail immediately for every other status. Preserve one logical item through the loop. Respond in English.</p>
+        <span class="call">→ n8n_update_full_workflow (HTTP Request + Switch + Edit Fields + Wait loop)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">List all current n8n credentials with id, name, and type only; do not include data. I want to identify unused credentials that can be deleted. Respond in English.</p>
-        <span class="call">→ list_credentials / GET /api/v1/credentials</span>
+        <p class="ptext">If the API-key owner is the n8n instance owner or an admin, call the n8n v2.32.7 Public API to list credentials and return only id, name, and type; do not request or display secret data. If the account is not owner/admin, stop and explain that this list operation is unavailable rather than attempting an internal endpoint. I want to identify candidates for a separate human review; do not delete anything. Respond in English.</p>
+        <span class="call">→ GET /api/v1/credentials (v2.32.7; instance owner/admin only)</span>
       </div>
 
     </section>
@@ -553,33 +553,33 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <p>The LangChain node family introduced after n8n v1 gives workflows an AI Agent node that can make judgments.</p>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Create a customer-support routing workflow: LINE Webhook receives a message → AI Agent (Chat Model: Anthropic Claude 3.5 Sonnet; prompt defines 4 categories: returns/technical issues/general inquiries/other) → Structured Output returns  <code>{category, confidence, reasoning}</code>  → Switch branches by category. If confidence is below  &lt; 0.7, use “other.” Respond in English.</p>
-        <span class="call">→ create_workflow (Line + AI Agent + Switch)</span>
+        <p class="ptext">Create a customer-support routing workflow: LINE Webhook receives a message → AI Agent (select a model available in my instance; prompt defines 4 categories: returns/technical issues/general inquiries/other) → Structured Output returns <code>{category, confidence, reasoning}</code> → Switch branches by category. If confidence &lt; 0.7, use “other.” Respond in English.</p>
+        <span class="call">→ n8n_create_workflow (LINE + AI Agent + Switch)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Connect three tools to AI Agent: (1) HTTP Request queries an internal order API for status; (2) Notion Read queries the FAQ database; (3) Google Sheets Read queries the returns policy. Instruct it in the system prompt to check the FAQ first, the order API second, and cite the policy only last; end every response with sources. Respond in English.</p>
-        <span class="call">→ update_workflow (AI Agent + tools)</span>
+        <span class="call">→ n8n_update_full_workflow / PUT /api/v1/workflows/:id (AI Agent + tools)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create an AI Agent + Memory workflow: Chat Trigger + AI Agent + Buffer Window Memory (size=10) + OpenAI Chat Model. Pass sessionId from Chat Trigger’s sessionId field to retain conversation context for one user. Add Structured Output Parser so every response is  <code>{reply, next_action, tags[]}</code>. Respond in English.</p>
-        <span class="call">→ create_workflow (LangChain Chat)</span>
+        <span class="call">→ n8n_create_workflow (LangChain Chat)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a PDF-summary workflow: Google Drive Watcher (PDF appears) → Extract from File → AI Agent (Claude Sonnet; prompt: three-part summary + tags + sentiment) → Airtable Upsert into Feedback. Limit concurrency to 5 to protect the API. Respond in English.</p>
-        <span class="call">→ create_workflow (Drive + Extract + AI + Airtable)</span>
+        <span class="call">→ n8n_create_workflow (Drive + Extract + AI + Airtable)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">In existing workflow ID <code>abc123</code> , replace OpenAI GPT-4o with Anthropic Claude 3.5 Sonnet. Preserve the prompt and temperature, and change the credential to  <code>anthropic-prod</code>. Test once and save only if the run succeeds. Respond in English.</p>
-        <span class="call">→ update_workflow → run_workflow</span>
+        <p class="ptext">Duplicate workflow ID <code>abc123</code> as an inactive test copy. In the copy, replace its current chat model with a model available in my instance, preserve the prompt and temperature, and use credential <code>anthropic-prod</code>. Test through a documented Webhook/Form/Chat trigger with n8n_test_workflow, or give me manual editor steps if it has no supported trigger. Show the result and wait for approval before applying the same change to the original. Respond in English.</p>
+        <span class="call">→ n8n_update_full_workflow → n8n_test_workflow (MCP/trigger-specific); no Public API run route</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a Multi-Agent workflow: Chat Trigger → AI Agent “Router” identifies technical vs sales questions → branch to two specialist AI Agents (Tech Support / Sales Consultant), each with different tools and memory. Router identifies which agent produced the response. Respond in English.</p>
-        <span class="call">→ create_workflow (3× AI Agent)</span>
+        <span class="call">→ n8n_create_workflow (3× AI Agent)</span>
       </div>
 
     </section>
@@ -590,27 +590,27 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a global Error Workflow: Error Trigger → Set extracts workflow name/failed node/error message/timestamp → Slack sends to #n8n-alerts with details in a code block → if the same workflow fails more than 3 times within 24hr, send another message tagging @on-call. Respond in English.</p>
-        <span class="call">→ create_workflow (Error Trigger)</span>
+        <span class="call">→ n8n_create_workflow (Error Trigger)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">In workflow ID  <code>abc123</code>  settings, add  <code>errorWorkflow: &lt;error workflow ID from the previous prompt&gt;</code>. Apply the same setting to every workflow whose name contains  <code>-prod</code> . List them for approval before applying it. Respond in English.</p>
-        <span class="call">→ list_workflows → update_workflow (batch)</span>
+        <p class="ptext">In workflow ID <code>abc123</code> settings, add <code>errorWorkflow: &lt;error workflow ID from the previous prompt&gt;</code>. List every workflow whose name contains <code>-prod</code> and wait for approval. Then retrieve and update each approved workflow one at a time with the complete required body; report each result and stop on failure. Respond in English.</p>
+        <span class="call">→ GET /api/v1/workflows (paginate) → PUT /api/v1/workflows/:id (explicit loop)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Add retries to HTTP Request: max attempts 5, initial wait 2 seconds, exponential backoff ×2, only for status 429/500/502/503/504; fail immediately for other statuses. Add  <code>continueOnFail: true</code>  so downstream nodes can handle the error object separately. Respond in English.</p>
-        <span class="call">→ update_workflow (HTTP retry policy)</span>
+        <p class="ptext">Implement status-aware retries as workflow nodes, not as native Retry On Fail or <code>continueOnFail: true</code>: initialize attempt=0 → HTTP Request returns the full response without throwing on HTTP status → Switch. For 2xx, continue; for 429/500/502/503/504, increment attempt, fail after 5 total attempts, otherwise Wait for an initial 2 seconds doubled after each failure and loop back; for every other status, fail immediately. Keep the final error response for downstream handling. Respond in English.</p>
+        <span class="call">→ n8n_update_full_workflow (HTTP Request + Switch + Edit Fields + Wait loop)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Create a “Daily health check” workflow: Cron runs every day at 07:00 → list_workflows gets all active workflows → list_executions for each (last 24hr, status=error) → format errors as a Slack table → send to #n8n-daily-health. When there are no errors, send “Everything is healthy today ✅.” Respond in English.</p>
-        <span class="call">→ create_workflow (Cron + list_executions + Slack)</span>
+        <p class="ptext">Create a “Daily health check” workflow: Schedule Trigger runs every day at 07:00 → retrieve every active workflow with pagination → loop over workflow IDs → retrieve every error execution for each workflow with pagination → filter to the previous 24 hours → aggregate errors as a Slack table → send to #n8n-daily-health. When there are no errors, send “Everything is healthy today.” Respond in English.</p>
+        <span class="call">→ n8n_create_workflow + GET /api/v1/workflows + GET /api/v1/executions (explicit paginated loops)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Create a workflow: Cron runs hourly, retrieves executions from the previous 1 hour through the n8n API, and calculates the failure rate. At more than &gt;5%, notify immediately. At more than &gt;20%, call  <code>deactivate_workflow</code> to take the workflow with the most failures offline and notify me. Respond in English.</p>
-        <span class="call">→ list_executions → deactivate_workflow</span>
+        <p class="ptext">Create a workflow: Schedule Trigger runs hourly, retrieves executions from the previous hour with documented execution-list pagination, and calculates the failure rate. If it is &gt;5%, notify me. If it is &gt;20%, identify the workflow with the most failures and ask for approval. Treat <code>deactivate_workflow</code> as a generic label; after approval, use the documented deactivation endpoint printed below and notify me. Respond in English.</p>
+        <span class="call">→ GET /api/v1/executions (paginated loop) → POST /api/v1/workflows/:id/deactivate after approval</span>
       </div>
 
     </section>
@@ -621,32 +621,32 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Workflow id <code>abc123</code>  failed last night in execution ID  <code>exec_9876</code> . Retrieve the full execution log and report: (1) failed node, (2) input JSON it received, (3) error message, and (4) likely cause and three possible fixes. Respond in English.</p>
-        <span class="call">→ get_execution / GET /api/v1/executions/:id</span>
+        <span class="call">→ n8n_executions (get) / GET /api/v1/executions/:id?includeData=true</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">List workflow ID <code>abc123</code>  failures from the previous 7 days, sorted by time. Group failure messages by expired credential/timeout/validation error/other. Identify the largest group and the average interval between failures. Respond in English.</p>
-        <span class="call">→ list_executions (filtered by workflow + status)</span>
+        <span class="call">→ n8n_executions (list) / GET /api/v1/executions?workflowId=:id&amp;status=error (paginate)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Workflow id <code>abc123</code>  is slow, averaging 45 seconds per execution. Retrieve node timings from the most recent 20 executions, identify the bottleneck, and recommend a fix such as caching, changing the API endpoint, or extracting a sub-workflow. Respond in English.</p>
-        <span class="call">→ list_executions + get_execution</span>
+        <span class="call">→ n8n_executions (list, then get with data; paginate)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Use <code>run_workflow</code>  for workflow ID  <code>abc123</code>  with this input JSON: <code>{"customer_id": "test_001", "amount": 100}</code>. After it runs, list the input and output of every node so I can verify the data flow. Respond in English.</p>
-        <span class="call">→ run_workflow / POST /api/v1/workflows/:id/run</span>
+        <p class="ptext">Do not call <code>run_workflow</code> or invent a Public API run route. For workflow ID <code>abc123</code>, prepare this test input: <code>{"customer_id": "test_001", "amount": 100}</code>. If it has a supported Webhook, Form, or Chat trigger, use n8n_test_workflow with that trigger; otherwise tell me how to pin the input and select Test workflow in the editor. After it runs, retrieve the execution with data and list every node’s input and output. Respond in English.</p>
+        <span class="call">→ n8n_test_workflow (MCP/trigger-specific) or editor → GET /api/v1/executions/:id</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Workflow id <code>abc123</code>  Google Sheets node reports “credential expired.” (1) Find its credential ID. (2) Confirm status with list_credentials. (3) Give me the n8n UI steps to reconnect it. (4) After authorization, run it once to verify. Respond in English.</p>
-        <span class="call">→ list_credentials + run_workflow</span>
+        <p class="ptext">Workflow ID <code>abc123</code> has a Google Sheets node reporting “credential expired.” (1) Read its credential reference from the workflow JSON. (2) If I am the instance owner or an admin, confirm the credential’s id/name/type through GET /api/v1/credentials; otherwise skip that call. (3) Give me the n8n UI steps to reconnect it. (4) Tell me how to test it through its documented trigger or manually in the editor. Respond in English.</p>
+        <span class="call">→ GET workflow; owner/admin-only credential list; trigger-specific or manual test</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Validate the workflow JSON below. Find (1) syntax errors, (2) dangling connections, (3) missing credential references, and (4) clear performance problems such as calling one API 200 times without batching. Return the complete corrected JSON. Respond in English.</p>
-        <span class="call">→ validate_workflow (MCP tool)</span>
+        <span class="call">→ n8n_validate_workflow (n8n-mcp v2.79.0; local/MCP validation, not a Public API route)</span>
       </div>
 
     </section>
@@ -656,23 +656,23 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <p>Operations covers workflow naming, audits, and backup strategy.</p>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">List every workflow without a tag. Recommend tags based on name, trigger, and downstream SaaS, and provide an assignment table. Wait for approval before calling update_workflow to add them. Respond in English.</p>
-        <span class="call">→ list_workflows → update_workflow (tags)</span>
+        <p class="ptext">Retrieve every workflow with pagination and list those without tags. Recommend tags based on name, trigger, and downstream SaaS, and provide an assignment table. Wait for approval, then update the approved workflow-tag assignments one at a time and report every result. Respond in English.</p>
+        <span class="call">→ GET /api/v1/workflows (paginate) → PUT /api/v1/workflows/:id/tags (explicit loop)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Run an n8n Security Audit (<code>POST /api/v1/audit</code>). Classify results as Critical/High/Medium/Low and provide a fix for every Critical item. Respond in English.</p>
-        <span class="call">→ generate_audit</span>
+        <span class="call">→ n8n_audit_instance / POST /api/v1/audit</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">For each active workflow, call  <code>get_workflow</code> to retrieve complete JSON and package everything in a backup zip. File-name format:  <code>{workflow_id}_{name_slug}.json</code>. Also generate index.md listing every backup item. Respond in English.</p>
-        <span class="call">→ list_workflows → get_workflow (loop)</span>
+        <p class="ptext">For each active workflow, treat <code>get_workflow</code> as a generic label and use the documented retrieval endpoint to fetch complete JSON. Package everything in a backup zip with file-name format <code>{workflow_id}_{name_slug}.json</code>, and generate index.md listing every backup item. Respond in English.</p>
+        <span class="call">→ GET /api/v1/workflows (paginate) → GET /api/v1/workflows/:id (explicit loop)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">I want to copy workflow ID <code>dev_abc</code> from the dev host (<code>n8n-dev.woowtech.io</code>) to the production host (<code>n8n.woowtech.io</code>). Retrieve JSON from dev → scan credential IDs → map to prod credentials by name → create_workflow in prod without activating it. Respond in English.</p>
-        <span class="call">→ multi-environment MCP (multi-instance)</span>
+        <p class="ptext">I want to copy workflow ID <code>dev_abc</code> from the development host (<code>n8n-dev.woowtech.io</code>) to the production host (<code>n8n.woowtech.io</code>). Retrieve its complete JSON from development, list its credential references, and ask me for an explicit production credential mapping. After I approve the mapping and JSON diff, create it in production without activating it. Keep the base URLs and API keys in separate named MCP configurations; never send either key to the other host. Respond in English.</p>
+        <span class="call">→ two separately configured n8n-mcp connections: n8n_get_workflow → n8n_create_workflow</span>
       </div>
 
     </section>
@@ -706,9 +706,9 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
             <td>Without an error strategy, AI usually skips it; you discover the omission only in production</td>
           </tr>
           <tr>
-            <td>Test first: “Run test_execution and let me review it before activation”</td>
+            <td>Test first: “Use a documented trigger or the editor and let me review the execution before activation”</td>
             <td>Activate immediately after creation</td>
-            <td>A test execution is free and quick; it catches 90% of errors that would otherwise reach production</td>
+            <td>A pre-activation test checks the data path without claiming an undocumented Public API run endpoint</td>
           </tr>
         </tbody>
       </table>
@@ -722,15 +722,15 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </details>
       <details class="faq">
         <summary>Can I use these without installing an MCP server?</summary>
-        <div class="body">Yes. Paste a prompt into Claude or ChatGPT, ask it to generate n8n workflow JSON, and import it manually (Ctrl+A selects the whole canvas, then paste).<a href="ch5_import_workflow.html">Chapter 5</a>has the complete process. The limitation is that AI cannot actually call the API to validate its work and must infer.</div>
+        <div class="body">Yes. Paste a prompt into Claude or ChatGPT, ask it to generate n8n workflow JSON, and import it manually (Ctrl+A selects the whole canvas, then paste). <a href="ch5_import_workflow.html">Chapter 5</a> has the complete process. The limitation is that AI cannot call your instance to validate its work and must infer.</div>
       </details>
       <details class="faq">
         <summary>Which MCP server should I use: czlonkowski/n8n-mcp or makafeli/n8n-workflow-builder?</summary>
-        <div class="body">Both are mature: <code>czlonkowski/n8n-mcp</code> (22.7k★) has the broadest feature set, including node search, validation, and template discovery; <code>makafeli/n8n-workflow-builder</code> (540★) provides 15 tools and simpler installation. Start with makafeli if you are new to MCP.<a href="skills.html">Skill Handbook</a>has a more detailed comparison.</div>
+        <div class="body">This page’s boundaries pin <code>czlonkowski/n8n-mcp</code> at v2.79.0; <code>makafeli/n8n-workflow-builder</code> may use different names or unsupported internal routes. Verify the installed release before switching. <a href="skills.html">Skill Handbook</a> has a more detailed comparison.</div>
       </details>
       <details class="faq">
         <summary>Will AI make uncontrolled changes to production workflows?</summary>
-        <div class="body">It can without safeguards. Use three: (1) always add “show me the JSON/diff before acting”; (2) limit the MCP server API key to its workspace, not admin; (3) use a read-only key for the production MCP connection and send write operations through CI/PR.</div>
+        <div class="body">It can without safeguards. Always request a JSON/diff preview and confirmation. On Enterprise, create a dedicated API key with only the required scopes and project access. On Community/non-Enterprise, API keys have the creator’s full account capabilities and cannot be made read-only or tag-scoped; use a dedicated least-privileged user/project where available, disable write tools in the MCP server, or do not connect it to production.</div>
       </details>
       <details class="faq">
         <summary>Do these prompts use many tokens?</summary>
@@ -738,7 +738,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </details>
       <details class="faq">
         <summary>What access does MCP need to call the n8n API?</summary>
-        <div class="body">Under n8n  <em>Settings → n8n API</em> , create an API key (available in Community Edition). The key has its creator’s access scope. Send it in the  <code>X-N8N-API-KEY</code>  header to  <code>/api/v1/*</code>  endpoints. For workspace-level isolation, ask WoowTech to configure multiple workspaces (an Enterprise feature).</div>
+        <div class="body">Under <em>Settings → n8n API</em>, create an API key and send it in the <code>X-N8N-API-KEY</code> header. Enterprise lets the creator select API scopes; Community/non-Enterprise keys have the creator’s full account capabilities. Project access still limits which resources that account can reach. Public routes use <code>/api/v1/*</code>; in n8n v2.32.7, credential listing is additionally restricted to the instance owner or an admin.</div>
       </details>
     </section>
 
