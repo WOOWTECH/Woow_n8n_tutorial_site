@@ -1,0 +1,20 @@
+{
+  "file": "ch7_node_types.html",
+  "entries": [
+    {
+      "unit": "#tips",
+      "zh": "<code>HTTP Request（讀 ticket API）</code>",
+      "en": "<code>HTTP Request (read the ticket API)</code>"
+    },
+    {
+      "unit": "#tips",
+      "zh": "<code>Notion（新增頁）</code>",
+      "en": "<code>Notion (create a page)</code>"
+    },
+    {
+      "unit": "#tips",
+      "zh": "<code>Slack（通知）</code>",
+      "en": "<code>Slack (notify)</code>"
+    }
+  ]
+}

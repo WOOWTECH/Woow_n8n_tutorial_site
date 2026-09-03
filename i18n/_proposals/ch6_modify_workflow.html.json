@@ -1,0 +1,35 @@
+{
+  "file": "ch6_modify_workflow.html",
+  "entries": [
+    {
+      "unit": "#what",
+      "zh": "<pre class=\"code-block\"><code>新表單: {{ $json['field1'] }}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>New form entry: {{ $json['field1'] }}</code></pre>"
+    },
+    {
+      "unit": "#what",
+      "zh": "<pre class=\"code-block\"><code>新表單來了 :bell:\n姓名：{{ $json.applicant_name }}\nEmail：{{ $json.email }}\n是否 VIP：{{ $json.vip }}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>New form submission :bell:\nName: {{ $json.applicant_name }}\nEmail: {{ $json.email }}\nVIP: {{ $json.vip }}</code></pre>"
+    },
+    {
+      "unit": "#what",
+      "zh": "<code>{{ $json.欄位名 }}</code>",
+      "en": "<code>{{ $json.fieldName }}</code>"
+    },
+    {
+      "unit": "#advanced",
+      "zh": "<pre class=\"code-block\"><code>Google Form Trigger\n       ↓\n       IF (vip == true?)\n       ├─ true  → Gmail (寄給經理) → Slack (通知團隊)\n       └─ false → Slack (通知團隊)</code></pre>",
+      "en": "<pre class=\"code-block\"><code>Google Form Trigger\n       ↓\n       IF (vip == true?)\n       ├─ true  → Gmail (email the manager) → Slack (notify the team)\n       └─ false → Slack (notify the team)</code></pre>"
+    },
+    {
+      "unit": "#advanced",
+      "zh": "<code>是</code>",
+      "en": "<code>Yes</code>"
+    },
+    {
+      "unit": "#advanced",
+      "zh": "<code>VIP 客戶: {{ $json.applicant_name }}</code>",
+      "en": "<code>VIP customer: {{ $json.applicant_name }}</code>"
+    }
+  ]
+}

@@ -70,16 +70,16 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要先分類</a>
-      <a href="#concept">Trigger 節點</a>
-      <a href="#what">App 節點（Actions）</a>
-      <a href="#detail">Core 節點</a>
-      <a href="#cluster">Cluster 節點（AI）</a>
-      <a href="#advanced">辨別技巧</a>
-      <a href="#tips">workflow 的節奏</a>
-      <a href="#search">抽屜怎麼找節點</a>
-      <a href="#troubleshoot">常見狀況排除</a>
-      <a href="#faq">常見問題</a>
+      <a href="#why">Why this matters</a>
+      <a href="#concept">Trigger nodes</a>
+      <a href="#what">App nodes</a>
+      <a href="#detail">Core nodes</a>
+      <a href="#cluster">Cluster nodes</a>
+      <a href="#advanced">Telling them apart</a>
+      <a href="#tips">Workflow rhythm</a>
+      <a href="#search">Finding a node</a>
+      <a href="#troubleshoot">Troubleshooting</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -93,427 +93,427 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch7_node_types.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 7</div>
-      <h1>節點四大家族：Trigger / Core / App / Cluster</h1>
-      <p class="lead">前面六章你已經會登入 n8n、認得工作區、還會把別人做好的 workflow 抄過來改。從這章開始要動手拉自己的了——但在動手前，你得先看得懂節點抽屜。<strong>官方文件把節點分成四大家族</strong>：<strong>Trigger</strong>（開頭）、<strong>Core</strong>（內建流程／資料工具）、<strong>App</strong>（跟外部服務講話）、<strong>Cluster</strong>（AI Agent 這種「一個根節點掛一堆子節點」的群組結構）。前三個是傳統自動化的骨架，第四個是 2024 之後 LangChain 那一整包 AI 節點的新架構。這章讀完你看任何 workflow 都能兩秒歸類。</p>
+      <h1>The four node families: Trigger / Core / App / Cluster</h1>
+      <p class="lead">Over the first six chapters you have learned to sign in to n8n, find your way around the workspace, and copy someone else's workflow and edit it. From this chapter on you start building your own — but before you build anything, you need to be able to read the nodes panel. <strong>The official docs split nodes into four families</strong>: <strong>Trigger</strong> (the start), <strong>Core</strong> (built-in flow and data tools), <strong>App</strong> (the ones that talk to outside services) and <strong>Cluster</strong> (the group structure AI Agent uses — one root node with a pile of sub-nodes hanging under it). The first three are the skeleton of traditional automation; the fourth is the newer architecture behind the whole LangChain set of AI nodes that arrived after 2024. By the end of this chapter you can sort any node in any workflow into a family in two seconds.</p>
     </div>
 
-    <section id="why" data-nav="為什麼要先分類">
-      <h2 data-icon="why">為什麼要先分類</h2>
-      <p>你到<a href="ch3_workspace_tour.html">第 3 章</a>看過的節點抽屜——按 Canvas 空白處的 <strong>+</strong>、或右邊面板點 <strong>Add first step</strong>，那個從右邊滑出來的清單。裡面東西多到嚇人：</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why start by sorting nodes into families</h2>
+      <p>You met the nodes panel back in <a href="ch3_workspace_tour.html">Chapter 3</a> — press <strong>+</strong> on an empty spot on the canvas, or click <strong>Add first step</strong> in the right-hand panel, and a list slides in from the right. The amount of stuff inside is frightening:</p>
       <ul>
-        <li>官方節點 400+ 個（Slack、Gmail、Notion、Airtable、HubSpot、Stripe、GitHub…）</li>
-        <li>Core 節點 30+ 個（IF、Switch、Merge、Edit Fields、Code、Wait、HTTP Request…）</li>
-        <li>Trigger 節點另外還有一大排（Schedule、Webhook、每家 SaaS 都自帶一個 Trigger 版）</li>
-        <li>再加上 AI／LangChain 系列一整包（AI Agent、Chat Model、Memory、Vector Store…）</li>
+        <li>400+ official nodes (Slack, Gmail, Notion, Airtable, HubSpot, Stripe, GitHub…)</li>
+        <li>30+ Core nodes (IF, Switch, Merge, Edit Fields, Code, Wait, HTTP Request…)</li>
+        <li>A whole separate row of Trigger nodes (Schedule, Webhook, and a Trigger version bundled with every SaaS)</li>
+        <li>Plus the entire AI / LangChain set (AI Agent, Chat Model, Memory, Vector Store…)</li>
       </ul>
-      <p>你不用背這幾百個名字。真正需要的是——<strong>看到一個節點，兩秒內知道它屬於哪一類、能幹嘛</strong>。這樣看別人的 workflow 才不會霧煞煞，自己拉的時候才知道該去哪一區找。</p>
+      <p>You do not have to memorize these hundreds of names. What you actually need is this — <strong>see a node and know within two seconds which family it belongs to and what it does</strong>. That is what keeps someone else's workflow from looking like fog, and it is how you know which part of the panel to head for when you build your own.</p>
       <figure class="shot">
-        <img src="../assets/screenshots/ch7/01_canvas_start.png" alt="空白 Canvas 中央顯示 Add first step 按鈕，示範節點抽屜的三大分類入口" />
-        <figcaption><strong>圖 7-1</strong>空白 Canvas 上的 <strong>Add first step</strong>：按下去就會叫出節點抽屜，你要挑的第一個節點永遠是 Trigger。</figcaption>
+        <img src="../assets/screenshots/ch7/01_canvas_start.png" alt="A blank canvas with the Add first step button in the middle, the way into the nodes panel and its three main categories" />
+        <figcaption><strong>Figure 7-1</strong>The <strong>Add first step</strong> button on a blank canvas: press it and the nodes panel opens. The first node you pick is always a Trigger.</figcaption>
       </figure>
-      <div class="callout tip"><strong>提示：</strong>這章是純觀念章，沒有動手步驟。看完直接進<a href="ch8_first_workflow.html">第 8 章</a>拉你的第一條 workflow，就會自然而然用到這四類節點的分工。</div>
-      <p>先講結論，一句話對照（對應官方 <code>docs.n8n.io/integrations/builtin/</code> 底下的四個資料夾）——</p>
+      <div class="callout tip"><strong>Tip:</strong> This chapter is pure concepts — there are no hands-on steps. When you are done, go straight to <a href="ch8_first_workflow.html">Chapter 8</a> and build your first workflow; you will use the division of labor between these four families without even thinking about it.</div>
+      <p>The conclusion first, one line each (they match the four folders under the official <code>docs.n8n.io/integrations/builtin/</code>) —</p>
       <ul>
-        <li><strong>Trigger</strong>（功能分類）= workflow 的「開頭」，決定<strong>什麼時候會跑</strong>；左邊沒輸入圓點</li>
-        <li><strong>Core nodes</strong>（<code>core-nodes/</code>）= n8n 內建的流程／資料／通用工具（IF、Merge、Set、Code、HTTP Request、Wait、Schedule Trigger…）</li>
-        <li><strong>App nodes</strong>（<code>app-nodes/</code>，官方也叫 Actions）= 每一家外部 SaaS 一個節點（Slack、Gmail、Notion…）</li>
-        <li><strong>Cluster nodes</strong>（<code>cluster-nodes/</code>）= AI／LangChain 專用的<strong>群組節點</strong>：一個 root 節點（例：AI Agent）掛多個 sub-node（Chat Model、Memory、Tool、Vector Store）</li>
+        <li><strong>Trigger</strong> (a functional category) = the "start" of a workflow; it decides <strong>when the workflow runs</strong>; no input dot on the left</li>
+        <li><strong>Core nodes</strong> (<code>core-nodes/</code>) = n8n's built-in flow, data and general-purpose tools (IF, Merge, Set, Code, HTTP Request, Wait, Schedule Trigger…)</li>
+        <li><strong>App nodes</strong> (<code>app-nodes/</code>, which the docs also call Actions) = one node per outside SaaS (Slack, Gmail, Notion…)</li>
+        <li><strong>Cluster nodes</strong> (<code>cluster-nodes/</code>) = <strong>group nodes</strong> used only by AI / LangChain: one root node (for example AI Agent) carrying several sub-nodes (Chat Model, Memory, Tool, Vector Store)</li>
       </ul>
-      <div class="callout warn"><strong>觀念釐清：</strong>Trigger 是「<strong>功能角色</strong>」，Core／App／Cluster 是「<strong>官方檔案分類</strong>」。所以 <code>Schedule Trigger</code>、<code>Manual Trigger</code>、<code>Chat Trigger</code>、<code>Webhook</code> 這些 Trigger 節點的文件其實放在 <code>core-nodes/</code> 底下——它們既是 Trigger（功能）也是 Core（分類）。這兩個維度會交叉，不是互斥的四選一。</div>
-      <p>下面四節分別細講。</p>
+      <div class="callout warn"><strong>Clearing this up:</strong> Trigger is a <strong>functional role</strong>; Core / App / Cluster are <strong>the docs' file categories</strong>. That is why the pages for Trigger nodes like <code>Schedule Trigger</code>, <code>Manual Trigger</code>, <code>Chat Trigger</code> and <code>Webhook</code> actually live under <code>core-nodes/</code> — they are both Trigger (the function) and Core (the category). The two dimensions cross; this is not a mutually exclusive pick-one-of-four.</div>
+      <p>The next four sections take them one at a time.</p>
     </section>
 
-    <section id="concept" data-nav="Trigger 節點">
-      <h2 data-icon="concept">Trigger 節點：workflow 的開頭</h2>
-      <p>每一條 workflow 都需要一個起點。這個起點就叫 Trigger 節點——它決定「這條 workflow 什麼時候會跑」。你打開節點抽屜第一個看到的分類通常就是 <strong>On app event / On a schedule / When called by another workflow</strong> 這幾組，全部都是 Trigger。</p>
-      <p>Trigger 節點有一個很好認的視覺特徵：<strong>它左邊沒有輸入圓點</strong>。因為它是起點，前面沒東西可接。右邊有一個輸出圓點，把資料往下游送。</p>
+    <section id="concept" data-nav="Trigger nodes">
+      <h2 data-icon="concept">Trigger nodes: where a workflow starts</h2>
+      <p>Every workflow needs a starting point, and that starting point is the Trigger node — it decides when this workflow runs. The first groups you see when you open the nodes panel are usually <strong>On app event / On a schedule / When called by another workflow</strong>, and all of them are Triggers.</p>
+      <p>Trigger nodes have one visual giveaway: <strong>there is no input dot on the left</strong>. It is the starting point, so there is nothing upstream to connect to. On the right there is one output dot that sends data downstream.</p>
       <table class="data-table">
         <thead>
-          <tr><th>Trigger 節點</th><th>什麼時候會跑</th><th>典型用途</th></tr>
+          <tr><th>Trigger node</th><th>When it runs</th><th>Typical use</th></tr>
         </thead>
         <tbody>
           <tr>
             <td>Manual Trigger</td>
-            <td>你按下 <code>Execute Workflow</code> 才跑</td>
-            <td>測試、開發、給人手動點的 workflow</td>
+            <td>Only when you press <code>Execute Workflow</code></td>
+            <td>Testing, building, and workflows a person clicks by hand</td>
           </tr>
           <tr>
             <td>Schedule Trigger</td>
-            <td>像 Cron，指定時間跑（每小時、每天 8:00、每週一…）</td>
-            <td>每日報告、每週彙整、每月結算</td>
+            <td>Like cron: at the times you set (hourly, every day at 8:00, every Monday…)</td>
+            <td>Daily reports, weekly roundups, monthly closing</td>
           </tr>
           <tr>
             <td>Webhook</td>
-            <td>外部系統打 URL 就跑</td>
-            <td>表單填完、Line Bot、HA 觸發、第三方 callback</td>
+            <td>When an outside system calls the URL</td>
+            <td>A submitted form, a LINE bot, an HA trigger, a third-party callback</td>
           </tr>
           <tr>
-            <td>App Event（Gmail Trigger、Slack Trigger…）</td>
-            <td>指定 SaaS 有事情發生就跑</td>
-            <td>收到 VIP 信件轉發、Slack 提到某關鍵字通知</td>
+            <td>App Event (Gmail Trigger, Slack Trigger…)</td>
+            <td>When something happens in the SaaS you picked</td>
+            <td>Forward a VIP email when it lands, get a notification when a keyword is mentioned in Slack</td>
           </tr>
           <tr>
             <td>Chat Trigger</td>
-            <td>使用者在 chat 介面打字就跑</td>
-            <td><a href="ch11_saas_integrations.html">AI Agent（ch21）</a>做客服機器人時用</td>
+            <td>When a user types in the chat interface</td>
+            <td>Used when <a href="ch11_saas_integrations.html">AI Agent (ch21)</a> is building a support bot</td>
           </tr>
           <tr>
             <td>Execute Workflow Trigger</td>
-            <td>另一個 workflow 呼叫你就跑</td>
-            <td>被抽出來重用的 sub-workflow（ch19）</td>
+            <td>When another workflow calls it</td>
+            <td>A sub-workflow pulled out for reuse (ch19)</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout"><strong>觀念：</strong>一個 workflow <strong>可以有多個 Trigger</strong>。例如同一條「新客戶通知」既掛 Webhook（表單填完）、又掛 Schedule Trigger（每天 8:00 補跑一次）、還掛 Manual Trigger（測試時手動跑）——任何一個觸發都會讓整條 workflow 動起來。<a href="ch10_triggers.html">第 10 章</a>會專門講三大類觸發時機的比較。</div>
-      <p>Trigger 節點的抽屜位置也很好認——n8n 進節點抽屜的第一頁預設就是 <strong>Triggers</strong>，你在 Canvas 空白處按 <strong>+</strong> 開始新 workflow 的時候，n8n 會直接引導你選 Trigger（因為沒 Trigger 就沒起點、workflow 根本跑不起來）。</p>
+      <div class="callout"><strong>Concept:</strong> One workflow <strong>can have several Triggers</strong>. A single "new customer alert" workflow might carry a Webhook (the form was submitted), a Schedule Trigger (a catch-up run every day at 8:00) and a Manual Trigger (to run it by hand while testing) — any one of them sets the whole workflow going. <a href="ch10_triggers.html">Chapter 10</a> compares the three trigger families in detail.</div>
+      <p>Triggers are easy to find in the panel too — the first page of the nodes panel defaults to <strong>Triggers</strong>, and when you press <strong>+</strong> on an empty spot on the canvas to start a new workflow, n8n steers you straight to picking a Trigger (without one there is no starting point, and the workflow cannot run at all).</p>
     </section>
 
-    <section id="what" data-nav="App 節點（Actions）">
-      <h2 data-icon="what">App 節點（Actions）：跟外部服務講話的節點</h2>
-      <p>四大家族裡數量最多的就是 App 節點——官方文件把它們放在 <code>integrations/builtin/app-nodes/</code>，UI 抽屜裡則會叫 <strong>Actions in apps</strong>。共通點是：<strong>每一個節點對應一家外部服務（SaaS、資料庫、雲端），節點內部封裝好那家 API 的所有操作</strong>。</p>
-      <p>如果你用過 Zapier，這個概念一模一樣——Zapier 每個 App 對應一個 Action；n8n 也是一家 SaaS 對應一個 App 節點。<strong>「App 節點」是官方檔案名稱、「Action」是抽屜 UI 標籤</strong>，兩個講的是同一件事，本教學混用時你不用糾結。</p>
-      <p>一個 Action 節點裡面通常有很多 <strong>sub-operation（子操作）</strong>。以 Slack 為例——</p>
+    <section id="what" data-nav="App nodes">
+      <h2 data-icon="what">App nodes (actions): the nodes that talk to outside services</h2>
+      <p>App nodes are the largest of the four families — the docs keep them under <code>integrations/builtin/app-nodes/</code>, and the panel labels them <strong>Actions in apps</strong>. What they share: <strong>each node maps to one outside service (a SaaS, a database, a cloud provider), and the node wraps every operation that service's API offers</strong>.</p>
+      <p>If you have used Zapier the idea is identical — in Zapier each app maps to an action, and in n8n each SaaS maps to one App node. <strong>"App node" is the docs' file name and "Action" is the panel's UI label</strong>, so the two mean the same thing and you do not need to worry when this guide uses both.</p>
+      <p>One Action node usually holds many <strong>sub-operations</strong>. Take Slack —</p>
       <ul>
-        <li><strong>Send Message</strong>：傳訊息到指定頻道或人</li>
-        <li><strong>Update Message</strong>：改一則已經傳出去的訊息</li>
-        <li><strong>Delete Message</strong>：刪一則訊息</li>
-        <li><strong>Get Channel</strong>：抓某個頻道的資訊</li>
-        <li><strong>Invite User</strong>：邀某人進頻道</li>
-        <li>…還有 20 幾個其他操作</li>
+        <li><strong>Send Message</strong>: post a message to a channel or a person</li>
+        <li><strong>Update Message</strong>: edit a message you already sent</li>
+        <li><strong>Delete Message</strong>: delete a message</li>
+        <li><strong>Get Channel</strong>: fetch a channel's details</li>
+        <li><strong>Invite User</strong>: invite someone into a channel</li>
+        <li>…and about 20 more operations</li>
       </ul>
-      <p>你不用一開始就記所有子操作。拉出 Slack 節點後，右邊 <strong>Operation</strong> 下拉選單會列所有選項，你要哪個選哪個。</p>
-      <p>Action 節點官方大概分成這幾大類，抽屜裡都能對號入座：</p>
+      <p>You do not have to memorize every sub-operation up front. Once the Slack node is on the canvas, the <strong>Operation</strong> dropdown on the right lists every option; pick the one you want.</p>
+      <p>The docs group Action nodes into roughly these categories, and every one of them has its place in the panel:</p>
       <table class="data-table">
         <thead>
-          <tr><th>分類</th><th>常見節點</th><th>典型場景</th></tr>
+          <tr><th>Category</th><th>Common nodes</th><th>Typical scenario</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>Communication 通訊</td>
-            <td>Slack、Discord、Telegram、Email、Line</td>
-            <td>通知、群發、聊天機器人</td>
+            <td>Communication</td>
+            <td>Slack, Discord, Telegram, Email, LINE</td>
+            <td>Notifications, broadcasts, chatbots</td>
           </tr>
           <tr>
-            <td>Data &amp; Storage 資料儲存</td>
-            <td>Google Sheets、Airtable、Notion、Postgres、Redis、MongoDB</td>
-            <td>寫入表格、查資料庫、做資料流</td>
+            <td>Data &amp; Storage</td>
+            <td>Google Sheets, Airtable, Notion, Postgres, Redis, MongoDB</td>
+            <td>Write to a sheet, query a database, build a data pipeline</td>
           </tr>
           <tr>
-            <td>Productivity 生產力</td>
-            <td>Google Calendar、Todoist、Trello、Asana、ClickUp</td>
-            <td>建行程、開任務、追進度</td>
+            <td>Productivity</td>
+            <td>Google Calendar, Todoist, Trello, Asana, ClickUp</td>
+            <td>Create events, open tasks, track progress</td>
           </tr>
           <tr>
-            <td>Marketing 行銷</td>
-            <td>HubSpot、Mailchimp、SendGrid、ActiveCampaign</td>
-            <td>加 lead、寄電子報、追客戶動態</td>
+            <td>Marketing</td>
+            <td>HubSpot, Mailchimp, SendGrid, ActiveCampaign</td>
+            <td>Add leads, send newsletters, follow customer activity</td>
           </tr>
           <tr>
-            <td>AI（App 版）</td>
-            <td>OpenAI、Anthropic、Google Gemini、Perplexity（放在 <code>app-nodes/n8n-nodes-langchain.*</code>）</td>
-            <td>單次呼叫 LLM 生成文案、摘要、翻譯；跟下一節 Cluster 版的 AI Agent 是<strong>不同節點</strong></td>
+            <td>AI (the App version)</td>
+            <td>OpenAI, Anthropic, Google Gemini, Perplexity (filed under <code>app-nodes/n8n-nodes-langchain.*</code>)</td>
+            <td>A single LLM call to write copy, summarize or translate; these are <strong>different nodes</strong> from the Cluster-version AI Agent in the next section</td>
           </tr>
           <tr>
-            <td>Developer 開發者</td>
-            <td>GitHub、GitLab、Jira、Bitbucket、Docker Hub</td>
-            <td>開 issue、建 PR、跑 CI 通知</td>
+            <td>Developer</td>
+            <td>GitHub, GitLab, Jira, Bitbucket, Docker Hub</td>
+            <td>Open issues, create PRs, send CI notifications</td>
           </tr>
           <tr>
-            <td>Files &amp; Cloud 檔案雲端</td>
-            <td>Google Drive、Dropbox、OneDrive、AWS S3</td>
-            <td>上傳附件、備份、跨雲搬檔</td>
+            <td>Files &amp; Cloud</td>
+            <td>Google Drive, Dropbox, OneDrive, AWS S3</td>
+            <td>Upload attachments, back things up, move files between clouds</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>提示：</strong>你完全不需要記這張表。用不到就跳過，需要時再去抽屜搜尋。90% 的人常用的就那五六家（Slack、Gmail、Google Sheet、Notion、HubSpot、GitHub）。</div>
-      <p>App 節點的視覺特徵：<strong>左右兩邊都有圓點</strong>（左邊收上游的資料、右邊送下游），節點圖示通常就是那家 SaaS 的官方 logo（Slack 是紫色井字、Gmail 是紅色信封、Notion 是黑白翻頁）。看到 logo 你大概就知道這是哪家的節點了。</p>
-      <div class="callout"><strong>觀念：</strong>同一家 SaaS 通常會提供<strong>兩個節點</strong>——App 版（例：<code>Slack</code>，主動打 Slack API）跟 Trigger 版（例：<code>Slack Trigger</code>，被動聽 Slack Webhook）。名字很像但職責相反，別選錯。</div>
+      <div class="callout tip"><strong>Tip:</strong> You do not need to memorize this table at all. Skip what you do not use and search the panel when you need something. For 90% of people it comes down to the same five or six services (Slack, Gmail, Google Sheet, Notion, HubSpot, GitHub).</div>
+      <p>The visual giveaway for App nodes: <strong>a dot on each side</strong> (the left one takes data from upstream, the right one sends it downstream), and the icon is usually that service's own logo (Slack's purple hash, Gmail's red envelope, Notion's black-and-white page). Once you see the logo you know whose node it is.</p>
+      <div class="callout"><strong>Concept:</strong> One SaaS usually ships <strong>two nodes</strong> — the App version (for example <code>Slack</code>, which calls the Slack API itself) and the Trigger version (for example <code>Slack Trigger</code>, which sits and listens for a Slack webhook). The names look alike but the jobs are opposite, so pick carefully.</div>
     </section>
 
-    <section id="detail" data-nav="Core 節點">
-      <h2 data-icon="what">Core 節點：內建流程／資料／通用工具</h2>
-      <p>Core 節點是 n8n <strong>自己內建的節點集合</strong>（官方檔案在 <code>core-nodes/</code>），數量比 App 節點少但每個都關鍵。它們職責是<strong>管 workflow 內部的資料流、控制流、以及不綁 SaaS 的通用工具</strong>——像水管的三通、閥門、開關，加上 HTTP Request 這種萬用鑰匙。</p>
-      <p>UI 抽屜裡的分類名稱在近期版本改過幾次：早期叫 <strong>Core Nodes</strong>，之後拆成 <strong>Flow</strong> / <strong>Data Transformation</strong> / <strong>Files</strong> / <strong>Helpers</strong> 這幾個小分類（實際字樣依你 n8n 版本會略有差異）。分不清就用搜尋。</p>
-      <div class="callout"><strong>觀念：</strong>很多 Trigger 節點（Schedule Trigger、Manual Trigger、Chat Trigger、Webhook、n8n Form Trigger、Execute Sub-workflow Trigger）在官方檔案樹上其實也放在 <code>core-nodes/</code>——因為它們是 n8n 內建、不綁 SaaS。這證明「Trigger」是功能角色，「Core」是檔案分類，同一個節點兩個標籤都貼得上。</div>
+    <section id="detail" data-nav="Core nodes">
+      <h2 data-icon="what">Core nodes: built-in flow, data and utility tools</h2>
+      <p>Core nodes are n8n's <strong>own built-in set of nodes</strong> (the docs file them under <code>core-nodes/</code>). There are fewer of them than App nodes, but every one matters. Their job is <strong>managing the data flow and control flow inside a workflow, plus general-purpose tools that are not tied to any SaaS</strong> — the tees, valves and switches of the plumbing, plus a skeleton key like HTTP Request.</p>
+      <p>The category names in the panel have changed a few times in recent versions: they used to be <strong>Core Nodes</strong>, then split into <strong>Flow</strong> / <strong>Data Transformation</strong> / <strong>Files</strong> / <strong>Helpers</strong> (the exact wording varies a little with your n8n version). When you cannot tell them apart, search instead.</p>
+      <div class="callout"><strong>Concept:</strong> Plenty of Trigger nodes (Schedule Trigger, Manual Trigger, Chat Trigger, Webhook, n8n Form Trigger, Execute Sub-workflow Trigger) sit under <code>core-nodes/</code> in the docs tree as well — because they are built into n8n and tied to no SaaS. That is the proof that "Trigger" is a functional role and "Core" is a file category: one node can carry both labels.</div>
       <table class="data-table">
         <thead>
-          <tr><th>Core 節點</th><th>做什麼</th><th>哪一章細講</th></tr>
+          <tr><th>Core node</th><th>What it does</th><th>Chapter that covers it</th></tr>
         </thead>
         <tbody>
           <tr>
             <td>IF</td>
-            <td>條件分支（true 走一條路、false 走另一條）</td>
-            <td><a href="ch15_if_switch.html">第 15 章</a></td>
+            <td>Conditional branching (true takes one path, false takes the other)</td>
+            <td><a href="ch15_if_switch.html">Chapter 15</a></td>
           </tr>
           <tr>
             <td>Switch</td>
-            <td>多分支（依欄位值走不同路）</td>
-            <td><a href="ch15_if_switch.html">第 15 章</a></td>
+            <td>Several branches (different paths depending on a field's value)</td>
+            <td><a href="ch15_if_switch.html">Chapter 15</a></td>
           </tr>
           <tr>
             <td>Merge</td>
-            <td>把多路資料合成一路（append / combine / choose）</td>
+            <td>Bring several streams of data back into one (append / combine / choose)</td>
             <td>ch16</td>
           </tr>
           <tr>
             <td>Split In Batches</td>
-            <td>把一大批 item 分批處理，避免打爆 API rate limit</td>
+            <td>Handle a big pile of items in batches so you do not blow through an API rate limit</td>
             <td>ch16</td>
           </tr>
           <tr>
             <td>Item Lists</td>
-            <td>陣列操作（去重、排序、聚合、拆開）</td>
+            <td>Array operations (deduplicate, sort, aggregate, split out)</td>
             <td>ch16</td>
           </tr>
           <tr>
             <td>Set / Edit Fields</td>
-            <td>加欄位、改欄位名、重排、扁平化</td>
-            <td><a href="ch18_set_function.html">第 18 章</a></td>
+            <td>Add fields, rename fields, reorder them, flatten them</td>
+            <td><a href="ch18_set_function.html">Chapter 18</a></td>
           </tr>
           <tr>
             <td>Code</td>
-            <td>寫幾行 JavaScript 或 Python 補現成節點不夠的洞（舊版叫 <code>Function</code>，已在 n8n 1.0 併入 Code；官方文件的 Function 頁面現在是 404）</td>
+            <td>A few lines of JavaScript or Python to fill the gaps the ready-made nodes leave (the old name was <code>Function</code>, folded into Code in n8n 1.0; the docs' Function page is now a 404)</td>
             <td>ch20</td>
           </tr>
           <tr>
             <td>Wait</td>
-            <td>暫停一段時間（等 5 秒、等到明天 9:00、等 Webhook）</td>
+            <td>Pause for a while (wait 5 seconds, wait until 9:00 tomorrow, wait for a webhook)</td>
             <td>ch17</td>
           </tr>
           <tr>
             <td>Execute Workflow</td>
-            <td>呼叫另一條 workflow（sub-workflow）</td>
+            <td>Call another workflow (a sub-workflow)</td>
             <td>ch19</td>
           </tr>
           <tr>
             <td>HTTP Request</td>
-            <td>打任何 REST API（沒有官方節點時的萬用鑰匙）</td>
-            <td><a href="ch12_http_request.html">第 12 章</a></td>
+            <td>Call any REST API (the skeleton key for when there is no official node)</td>
+            <td><a href="ch12_http_request.html">Chapter 12</a></td>
           </tr>
         </tbody>
       </table>
-      <div class="callout warn"><strong>注意：</strong>HTTP Request 官方明確歸類在 <strong>Core nodes</strong>——因為它不綁特定 SaaS、是 n8n 內建的通用工具。功能上它會打外部 API，但這不代表它「同時是 App 節點」；App 節點的定義是「一家 SaaS 一個節點」，HTTP Request 是萬用打 API 的介面。你只要記得：<strong>找不到某家 SaaS 的專屬節點 → 用 HTTP Request 自己打</strong>就好。</div>
-      <p>Core 節點的視覺特徵：<strong>左右兩邊都有圓點</strong>（IF、Switch 因為要分支，右邊會有多個輸出圓點），節點圖示是抽象幾何——IF 是分岔箭頭、Merge 是箭頭合流、Set 是筆或欄位圖、Code 是尖括號 <code>&lt;/&gt;</code>。看不到 SaaS logo 的節點，八成就是 Core。</p>
+      <div class="callout warn"><strong>Warning:</strong> The docs put HTTP Request squarely in <strong>Core nodes</strong> — because it is tied to no particular SaaS and is a general-purpose tool built into n8n. It does call outside APIs, but that does not make it "an App node as well"; an App node is defined as "one node per SaaS", and HTTP Request is a general interface for calling any API. All you have to remember is this: <strong>no dedicated node for a service → call it yourself with HTTP Request</strong>.</div>
+      <p>The visual giveaway for Core nodes: <strong>a dot on each side</strong> (IF and Switch branch, so they carry several output dots on the right), and the icon is abstract geometry — a forking arrow for IF, converging arrows for Merge, a pen or field icon for Set, angle brackets <code>&lt;/&gt;</code> for Code. A node with no SaaS logo is almost certainly Core.</p>
     </section>
 
-    <section id="cluster" data-nav="Cluster 節點（AI）">
-      <h2 data-icon="ai">Cluster 節點：AI Agent 那一整包群組節點</h2>
-      <p>Cluster 節點是官方在 <code>integrations/builtin/cluster-nodes/</code> 底下的<strong>第四大家族</strong>，也是 2024 之後 n8n 生態最大的架構變化。它不是「一顆節點」而是「<strong>一群節點的群組</strong>」——每個 cluster 都有一個 <strong>root node</strong>（主節點，例：AI Agent），再往下掛數個 <strong>sub-nodes</strong>（子節點）提供能力。</p>
-      <p>典型結構長這樣（<code>AI Agent</code> root 底下掛四種 sub-node）——</p>
+    <section id="cluster" data-nav="Cluster nodes">
+      <h2 data-icon="ai">Cluster nodes: the whole AI Agent group</h2>
+      <p>The docs file Cluster nodes under <code>integrations/builtin/cluster-nodes/</code> as the <strong>fourth family</strong>, and they are the biggest architectural change in the n8n ecosystem since 2024. A cluster is not one node but <strong>a group of nodes</strong> — every cluster has one <strong>root node</strong> (the main node, for example AI Agent) with several <strong>sub-nodes</strong> attached below it to supply capabilities.</p>
+      <p>A typical structure looks like this (an <code>AI Agent</code> root with four kinds of sub-node under it) —</p>
       <table class="data-table">
         <thead>
-          <tr><th>位置</th><th>節點類型</th><th>典型範例</th><th>做什麼</th></tr>
+          <tr><th>Where</th><th>Node type</th><th>Typical example</th><th>What it does</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>Root（一個）</td>
-            <td>AI Agent、Basic LLM Chain、QA Chain、Summarization Chain、Text Classifier、Information Extractor、Sentiment Analysis</td>
+            <td>Root (one of them)</td>
+            <td>AI Agent, Basic LLM Chain, QA Chain, Summarization Chain, Text Classifier, Information Extractor, Sentiment Analysis</td>
             <td><code>AI Agent</code></td>
-            <td>Cluster 的主邏輯；正常資料流從左邊進、右邊出</td>
+            <td>The cluster's main logic; the normal data flow comes in on the left and leaves on the right</td>
           </tr>
           <tr>
-            <td>Sub-node（多個）</td>
+            <td>Sub-node (several)</td>
             <td>Chat Model</td>
-            <td>OpenAI Chat Model、Anthropic Chat Model、Google Gemini Chat Model、Groq、Ollama</td>
-            <td>掛在 root 底部的 <code>ai_languageModel</code> 接點，提供推理引擎</td>
+            <td>OpenAI Chat Model, Anthropic Chat Model, Google Gemini Chat Model, Groq, Ollama</td>
+            <td>Attaches to the <code>ai_languageModel</code> connector dot on the root's underside and supplies the reasoning engine</td>
           </tr>
           <tr>
             <td>Sub-node</td>
             <td>Memory</td>
-            <td>Simple Memory、Postgres Chat Memory、Redis Chat Memory、Zep</td>
-            <td>掛 <code>ai_memory</code> 接點，讓 agent 記得上一輪對話</td>
+            <td>Simple Memory, Postgres Chat Memory, Redis Chat Memory, Zep</td>
+            <td>Attaches to the <code>ai_memory</code> dot so the agent remembers the previous turn of the conversation</td>
           </tr>
           <tr>
             <td>Sub-node</td>
             <td>Tool</td>
-            <td>Calculator、Wikipedia、SerpAPI、Code Tool、HTTP Request Tool、任何 App 節點掛成 Tool</td>
-            <td>掛 <code>ai_tool</code> 接點，agent 決定何時呼叫哪個工具</td>
+            <td>Calculator, Wikipedia, SerpAPI, Code Tool, HTTP Request Tool, or any App node attached as a Tool</td>
+            <td>Attaches to the <code>ai_tool</code> dot; the agent decides when to call which tool</td>
           </tr>
           <tr>
             <td>Sub-node</td>
             <td>Vector Store / Retriever / Embeddings / Output Parser</td>
-            <td>PGVector、Pinecone、Simple Vector Store、OpenAI Embeddings、Structured Output Parser</td>
-            <td>掛在對應的 <code>ai_*</code> 接點做 RAG、embedding、輸出結構化</td>
+            <td>PGVector, Pinecone, Simple Vector Store, OpenAI Embeddings, Structured Output Parser</td>
+            <td>Attaches to the matching <code>ai_*</code> dot to do RAG, embeddings and structured output</td>
           </tr>
         </tbody>
       </table>
-      <p>Cluster 節點的視覺特徵超好認——<strong>root 節點底部會多出幾個橫向朝下的方形接點</strong>（不是 Trigger／App／Core 那種左右圓點），每個接點標著 <code>Chat Model</code>／<code>Memory</code>／<code>Tool</code>／<code>Vector Store</code>。你把對應的 sub-node 從下往上掛進去，n8n 才會判定這個 cluster 完整、能跑。</p>
-      <div class="callout warn"><strong>常見誤解：</strong>很多教學會說「AI 節點是獨立的 Advanced AI 分類」——這在官方文件裡<strong>不存在這個標籤</strong>。正確講法是：AI 生態被拆成兩層——<strong>App 版 AI</strong>（OpenAI、Anthropic、Gemini 這種放在 <code>app-nodes/</code>，單次呼叫）跟 <strong>Cluster 版 AI</strong>（AI Agent + 一票 <code>ai_*</code> sub-node，放在 <code>cluster-nodes/</code>）。UI 抽屜裡它們會擺在 <strong>AI</strong> 或 <strong>Advanced AI</strong> 標籤下方便瀏覽，但底層檔案分類就是這兩個。</div>
-      <p><a href="ch21_ai_agent.html">第 21 章</a>會拆 cluster 的完整 root+sub 組合方式跟 <code>ai_*</code> 接點細節，這章你只要記得：<strong>底部有多個朝下接點的節點 = Cluster root</strong>、<strong>被吸上去掛在那些接點下方的 = sub-node</strong>。</p>
+      <p>Cluster nodes are very easy to spot — <strong>the root node grows a row of square, downward-facing connector dots along its underside</strong> (not the left-and-right round dots of Trigger / App / Core), each one labeled <code>Chat Model</code> / <code>Memory</code> / <code>Tool</code> / <code>Vector Store</code>. Attach the matching sub-node from below and n8n treats the cluster as complete and ready to run.</p>
+      <div class="callout warn"><strong>A common misreading:</strong> plenty of tutorials say "AI nodes are their own Advanced AI category" — <strong>that label does not exist</strong> in the official docs. The accurate version is this: the AI ecosystem is split into two layers — <strong>App-version AI</strong> (OpenAI, Anthropic, Gemini and the like, filed under <code>app-nodes/</code>, one call at a time) and <strong>Cluster-version AI</strong> (AI Agent plus a stack of <code>ai_*</code> sub-nodes, filed under <code>cluster-nodes/</code>). The panel does put them under an <strong>AI</strong> or <strong>Advanced AI</strong> label so they are easy to browse, but underneath there are only those two file categories.</div>
+      <p><a href="ch21_ai_agent.html">Chapter 21</a> takes apart the full root-plus-sub arrangement and the details of the <code>ai_*</code> connector dots. For this chapter, just remember: <strong>a node with several downward dots on its underside = a Cluster root</strong>, and <strong>whatever snaps up under those dots = a sub-node</strong>.</p>
     </section>
 
-    <section id="advanced" data-nav="辨別技巧">
-      <h2 data-icon="advanced">怎麼看一個節點是哪一家族</h2>
-      <p>認完四大家族，實戰時最有用的技巧是<strong>看一眼就能分類</strong>。用這四個特徵對照，一秒判斷——</p>
+    <section id="advanced" data-nav="Telling them apart">
+      <h2 data-icon="advanced">How to tell which family a node belongs to</h2>
+      <p>Now that you know the four families, the skill that pays off in practice is <strong>classifying a node at a glance</strong>. Check these four features and you have the answer in a second —</p>
       <ol class="steps">
         <li>
-          <h3>看下方有沒有 <code>ai_*</code> 接點 → Cluster root</h3>
-          <p>節點<strong>底部</strong>有幾個橫向朝下的方形接點、標著 <code>Chat Model</code>／<code>Memory</code>／<code>Tool</code>／<code>Vector Store</code>——這就是 <strong>Cluster root 節點</strong>（AI Agent、Basic LLM Chain、QA Chain 等）。反過來，如果一個節點只有<strong>頂部一個朝上的接點</strong>準備被 root 吸走，那它就是 sub-node（Chat Model、Memory、Tool 等）。</p>
+          <h3>Look underneath for <code>ai_*</code> dots → Cluster root</h3>
+          <p>A node with a few square downward dots along its <strong>underside</strong>, labeled <code>Chat Model</code> / <code>Memory</code> / <code>Tool</code> / <code>Vector Store</code>, is a <strong>Cluster root node</strong> (AI Agent, Basic LLM Chain, QA Chain and so on). The other way round: a node with only <strong>one upward dot on top</strong>, waiting to be picked up by a root, is a sub-node (Chat Model, Memory, Tool and so on).</p>
         </li>
         <li>
-          <h3>看左邊有沒有輸入圓點 → Trigger</h3>
-          <p>左邊<strong>沒有</strong>圓點（只有右邊出線）→ 一定是 <strong>Trigger</strong>。你在 Canvas 上看到一個節點孤零零掛在最左邊、前面沒接東西，就是 Trigger。名字通常有 "Trigger" 或 "On..." 字樣（<code>Slack Trigger</code>、<code>Schedule Trigger</code>、<code>Webhook</code>、<code>On form submission</code>）。</p>
+          <h3>Look on the left for an input dot → Trigger</h3>
+          <p><strong>No</strong> dot on the left (only a line leaving on the right) → it is definitely a <strong>Trigger</strong>. A node sitting alone at the far left of the canvas with nothing wired in front of it is a Trigger. The name usually carries "Trigger" or "On..." (<code>Slack Trigger</code>, <code>Schedule Trigger</code>, <code>Webhook</code>, <code>On form submission</code>).</p>
         </li>
         <li>
-          <h3>看圖示是 SaaS logo 還是抽象幾何 → App 或 Core</h3>
-          <p>左右兩邊都有圓點、圖示是某家 SaaS 的 logo（Slack 紫井字、Gmail 紅信封、Notion 黑白頁）→ 幾乎一定是 <strong>App 節點</strong>。圖示是抽象幾何（分岔、合流、齒輪、尖括號）→ 幾乎一定是 <strong>Core 節點</strong>。</p>
+          <h3>Look at the icon: a SaaS logo or abstract geometry → App or Core</h3>
+          <p>A dot on each side and a service's logo for an icon (Slack's purple hash, Gmail's red envelope, Notion's black-and-white page) → almost certainly an <strong>App node</strong>. An abstract geometric icon (a fork, a confluence, a gear, angle brackets) → almost certainly a <strong>Core node</strong>.</p>
         </li>
         <li>
-          <h3>看抽屜分類</h3>
-          <p>n8n 抽屜本來就分好類了：<strong>Triggers</strong>、<strong>Actions in apps</strong>（App 節點依 SaaS 分類）、<strong>Core</strong>（含 Flow / Data Transformation / Files / Helpers 等子區）、<strong>AI</strong> 或 <strong>Advanced AI</strong>（Cluster 節點）。分不清就回抽屜看它被放在哪個標籤下。</p>
+          <h3>Look at the panel's own categories</h3>
+          <p>The nodes panel is already sorted for you: <strong>Triggers</strong>, <strong>Actions in apps</strong> (App nodes grouped by service), <strong>Core</strong> (with the Flow / Data Transformation / Files / Helpers sub-areas) and <strong>AI</strong> or <strong>Advanced AI</strong> (Cluster nodes). When you cannot tell, go back to the panel and see which label it sits under.</p>
         </li>
       </ol>
     </section>
 
-    <section id="tips" data-nav="workflow 的節奏">
-      <h2 data-icon="tips">一個 workflow 通常的節奏</h2>
-      <p>四大家族在真實 workflow 裡怎麼組合？從最短到最複雜，大概四種節奏：</p>
+    <section id="tips" data-nav="Workflow rhythm">
+      <h2 data-icon="tips">The rhythm most workflows follow</h2>
+      <p>How do the four families combine in a real workflow? From the shortest to the most complex, there are roughly four rhythms:</p>
       <ol class="steps">
         <li>
-          <h3>最短：Trigger → 1 個 App</h3>
-          <p>「每天早上 8:00 傳一則固定訊息到 Slack」——<code>Schedule Trigger</code> 接 <code>Slack (Send Message)</code>，完。兩個節點、一條線，這是最簡單的 workflow 形狀。適合當提醒、當 reminder 用。</p>
+          <h3>Shortest: Trigger → 1 App node</h3>
+          <p>"Post the same message to Slack every morning at 8:00" — <code>Schedule Trigger</code> wired to <code>Slack (Send Message)</code>, done. Two nodes and one line: the simplest shape a workflow takes. Good for nudges and reminders.</p>
         </li>
         <li>
-          <h3>常見：Trigger → 讀資料 App → Core 過濾 → 寫資料 App → 通知 App</h3>
-          <p>「每天早上抓客服 ticket、只留 urgent 的、寫進 Notion、通知業務主管」——<code>Schedule Trigger</code> → <code>HTTP Request（讀 ticket API）</code> → <code>IF（priority == urgent）</code> → <code>Notion（新增頁）</code> → <code>Slack（通知）</code>。這是最典型的 5 節點 workflow，公司 8 成的自動化都長這樣。</p>
+          <h3>Common: Trigger → App that reads → Core that filters → App that writes → App that notifies</h3>
+          <p>"Every morning, fetch the support tickets, keep only the urgent ones, write them into Notion and tell the sales manager" — <code>Schedule Trigger</code> → <code>HTTP Request（讀 ticket API）</code> → <code>IF（priority == urgent）</code> → <code>Notion（新增頁）</code> → <code>Slack（通知）</code>. This is the classic five-node workflow, and 80% of a company's automation looks like this.</p>
         </li>
         <li>
-          <h3>AI：Chat Trigger → AI Agent（Cluster）→ 回覆</h3>
-          <p>「客戶在網頁 chat 打字 → AI 客服回答」——<code>Chat Trigger</code> → <code>AI Agent</code>，AI Agent 底下掛 <code>OpenAI Chat Model</code>（推理）＋<code>Simple Memory</code>（記對話）＋<code>Wikipedia Tool</code>（查資料）＋<code>HTTP Request Tool</code>（呼叫內部 API）。畫面上看起來像一顆節點底下長出四根鬚，這是最典型的 cluster 形狀。</p>
+          <h3>AI: Chat Trigger → AI Agent (Cluster) → reply</h3>
+          <p>"A customer types in the web chat → the AI support agent answers" — <code>Chat Trigger</code> → <code>AI Agent</code>, with <code>OpenAI Chat Model</code> (reasoning) + <code>Simple Memory</code> (remembering the conversation) + <code>Wikipedia Tool</code> (looking things up) + <code>HTTP Request Tool</code> (calling an internal API) attached under the AI Agent. On screen it looks like one node sprouting four tendrils, which is the classic cluster shape.</p>
         </li>
         <li>
-          <h3>複雜：多 Trigger → IF 分支 → 平行 App → Merge → Sub-workflow → 錯誤處理</h3>
-          <p>「新客戶進來（Webhook + Manual + Schedule 三個 Trigger）→ 依國家分流 → 並行寄歡迎信 / 加 CRM / 開 Slack 頻道 → 合流回主線 → 呼叫『發通知』sub-workflow → 錯了自動 retry 3 次還不行就通知 IT」。這種 15+ 節點的複雜 workflow 你到後面幾章才會慢慢碰到，不用怕。</p>
+          <h3>Complex: several Triggers → IF branches → parallel App nodes → Merge → sub-workflow → error handling</h3>
+          <p>"A new customer arrives (three Triggers: Webhook + Manual + Schedule) → route by country → in parallel, send the welcome email / add them to the CRM / open a Slack channel → merge back into the main line → call the 'send an alert' sub-workflow → on failure retry 3 times automatically, and if it still fails tell IT." You will only meet 15-plus-node workflows like this in the later chapters, so there is nothing to be afraid of.</p>
         </li>
       </ol>
-      <p>看得出來，Trigger 通常 1 個（有時多個）、App 是主力（占節點數 60% 以上）、Core 節點是<strong>把 App 串起來的水管接頭</strong>（IF 決定往哪走、Set 整型資料、Merge 合流）、Cluster 是 AI 專用的「一顆帶好幾根鬚」結構。</p>
-      <div class="callout tip"><strong>提示：</strong>你以後看到別人分享的 workflow 截圖，可以用這四種節奏對號入座：只有兩三塊就是「最短」、五到八塊是「常見」、看到某顆節點底下伸出多根鬚就是「AI cluster」、十幾塊帶分岔就是「複雜」。看得懂結構才看得懂 workflow 在幹嘛。</div>
+      <p>The pattern shows: usually one Trigger (sometimes several), App nodes doing the heavy lifting (over 60% of the node count), Core nodes as <strong>the pipe fittings that join the App nodes up</strong> (IF decides which way to go, Set reshapes the data, Merge brings the lines together), and Cluster as the AI-only "one node with several tendrils" structure.</p>
+      <div class="callout tip"><strong>Tip:</strong> Next time you see a workflow screenshot someone has shared, match it against these four rhythms: two or three blocks is "shortest", five to eight is "common", tendrils under one node is "AI cluster", a dozen-plus blocks with branches is "complex". Read the structure and you can read what the workflow is for.</div>
     </section>
 
-    <section id="search" data-nav="抽屜怎麼找節點">
-      <h2 data-icon="tips">抽屜怎麼找節點最快</h2>
-      <p>知道分類是為了看得懂，但實戰時找節點你根本不會一個個滑分類。<strong>直接打關鍵字</strong>比什麼都快。</p>
+    <section id="search" data-nav="Finding a node">
+      <h2 data-icon="tips">The fastest way to find a node in the panel</h2>
+      <p>Knowing the categories is what lets you read a workflow, but in practice you will never scroll through them one by one to find a node. <strong>Typing a keyword</strong> beats everything else.</p>
       <ol class="steps">
         <li>
-          <h3>打服務名字：Slack、Sheet、Gmail、Notion</h3>
-          <p>抽屜最上面有搜尋框，輸入 <code>slack</code> 就會濾出 Slack 相關的節點（Slack、Slack Trigger 都會出現）。99% 的常用整合這樣就找得到。</p>
+          <h3>Type the service name: Slack, Sheet, Gmail, Notion</h3>
+          <p>There is a search box at the top of the panel. Type <code>slack</code> and it filters down to the Slack-related nodes (both Slack and Slack Trigger show up). That finds 99% of the integrations you use.</p>
         </li>
         <li>
-          <h3>打功能字眼：if、set、code、wait、http</h3>
-          <p>Core 節點沒有 SaaS 名字，用功能字搜。輸入 <code>if</code> 會出現 IF、Switch；輸入 <code>set</code> 會出現 Set / Edit Fields；輸入 <code>http</code> 出現 HTTP Request。</p>
+          <h3>Type a function word: if, set, code, wait, http</h3>
+          <p>Core nodes have no service name, so search by what they do. Type <code>if</code> and you get IF and Switch; type <code>set</code> and you get Set / Edit Fields; type <code>http</code> and you get HTTP Request.</p>
         </li>
         <li>
-          <h3>找不到 → 可能是社群節點（community package）</h3>
-          <p>比較小眾的服務（例如某台灣本土 SaaS）可能官方沒做節點，但 n8n 有 <strong>community nodes</strong>（社群套件）機制——需要管理員在後台裝。這個屬於進階操作，找 IT 部門幫忙裝就好。</p>
+          <h3>Nothing found → it may be a community node (community package)</h3>
+          <p>A more niche service (a Taiwan-only SaaS, say) may have no official node, but n8n has a <strong>community nodes</strong> mechanism — an admin has to install the package on the back end. That is an advanced operation, so ask IT to install it for you.</p>
         </li>
         <li>
-          <h3>完全沒有這家 SaaS 的節點 → 用 HTTP Request 自己打</h3>
-          <p>官方跟社群都沒有？沒問題，只要那家 SaaS 有 REST API，用 <a href="ch12_http_request.html">HTTP Request 節點（第 12 章）</a>照 API 文件填 URL、method、header、body 就能打。這是 n8n 的萬用鑰匙——只要對方有 API，你就打得到。</p>
-        </li>
-      </ol>
-    </section>
-
-    <section id="troubleshoot" data-nav="常見狀況排除">
-      <h2 data-icon="troubleshoot">常見狀況排除</h2>
-      <p>剛開始接觸節點抽屜，最常遇到這幾個狀況：</p>
-      <ol class="steps">
-        <li>
-          <h3>節點抽屜打不開</h3>
-          <p>兩種方式：<strong>Canvas 空白處按 +</strong>、或是新 workflow 就按右邊面板的 <strong>Add first step</strong>。已經有節點的話，把游標移到某個節點右邊的圓點上會出現 <strong>+</strong>，點下去也會開抽屜（自動接在該節點後面）。</p>
-        </li>
-        <li>
-          <h3>抽屜太多分類找不到</h3>
-          <p>不要一頁一頁滑，直接在最上面的搜尋框打關鍵字。分類是為了瀏覽的人設計的，實戰用搜尋最快。</p>
-        </li>
-        <li>
-          <h3>我要的節點打了搜不到</h3>
-          <p>三種可能：<strong>（1）</strong>拼字對不上——例如你打 <code>google sheets</code> 找不到，試 <code>sheets</code>；<strong>（2）</strong>可能是社群節點，需要管理員在後台裝 community package；<strong>（3）</strong>該服務沒官方節點——那就改用 <a href="ch12_http_request.html">HTTP Request（第 12 章）</a>對它 API 打。</p>
-        </li>
-        <li>
-          <h3>節點名字改了找不到（Function → Code、Set → Edit Fields）</h3>
-          <p>n8n 定期會改節點名字。最常見的兩個：<strong>Function 節點在 v1 已經完全被 Code 取代</strong>，官方文件的 Function 頁面現在是 404，舊 workflow 匯入時會自動遷移或標為 legacy；<code>Set</code> 也改叫 <code>Edit Fields (Set)</code>。舊教學裡的名字搜不到就打新名字（Code、Edit Fields）。</p>
-        </li>
-        <li>
-          <h3>選了 SaaS App 節點但左邊沒有輸入圓點</h3>
-          <p>你可能選成 SaaS 的 <strong>Trigger 版</strong>了（例如 <code>Slack Trigger</code> 而不是 <code>Slack</code>）。刪掉重選純 App 版本——搜尋 <code>slack</code> 時同時會出現兩個節點，選<strong>沒有</strong> "Trigger" 字樣那個。</p>
-        </li>
-        <li>
-          <h3>拉了 Core 節點但不知道要接哪</h3>
-          <p>Core 節點通常放在 workflow <strong>中間</strong>（Trigger 跟最終 App 節點之間）。IF 放在你要分岔的位置、Set 放在你要整型資料的地方、Merge 放在多路合流處。單獨拉一個 Core 節點沒用，它必須夾在別的節點中間才有意義。</p>
-        </li>
-        <li>
-          <h3>拉了 AI Agent 但按 Execute 就報錯「no language model」</h3>
-          <p>AI Agent 是 <strong>Cluster root 節點</strong>，它<strong>必須</strong>從底部的 <code>Chat Model</code> 接點掛一個 sub-node（OpenAI Chat Model 或 Anthropic Chat Model 等）才能跑。同理，如果啟用了 Memory／Tool 但沒掛對應 sub-node，也會報接點空的錯。單獨一顆 AI Agent 不會動。</p>
+          <h3>No node for that SaaS at all → call it yourself with HTTP Request</h3>
+          <p>Nothing official and nothing from the community? Fine — as long as that service has a REST API, use the <a href="ch12_http_request.html">HTTP Request node (Chapter 12)</a> and fill in the URL, method, header and body from its API docs. This is n8n's skeleton key: if they have an API, you can reach it.</p>
         </li>
       </ol>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="troubleshoot" data-nav="Troubleshooting">
+      <h2 data-icon="troubleshoot">Troubleshooting</h2>
+      <p>These are the situations people hit most often when they first work with the nodes panel:</p>
+      <ol class="steps">
+        <li>
+          <h3>The nodes panel will not open</h3>
+          <p>There are two ways in: <strong>press + on an empty spot on the canvas</strong>, or, in a new workflow, click <strong>Add first step</strong> in the right-hand panel. If there are already nodes on the canvas, hover over the dot on a node's right side and a <strong>+</strong> appears; clicking that opens the panel too, and wires the new node in behind that one.</p>
+        </li>
+        <li>
+          <h3>Too many categories to find anything</h3>
+          <p>Do not scroll page by page — type a keyword straight into the search box at the top. The categories are designed for people browsing; in practice, searching is the fastest route.</p>
+        </li>
+        <li>
+          <h3>I typed the node I want and nothing came up</h3>
+          <p>Three possibilities: <strong>(1)</strong> the spelling does not match — if <code>google sheets</code> finds nothing, try <code>sheets</code>; <strong>(2)</strong> it may be a community node, which an admin has to install as a community package on the back end; <strong>(3)</strong> the service has no official node — in which case use <a href="ch12_http_request.html">HTTP Request (Chapter 12)</a> against its API.</p>
+        </li>
+        <li>
+          <h3>The node was renamed and you cannot find it (Function → Code, Set → Edit Fields)</h3>
+          <p>n8n renames nodes from time to time. The two you meet most: <strong>the Function node was replaced entirely by Code in v1</strong>, the docs' Function page is now a 404, and older workflows are migrated automatically or marked legacy on import; <code>Set</code> is now called <code>Edit Fields (Set)</code>. When a name from an older tutorial finds nothing, type the new name (Code, Edit Fields).</p>
+        </li>
+        <li>
+          <h3>You picked a SaaS App node but there is no input dot on the left</h3>
+          <p>You have probably picked the service's <strong>Trigger version</strong> (<code>Slack Trigger</code> instead of <code>Slack</code>). Delete it and pick the plain App version — searching <code>slack</code> brings up both nodes, so choose the one <strong>without</strong> "Trigger" in the name.</p>
+        </li>
+        <li>
+          <h3>You added a Core node and do not know where to wire it</h3>
+          <p>Core nodes usually sit in the <strong>middle</strong> of a workflow (between the Trigger and the final App node). Put IF where you want the branch, Set where you want to reshape the data, Merge where the lines come back together. A Core node on its own does nothing; it only means something sandwiched between other nodes.</p>
+        </li>
+        <li>
+          <h3>You added AI Agent, pressed Execute, and got "no language model"</h3>
+          <p>AI Agent is a <strong>Cluster root node</strong>, and it <strong>must</strong> have a sub-node (OpenAI Chat Model, Anthropic Chat Model or similar) attached to the <code>Chat Model</code> dot on its underside before it can run. Same story if you enable Memory / Tool without attaching the matching sub-node: you get an error about an empty connector. An AI Agent on its own will not move.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
       <details class="faq">
-        <summary>n8n 的節點總共有幾種？</summary>
+        <summary>How many kinds of node does n8n have in total?</summary>
         <div class="body">
-          <p>n8n 官方支援 400+ 個節點（<a href="https://n8n.io/integrations/" target="_blank" rel="noopener">n8n.io/integrations</a> 的清單）；加上社群套件（community nodes）還有幾百個。實務上 8 成的自動化用不到 20 個節點，別被數字嚇到。</p>
+          <p>n8n officially supports 400+ nodes (the list at <a href="https://n8n.io/integrations/" target="_blank" rel="noopener">n8n.io/integrations</a>), and community packages add several hundred more. In practice 80% of automation uses fewer than 20 nodes, so do not let the number scare you.</p>
         </div>
       </details>
       <details class="faq">
-        <summary>最常用的到底哪幾個？</summary>
+        <summary>Which ones do people actually use most?</summary>
         <div class="body">
-          <p>Woow 內部觀察下來，這 8 個節點涵蓋 80% 的 workflow：</p>
+          <p>From what we see inside WoowTech, these 8 nodes cover 80% of workflows:</p>
           <ul>
-            <li><strong>Schedule Trigger</strong>（Trigger／Core）——定時跑</li>
-            <li><strong>Webhook</strong>（Trigger／Core）——外部打進來</li>
-            <li><strong>Slack</strong>（App）——通知</li>
-            <li><strong>Gmail</strong>（App）——寄信</li>
-            <li><strong>Google Sheets</strong>（App）——記錄</li>
-            <li><strong>HTTP Request</strong>（Core）——打任何 REST API</li>
-            <li><strong>IF</strong>（Core）——條件分支</li>
-            <li><strong>Edit Fields (Set)</strong>（Core）——整型資料</li>
+            <li><strong>Schedule Trigger</strong> (Trigger / Core) — runs on a schedule</li>
+            <li><strong>Webhook</strong> (Trigger / Core) — outside systems call in</li>
+            <li><strong>Slack</strong> (App) — notifications</li>
+            <li><strong>Gmail</strong> (App) — sending mail</li>
+            <li><strong>Google Sheets</strong> (App) — keeping records</li>
+            <li><strong>HTTP Request</strong> (Core) — calling any REST API</li>
+            <li><strong>IF</strong> (Core) — conditional branching</li>
+            <li><strong>Edit Fields (Set)</strong> (Core) — reshaping data</li>
           </ul>
-          <p>把這 8 個玩熟就可以在公司獨當一面了。</p>
+          <p>Get comfortable with these 8 and you can hold your own at work.</p>
         </div>
       </details>
       <details class="faq">
-        <summary>AI Agent 節點算哪一類？</summary>
+        <summary>Which family does the AI Agent node belong to?</summary>
         <div class="body">
-          <p>算第四大家族——<strong>Cluster nodes</strong>。官方文件明確放在 <code>integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.agent</code>。AI Agent 是 root，底下必須掛 sub-node（Chat Model、Memory、Tool、Vector Store）才會動。UI 抽屜通常在 <strong>AI</strong>／<strong>Advanced AI</strong> 標籤下方便瀏覽，但底層檔案分類就是 cluster。<a href="ch21_ai_agent.html">第 21 章</a>會拆完整組合方式。</p>
-          <p>順帶澄清：<code>OpenAI</code>、<code>Anthropic</code>、<code>Google Gemini</code> 這幾個「單次呼叫 LLM」的節點<strong>不是</strong> cluster，它們是 <strong>App 節點</strong>（放在 <code>app-nodes/n8n-nodes-langchain.*</code>），跟 AI Agent 不同層。</p>
+          <p>The fourth family — <strong>Cluster nodes</strong>. The docs put it squarely at <code>integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.agent</code>. AI Agent is the root, and it only moves once sub-nodes (Chat Model, Memory, Tool, Vector Store) are attached below it. The panel usually files it under an <strong>AI</strong> / <strong>Advanced AI</strong> label for easy browsing, but the underlying file category is cluster. <a href="ch21_ai_agent.html">Chapter 21</a> takes the full arrangement apart.</p>
+          <p>While we are here: the <code>OpenAI</code>, <code>Anthropic</code> and <code>Google Gemini</code> nodes that make a single LLM call are <strong>not</strong> clusters. They are <strong>App nodes</strong> (filed under <code>app-nodes/n8n-nodes-langchain.*</code>), on a different layer from AI Agent.</p>
         </div>
       </details>
       <details class="faq">
-        <summary>新版節點會不會取代舊的？</summary>
+        <summary>Do new node versions replace the old ones?</summary>
         <div class="body">
-          <p>n8n 有時候會發新版節點（例：Google Sheets 有 v1、v2；Set 節點在 v1 之後改叫 Edit Fields）。舊版一般會保留讓現有 workflow 不會壞掉；新拉的建議用新版（功能更完整、bug fix 較新）。抽屜裡搜 <code>sheets</code> 會同時出現舊版跟新版，選最新的那個。</p>
+          <p>n8n ships a new version of a node now and then (Google Sheets has a v1 and a v2; the Set node was renamed Edit Fields after v1). The old version is normally kept so existing workflows do not break; for anything new, use the newer version — it is more complete and its bug fixes are fresher. Searching <code>sheets</code> in the panel brings up both the old and the new one, so pick the newest.</p>
         </div>
       </details>
       <details class="faq">
-        <summary>Trigger 節點跟 App 節點差在哪？</summary>
+        <summary>What is the difference between a Trigger node and an App node?</summary>
         <div class="body">
-          <p>Trigger 是<strong>被動聽</strong>（時間到了、Webhook 進來、SaaS 有事件發生），會自動啟動 workflow；App 節點是<strong>主動做</strong>（傳訊息、寫表格、開帳號），需要上游先送資料才會執行。視覺上 Trigger 左邊沒圓點、App 兩邊都有圓點。同一家 SaaS 通常提供兩個：Slack Trigger 聽 Slack 事件、Slack 主動打 Slack。</p>
+          <p>A Trigger <strong>listens</strong> (the time comes round, a webhook arrives, something happens in a SaaS) and starts the workflow by itself. An App node <strong>acts</strong> (posts a message, writes a row, creates an account) and only runs once something upstream has handed it data. Visually, a Trigger has no dot on the left and an App node has a dot on each side. One SaaS usually ships both: Slack Trigger listens for Slack events, and Slack calls Slack.</p>
         </div>
       </details>
       <details class="faq">
-        <summary>Core 節點會不會跟 SaaS 講話？</summary>
+        <summary>Do Core nodes talk to SaaS services?</summary>
         <div class="body">
-          <p>大部分不會——IF、Set、Merge、Wait、Code 這些純粹在 workflow 內部處理資料流跟控制流。少數 Core 節點會打外部：<strong>HTTP Request</strong>（打任何 REST API）、<strong>SSE Trigger</strong>／<strong>Webhook</strong>（聽外部進來）、<strong>Email (Send)</strong>／<strong>FTP</strong>（通用協定）。這些不算「App 節點」，因為 App 節點的定義是「一家 SaaS 一個節點」；這些是「通用網路工具」，所以歸 Core。</p>
+          <p>Most do not — IF, Set, Merge, Wait and Code work purely on the data flow and control flow inside the workflow. A few Core nodes do reach outside: <strong>HTTP Request</strong> (calls any REST API), <strong>SSE Trigger</strong> / <strong>Webhook</strong> (listen for something coming in), <strong>Email (Send)</strong> / <strong>FTP</strong> (general protocols). None of these count as "App nodes", because an App node is defined as "one node per SaaS"; these are general networking tools, so they belong to Core.</p>
         </div>
       </details>
       <details class="faq">
-        <summary>Function 節點還在嗎？</summary>
+        <summary>Is the Function node still around?</summary>
         <div class="body">
-          <p>不在了。<code>Function</code> 節點在 n8n v1（2023-07）已經被 <code>Code</code> 節點完全取代——功能一樣但支援 Python，官方文件 <code>core-nodes/n8n-nodes-base.function/</code> 頁面現在是 404。舊 workflow 匯入 v1+ 時會被自動遷移或標為 legacy。新拉一律用 <code>Code</code>。</p>
+          <p>No. The <code>Function</code> node was replaced entirely by the <code>Code</code> node in n8n v1 (2023-07) — same job, but with Python support — and the docs page at <code>core-nodes/n8n-nodes-base.function/</code> is now a 404. Older workflows imported into v1+ are migrated automatically or marked legacy. For anything new, always use <code>Code</code>.</p>
         </div>
       </details>
       <details class="faq">
-        <summary>官方文件在哪查節點細節？</summary>
+        <summary>Where do I look up node details in the docs?</summary>
         <div class="body">
-          <p>兩個地方：<strong>（1）</strong>整合節點看 <a href="https://n8n.io/integrations/" target="_blank" rel="noopener">n8n.io/integrations</a>，每家 SaaS 有獨立頁面列所有 operation 跟參數；<strong>（2）</strong>Core 節點看 <a href="https://docs.n8n.io/integrations/builtin/core-nodes/" target="_blank" rel="noopener">docs.n8n.io/integrations/builtin/core-nodes/</a>，官方文件講每個 Core 節點的細節跟範例。</p>
+          <p>Two places: <strong>(1)</strong> for integration nodes, <a href="https://n8n.io/integrations/" target="_blank" rel="noopener">n8n.io/integrations</a>, where every SaaS has its own page listing all its operations and parameters; <strong>(2)</strong> for Core nodes, <a href="https://docs.n8n.io/integrations/builtin/core-nodes/" target="_blank" rel="noopener">docs.n8n.io/integrations/builtin/core-nodes/</a>, where the docs cover each Core node's details and examples.</p>
         </div>
       </details>
       <details class="faq">
-        <summary>下一步做什麼？</summary>
+        <summary>What do I do next?</summary>
         <div class="body">
-          <p>去<a href="ch8_first_workflow.html">第 8 章</a>從零拉第一條 workflow：<code>Schedule Trigger</code>（每天 8:00）→ <code>Google Calendar</code>（抓今日行事曆）→ <code>Slack</code>（傳訊息）。剛好就是 Trigger + 2 個 App 的最短節奏，把這章講的四大家族先感受前三個；第 21 章再進 Cluster。</p>
+          <p>Go to <a href="ch8_first_workflow.html">Chapter 8</a> and build your first workflow from scratch: <code>Schedule Trigger</code> (every day at 8:00) → <code>Google Calendar</code> (fetch today's events) → <code>Slack</code> (post a message). That is exactly the shortest rhythm — a Trigger plus 2 App nodes — so you meet the first three of the four families from this chapter; Cluster comes in Chapter 21.</p>
         </div>
       </details>
     </section>

@@ -70,14 +70,14 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要看這個</a>
-      <a href="#concept">workflow JSON 是什麼</a>
-      <a href="#steps">從 n8n.io 撈進來</a>
-      <a href="#advanced">從朋友拿到 JSON</a>
-      <a href="#assign">最容易忘的一步：接 credential</a>
-      <a href="#troubleshoot">匯入舊 workflow 的坑</a>
-      <a href="#rename">匯出給別人用</a>
-      <a href="#faq">常見問題</a>
+      <a href="#why">Why this matters</a>
+      <a href="#concept">What the JSON is</a>
+      <a href="#steps">From n8n.io</a>
+      <a href="#advanced">A JSON from someone</a>
+      <a href="#assign">The forgotten step</a>
+      <a href="#troubleshoot">Older workflows</a>
+      <a href="#rename">Exporting</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -91,247 +91,247 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch5_import_workflow.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 5</div>
-      <h1>從 n8n.io 找 JSON 貼進來</h1>
-      <p class="lead">上一章我們用了 n8n 內建的 Templates gallery，那是官方精選；但真正海量的分享大廣場是 <code>n8n.io/workflows</code>，社群幾千個 workflow 在那邊等你 copy。這章教你怎麼撈、怎麼「複製 JSON」、怎麼安全貼進 Woow n8n，還有貼進來之後 90% 新手會忘掉的那一步。</p>
+      <h1>Find JSON on n8n.io and paste it in</h1>
+      <p class="lead">In the last chapter we used the Templates gallery built into n8n, the official curated set; but the real volume lives on <code>n8n.io/workflows</code>, the big public square where thousands of community workflows wait for you to copy. This chapter shows you how to dig one out, how to "copy the JSON", how to paste it safely into Woow n8n, and the one step 90% of beginners forget once it is in.</p>
     </div>
 
-    <section id="why" data-nav="為什麼要看這個">
-      <h2 data-icon="why">為什麼還要學這個</h2>
-      <p><a href="ch4_templates.html">第 4 章</a>教了你在 n8n workspace 內按左側「Templates」直接叫出來的那個 gallery——那份清單是 n8n 官方選過的、少而精。可是你在公司實際會碰到的需求常常很偏：</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why this chapter is still worth your time</h2>
+      <p><a href="ch4_templates.html">Chapter 4</a> showed you the gallery that the "Templates" item in the left sidebar of the n8n workspace calls up — a short, curated list that n8n itself picked. But the needs you actually run into at work are often far more niche:</p>
       <ul>
-        <li>「加拿大 GST/PST 稅務 API 撈完寫進 Airtable」</li>
-        <li>「Notion 資料庫變動就發 Line Notify」</li>
-        <li>「客戶填了 Typeform，資料丟 HubSpot 再開 Slack 頻道」</li>
+        <li>"Pull data from a Canadian GST/PST tax API and write it into Airtable"</li>
+        <li>"When a Notion database changes, fire a LINE Notify message"</li>
+        <li>"A customer fills in a Typeform, the data goes to HubSpot, and a Slack channel is opened"</li>
       </ul>
-      <p>這種偏門組合，內建 gallery 通常沒有；但 <strong>n8n.io/workflows</strong>（也就是完整的社群分享網站）幾乎都找得到，因為過去五年有一堆歐美工程師把他們公司的 workflow 匿名化分享上去。這章就是教你怎麼從那個大廣場撈一份 JSON、貼進 Woow n8n 開始用。</p>
-      <div class="callout"><strong>觀念：</strong>ch4 的 Templates 是「n8n 內建版本」，這章的 n8n.io/workflows 是「社群版本」。兩個都會用，遇到冷門需求先來這裡撈。</div>
+      <p>Combinations this niche are usually missing from the built-in gallery. But <strong>n8n.io/workflows</strong> (the full community sharing site) has almost all of them, because over the past five years plenty of European and American engineers have anonymized their company workflows and shared them there. This chapter is about pulling a JSON out of that public square and getting it running in Woow n8n.</p>
+      <div class="callout"><strong>Concept:</strong> The Templates in ch4 are the "built-in version"; the n8n.io/workflows in this chapter is the "community version". You will use both — for an uncommon need, come here first.</div>
     </section>
 
-    <section id="concept" data-nav="workflow JSON 是什麼">
-      <h2 data-icon="concept">workflow JSON 到底是什麼</h2>
-      <p>你在 n8n canvas 上拉的每一個 workflow，實際上背後就是一個 <strong>JSON 檔</strong>。這個 JSON 記錄了三件事：</p>
+    <section id="concept" data-nav="What the JSON is">
+      <h2 data-icon="concept">What workflow JSON actually is</h2>
+      <p>Every workflow you drag together on the n8n canvas is really a <strong>JSON file</strong> underneath. That JSON records three things:</p>
       <table class="data-table">
         <thead>
-          <tr><th>JSON 裡有什麼</th><th>對應 canvas 上的什麼</th><th>會不會跟著走</th></tr>
+          <tr><th>What is in the JSON</th><th>What it maps to on the canvas</th><th>Does it travel with the file</th></tr>
         </thead>
         <tbody>
-          <tr><td>nodes 陣列（每個節點的類型、位置、參數）</td><td>你在畫布上看到的方塊</td><td>會</td></tr>
-          <tr><td>connections（哪個節點接到哪個節點）</td><td>方塊之間的線</td><td>會</td></tr>
-          <tr><td>節點的欄位設定（例：Slack 要傳到哪個 channel、Sheet 的 tab 名字）</td><td>你點進節點看到的 Parameters</td><td>會</td></tr>
-          <tr><td><strong>credentials（帳號密碼、OAuth token、API key）</strong></td><td>節點頂端「Credential to connect with」下拉選單</td><td><strong>不會！</strong></td></tr>
+          <tr><td>The nodes array (each node's type, position and parameters)</td><td>The boxes you see on the canvas</td><td>Yes</td></tr>
+          <tr><td>connections (which node feeds which)</td><td>The lines between the boxes</td><td>Yes</td></tr>
+          <tr><td>Each node's field settings (for example, which channel Slack posts to, or the tab name in a Sheet)</td><td>The Parameters you see when you open a node</td><td>Yes</td></tr>
+          <tr><td><strong>credentials (account passwords, OAuth tokens, API keys)</strong></td><td>The "Credential to connect with" dropdown at the top of a node</td><td><strong>No!</strong></td></tr>
         </tbody>
       </table>
-      <p>最關鍵一列在最後：<strong>credential 的機密內容（密碼、token、API key）不會跟著 JSON 走</strong>。分享 workflow 給別人不會不小心把你自己的 API key 洩出去；反過來，別人分享給你的 workflow，你也不會偷到他的帳號——你要自己接你的。JSON 裡通常只會殘留一小段像 <code>credentials: {"slackApi": {"id": "abc123", "name": "Slack account"}}</code> 的<em>引用資訊</em>，那個 id 是原作者環境裡的 ID，貼到你這邊會顯示「credential not found」紅字——這正是提醒你要接自己的那組。這是 n8n 設計上就想清楚的事，安全這一關幫你把好了。</p>
-      <div class="callout tip"><strong>提示：</strong>「credential 不會跟著走」這件事，在<a href="ch13_credentials.html">第 13 章</a>會再深入講原理。目前你只要記住：<em>貼進來的 workflow，credential 一定要重接一次</em>。</div>
+      <p>The last row is the one that matters: <strong>the secret part of a credential (passwords, tokens, API keys) does not travel with the JSON</strong>. Sharing a workflow will not leak your own API key by accident; the other way round, a workflow someone shares with you does not hand you their account — you connect your own. What normally survives in the JSON is a short fragment such as <code>credentials: {"slackApi": {"id": "abc123", "name": "Slack account"}}</code>, which is <em>reference information</em> and nothing more. That id belongs to the original author's instance, so pasted into yours it shows up as a red "credential not found" — which is exactly the reminder to connect your own. n8n thought this through by design, so the security side is already handled for you.</p>
+      <div class="callout tip"><strong>Tip:</strong> The "credentials do not travel" rule gets its full explanation in <a href="ch13_credentials.html">Chapter 13</a>. For now just remember: <em>every workflow you paste in needs its credentials connected again</em>.</div>
     </section>
 
-    <section id="steps" data-nav="從 n8n.io 撈進來">
-      <h2 data-icon="steps">從 n8n.io/workflows 撈一份貼進 Woow n8n</h2>
+    <section id="steps" data-nav="From n8n.io">
+      <h2 data-icon="steps">Grab one from n8n.io/workflows and paste it into Woow n8n</h2>
       <ol class="steps">
         <li>
-          <h3>打開瀏覽器到 n8n.io/workflows</h3>
-          <p>網址直接輸入 <code>https://n8n.io/workflows/</code>。這是 n8n 官方主站上、與 workspace 內建 gallery 分開的「社群分享大廣場」，幾千個 workflow 全部在這裡列。第一次來會被首頁塞滿嚇一下，正常。</p>
+          <h3>Open n8n.io/workflows in your browser</h3>
+          <p>Type <code>https://n8n.io/workflows/</code> straight into the address bar. This is the "community sharing square" on n8n's own main site, kept separate from the gallery built into the workspace, and thousands of workflows are listed here. The home page is packed and it startles most people the first time. That is normal.</p>
         </li>
         <li>
-          <h3>用關鍵字或分類過濾</h3>
-          <p>頁面上方有搜尋列，直接打你想要的關鍵字，例如 <code>Airtable</code>、<code>Notion</code>、<code>Line</code>、<code>Typeform</code>。左邊還有 filter：可以照「App」（用到哪些服務）、「Category」（AI、Marketing、Sales、DevOps 等）縮小範圍。想找 AI-flavor 的就打「Airtable」再左側勾「AI」。</p>
+          <h3>Filter by keyword or category</h3>
+          <p>There is a search bar at the top of the page; type the keyword you want, for example <code>Airtable</code>, <code>Notion</code>, <code>Line</code>, <code>Typeform</code>. On the left there are filters: narrow the list by "App" (which services it uses) or "Category" (AI, Marketing, Sales, DevOps and so on). For something AI-flavored, type "Airtable" and then tick "AI" on the left.</p>
         </li>
         <li>
-          <h3>點進去看細節</h3>
-          <p>每個 workflow 卡片點進去會看到三件事：<strong>Preview</strong>（節點連接圖，讓你一眼看出邏輯有多複雜）、<strong>Description</strong>（作者寫的用途說明）、<strong>使用到的節點 / 需要的 credentials 清單</strong>。花 30 秒把這頁看完，比複製回去再拆解快十倍。</p>
+          <h3>Click in and read the details</h3>
+          <p>Opening a workflow card shows you three things: <strong>Preview</strong> (the node diagram, so you can see at a glance how complex the logic is), <strong>Description</strong> (what the author says it is for), and <strong>the list of nodes used and credentials needed</strong>. Thirty seconds on this page beats copying it over and taking it apart afterwards by a factor of ten.</p>
         </li>
         <li>
-          <h3>用 ch4 教過的 5 個訊號判斷值不值得抄</h3>
-          <p>還記得<a href="ch4_templates.html">第 4 章</a>教的五個「這模板可靠嗎」訊號嗎？作者是誰、更新日期、節點數量合不合理、描述夠不夠具體、需要的 credential 你有沒有——一樣照這五點掃一次。特別注意「最後更新日期」：n8n.io 上有些 workflow 是 2020 年的，那個時代的節點很多已經改名或退場，貼進來可能一堆紅色 error。</p>
+          <h3>Use the five signals from ch4 to judge whether it is worth copying</h3>
+          <p>Remember the five "is this template reliable" signals from <a href="ch4_templates.html">Chapter 4</a>? Who the author is, the update date, whether the node count is sensible, whether the description is specific enough, and whether you have the credentials it needs — run the same five checks here. Pay particular attention to "Last update": some workflows on n8n.io date from 2020, and many nodes from that era have been renamed or retired, so pasting one in can produce a screen full of red errors.</p>
         </li>
         <li>
-          <h3>按右上角「Use for free」→「Copy template to clipboard」</h3>
-          <p>看中一個以後，右上角有個綠色 <strong>Use for free</strong> 按鈕，點下去會展開選項。裡面有 <strong>Copy template to clipboard</strong>（把整份 workflow JSON 複製到剪貼簿）——這就是我們要的。點下去畫面會閃一下「Copied!」的小提示。這時候剪貼簿裡就是一大坨 JSON 了。</p>
+          <h3>Press "Use for free" → "Copy template to clipboard" in the top right</h3>
+          <p>Once you have picked one, there is a green <strong>Use for free</strong> button in the top right; clicking it expands a set of options. One of them is <strong>Copy template to clipboard</strong> (it copies the whole workflow JSON to your clipboard) — that is the one we want. Click it and a small "Copied!" hint flashes on screen. Your clipboard now holds a big blob of JSON.</p>
         </li>
         <li>
-          <h3>切回 Woow n8n 的分頁</h3>
-          <p>回到你開好的 <code>n8n.woowtech.io</code> 分頁（沒開請照<a href="ch1_what_is_n8n.html">第 1 章</a>來）。任選一個現有的 workflow 打開，或者按左側「+ Add workflow」開一個全新的空白 workflow。<strong>建議開新的</strong>：貼進來的節點會直接落在你目前打開的 workflow 上，開新的比較不會跟現有工作攪在一起。</p>
+          <h3>Switch back to the Woow n8n tab</h3>
+          <p>Go back to the <code>n8n.woowtech.io</code> tab you already have open (if you do not have one, follow <a href="ch1_what_is_n8n.html">Chapter 1</a>). Open any existing workflow, or press "+ Add workflow" on the left to start a completely new, blank one. <strong>Start a new one</strong>: the nodes you paste land on whichever workflow you currently have open, and a fresh one keeps them from getting tangled up with work you already have.</p>
         </li>
         <li>
-          <h3>Canvas 空白處右鍵 → Paste，或直接按 Ctrl+V</h3>
-          <p>滑鼠移到 canvas 中間的<strong>空白處</strong>（不要點在任何節點上、也不要點在頂端的 workflow 名字欄位裡），按 <kbd>Ctrl</kbd>+<kbd>V</kbd>（Mac 是 <kbd>Cmd</kbd>+<kbd>V</kbd>）。<em>咻！</em>——所有節點連帶連線、連帶原本的相對位置，全部一次落到你的 canvas 上。</p>
+          <h3>Right-click an empty spot on the canvas → Paste, or just press Ctrl+V</h3>
+          <p>Move the mouse to an <strong>empty spot</strong> in the middle of the canvas (not on a node, and not in the workflow name field at the top), then press <kbd>Ctrl</kbd>+<kbd>V</kbd> (on a Mac, <kbd>Cmd</kbd>+<kbd>V</kbd>). <em>Whoosh!</em> — every node lands on your canvas at once, connections and original relative positions included.</p>
         </li>
         <li>
-          <h3>另存新檔並改名</h3>
-          <p>左上角 workflow 名字預設會用 n8n.io 上原作者取的英文名。點下去改成中文（例：「加拿大稅務同步 Airtable」）方便你日後在 Workflows 清單找。右上角記得按一下 <strong>Save</strong>（或 <kbd>Ctrl</kbd>+<kbd>S</kbd>），不然重新整理就沒了。</p>
+          <h3>Save a copy and rename it</h3>
+          <p>The workflow name in the top left defaults to the English name the original author gave it on n8n.io. Click it and rename it in your own language (for example, "Canadian tax sync to Airtable") so you can find it again later in the Workflows list. Remember to press <strong>Save</strong> in the top right (or <kbd>Ctrl</kbd>+<kbd>S</kbd>), or a refresh will lose it.</p>
         </li>
       </ol>
-      <div class="callout warn"><strong>注意：</strong><em>不要</em>在按 paste 之前先手癢按 Activate（右上角那個綠色 toggle）。貼進來的 workflow 節點一堆還沒接你自己的 credential，開起來只會滿螢幕 error。先貼、再接 credential、再手動 Execute 測一次，最後才 Activate。</div>
+      <div class="callout warn"><strong>Warning:</strong> <em>Do not</em> get itchy and press Activate (the green toggle in the top right) before you paste. The workflow you pasted in is full of nodes with none of your own credentials connected yet, so switching it on only fills the screen with errors. Paste first, then connect the credentials, then run a manual Execute to test, and only then Activate.</div>
     </section>
 
-    <section id="advanced" data-nav="從朋友拿到 JSON">
-      <h2 data-icon="advanced">如果是朋友（或 GitHub Gist）給你 JSON 檔</h2>
-      <p>不一定要走 n8n.io，同事在 Slack 傳給你 <code>my_workflow.json</code>、或看到某位 YouTuber 把 workflow 貼在 GitHub Gist——這些場景一樣能用。有兩種姿勢：</p>
+    <section id="advanced" data-nav="A JSON from someone">
+      <h2 data-icon="advanced">If a colleague (or a GitHub Gist) hands you a JSON file</h2>
+      <p>You do not have to go through n8n.io. A colleague sends you <code>my_workflow.json</code> on Slack, or you see a YouTuber who posted a workflow to a GitHub Gist — the same thing works. There are two ways to do it:</p>
 
-      <h3>姿勢一：貼文字（推薦，適合小的 workflow）</h3>
+      <h3>Way 1: paste the text (recommended, good for small workflows)</h3>
       <ol class="steps">
         <li>
-          <h3>打開那個 JSON 檔</h3>
-          <p>用 VS Code、記事本、任何文字編輯器打開，或者 GitHub Gist 頁面按「Raw」看原始 JSON。</p>
+          <h3>Open the JSON file</h3>
+          <p>Open it in VS Code, Notepad or any text editor, or press "Raw" on the GitHub Gist page to see the raw JSON.</p>
         </li>
         <li>
-          <h3>全選複製</h3>
-          <p><kbd>Ctrl</kbd>+<kbd>A</kbd> 全選，<kbd>Ctrl</kbd>+<kbd>C</kbd> 複製。整段 JSON 進到剪貼簿。</p>
+          <h3>Select all and copy</h3>
+          <p><kbd>Ctrl</kbd>+<kbd>A</kbd> to select all, <kbd>Ctrl</kbd>+<kbd>C</kbd> to copy. The whole JSON goes into your clipboard.</p>
         </li>
         <li>
-          <h3>回 n8n canvas 空白處貼上</h3>
-          <p>跟上一節第 7 步一模一樣：空白處按 <kbd>Ctrl</kbd>+<kbd>V</kbd>。</p>
+          <h3>Go back to the n8n canvas and paste on an empty spot</h3>
+          <p>Exactly the same as step 7 in the previous section: press <kbd>Ctrl</kbd>+<kbd>V</kbd> on an empty spot.</p>
         </li>
       </ol>
 
-      <h3>姿勢二：匯入檔案（適合幾百 KB 的大 workflow）</h3>
+      <h3>Way 2: import the file (good for large workflows of a few hundred KB)</h3>
       <ol class="steps">
         <li>
-          <h3>打開任一 workflow，找到右上角的三點選單「⋮」</h3>
-          <p>就在 workflow 名字旁邊、Activate toggle 附近。點下去展開一個選單。</p>
+          <h3>Open any workflow and find the three-dot menu "⋮" in the top right</h3>
+          <p>It sits next to the workflow name, near the Activate toggle. Click it to expand a menu.</p>
           <figure class="shot">
-            <img src="../assets/screenshots/ch5/01_workflows_list.png" alt="工作區右上角新建 workflow 與三點選單的 Import 選項" />
-            <figcaption><strong>圖 5-1</strong>工作區右上角：橘色 <strong>+ 新建 workflow</strong> 旁邊那顆三點選單「⋮」點開就是 <em>Import from URL...</em>／<em>Import from File...</em> 的入口。</figcaption>
+            <img src="../assets/screenshots/ch5/01_workflows_list.png" alt="The top right of the workspace: the new workflow button and the Import options in the three-dot menu" />
+            <figcaption><strong>Figure 5-1</strong>The top right of the workspace: open the three-dot menu "⋮" next to the orange <strong>+ Add workflow</strong> button and you get the <em>Import from URL...</em> / <em>Import from File...</em> entry points.</figcaption>
           </figure>
         </li>
         <li>
-          <h3>選「Import from File...」</h3>
-          <p>會跳出檔案選擇器。找到你下載的 <code>.json</code>，選好按開啟。同一個選單裡還有 <strong>Import from URL...</strong>，如果 JSON 放在 GitHub Gist 的 raw URL、或某個 public 網址，貼網址進去比下載檔案更快。</p>
+          <h3>Choose "Import from File..."</h3>
+          <p>A file picker opens. Find the <code>.json</code> you downloaded, select it and press Open. The same menu also has <strong>Import from URL...</strong>: if the JSON sits at a GitHub Gist raw URL or some other public address, pasting the address is faster than downloading the file.</p>
         </li>
         <li>
-          <h3>節點會全部貼進來</h3>
-          <p>跟複製貼上效果一樣，只是不用打開檔案再全選。大 workflow（幾百個節點）用這個比較不會卡剪貼簿。</p>
+          <h3>All the nodes come in</h3>
+          <p>The result is the same as copy and paste, you just skip opening the file and selecting all. For a large workflow (a few hundred nodes) this route is less likely to choke the clipboard.</p>
         </li>
       </ol>
-      <div class="callout tip"><strong>提示：</strong>兩種姿勢功能完全等價，看你順手。90% 的情況「複製 JSON 貼上」比較快；只有拿到超大檔或不想打開文字編輯器時才走 Import from File。</div>
+      <div class="callout tip"><strong>Tip:</strong> The two ways are functionally identical, so use whichever suits you. In 90% of cases "copy the JSON and paste" is faster; go through Import from File only when the file is huge or you would rather not open a text editor.</div>
     </section>
 
-    <section id="assign" data-nav="最容易忘的一步：接 credential">
-      <h2 data-icon="assign">貼進來之後最容易忘的一步：接自己的 credential</h2>
-      <p>這是 <strong>90% 新手第一次匯入 workflow 都會漏掉</strong>的一步。剛剛講過 credential 不會跟著 JSON 走，所以貼進來的每個節點裡，「Credential to connect with」下拉都是空的（或紅字寫著找不到）。</p>
+    <section id="assign" data-nav="The forgotten step">
+      <h2 data-icon="assign">The step everyone forgets after pasting: connect your own credential</h2>
+      <p>This is the step <strong>90% of beginners miss the first time they import a workflow</strong>. As we said, credentials do not travel with the JSON, so in every node you paste in the "Credential to connect with" dropdown is empty (or in red, saying it cannot be found).</p>
 
-      <h3>怎麼看出哪些節點需要接？</h3>
+      <h3>How do you spot which nodes need one?</h3>
       <ul>
-        <li><strong>節點頂端會有紅色框或紅色驚嘆號小圖示</strong>——這是 n8n 在明講「這個節點還沒準備好」。</li>
-        <li>點進節點看 <strong>Parameters</strong> 面板，最上面的 credential 下拉會顯示 <em>「No credentials selected」</em> 或 <em>紅底的 error 訊息</em>。</li>
-        <li>Canvas 上有整條 workflow 的視覺 hint：紅色節點連成一串，一眼就掃出來要修哪些。</li>
+        <li><strong>The node gets a red border or a small red exclamation icon at the top</strong> — that is n8n saying outright "this node is not ready yet".</li>
+        <li>Open the node and look at the <strong>Parameters</strong> panel: the credential dropdown at the very top shows <em>"No credentials selected"</em> or <em>an error message on a red background</em>.</li>
+        <li>The canvas gives you a visual hint for the whole workflow: the red nodes form a chain, so one glance tells you what needs fixing.</li>
       </ul>
 
-      <h3>怎麼接？</h3>
+      <h3>How do you connect one?</h3>
       <ol class="steps">
         <li>
-          <h3>點紅色的節點打開 Parameters</h3>
-          <p>點該節點兩下（或右側面板單擊），節點內容展開。</p>
+          <h3>Click the red node to open Parameters</h3>
+          <p>Double-click the node (or single-click it in the panel on the right) and its contents expand.</p>
         </li>
         <li>
-          <h3>找到最頂端的 credential 下拉</h3>
-          <p>下拉裡如果有你之前設過的同款 credential（例：你之前設過一組 Slack OAuth），選它就好。如果沒有，選最下面的 <strong>Create New Credential</strong>。</p>
+          <h3>Find the credential dropdown at the very top</h3>
+          <p>If the dropdown already lists a credential of the same kind that you set up earlier (say a Slack OAuth credential you created before), pick it. If not, choose <strong>Create New Credential</strong> at the bottom.</p>
         </li>
         <li>
-          <h3>按提示填帳號 / 授權 / 貼 API key</h3>
-          <p>每一家服務的 credential 表單不一樣（Slack 是 OAuth、Airtable 是 Personal Access Token、HTTP Request 可以什麼都不填）。<a href="ch13_credentials.html">第 13 章</a>會把每種 credential 類型講一遍，這裡先按 UI 提示走。</p>
+          <h3>Follow the prompts: fill in the account, authorize, or paste the API key</h3>
+          <p>Every service has a different credential form (Slack uses OAuth, Airtable uses a Personal Access Token, HTTP Request can be left blank entirely). <a href="ch13_credentials.html">Chapter 13</a> goes through every credential type; for now, just follow what the UI asks for.</p>
         </li>
         <li>
-          <h3>存檔、回 canvas 看紅色消失了沒</h3>
-          <p>設好按 Save，回 canvas 那個節點應該從紅框變回正常灰框。全部節點都變灰以後，才可以按 Execute Workflow 測試。</p>
+          <h3>Save, then go back to the canvas and check the red is gone</h3>
+          <p>Press Save once it is set up, and back on the canvas that node should go from a red border to a normal gray one. Only once every node is gray should you press Execute Workflow to test.</p>
         </li>
       </ol>
-      <div class="callout warn"><strong>注意：</strong>如果貼進來的是一個很大的 workflow（20+ 個節點、串了 5-6 家 SaaS），接 credential 這件事可能要花你半小時。這是預期值，不是你做錯——別人分享的 workflow 越豐富，你要接的 credential 就越多。</div>
+      <div class="callout warn"><strong>Warning:</strong> If what you pasted in is a large workflow (20+ nodes wired to 5-6 SaaS services), connecting the credentials can take you half an hour. That is expected, not a mistake on your part — the richer the workflow somebody shared, the more credentials you have to connect.</div>
     </section>
 
-    <section id="troubleshoot" data-nav="匯入舊 workflow 的坑">
-      <h2 data-icon="entity_id_trap">匯入舊版 workflow 的常見坑</h2>
-      <p>n8n 每幾個月會升一次大版本，節點會改名、參數會重排。從 n8n.io 撈到一個 2021 年的 workflow 貼進 Woow n8n（目前跑的是相對新的版本），最容易撞到下面幾種問題：</p>
+    <section id="troubleshoot" data-nav="Older workflows">
+      <h2 data-icon="entity_id_trap">Common traps when you import an older workflow</h2>
+      <p>n8n ships a major version every few months: nodes get renamed and parameters get rearranged. Pull a 2021 workflow off n8n.io and paste it into Woow n8n (which runs a relatively recent version) and these are the problems you are most likely to hit:</p>
       <table class="data-table">
         <thead>
-          <tr><th>症狀</th><th>原因</th><th>怎麼救</th></tr>
+          <tr><th>Symptom</th><th>Cause</th><th>How to fix it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>某個節點名字紅字，寫「Unknown node type」</td>
-            <td>n8n 升級後那個節點改名了。經典例子：<code>Function</code> 節點在新版被 <strong>Code</strong> 節點取代</td>
-            <td>刪掉那個節點，從節點抽屜找新名字（Code）重拉一個，把原本的 JavaScript 貼進去</td>
+            <td>A node's name is in red, reading "Unknown node type"</td>
+            <td>The node was renamed in an n8n upgrade. The classic example: the <code>Function</code> node was replaced by the <strong>Code</strong> node in newer versions</td>
+            <td>Delete that node, find the new name (Code) in the nodes panel, drag a fresh one in, and paste the original JavaScript into it</td>
           </tr>
           <tr>
-            <td>節點紅框，錯誤說「Node type not found: n8n-nodes-xyz」</td>
-            <td>作者用了「community node」（社群裝的第三方節點），你這台 n8n 沒裝</td>
-            <td>需要管理員裝 community package。這超出本章範圍，先跳過或找沒用 community node 的替代 workflow</td>
+            <td>A node with a red border, and the error says "Node type not found: n8n-nodes-xyz"</td>
+            <td>The author used a "community node" (a third-party node installed from the community) that your n8n does not have</td>
+            <td>An admin has to install the community package. That is out of scope for this chapter — skip it for now, or find a replacement workflow that uses no community nodes</td>
           </tr>
           <tr>
-            <td>Webhook 節點的 URL 看起來像別人的網址</td>
-            <td>Webhook 節點會自動用「你這台 n8n 的 base URL」產生 URL，貼進來會 <strong>重新產生一個屬於你的新 URL</strong>——原作者的 URL 打不到你這裡（好事，是隔離）</td>
-            <td>打開 Webhook 節點看你自己的 Production URL，把新 URL 貼給要 call 你的系統（例：Line Bot、Typeform）</td>
+            <td>The Webhook node's URL looks like somebody else's address</td>
+            <td>A Webhook node builds its URL automatically from "the base URL of your own n8n", so pasting it in <strong>generates a new URL that belongs to you</strong> — the original author's URL cannot reach you (a good thing; that is the isolation working)</td>
+            <td>Open the Webhook node, read your own Production URL, and hand that new URL to whatever system needs to call you (a LINE bot, Typeform, and so on)</td>
           </tr>
           <tr>
-            <td>某個節點參數欄位少了東西、或多了新欄位</td>
-            <td>節點升級後 schema 改了。新欄位通常有預設值不會炸；舊欄位可能已經沒作用</td>
-            <td>點該節點按 Execute Node 手動跑一次，看錯誤訊息告訴你哪個欄位有問題再補</td>
+            <td>A node is missing a parameter field, or has gained a new one</td>
+            <td>The node's schema changed when it was upgraded. New fields usually have a default and will not blow up; old fields may no longer do anything</td>
+            <td>Click the node, press Execute Node to run it once by hand, and let the error message tell you which field has a problem before you fill it in</td>
           </tr>
           <tr>
-            <td>整個 workflow 貼進來但畫面看起來只有一半</td>
-            <td>節點位置遠在 canvas 的右下角視野外</td>
-            <td>按 canvas 右下角控制列的「Fit to view」按鈕（放大鏡對準畫面那顆），或直接按數字鍵 <kbd>1</kbd> 縮到全畫面就看到全貌了</td>
+            <td>The whole workflow pasted in, but only half of it seems to be on screen</td>
+            <td>The nodes sit far off to the bottom right of the canvas, outside your view</td>
+            <td>Press the "Fit to view" button on the control bar in the bottom right of the canvas (the magnifier aimed at a screen), or just press the <kbd>1</kbd> key to zoom out and the whole thing appears</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="rename" data-nav="匯出給別人用">
-      <h2 data-icon="rename">反過來：匯出你自己的 workflow 給別人</h2>
-      <p>做好一個實用 workflow 想分享給團隊或朋友？步驟也一樣簡單：</p>
+    <section id="rename" data-nav="Exporting">
+      <h2 data-icon="rename">The other direction: export your own workflow for someone else</h2>
+      <p>Built a useful workflow and want to share it with your team or a friend? The steps are just as simple:</p>
       <ol class="steps">
         <li>
-          <h3>打開要匯出的 workflow</h3>
-          <p>在 Workflows 清單點進去，任何一個都行。</p>
+          <h3>Open the workflow you want to export</h3>
+          <p>Click into it from the Workflows list; any one will do.</p>
         </li>
         <li>
-          <h3>右上角三點選單「⋮」→「Download」</h3>
-          <p>選 Download 會直接下載一個 <code>.json</code> 檔到本機。檔名預設就是 workflow 的名字。</p>
+          <h3>Three-dot menu "⋮" in the top right → "Download"</h3>
+          <p>Choosing Download saves a <code>.json</code> file straight to your machine. The file name defaults to the workflow's name.</p>
         </li>
         <li>
-          <h3>把檔案（或整段 JSON 文字）給對方</h3>
-          <p>用 Slack、Email、Google Drive 都行。對方拿到後照這章教的方式貼進他的 n8n。</p>
+          <h3>Hand the file (or the whole JSON text) over</h3>
+          <p>Slack, email or Google Drive all work. Once they have it, they paste it into their own n8n the way this chapter describes.</p>
         </li>
       </ol>
-      <div class="callout danger"><strong>危險：</strong>雖然 credential 不會跟著 JSON 走，但你在節點<strong>參數欄位</strong>裡如果手癢直接把 API key 貼在明文欄位（例：某個 HTTP Request 節點的 header 硬寫 <code>Authorization: Bearer sk-xxx</code>），這個是<em>會</em>跟著 JSON 走的。分享前檢查每個節點的 Parameters，凡是 API key、密碼、token 都要走 credential 系統，別寫死在欄位。</div>
+      <div class="callout danger"><strong>Danger:</strong> Credentials do not travel with the JSON, but if you got itchy and pasted an API key in plain text into a node's <strong>parameter field</strong> (say, hard-coding <code>Authorization: Bearer sk-xxx</code> into the header of an HTTP Request node), that <em>does</em> travel with the JSON. Check the Parameters of every node before you share: every API key, password and token belongs in the credential system, not hard-coded into a field.</div>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
 
       <details class="faq">
-        <summary>能不能自動同步 n8n.io 上原作者的更新？</summary>
-        <div class="body">不行。你按 Copy 那一刻的版本就是你的版本，之後原作者改了、修 bug 了、加新節點了，你這邊都不會自動吃到。想追新版就手動再回去 n8n.io 撈一次、跟你手邊的比對差異。這也是為什麼真正在用的 workflow 建議另存新檔改中文名——你已經把它當自己的東西維護了。</div>
+        <summary>Can I sync the original author's updates from n8n.io automatically?</summary>
+        <div class="body">No. The version at the moment you pressed Copy is your version; if the author later changes it, fixes a bug or adds nodes, none of that reaches you automatically. To follow a newer version, go back to n8n.io by hand, grab it again and compare it against what you have. This is also why a workflow you really use should be saved as a copy under a name in your own language — at that point you are maintaining it as your own.</div>
       </details>
 
       <details class="faq">
-        <summary>Import 進來會不會覆蓋掉我現有的 workflow？</summary>
-        <div class="body">預設<strong>不會覆蓋</strong>，是「新增」——匯入永遠是「多一個 workflow」。唯一會 merge 的情況是：你已經打開一個 workflow 在 canvas 上，這時候 <kbd>Ctrl</kbd>+<kbd>V</kbd> 貼進來的節點會加到<em>目前這個 workflow</em> 的 canvas 上跟原本的節點並存。想避免混在一起，先按左側「+ Add workflow」開一個空白的，再 paste。</div>
+        <summary>Will importing overwrite my existing workflows?</summary>
+        <div class="body">By default it <strong>does not overwrite</strong>; it adds. An import always means "one more workflow". The only case that merges is this: you already have a workflow open on the canvas, and the nodes you paste with <kbd>Ctrl</kbd>+<kbd>V</kbd> are added to <em>the workflow you currently have open</em>, sitting alongside the nodes already there. To avoid mixing them, press "+ Add workflow" on the left for a blank one first, then paste.</div>
       </details>
 
       <details class="faq">
-        <summary>Copy JSON 之後貼進 n8n 卻變成純文字，發生什麼事？</summary>
-        <div class="body">你 paste 時滑鼠焦點在錯的地方了。最常見兩種：<strong>(1)</strong> 點到頂端 workflow 名字的輸入框，JSON 就變成 workflow 的名字（笑）；<strong>(2)</strong> 點到某個 sticky note 或某個節點內的欄位，JSON 就被塞進那個欄位。解法：先在 canvas 空白處<em>單擊一下</em>讓焦點回到畫布，再按 <kbd>Ctrl</kbd>+<kbd>V</kbd>。</div>
+        <summary>I copied the JSON, but pasting it into n8n turned it into plain text. What happened?</summary>
+        <div class="body">Your focus was in the wrong place when you pasted. The two most common cases: <strong>(1)</strong> you clicked the workflow name box at the top, so the JSON became the workflow's name; <strong>(2)</strong> you clicked a sticky note or a field inside a node, so the JSON went into that field. The fix: <em>single-click</em> an empty spot on the canvas first to move focus back to it, then press <kbd>Ctrl</kbd>+<kbd>V</kbd>.</div>
       </details>
 
       <details class="faq">
-        <summary>一次能 import 幾個 workflow？有沒有 Bulk import？</summary>
-        <div class="body">UI 上一次只能匯入一個 JSON 檔（或貼一份 JSON）。想批次搬 workflow 有兩條路：<strong>(1)</strong> 一個一個 paste，笨但保險；<strong>(2)</strong> 用 n8n 的 CLI 或 REST API 批次 import——這是進階操作，需要有 API key 或 shell 存取權，附錄 C 會提到概觀。日常從 n8n.io 抓的量單筆貼就夠。</div>
+        <summary>How many workflows can I import at once? Is there a bulk import?</summary>
+        <div class="body">The UI imports one JSON file (or one pasted JSON) at a time. To move workflows in bulk you have two routes: <strong>(1)</strong> paste them one by one, which is dumb but safe; <strong>(2)</strong> import in batches with n8n's CLI or REST API — that is an advanced operation, it needs an API key or shell access, and Appendix C sketches the outline. For the volume you pull off n8n.io day to day, pasting them one at a time is enough.</div>
       </details>
 
       <details class="faq">
-        <summary>怎麼備份我所有的 workflow？我怕哪天 n8n 掛了</summary>
-        <div class="body">短期：每個重要 workflow 都手動 Download 一份 JSON 存到 Google Drive 或 GitHub。長期：走 CLI 或 REST API 批次匯出，可以寫個 script 每晚跑一次。這在<a href="appendix_errors.html">附錄 B</a>與附錄 C 的「底層架構」章節會講設定細節。Woow n8n 的 admin 也有做整站備份，但自己另存一份總是保險。</div>
+        <summary>How do I back up all my workflows? I worry that n8n will die one day</summary>
+        <div class="body">Short term: Download a JSON of every important workflow by hand and keep it in Google Drive or GitHub. Long term: export in batches through the CLI or REST API, with a script that runs every night. <a href="appendix_errors.html">Appendix B</a> and the "How it works underneath" section of Appendix C cover the configuration details. The Woow n8n admins do back up the whole instance, but keeping your own copy is always the safer bet.</div>
       </details>
 
       <details class="faq">
-        <summary>從 n8n.io 抓下來的 workflow 商業使用有版權問題嗎？</summary>
-        <div class="body">n8n.io/workflows 上分享的 workflow 預設就是給人自由使用、改造、內部商業用途的（作者上傳時已同意）。你不用付版權費、也不用註明來源。但如果你要把「別人的 workflow 二次封裝賣錢」就要看原作者 profile 有沒有特別聲明。日常公司內部用，安啦。</div>
+        <summary>Are there copyright problems with using a workflow from n8n.io commercially?</summary>
+        <div class="body">Workflows shared on n8n.io/workflows are by default free to use, modify and run for internal commercial purposes (the author agreed to that when uploading). You do not owe a license fee and you do not have to credit the source. But if you want to "repackage someone else's workflow and sell it", check whether the original author's profile says anything specific. For everyday use inside your company, you are fine.</div>
       </details>
 
       <details class="faq">
-        <summary>我改了貼進來的 workflow 之後怎麼分享回社群？</summary>
-        <div class="body">n8n.io 有「Submit a workflow」的入口（帳號登入後），可以把你的 JSON 貼上去、寫描述、選分類、送審。審過就會出現在大家搜尋列表裡。這超出這章範圍，之後<a href="ch6_modify_workflow.html">第 6 章</a>會延伸講改別人 workflow 的節奏，貢獻回社群屬於進階題。</div>
+        <summary>I edited a workflow I pasted in. How do I share it back to the community?</summary>
+        <div class="body">n8n.io has a "Submit a workflow" entry point (once you are signed in): paste your JSON, write a description, pick a category and submit it for review. Once it passes it shows up in everyone's search results. That is out of scope here — <a href="ch6_modify_workflow.html">Chapter 6</a> goes further into the rhythm of editing someone else's workflow, and contributing back to the community is an advanced topic.</div>
       </details>
     </section>
 

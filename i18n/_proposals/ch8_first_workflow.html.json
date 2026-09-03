@@ -1,0 +1,90 @@
+{
+  "file": "ch8_first_workflow.html",
+  "entries": [
+    {
+      "unit": "#concept",
+      "zh": "<pre class=\"code-block\"><code>[⏰ 每天 08:00]  →  [📅 讀今天行事曆]  →  [💬 傳給 Slack]\n   Schedule           Google Calendar           Slack\n   Trigger            Event · Get Many         Message · Send Message</code></pre>",
+      "en": "<pre class=\"code-block\"><code>[⏰ Every day at 08:00]  →  [📅 Read today's calendar]  →  [💬 Send to Slack]\n   Schedule           Google Calendar           Slack\n   Trigger            Event · Get Many         Message · Send Message</code></pre>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<code>每日行事曆推送</code>",
+      "en": "<code>Daily calendar digest</code>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<code>每小時抓 RSS</code>",
+      "en": "<code>Hourly RSS fetch</code>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<code>Slack 收單自動建 Notion</code>",
+      "en": "<code>Slack order to Notion</code>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<pre class=\"code-block\"><code>早安！今天有 {{ $json.summary.length }} 個行程：\n{{ $json.summary.join('、') }}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>Good morning! You have {{ $json.summary.length }} events today:\n{{ $json.summary.join(', ') }}</code></pre>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<pre class=\"code-block\"><code>早安！今天有 {{ $input.all().length }} 個行程：\n{{ $input.all().map(i =&gt; i.json.summary).join('、') }}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>Good morning! You have {{ $input.all().length }} events today:\n{{ $input.all().map(i =&gt; i.json.summary).join(', ') }}</code></pre>"
+    },
+    {
+      "unit": "#slack-text",
+      "zh": "<code>今天 {{ $json.summary.length }} 個行程</code>",
+      "en": "<code>{{ $json.summary.length }} events today</code>"
+    },
+    {
+      "unit": "#slack-text",
+      "zh": "<code>今天行程：\\n{{ $json.summary.map((s, i) =&gt; '• ' + s + ' @ ' + $json.start[i].dateTime).join('\\n') }}</code>",
+      "en": "<code>Today's schedule:\\n{{ $json.summary.map((s, i) =&gt; '• ' + s + ' @ ' + $json.start[i].dateTime).join('\\n') }}</code>"
+    },
+    {
+      "unit": "#slack-text",
+      "zh": "<code>*今天行程* :calendar:\\n&gt; {{ $json.summary.map((s, i) =&gt; s + ' (' + $json.start[i].dateTime + ')').join('\\n&gt; ') }}</code>",
+      "en": "<code>*Today's schedule* :calendar:\\n&gt; {{ $json.summary.map((s, i) =&gt; s + ' (' + $json.start[i].dateTime + ')').join('\\n&gt; ') }}</code>"
+    },
+    {
+      "unit": "#slack-text",
+      "zh": "<code>*粗體*</code>",
+      "en": "<code>*bold*</code>"
+    },
+    {
+      "unit": "#slack-text",
+      "zh": "<code>_斜體_</code>",
+      "en": "<code>_italic_</code>"
+    },
+    {
+      "unit": "#slack-text",
+      "zh": "<code>~刪除線~</code>",
+      "en": "<code>~strikethrough~</code>"
+    },
+    {
+      "unit": "#slack-text",
+      "zh": "<code>`行內 code`</code>",
+      "en": "<code>`inline code`</code>"
+    },
+    {
+      "unit": "#slack-text",
+      "zh": "<code>&gt; 引用</code>",
+      "en": "<code>&gt; quote</code>"
+    },
+    {
+      "unit": "#pattern",
+      "zh": "<pre class=\"code-block\"><code>[什麼時候跑]  →  [拿什麼資料]  →  [做什麼事]\n   Trigger          Action 1              Action 2\n                    (可以 0 到很多顆)     (通常最少 1 顆)</code></pre>",
+      "en": "<pre class=\"code-block\"><code>[When it runs]  →  [What data to fetch]  →  [What to do]\n   Trigger          Action 1              Action 2\n                    (zero to many)     (usually at least one)</code></pre>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>{{ $input.all().map(i =&gt; i.json.summary || '（無標題事件）').join('、') }}</code>",
+      "en": "<code>{{ $input.all().map(i =&gt; i.json.summary || '(untitled event)').join(', ') }}</code>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>{{ $json.summary.map(s =&gt; s || '（無標題事件）').join('、') }}</code>",
+      "en": "<code>{{ $json.summary.map(s =&gt; s || '(untitled event)').join(', ') }}</code>"
+    }
+  ]
+}
