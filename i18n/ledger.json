@@ -53,7 +53,7 @@
   "en:ch1_what_is_n8n.html#tips": {
    "status": "complete",
    "sourceHash": "75f7a8fa675ea3c6",
-   "targetHash": "e879140a8feb4c4c",
+   "targetHash": "41b1a0044824187b",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -81,7 +81,7 @@
   "en:ch1_what_is_n8n.html#troubleshoot": {
    "status": "complete",
    "sourceHash": "f5cb44de62c6701a",
-   "targetHash": "6b5c5729e72ba622",
+   "targetHash": "29893680cc3394a4",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -508,14 +508,14 @@
   "en:ch7_node_types.html#tips": {
    "status": "complete",
    "sourceHash": "39c1719ea8257d57",
-   "targetHash": "5f3da72633611f0f",
+   "targetHash": "595e0876196c0064",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:ch7_node_types.html#search": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "341fa14f99184ae5",
-   "targetHash": "f7fedaef86b93b1a",
+   "targetHash": "604dc9e57f89a91f",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -529,7 +529,7 @@
   "en:ch7_node_types.html#faq": {
    "status": "complete",
    "sourceHash": "50a30838d6371697",
-   "targetHash": "8a5b4e884f9a2079",
+   "targetHash": "cd78ec89af33957a",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -597,16 +597,16 @@
    "translatedAt": "2026-09-03"
   },
   "en:ch8_first_workflow.html#troubleshoot": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "1ed8b7983a80ecf2",
-   "targetHash": "e6ec685151d8ed81",
+   "targetHash": "1cf7b323dee581b9",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:ch8_first_workflow.html#faq": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "47b39c9f496964b9",
-   "targetHash": "8b683bdd46337d24",
+   "targetHash": "7515f7d9193ad2c2",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -723,16 +723,16 @@
    "translatedAt": "2026-09-03"
   },
   "en:ch10_triggers.html#auto": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "d5c8d8905b55f67d",
-   "targetHash": "5bdbaaae0202adfe",
+   "targetHash": "016f54c2d28073dd",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:ch10_triggers.html#location": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "8a32739af1bd23db",
-   "targetHash": "f1958db3a3f34f58",
+   "targetHash": "a5b0e650116e74b9",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -758,23 +758,23 @@
    "translatedAt": "2026-09-03"
   },
   "en:ch10_triggers.html#steps": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "c5897e0b51b85dab",
-   "targetHash": "b6b736a6d6553ad6",
+   "targetHash": "d8a5f5942fa799c8",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:ch10_triggers.html#troubleshoot": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "c07243e6223b6e3c",
-   "targetHash": "80c3c3ffe7b5d569",
+   "targetHash": "fe42391b22603078",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:ch10_triggers.html#faq": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "2daeb4f9466f843d",
-   "targetHash": "41b7a2e62b4fe5ec",
+   "targetHash": "7a10847bb093e530",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -856,16 +856,16 @@
    "translatedAt": "2026-09-03"
   },
   "en:ch12_http_request.html#header": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "93e796409fa44d67",
-   "targetHash": "f69de7e437decfab",
+   "targetHash": "75572b46ed610bef",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:ch12_http_request.html#why": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "421b1221f9e30772",
-   "targetHash": "f638d5a604141bcf",
+   "targetHash": "da8d84ea844f3b3b",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1066,9 +1066,9 @@
    "translatedAt": "2026-09-03"
   },
   "en:ch14_expressions.html#datetime": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "d123e79a3dc9c767",
-   "targetHash": "7119f8db62e3159d",
+   "targetHash": "068f2486653d23a9",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1101,9 +1101,9 @@
    "translatedAt": "2026-09-03"
   },
   "en:ch14_expressions.html#troubleshoot": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "753e2bd122b8e16d",
-   "targetHash": "2d0129bb25cea28c",
+   "targetHash": "60f122e6a7ead748",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1136,9 +1136,9 @@
    "translatedAt": "2026-09-03"
   },
   "en:ch15_if_switch.html#steps": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "de07f3aedf3887a2",
-   "targetHash": "46ccd773e62c4f28",
+   "targetHash": "f101199032a280d3",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1243,7 +1243,7 @@
   "en:ch16_merge_split.html#example_api_split": {
    "status": "complete",
    "sourceHash": "38e1a86d2af1c3ac",
-   "targetHash": "93358cc45ec06d6e",
+   "targetHash": "4c1db41638a40063",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1264,7 +1264,7 @@
   "en:ch16_merge_split.html#faq": {
    "status": "complete",
    "sourceHash": "44c3a84464f1d7fe",
-   "targetHash": "690f6f80a8104f29",
+   "targetHash": "80c2ed32896b0123",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1381,9 +1381,9 @@
    "translatedAt": "2026-09-03"
   },
   "en:ch18_set_function.html#steps": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "5c0b6304d63c9c97",
-   "targetHash": "997792b7e96dd058",
+   "targetHash": "2754982fee3c5fb6",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1437,9 +1437,9 @@
    "translatedAt": "2026-09-03"
   },
   "en:ch18_set_function.html#faq": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "741afdcc1e6b2f30",
-   "targetHash": "9d7ce71ce3fe1f0f",
+   "targetHash": "1bacdd60693be23b",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1500,16 +1500,16 @@
    "translatedAt": "2026-09-03"
   },
   "en:ch19_subworkflow.html#labels": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "2d46e09bd6d4993f",
-   "targetHash": "d1b45eb15b201e5d",
+   "targetHash": "48b429c90078bb11",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:ch19_subworkflow.html#advanced": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "db4190bda9251664",
-   "targetHash": "16878b092fcc7324",
+   "targetHash": "77687241cfb0c5e2",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1607,7 +1607,7 @@
   "en:ch20_code_node.html#troubleshoot": {
    "status": "complete",
    "sourceHash": "ac863f1f23df902b",
-   "targetHash": "fa5c06f6f160d41f",
+   "targetHash": "fe94f857ae1f87f5",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1698,7 +1698,7 @@
   "en:ch21_ai_agent.html#faq": {
    "status": "complete",
    "sourceHash": "ef5f6353b03bf016",
-   "targetHash": "0d189b7371a2c50f",
+   "targetHash": "be600a67acab2a11",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1801,9 +1801,9 @@
    "translatedAt": "2026-09-03"
   },
   "en:appendix_settings_ref.html#why": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "d183f80c6d5fe3cb",
-   "targetHash": "57ec83c27b31e71c",
+   "targetHash": "6d3ab1a272edaccd",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1822,16 +1822,16 @@
    "translatedAt": "2026-09-03"
   },
   "en:appendix_settings_ref.html#workflow_settings": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "084b1a883715abcb",
-   "targetHash": "e5736f817108c89f",
+   "targetHash": "ad2fc1511d6b6076",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:appendix_settings_ref.html#instance": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "626fff259e78f989",
-   "targetHash": "996c86e8e3b8fccf",
+   "targetHash": "cec0d48429fcc75d",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -1843,30 +1843,30 @@
    "translatedAt": "2026-09-03"
   },
   "en:appendix_settings_ref.html#timezone": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "75c12b801c87f26e",
-   "targetHash": "28ed40c5de9cd0f1",
+   "targetHash": "245e357bf09ab5b9",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:appendix_settings_ref.html#checklist": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "c2ca87f0a58ebf96",
-   "targetHash": "f0577a401cfdb612",
+   "targetHash": "a2faf5513783edfd",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:appendix_settings_ref.html#troubleshoot": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "024b444ad3abbd60",
-   "targetHash": "57bc76babe624e60",
+   "targetHash": "4ddb50f285e080a6",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:appendix_settings_ref.html#faq": {
-   "status": "complete",
+   "status": "localized",
    "sourceHash": "8484e80607010dd8",
-   "targetHash": "45cd96a674871346",
+   "targetHash": "6b9b247536a270e7",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2069,35 +2069,35 @@
   "en:appendix_internals.html#faq": {
    "status": "complete",
    "sourceHash": "c4426b29fefac8c0",
-   "targetHash": "92878f78c75569f3",
+   "targetHash": "b35d64ae48df05cb",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:sales.html#header": {
    "status": "complete",
    "sourceHash": "ba0491264e361dac",
-   "targetHash": "2c9a84f907188b70",
+   "targetHash": "e4be6da1c82b9bbe",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:sales.html#why": {
    "status": "complete",
    "sourceHash": "ab22c37a984988ed",
-   "targetHash": "0f5b666639e975b5",
+   "targetHash": "6073adf96968a646",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:sales.html#what": {
    "status": "complete",
    "sourceHash": "04681328bf4a67db",
-   "targetHash": "cf56850f0a968b6e",
+   "targetHash": "92b1124c52c06340",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:sales.html#modes": {
    "status": "complete",
    "sourceHash": "cdad6c196f18ffd1",
-   "targetHash": "4651dcd58693894b",
+   "targetHash": "dd4da01d488cb4dd",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2111,7 +2111,7 @@
   "en:sales.html#mode-cloud": {
    "status": "complete",
    "sourceHash": "75d96a700e479e27",
-   "targetHash": "8b2cc97d0f573442",
+   "targetHash": "b7cbb50d157d3428",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2146,7 +2146,7 @@
   "en:sales.html#faq": {
    "status": "complete",
    "sourceHash": "6761d6e02a6aaa29",
-   "targetHash": "c96249fbd2965b2e",
+   "targetHash": "6583cd618f2aa393",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2160,77 +2160,77 @@
   "en:prompts.html#header": {
    "status": "complete",
    "sourceHash": "cd373a17e7efdb38",
-   "targetHash": "0920dfe24d5e3880",
+   "targetHash": "bc04f9c4d2a203d7",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#why": {
    "status": "complete",
    "sourceHash": "6b9b8e3bd6e6e151",
-   "targetHash": "56d6277a4ee33dd7",
+   "targetHash": "e32554b0772a3831",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#howto": {
    "status": "complete",
    "sourceHash": "8ace209f76c56dcc",
-   "targetHash": "6154e132ef36c9af",
+   "targetHash": "a1af52a275ee01d4",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-create": {
    "status": "complete",
    "sourceHash": "2a877612476b795d",
-   "targetHash": "23c161d8674dac35",
+   "targetHash": "938a32172297be45",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-trigger": {
    "status": "complete",
    "sourceHash": "961dd06bf08bd6e5",
-   "targetHash": "e96a41b5ebb6a754",
+   "targetHash": "8be7187323c332b3",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-transform": {
    "status": "complete",
    "sourceHash": "f9ec4140e0ce10b8",
-   "targetHash": "11a93f50a4d44434",
+   "targetHash": "2c3df8489bfcadf8",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-integration": {
    "status": "complete",
    "sourceHash": "90f214167a0a3dac",
-   "targetHash": "d4a4c9b332899a1c",
+   "targetHash": "3c9aa786d55dd6d0",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-agent": {
    "status": "complete",
    "sourceHash": "c0959c0a4983375a",
-   "targetHash": "ef9ae94383d42e0a",
+   "targetHash": "9d7e4eec7e9640b8",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-error": {
    "status": "complete",
    "sourceHash": "9cba174146477dcd",
-   "targetHash": "38bde4bb77fad2ae",
+   "targetHash": "924703c94de98c20",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-debug": {
    "status": "complete",
    "sourceHash": "fa45cb33f2d5e7eb",
-   "targetHash": "28696c731fdcde33",
+   "targetHash": "615a461521dd11b1",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:prompts.html#cat-ops": {
    "status": "complete",
    "sourceHash": "9043c6925ae4eb29",
-   "targetHash": "10e41283e82a2818",
+   "targetHash": "f720157cf27455b6",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2272,7 +2272,7 @@
   "en:skills.html#install": {
    "status": "complete",
    "sourceHash": "edd7c72f16b68dd4",
-   "targetHash": "424741104387129c",
+   "targetHash": "4b36451d86a151cb",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2286,42 +2286,42 @@
   "en:skills.html#mcp": {
    "status": "complete",
    "sourceHash": "204a6a30aced193e",
-   "targetHash": "6d2c6571460bcb20",
+   "targetHash": "0ae03d1fe07d7e13",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:skills.html#collections": {
    "status": "complete",
    "sourceHash": "c4a16ebd3b3cf370",
-   "targetHash": "875c48730e4d9d1d",
+   "targetHash": "94d47d04bf360299",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:skills.html#compat": {
    "status": "complete",
    "sourceHash": "9849bdd701085b44",
-   "targetHash": "a7a67d144ace151c",
+   "targetHash": "ea57ba5828cc4b26",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:skills.html#safety": {
    "status": "complete",
    "sourceHash": "935e9b0e3f08cba4",
-   "targetHash": "dbdcb5aa27c8aa74",
+   "targetHash": "ee0c68955572838c",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:skills.html#spec": {
    "status": "complete",
    "sourceHash": "27276a39a088c74c",
-   "targetHash": "8448459aa2f6637f",
+   "targetHash": "0cc3f65eea8caf1f",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:skills.html#faq": {
    "status": "complete",
    "sourceHash": "d80f04e315e78800",
-   "targetHash": "063d086ae2becb5d",
+   "targetHash": "e32c2f123354da6d",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
@@ -2356,14 +2356,14 @@
   "en:chapters.json:site.description": {
    "status": "complete",
    "sourceHash": "b15f46e58bc9e510",
-   "targetHash": "4cbe8ae0fd92fca6",
+   "targetHash": "dc08d168ab5f3dbd",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },
   "en:chapters.json:site.footerMeta": {
    "status": "complete",
    "sourceHash": "e7c377467b859e63",
-   "targetHash": "351515770c145661",
+   "targetHash": "a4319de7f444c2d9",
    "registeredAt": "2026-09-01",
    "translatedAt": "2026-09-03"
   },

@@ -5,6 +5,51 @@
       "unit": "#troubleshoot",
       "zh": "<code>WEBHOOK_URL=https://n8n.你的公司.com</code>",
       "en": "<code>WEBHOOK_URL=https://n8n.your-company.example</code>"
+    },
+    {
+      "unit": "#workflow_settings",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#instance",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#timezone",
+      "zh": "<code>{{ $now.setZone('Asia/Taipei').toFormat('HH:mm') }}</code>",
+      "en": "<code>{{ $now.setZone('Europe/London').toFormat('HH:mm') }}</code>"
+    },
+    {
+      "unit": "#timezone",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#timezone",
+      "zh": "<code>GENERIC_TIMEZONE=Asia/Taipei</code>",
+      "en": "<code>GENERIC_TIMEZONE=Europe/London</code>"
+    },
+    {
+      "unit": "#timezone",
+      "zh": "<code>TZ=Asia/Taipei</code>",
+      "en": "<code>TZ=Europe/London</code>"
+    },
+    {
+      "unit": "#checklist",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
     }
   ]
 }

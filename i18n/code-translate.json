@@ -197,7 +197,7 @@
       "file": "ch15_if_switch.html",
       "unit": "#steps",
       "zh": "<code>{ \"amount\": 1500, \"customer\": \"台北文具行\" }</code>",
-      "en": "<code>{ \"amount\": 1500, \"customer\": \"Taipei Stationery Store\" }</code>"
+      "en": "<code>{ \"amount\": 1500, \"customer\": \"Example Stationery Store\" }</code>"
     },
     {
       "file": "ch15_if_switch.html",
@@ -798,6 +798,174 @@
       "unit": "#post",
       "zh": "<code>Authorization: Bearer &lt;你的 token&gt;</code>",
       "en": "<code>Authorization: Bearer &lt;your-token&gt;</code>"
+    },
+    {
+      "file": "ch7_node_types.html",
+      "unit": "#tips",
+      "zh": "<code>IF（priority == urgent）</code>",
+      "en": "<code>IF (priority == urgent)</code>"
+    },
+    {
+      "file": "ch8_first_workflow.html",
+      "unit": "#troubleshoot",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "ch8_first_workflow.html",
+      "unit": "#faq",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "ch10_triggers.html",
+      "unit": "#location",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "ch10_triggers.html",
+      "unit": "#location",
+      "zh": "<code>GENERIC_TIMEZONE=Asia/Taipei</code>",
+      "en": "<code>GENERIC_TIMEZONE=Europe/London</code>"
+    },
+    {
+      "file": "ch10_triggers.html",
+      "unit": "#location",
+      "zh": "<code>TZ=Asia/Taipei</code>",
+      "en": "<code>TZ=Europe/London</code>"
+    },
+    {
+      "file": "ch10_triggers.html",
+      "unit": "#steps",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "ch10_triggers.html",
+      "unit": "#troubleshoot",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "ch10_triggers.html",
+      "unit": "#faq",
+      "zh": "<code>GENERIC_TIMEZONE=Asia/Taipei</code>",
+      "en": "<code>GENERIC_TIMEZONE=Europe/London</code>"
+    },
+    {
+      "file": "ch14_expressions.html",
+      "unit": "#datetime",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "ch14_expressions.html",
+      "unit": "#datetime",
+      "zh": "<code>.setZone('Asia/Taipei')</code>",
+      "en": "<code>.setZone('Europe/London')</code>"
+    },
+    {
+      "file": "ch14_expressions.html",
+      "unit": "#troubleshoot",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "ch14_expressions.html",
+      "unit": "#troubleshoot",
+      "zh": "<code>.setZone('Asia/Taipei')</code>",
+      "en": "<code>.setZone('Europe/London')</code>"
+    },
+    {
+      "file": "ch16_merge_split.html",
+      "unit": "#faq",
+      "zh": "<code>{{ $json.names.join('、') }}</code>",
+      "en": "<code>{{ $json.names.join(', ') }}</code>"
+    },
+    {
+      "file": "ch19_subworkflow.html",
+      "unit": "#labels",
+      "zh": "<code>[Sub] Format Date TW</code>",
+      "en": "<code>[Sub] Format Local Date</code>"
+    },
+    {
+      "file": "ch19_subworkflow.html",
+      "unit": "#advanced",
+      "zh": "<code>[Sub] Format Date TW</code>",
+      "en": "<code>[Sub] Format Local Date</code>"
+    },
+    {
+      "file": "ch20_code_node.html",
+      "unit": "#troubleshoot",
+      "zh": "<code>「」</code>",
+      "en": "<code>“”</code>"
+    },
+    {
+      "file": "appendix_settings_ref.html",
+      "unit": "#workflow_settings",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "appendix_settings_ref.html",
+      "unit": "#instance",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "appendix_settings_ref.html",
+      "unit": "#timezone",
+      "zh": "<code>{{ $now.setZone('Asia/Taipei').toFormat('HH:mm') }}</code>",
+      "en": "<code>{{ $now.setZone('Europe/London').toFormat('HH:mm') }}</code>"
+    },
+    {
+      "file": "appendix_settings_ref.html",
+      "unit": "#timezone",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "appendix_settings_ref.html",
+      "unit": "#timezone",
+      "zh": "<code>GENERIC_TIMEZONE=Asia/Taipei</code>",
+      "en": "<code>GENERIC_TIMEZONE=Europe/London</code>"
+    },
+    {
+      "file": "appendix_settings_ref.html",
+      "unit": "#timezone",
+      "zh": "<code>TZ=Asia/Taipei</code>",
+      "en": "<code>TZ=Europe/London</code>"
+    },
+    {
+      "file": "appendix_settings_ref.html",
+      "unit": "#checklist",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "appendix_settings_ref.html",
+      "unit": "#troubleshoot",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "appendix_settings_ref.html",
+      "unit": "#faq",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "file": "prompts.html",
+      "unit": "#cat-ops",
+      "zh": "<code>n8n-dev.woowtech.io</code>",
+      "en": "<code>dev_abc</code>"
+    },
+    {
+      "file": "prompts.html",
+      "unit": "#cat-ops",
+      "zh": "<code>dev_abc</code>",
+      "en": "<code>n8n-dev.woowtech.io</code>"
     }
   ]
 }

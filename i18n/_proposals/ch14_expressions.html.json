@@ -40,6 +40,26 @@
       "unit": "#faq",
       "zh": "<code>$('上一節點').item.json.field</code>",
       "en": "<code>$('Previous Node').item.json.field</code>"
+    },
+    {
+      "unit": "#datetime",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#datetime",
+      "zh": "<code>.setZone('Asia/Taipei')</code>",
+      "en": "<code>.setZone('Europe/London')</code>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>.setZone('Asia/Taipei')</code>",
+      "en": "<code>.setZone('Europe/London')</code>"
     }
   ]
 }

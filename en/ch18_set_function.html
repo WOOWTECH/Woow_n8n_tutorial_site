@@ -164,7 +164,7 @@
   "email": "xiaoming@example.com",
   "age": 28
 }</code></pre>
-      <p>You want one more field after that called <code>full_name</code>, with the value <code>Wang Xiaoming</code> (Taiwanese names put the surname first). Follow along:</p>
+      <p>You want one more field after that called <code>full_name</code>, with the value <code>Wang Xiaoming</code>, because this example’s required output puts lastName before firstName. Note: choose an order and separator that match your users’ naming conventions. Follow along:</p>
       <ol class="steps">
         <li>
           <h3>Add an Edit Fields node</h3>
@@ -516,7 +516,7 @@
 
       <details class="faq">
         <summary>What timezone is <code>$now</code> in inside a Set node? Will it drift once it is written to Sheets?</summary>
-        <div class="body"><code>$now</code> is an n8n Luxon DateTime object and defaults to the n8n instance's timezone (if your n8n is deployed in Asia/Taipei, that is Taipei time). Written straight into Sheets, Sheets sometimes decides to be clever and shift the timezone. <strong>The recommended approach</strong>: produce a string directly with <code>{{ $now.toFormat('yyyy-MM-dd HH:mm:ss') }}</code> in Value, set Type to String, and format that column in Sheets as plain text first — then the timezone and the format are both under your control, which is the most reliable.</div>
+        <div class="body"><code>$now</code> is an n8n Luxon DateTime object and defaults to the n8n instance's timezone. Note: verify that timezone in workflow settings rather than assuming a particular region. Written straight into Sheets, Sheets sometimes decides to be clever and shift the timezone. <strong>The recommended approach</strong>: produce a string directly with <code>{{ $now.toFormat('yyyy-MM-dd HH:mm:ss') }}</code> in Value, set Type to String, and format that column in Sheets as plain text first — then the timezone and the format are both under your control, which is the most reliable.</div>
       </details>
 
       <details class="faq">
@@ -543,7 +543,7 @@
 
     <footer class="site-footer">
       <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p class="footer-meta">n8n is source-available fair-code software from n8n GmbH under the Sustainable Use License. This independent tutorial is not affiliated with n8n GmbH. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

@@ -15,6 +15,42 @@
     "skills.html": {
       "policy": "translate",
       "brief": "Full translation; any prompt demanding Traditional Chinese output becomes English-only."
+    },
+    "ch7_node_types.html": {
+      "policy": "localize",
+      "brief": "Generalize Taiwan-only SaaS examples; retain a visible Note explaining the regional adaptation."
+    },
+    "ch8_first_workflow.html": {
+      "policy": "localize",
+      "brief": "Replace fixed Taipei assumptions with instructions to select the reader’s IANA timezone; retain a visible Note."
+    },
+    "ch10_triggers.html": {
+      "policy": "localize",
+      "brief": "Replace fixed Taiwan/Taipei scheduling assumptions with a valid IANA example and globally applicable timezone guidance; retain a visible Note."
+    },
+    "ch12_http_request.html": {
+      "policy": "localize",
+      "brief": "Generalize Taiwan-market SaaS examples to regional services worldwide; retain a visible Note."
+    },
+    "ch14_expressions.html": {
+      "policy": "localize",
+      "brief": "Use a valid IANA example while telling readers to choose their own timezone; retain visible Notes."
+    },
+    "ch15_if_switch.html": {
+      "policy": "localize",
+      "brief": "Use a location-neutral sample customer; retain a visible Note."
+    },
+    "ch18_set_function.html": {
+      "policy": "localize",
+      "brief": "Describe name ordering and timezone behavior without assuming Taiwanese conventions; retain visible Notes."
+    },
+    "ch19_subworkflow.html": {
+      "policy": "localize",
+      "brief": "Rename the Taiwan-specific date formatter and require the organization’s chosen timezone; retain a visible Note."
+    },
+    "appendix_settings_ref.html": {
+      "policy": "localize",
+      "brief": "Replace fixed Taiwan/Taipei defaults and offsets with globally applicable IANA-timezone guidance; retain a visible Note."
     }
   }
 }

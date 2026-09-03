@@ -95,22 +95,22 @@
     <div class="chapter-header">
       <div class="kicker">Chapter 12</div>
       <h1>The HTTP Request node: reach every API without an official integration</h1>
-      <p class="lead">In <a href="ch11_saas_integrations.html">Chapter 11</a> you wired up Slack, Gmail and Google Sheets — popular SaaS products that all ship a ready-made node, so you fill in a few fields and they work. But the world holds more than those few. The CRM you have to connect at work, that Taiwan-market accounting system, that IoT vendor's API — n8n almost certainly has no ready-made node for any of them. This chapter hands you n8n's master key, the <strong>HTTP Request node</strong>. If the other side has a REST API, you can reach it.</p>
+      <p class="lead">In <a href="ch11_saas_integrations.html">Chapter 11</a> you wired up Slack, Gmail and Google Sheets — popular SaaS products that all ship a ready-made node, so you fill in a few fields and they work. But the world holds more than those few. The CRM you have to connect at work, a regional accounting system, or an IoT vendor's API — n8n may have no ready-made node for them. This chapter hands you n8n's master key, the <strong>HTTP Request node</strong>. If the other side has a REST API, you can reach it.</p>
     </div>
 
     <section id="why" data-nav="Why this matters">
       <h2 data-icon="why">Why you need this node</h2>
-      <p>n8n officially supports 400+ nodes, covering most of the well-known SaaS products you have heard of. But pull the camera back — <strong>the world holds a few hundred thousand services with an API</strong>:</p>
+      <p>At the source snapshot, n8n listed 400+ integrations, covering many well-known SaaS products; check the live catalog because the count changes. But pull the camera back — <strong>the world holds a few hundred thousand services with an API</strong>:</p>
       <ul>
         <li>Internal systems your company self-hosts (ticketing, inventory and ordering, CRM) — n8n was never going to build those</li>
-        <li>Taiwan-market SaaS (a local accounting product, a local logistics service, a local invoicing API) — too niche</li>
+        <li>Regional SaaS (a local accounting product, logistics service, or invoicing API) — sometimes too niche for an official node</li>
         <li>Services that just launched — n8n has not had time to build a node yet</li>
         <li>Things everyone uses that n8n happens not to cover (some obscure CI/CD tool, say)</li>
         <li>Services you wrote yourself, and your department's internal microservices</li>
       </ul>
       <p>As long as it has a <strong>REST API</strong> (the kind where you call a URL and JSON comes back), you can reach it with the HTTP Request node. This node holds the same place as the Code node: it is n8n's <strong>escape hatch</strong>, and anything the ready-made nodes cannot do, you can put together here.</p>
       <div class="callout"><strong>Concept:</strong> You caught a glimpse of it in <a href="ch7_node_types.html">Chapter 7</a> when you met the Core node category. Strictly speaking HTTP Request straddles Action and Core — it is not tied to a particular SaaS (which puts it under Core), but what it does is call an outside API (which behaves like an Action). This chapter takes it apart properly.</div>
-      <p>The chapter in one line: <strong>when you find that n8n has no node for a service, do not panic — read their API docs, open an HTTP Request node, fill in four fields, and you are through</strong>.</p>
+      <p>The chapter in one line: <strong>when you find that n8n has no node for a service, do not panic — read their API docs, open an HTTP Request node, fill in four fields, and you are through</strong>. Note: the English edition uses globally applicable regional-service examples; verify the API, authentication, and legal requirements for your own market.</p>
     </section>
 
     <section id="concept" data-nav="Four parts">
@@ -568,7 +568,7 @@
 
     <footer class="site-footer">
       <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p class="footer-meta">n8n is source-available fair-code software from n8n GmbH under the Sustainable Use License. This independent tutorial is not affiliated with n8n GmbH. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

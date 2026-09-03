@@ -6,6 +6,23 @@
   <title>WoowTech n8n Automation · Sales Handbook · Two options: self-hosted and managed by WoowTech</title>
   <meta name="description" content="Hand the repetitive work that people do—but should not have to do—to n8n workflows that run around the clock. WoowTech offers Option A (self-hosted) and Option B (managed by WoowTech), including workflow implementation and maintenance." />
   <meta name="author" content="WoowTech" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
+  <meta property="og:locale" content="en_US" />
+  <!-- i18n:oglocale --><meta property="og:locale:alternate" content="zh_TW" /><!-- /i18n:oglocale -->
+  <meta property="og:title" content="WoowTech n8n Automation · Sales Handbook" />
+  <meta property="og:description" content="Compare self-hosted and WoowTech-managed n8n automation options, workflow implementation, maintenance, security, and operating responsibilities." />
+  <meta property="og:url" content="https://n8n-guide.woowtech.io/en/sales.html" />
+  <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/og/n8n-guide.en.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="WoowTech n8n Onboarding Guide" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="WoowTech n8n Automation · Sales Handbook" />
+  <meta name="twitter:description" content="Compare self-hosted and WoowTech-managed n8n automation options, workflow implementation, maintenance, security, and operating responsibilities." />
+  <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/og/n8n-guide.en.png" />
+  <meta name="twitter:image:alt" content="WoowTech n8n Onboarding Guide" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/sales.html" />
   <meta name="robots" content="noindex, follow" />
@@ -382,7 +399,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <span class="kicker-script">automate everything boring</span>
       <div class="kicker">WoowTech Sales Handbook</div>
       <h1>Hand repetitive work over to automation without building an in-house n8n team</h1>
-      <p class="lead">n8n is an open-source workflow automation engine, but self-hosting, operations, maintenance, and workflow development all require specialist skills. WoowTech packages that work into two options. You describe the repetitive task; we implement and operate the automation.</p>
+      <p class="lead">n8n is a source-available, fair-code workflow automation engine, but self-hosting, operations, maintenance, and workflow development all require specialist skills. WoowTech packages that work into two options. You describe the repetitive task; we implement and operate the automation.</p>
       <div class="kpi-frame">
         <div class="kpi"><div class="num">2 options</div><div class="cap">Self-hosted or managed by WoowTech</div></div>
         <div class="kpi"><div class="num">0 engineers</div><div class="cap">No in-house n8n operations team required</div></div>
@@ -394,24 +411,24 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <h2 data-icon="why">Why your company needs n8n</h2>
       <p>Every department has repetitive work that someone does but nobody should have to do: manually copying orders from system A to spreadsheet B, routing customer questions by hand, or opening Excel at 8:00 every morning to paste yesterday’s results into a report. These tasks consume 1–2 hours a day, or 300 staff hours a year.</p>
       <p>These tasks have three things in common: <strong>clear rules, data already in systems, and repeated actions</strong>. That is where n8n fits: represent the rules as a workflow, let n8n run it around the clock, and review the reports periodically to confirm it is healthy.</p>
-      <div class="callout"><strong>Concept:</strong>Like Zapier and Make, n8n lets you connect nodes visually. Unlike them, it is open source: you can self-host it, retain your data, avoid a fixed monthly plan with usage-based infrastructure, and integrate any API. It has more than 130k ★ on GitHub and one of the most active communities in this category.</div>
+      <div class="callout"><strong>Concept:</strong>Like Zapier and Make, n8n lets you connect nodes visually. Unlike them, its source is available under a fair-code license: you can self-host it, retain your data, avoid a fixed monthly plan with usage-based infrastructure, and integrate any API. At the source snapshot its GitHub repository showed more than 130k stars; check the repository for the current count and activity.</div>
     </section>
 
     <section id="what" data-nav="What n8n is">
       <h2 data-icon="what">What n8n is</h2>
-      <p>n8n (pronounced “n-eight-n”) is an open-source workflow automation engine. On its canvas, connect a Trigger to action nodes to create a workflow:</p>
+      <p>n8n (pronounced “n-eight-n”) is a source-available, fair-code workflow automation engine. On its canvas, connect a Trigger to action nodes to create a workflow:</p>
       <ul>
         <li><strong>A trigger</strong>can be a schedule (8:00 every morning), a webhook (someone submits a form), or a system event (Gmail receives a message).</li>
         <li><strong>An action</strong>is what happens next: query Google Sheets, post to Slack, create a Notion page, or send an HTTP request to an internal system.</li>
         <li><strong>Data</strong>flows from the first node to the last. Along the way, a workflow can evaluate conditions, branch, merge, and transform formats.</li>
       </ul>
-      <p>Official and community integrations provide more than  <strong>2,500 nodes</strong>(Slack, Gmail, Notion, Airtable, Google Workspace, Salesforce, Stripe, LINE, Telegram, Discord, AI Agent, and more). For a service without a ready-made node, use HTTP Request to call its API.</p>
+      <p>At the source snapshot, official and community catalogs together listed more than <strong>2,500 integrations and nodes</strong> (Slack, Gmail, Notion, Airtable, Google Workspace, Salesforce, Stripe, LINE, Telegram, Discord, AI Agent, and more); check the live catalog because the total changes. For a service without a ready-made node, use HTTP Request to call its API.</p>
       <div class="callout tip"><strong>Tip:</strong>You do not need to master those details. Both options hide the n8n implementation. Tell WoowTech what you want to automate, and we handle the rest.</div>
     </section>
 
     <section id="modes" data-nav="Two options">
       <h2 data-icon="modes">Two options, depending on whether you want to self-host</h2>
-      <p>With either option, WoowTech builds, maintains, and troubleshoots the workflows. The difference is where the n8n server runs: <strong>on your infrastructure or infrastructure managed by WoowTech</strong>。</p>
+      <p>With either option, WoowTech builds, maintains, and troubleshoots the workflows. The difference is where the n8n server runs: <strong>on your infrastructure or infrastructure managed by WoowTech</strong>.</p>
       <div class="mode-grid">
 
         <div class="mode-card">
@@ -473,7 +490,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 
     <section id="mode-cloud" data-nav="Option B: managed by WoowTech">
       <h2 data-icon="cloud">Option B · Managed by WoowTech, in detail</h2>
-      <p>Choose this option to avoid hardware and IT operations. WoowTech runs an n8n environment (<code>n8n.woowtech.io</code>, currently Community Edition v2.32.7). Your workspace is logically isolated from other customers with separate data. There is no installation cost, and it can be provisioned the same day.</p>
+      <p>Choose this option to avoid hardware and IT operations. WoowTech runs an n8n environment (<code>n8n.woowtech.io</code>, recorded in this repository as Community Edition v2.32.7; confirm the running version in the instance before relying on compatibility). Your workspace is logically isolated from other customers with separate data. There is no installation cost, and it can be provisioned the same day.</p>
 
       <h3>What you receive</h3>
       <ul>
@@ -701,7 +718,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 
       <details class="faq">
         <summary>Can I change a workflow myself?</summary>
-        <div class="body">Yes. Both options give you full n8n access, so you can learn to modify workflows or build new ones. WoowTech is available when you do not want to—or do not know how to—make a change. To learn, read the site’s  <a href="tutorial.html">22-chapter n8n Onboarding Guide</a>。</div>
+        <div class="body">Yes. Both options give you full n8n access, so you can learn to modify workflows or build new ones. WoowTech is available when you do not want to—or do not know how to—make a change. To learn, read the site’s  <a href="tutorial.html">22-chapter n8n Onboarding Guide</a>.</div>
       </details>
 
       <details class="faq">
@@ -716,7 +733,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 
       <details class="faq">
         <summary>Does WoowTech use n8n Community or Enterprise Edition? Are features missing?</summary>
-        <div class="body">It currently uses Community Edition (v2.32.7, followed by community upgrades), which supports typical small and midsize business needs, including AI Agent, custom nodes, sub-workflows, and error workflows. Enterprise-only features such as LDAP/SAML SSO, Advanced RBAC, and version-control integration can be addressed through a separate hybrid deployment.</div>
+        <div class="body">This repository records Community Edition v2.32.7; confirm the running version because the instance follows community upgrades, which supports typical small and midsize business needs, including AI Agent, custom nodes, sub-workflows, and error workflows. Enterprise-only features such as LDAP/SAML SSO, Advanced RBAC, and version-control integration can be addressed through a separate hybrid deployment.</div>
       </details>
 
       <details class="faq">
@@ -743,7 +760,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 
     <footer class="site-footer">
       <p>The WoowTech n8n Automation Sales Handbook is produced by  <strong>WoowTech</strong> .</p>
-      <p class="footer-meta">The Smart Space Solution · © 2026 WOOW Technology Co., Ltd. · n8n is a trademark of n8n GmbH. Community Edition is licensed under the Sustainable Use License. This site is not affiliated with n8n GmbH.</p>
+      <p class="footer-meta">The Smart Space Solution · © 2026 WOOW Technology Co., Ltd. · n8n is a trademark of n8n GmbH and is source-available fair-code software under the Sustainable Use License. This site is not affiliated with n8n GmbH.</p>
     </footer>
   </main>
 </div>

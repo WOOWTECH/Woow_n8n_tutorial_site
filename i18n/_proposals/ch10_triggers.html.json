@@ -15,6 +15,36 @@
       "unit": "#faq",
       "zh": "<code>秒 分 時 日 月 週</code>",
       "en": "<code>second minute hour day month weekday</code>"
+    },
+    {
+      "unit": "#location",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#location",
+      "zh": "<code>GENERIC_TIMEZONE=Asia/Taipei</code>",
+      "en": "<code>GENERIC_TIMEZONE=Europe/London</code>"
+    },
+    {
+      "unit": "#location",
+      "zh": "<code>TZ=Asia/Taipei</code>",
+      "en": "<code>TZ=Europe/London</code>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>GENERIC_TIMEZONE=Asia/Taipei</code>",
+      "en": "<code>GENERIC_TIMEZONE=Europe/London</code>"
     }
   ]
 }

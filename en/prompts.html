@@ -6,6 +6,23 @@
   <title>n8n API/MCP Prompt Library · 44 copy-ready workflow-building prompts · WoowTech</title>
   <meta name="description" content="n8n workflow-building prompts for Claude and other AI agents: 44 prompts in 8 categories. Each invokes an n8n MCP server tool (n8n-mcp or n8n-workflow-builder) or calls the n8n REST API directly (POST /workflows, PATCH /workflows/:id, or POST /workflows/:id/activate). Includes copy buttons and a clipboard fallback." />
   <meta name="author" content="WoowTech" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
+  <meta property="og:locale" content="en_US" />
+  <!-- i18n:oglocale --><meta property="og:locale:alternate" content="zh_TW" /><!-- /i18n:oglocale -->
+  <meta property="og:title" content="n8n API/MCP Prompt Library · WoowTech" />
+  <meta property="og:description" content="44 copy-ready English prompts for building, reviewing, debugging, and operating n8n workflows with MCP tools or the REST API." />
+  <meta property="og:url" content="https://n8n-guide.woowtech.io/en/prompts.html" />
+  <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/og/n8n-guide.en.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="WoowTech n8n Onboarding Guide" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="n8n API/MCP Prompt Library · WoowTech" />
+  <meta name="twitter:description" content="44 copy-ready English prompts for building, reviewing, debugging, and operating n8n workflows with MCP tools or the REST API." />
+  <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/og/n8n-guide.en.png" />
+  <meta name="twitter:image:alt" content="WoowTech n8n Onboarding Guide" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/prompts.html" />
   <meta name="robots" content="noindex, follow" />
@@ -353,7 +370,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <span class="kicker-script">just tell claude</span>
       <div class="kicker">WoowTech Prompt Library</div>
       <h1>Have AI build an n8n workflow from one request</h1>
-      <p class="lead">44 copy-ready prompts for AI agents such as Claude, Cursor, and Windsurf. With an n8n MCP server such as <code>czlonkowski/n8n-mcp</code> or the n8n REST API, AI can invoke  <code>POST /workflows</code>、<code>PATCH /workflows/:id</code>、<code>POST /workflows/:id/activate</code> to build, validate, and activate workflows. Select “Copy” in the upper-right corner of any card and paste it into your AI conversation.</p>
+      <p class="lead">44 copy-ready prompts for AI agents such as Claude, Cursor, and Windsurf. With an n8n MCP server such as <code>czlonkowski/n8n-mcp</code> or the n8n REST API, AI can invoke  <code>POST /workflows</code>, <code>PATCH /workflows/:id</code>, <code>POST /workflows/:id/activate</code> to build, validate, and activate workflows. Select “Copy” in the upper-right corner of any card and paste it into your AI conversation.</p>
     </div>
 
     <section id="why" data-nav="What this is">
@@ -361,7 +378,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <p>Dragging n8n nodes is quick, but engineers and PMs who already write code with AI can work faster: let AI produce workflow JSON and put it into n8n. This handbook contains 44 prompts for real work scenarios, each detailed enough to invoke an n8n MCP server or call the n8n REST API.</p>
       <p>There are two integration methods:</p>
       <ul>
-        <li><strong>n8n MCP server</strong> (recommended): connect Claude Code or Cursor to  <code>n8n-mcp</code>  or  <code>n8n-workflow-builder</code>. Describe the task and AI invokes  <code>create_workflow</code>、<code>activate_workflow</code>  and related tools.</li>
+        <li><strong>n8n MCP server</strong> (recommended): connect Claude Code or Cursor to  <code>n8n-mcp</code>  or  <code>n8n-workflow-builder</code>. Describe the task and AI invokes  <code>create_workflow</code>, <code>activate_workflow</code>  and related tools.</li>
         <li><strong>Call the REST API directly</strong>: AI generates a curl or SDK call, authenticates with the  <code>X-N8N-API-KEY</code>  header, and accesses endpoints such as  <code>/api/v1/workflows</code> .</li>
       </ul>
       <div class="callout"><strong>Concept:</strong>Prompts are not magic. Their value is showing which details to provide: the goal, trigger, input and output formats, and error-handling strategy. Copy them as written or adapt them to your scenario.</div>
@@ -372,7 +389,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <ol class="steps">
         <li>
           <h3>Install an n8n MCP server (recommended)</h3>
-          <p>Add this to the MCP settings in Claude Code or Cursor: <code>npx n8n-mcp</code>（<a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a>, 22.7k★) or  <code>npx @makafeli/n8n-workflow-builder</code>（<a href="https://github.com/makafeli/n8n-workflow-builder" rel="noopener">makafeli/n8n-workflow-builder</a>, 540★). After startup, you will see tools such as  <code>create_workflow</code>／<code>activate_workflow</code> .</p>
+          <p>Add this to the MCP settings in Claude Code or Cursor: <code>npx n8n-mcp</code> (<a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a>, 22.7k★) or  <code>npx @makafeli/n8n-workflow-builder</code> (<a href="https://github.com/makafeli/n8n-workflow-builder" rel="noopener">makafeli/n8n-workflow-builder</a>, 540★). After startup, you will see tools such as  <code>create_workflow</code>/<code>activate_workflow</code> .</p>
         </li>
         <li>
           <h3>Set the n8n API environment variables</h3>
@@ -395,7 +412,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <p>The most direct category creates a workflow from one request. AI calls  <code>POST /api/v1/workflows</code> to create it and decide whether to activate it.</p>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">In n8n, create a workflow named “Order notifications”: Webhook trigger (POST /order-in) → Set extracts order_id/total/email → Google Sheets Append to sheet ID  <code>1abcdef</code> , tab “orders” → Slack sends “New order {{order_id}}, ${{total}}” to #sales. Show me the workflow JSON for approval before calling create_workflow. Respond in English.</p>
+        <p class="ptext">In n8n, create a workflow named “Order notifications”: Webhook trigger (POST /order-in) → Set extracts order_id/total/email → Google Sheets Append to sheet ID  <code>1abcdef</code> , tab “orders” → Slack sends “New order {{ $json.order_id }}, ${{ $json.total }}” to #sales. Show me the workflow JSON for approval before calling create_workflow. Respond in English.</p>
         <span class="call">→ create_workflow / POST /api/v1/workflows</span>
         <p class="pnote">Example: reviewing JSON before creation is a basic safety practice.</p>
       </div>
@@ -411,7 +428,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">In workflow ID  <code>abc123</code> , change the Slack channel from #sales to #sales-taiwan and change nothing else. Show me the before/after diff and wait for approval before patching. Respond in English.</p>
+        <p class="ptext">In workflow ID  <code>abc123</code> , change the Slack channel from #sales to #sales-regional and change nothing else. Show me the before/after diff and wait for approval before patching. Respond in English.</p>
         <span class="call">→ update_workflow / PATCH /api/v1/workflows/:id</span>
       </div>
 
@@ -438,23 +455,23 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <p>A trigger is the entry point to a workflow. These prompts show how to specify different trigger types.</p>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Create a workflow: Webhook Trigger listens for  <code>POST /line-webhook</code>, response mode is  <code>lastNode</code>, and authentication verifies an HMAC using header  <code>X-Line-Signature</code>  (the secret uses credential ID  <code>line-secret</code>). Then add a Function node that extracts events[0]. Respond in English.</p>
-        <span class="call">→ create_workflow（Webhook node）</span>
+        <p class="ptext">Create a workflow: Webhook Trigger listens for  <code>POST /line-webhook</code>, response mode is  <code>lastNode</code>, and authentication verifies an HMAC using header  <code>X-Line-Signature</code>  (the secret uses credential ID  <code>line-secret</code>). Then add a Code node that reads the current item from $json and extracts $json.body.events[0]. Respond in English.</p>
+        <span class="call">→ create_workflow (Webhook node)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a Schedule Trigger workflow that runs at 8:00 every weekday (Monday–Friday) in your timezone. Skip public holidays by calling sub-workflow  <code>holiday-check</code> . Note: replace the timezone and holiday calendar with those for your location. Respond in English.</p>
-        <span class="call">→ create_workflow（Schedule + Execute Workflow）</span>
+        <span class="call">→ create_workflow (Schedule + Execute Workflow)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Use Gmail Trigger to poll every 5 minutes for new messages with label  <code>invoice</code> . Add an IF downstream that continues only when an attachment is a PDF. Use credential  <code>gmail-corp</code>。 Respond in English.</p>
-        <span class="call">→ create_workflow（Gmail Trigger）</span>
+        <p class="ptext">Use Gmail Trigger to poll every 5 minutes for new messages with label  <code>invoice</code> . Add an IF downstream that continues only when an attachment is a PDF. Use credential  <code>gmail-corp</code>. Respond in English.</p>
+        <span class="call">→ create_workflow (Gmail Trigger)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Google Drive Trigger watches folder ID  <code>1FOLDER</code>, with event  <code>fileCreated</code>, checking every 10 minutes. When a new file appears, extract its text → save it to Airtable base ID  <code>appBASE</code> , table  <code>Docs</code> table。 Respond in English.</p>
-        <span class="call">→ create_workflow（Drive Trigger + Airtable）</span>
+        <p class="ptext">Google Drive Trigger watches folder ID  <code>1FOLDER</code>, with event  <code>fileCreated</code>, checking every 10 minutes. When a new file appears, extract its text → save it to Airtable base ID  <code>appBASE</code> , table  <code>Docs</code> table. Respond in English.</p>
+        <span class="call">→ create_workflow (Drive Trigger + Airtable)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -465,32 +482,32 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
     </section>
 
     <section id="cat-transform" data-nav="Data transformation">
-      <h2 data-icon="transform">C · Data transformation (Set / Function / Code node)</h2>
+      <h2 data-icon="transform">C · Data transformation (Edit Fields / Code / Split Out / Aggregate)</h2>
       <p>Data shaping is one of the most frequent tasks in a workflow. These prompts let AI choose between Set and Code.</p>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">In existing workflow ID  <code>abc123</code> , insert a Set node (Edit Fields) after Webhook. Lowercase body.customer.email, convert body.total to a number, and convert body.created_at to ISO 8601 UTC. Discard other fields. Respond in English.</p>
-        <span class="call">→ update_workflow（Set node）</span>
+        <p class="ptext">In existing workflow ID  <code>abc123</code> , insert a Set node (Edit Fields) after Webhook. Use n8n expressions based on $json to lowercase $json.body.customer.email, convert $json.body.total to a number, and convert $json.body.created_at to ISO 8601 UTC. Discard other fields. Respond in English.</p>
+        <span class="call">→ update_workflow (Set node)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Insert a Code node (JavaScript). Flatten the previous node’s items, including the nested orders array, to one row per order. Keep the original customer_id in every item, expand each order into a separate item, and map its fields from orders[i]. Respond in English.</p>
-        <span class="call">→ update_workflow（Code node）</span>
+        <span class="call">→ update_workflow (Code node)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Add an Item Lists node to the workflow. Group the API’s 200 items into A/B/C by category and connect each group to a downstream Slack node for its channel. Use Split In Batches with 20 items per batch to avoid rate limits. Respond in English.</p>
-        <span class="call">→ update_workflow（Item Lists + Split In Batches）</span>
+        <p class="ptext">If the API returns one item containing a records array, use Split Out on records to create one item per record. Route categories A/B/C with Switch, process each route with Loop Over Items in batches of 20 to respect rate limits, then use Aggregate to collect processed IDs for one summary message. Respond in English.</p>
+        <span class="call">→ update_workflow (Split Out + Switch + Loop Over Items + Aggregate)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Write a Code node that deduplicates by email. For duplicates in one batch, keep only the item with the latest created_at. Provide JavaScript with detailed comments and a separate Python version. Respond in English.</p>
-        <span class="call">→ update_workflow（Code node）</span>
+        <span class="call">→ update_workflow (Code node)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Use Set to combine items from three upstream nodes (A, B, and C) into one new item. Prefix field names with  <code>a_*</code>／<code>b_*</code>／<code>c_*</code>  to avoid collisions. Fill missing fields with  <code>null</code>  instead of dropping them. Use Merge in combine + append mode. Respond in English.</p>
-        <span class="call">→ update_workflow（Set + Merge）</span>
+        <p class="ptext">Use Edit Fields after merging three upstream nodes (A, B, and C) into one item. Prefix field names with  <code>a_*</code>/<code>b_*</code>/<code>c_*</code>  to avoid collisions. Fill missing fields with  <code>null</code>  instead of dropping them. Configure Merge with Number of Inputs = 3, Mode = Combine, and Combine By = Position. Respond in English.</p>
+        <span class="call">→ update_workflow (Set + Merge)</span>
       </div>
 
     </section>
@@ -501,27 +518,27 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a workflow: Slack Trigger listens for  <code>message</code>  events in #customer-support. If a message contains keyword  <code>refund</code>  or  <code>refund request</code>, use Notion to create a page in database ID  <code>refunds</code> , with user ID, message content, and time in properties. Reply in the original Slack thread: “Ticket created and being tracked.” Respond in English.</p>
-        <span class="call">→ create_workflow（Slack Trigger + Notion）</span>
+        <span class="call">→ create_workflow (Slack Trigger + Notion)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Create a Gmail receipt → Airtable record workflow: Gmail Trigger label=<code>leads</code>; use AI Agent to extract name/company/phone/interest; write to Airtable base=<code>appLEADS</code>、table=<code>Leads</code>; if nobody replies within 24 hours after record creation, send an automated reminder using Wait + Gmail send. Respond in English.</p>
-        <span class="call">→ create_workflow（Gmail + AI + Airtable + Wait）</span>
+        <p class="ptext">Create a Gmail receipt → Airtable record workflow: Gmail Trigger label=<code>leads</code>; use AI Agent to extract name/company/phone/interest; write to Airtable base=<code>appLEADS</code>, table=<code>Leads</code>; if nobody replies within 24 hours after record creation, send an automated reminder using Wait + Gmail send. Respond in English.</p>
+        <span class="call">→ create_workflow (Gmail + AI + Airtable + Wait)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a Google Sheets read/write workflow: every day at 8:00, Cron reads sheet  <code>1ORDERS</code>  range A2:F → filter yesterday’s orders → total revenue by region → write to tab  <code>daily-summary</code>  in the same sheet (append mode, one row per day). Respond in English.</p>
-        <span class="call">→ create_workflow（Sheets Read + Function + Sheets Append）</span>
+        <span class="call">→ create_workflow (Sheets Read + Code + Sheets Append)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a Slack Approval workflow. After a webhook trigger, send an interactive message with Approve/Reject buttons to #approvals. Wait for up to 24 hours. Approve takes the upper branch and calls the internal payout API; Reject takes the lower branch and replies to the requester in Slack; timeout takes a third branch and escalates to a manager. Respond in English.</p>
-        <span class="call">→ create_workflow（Slack Interactive + Wait + IF）</span>
+        <span class="call">→ create_workflow (Slack Interactive + Wait + IF)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">HTTP Request calls a custom API: POST  <code>https://api.internal.com/v1/tickets</code>, with headers including  <code>Authorization: Bearer</code> (using credential  <code>internal-api-key</code>) and Content-Type: application/json. Map the body from the previous node’s item fields. Add 3 retries with exponential backoff, only for 429 or 5xx. Respond in English.</p>
-        <span class="call">→ update_workflow（HTTP Request + retry）</span>
+        <span class="call">→ update_workflow (HTTP Request + retry)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -537,22 +554,22 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a customer-support routing workflow: LINE Webhook receives a message → AI Agent (Chat Model: Anthropic Claude 3.5 Sonnet; prompt defines 4 categories: returns/technical issues/general inquiries/other) → Structured Output returns  <code>{category, confidence, reasoning}</code>  → Switch branches by category. If confidence is below  &lt; 0.7, use “other.” Respond in English.</p>
-        <span class="call">→ create_workflow（Line + AI Agent + Switch）</span>
+        <span class="call">→ create_workflow (Line + AI Agent + Switch)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Connect three tools to AI Agent: (1) HTTP Request queries an internal order API for status; (2) Notion Read queries the FAQ database; (3) Google Sheets Read queries the returns policy. Instruct it in the system prompt to check the FAQ first, the order API second, and cite the policy only last; end every response with sources. Respond in English.</p>
-        <span class="call">→ update_workflow（AI Agent + tools）</span>
+        <span class="call">→ update_workflow (AI Agent + tools)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Create an AI Agent + Memory workflow: Chat Trigger + AI Agent + Buffer Window Memory (size=10) + OpenAI Chat Model. Pass sessionId from Chat Trigger’s sessionId field to retain conversation context for one user. Add Structured Output Parser so every response is  <code>{reply, next_action, tags[]}</code>。 Respond in English.</p>
-        <span class="call">→ create_workflow（LangChain Chat）</span>
+        <p class="ptext">Create an AI Agent + Memory workflow: Chat Trigger + AI Agent + Buffer Window Memory (size=10) + OpenAI Chat Model. Pass sessionId from Chat Trigger’s sessionId field to retain conversation context for one user. Add Structured Output Parser so every response is  <code>{reply, next_action, tags[]}</code>. Respond in English.</p>
+        <span class="call">→ create_workflow (LangChain Chat)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a PDF-summary workflow: Google Drive Watcher (PDF appears) → Extract from File → AI Agent (Claude Sonnet; prompt: three-part summary + tags + sentiment) → Airtable Upsert into Feedback. Limit concurrency to 5 to protect the API. Respond in English.</p>
-        <span class="call">→ create_workflow（Drive + Extract + AI + Airtable）</span>
+        <span class="call">→ create_workflow (Drive + Extract + AI + Airtable)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -562,7 +579,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a Multi-Agent workflow: Chat Trigger → AI Agent “Router” identifies technical vs sales questions → branch to two specialist AI Agents (Tech Support / Sales Consultant), each with different tools and memory. Router identifies which agent produced the response. Respond in English.</p>
-        <span class="call">→ create_workflow（3× AI Agent）</span>
+        <span class="call">→ create_workflow (3× AI Agent)</span>
       </div>
 
     </section>
@@ -573,7 +590,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a global Error Workflow: Error Trigger → Set extracts workflow name/failed node/error message/timestamp → Slack sends to #n8n-alerts with details in a code block → if the same workflow fails more than 3 times within 24hr, send another message tagging @on-call. Respond in English.</p>
-        <span class="call">→ create_workflow（Error Trigger）</span>
+        <span class="call">→ create_workflow (Error Trigger)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -583,12 +600,12 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Add retries to HTTP Request: max attempts 5, initial wait 2 seconds, exponential backoff ×2, only for status 429/500/502/503/504; fail immediately for other statuses. Add  <code>continueOnFail: true</code>  so downstream nodes can handle the error object separately. Respond in English.</p>
-        <span class="call">→ update_workflow（HTTP retry policy）</span>
+        <span class="call">→ update_workflow (HTTP retry policy)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Create a “Daily health check” workflow: Cron runs every day at 07:00 → list_workflows gets all active workflows → list_executions for each (last 24hr, status=error) → format errors as a Slack table → send to #n8n-daily-health. When there are no errors, send “Everything is healthy today ✅.” Respond in English.</p>
-        <span class="call">→ create_workflow（Cron + list_executions + Slack）</span>
+        <span class="call">→ create_workflow (Cron + list_executions + Slack)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -609,7 +626,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">List workflow ID <code>abc123</code>  failures from the previous 7 days, sorted by time. Group failure messages by expired credential/timeout/validation error/other. Identify the largest group and the average interval between failures. Respond in English.</p>
-        <span class="call">→ list_executions（filtered by workflow + status）</span>
+        <span class="call">→ list_executions (filtered by workflow + status)</span>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -629,7 +646,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
         <p class="ptext">Validate the workflow JSON below. Find (1) syntax errors, (2) dangling connections, (3) missing credential references, and (4) clear performance problems such as calling one API 200 times without batching. Return the complete corrected JSON. Respond in English.</p>
-        <span class="call">→ validate_workflow（MCP tool）</span>
+        <span class="call">→ validate_workflow (MCP tool)</span>
       </div>
 
     </section>
@@ -654,7 +671,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">I want to copy workflow ID <code>n8n-dev.woowtech.io</code> from dev ( <code>dev_abc</code> ) to prod (<code>n8n.woowtech.io</code>). Retrieve JSON from dev → scan credential IDs → map to prod credentials by name → create_workflow in prod without activating it. Respond in English.</p>
+        <p class="ptext">I want to copy workflow ID <code>dev_abc</code> from the dev host (<code>n8n-dev.woowtech.io</code>) to the production host (<code>n8n.woowtech.io</code>). Retrieve JSON from dev → scan credential IDs → map to prod credentials by name → create_workflow in prod without activating it. Respond in English.</p>
         <span class="call">→ multi-environment MCP (multi-instance)</span>
       </div>
 
@@ -736,7 +753,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
     <footer class="site-footer">
       <p>The n8n API/MCP Prompt Library is produced by  <strong>WoowTech</strong>  and released under  <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> .</p>
-      <p class="footer-meta">The Smart Space Solution · <a href="index.html">n8n Resource Hub</a> · MCP server data is a GitHub snapshot from 2026-08-20 and will change over time.</p>
+      <p class="footer-meta">The Smart Space Solution · <a href="index.html">n8n Resource Hub</a> · n8n is source-available fair-code software under the Sustainable Use License. MCP server data is a GitHub snapshot from 2026-08-20 and will change over time.</p>
     </footer>
   </main>
 </div>

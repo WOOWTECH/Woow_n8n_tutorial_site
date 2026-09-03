@@ -4,7 +4,7 @@
     {
       "unit": "#steps",
       "zh": "<code>{ \"amount\": 1500, \"customer\": \"台北文具行\" }</code>",
-      "en": "<code>{ \"amount\": 1500, \"customer\": \"Taipei Stationery Store\" }</code>"
+      "en": "<code>{ \"amount\": 1500, \"customer\": \"Example Stationery Store\" }</code>"
     },
     {
       "unit": "#modes",

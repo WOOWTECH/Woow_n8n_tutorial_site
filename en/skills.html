@@ -6,6 +6,23 @@
   <title>n8n Skill/Community Nodes Handbook · Selected nodes and AI Agent Skill catalog · WoowTech</title>
   <meta name="description" content="Install an n8n community node or give an AI agent a skill to extend your automation. Explore 10 notable community nodes, including Puppeteer, ElevenLabs, MCP, and Evolution API, and 6 popular collections, including the n8n-mcp and n8n-workflow-builder MCP servers. Includes installation reference, compatibility and safety guidance, and the SKILL.md specification. Data snapshot: 2026-08-20." />
   <meta name="author" content="WoowTech" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
+  <meta property="og:locale" content="en_US" />
+  <!-- i18n:oglocale --><meta property="og:locale:alternate" content="zh_TW" /><!-- /i18n:oglocale -->
+  <meta property="og:title" content="n8n Skill and Community Nodes Handbook · WoowTech" />
+  <meta property="og:description" content="A practical English guide to n8n community nodes, MCP servers, compatibility checks, safety, and AI agent skills." />
+  <meta property="og:url" content="https://n8n-guide.woowtech.io/en/skills.html" />
+  <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/og/n8n-guide.en.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="WoowTech n8n Onboarding Guide" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="n8n Skill and Community Nodes Handbook · WoowTech" />
+  <meta name="twitter:description" content="A practical English guide to n8n community nodes, MCP servers, compatibility checks, safety, and AI agent skills." />
+  <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/og/n8n-guide.en.png" />
+  <meta name="twitter:image:alt" content="WoowTech n8n Onboarding Guide" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/skills.html" />
   <meta name="robots" content="noindex, follow" />
@@ -361,7 +378,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         </li>
         <li>
           <h3>Select Install a Community Node and paste the npm package name</h3>
-          <p>For example: <code>n8n-nodes-mcp</code>、<code>n8n-nodes-puppeteer</code>、<code>@elevenlabs/n8n-nodes-elevenlabs</code>. Accept the risks of third-party packages, then select Install.</p>
+          <p>For example: <code>n8n-nodes-mcp</code>, <code>n8n-nodes-puppeteer</code>, <code>@elevenlabs/n8n-nodes-elevenlabs</code>. Accept the risks of third-party packages, then select Install.</p>
         </li>
         <li>
           <h3>Reload n8n (or wait for it to restart automatically)</h3>
@@ -387,7 +404,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
     }
   }
 }</code></pre>
-      <p>Save and restart the AI client. Tools such as  <code>create_workflow</code>、<code>list_workflows</code>  will appear.<a href="prompts.html">Prompt Library</a>contains 44 copy-ready prompts.</p>
+      <p>Save and restart the AI client. Tools such as  <code>create_workflow</code>, <code>list_workflows</code>  will appear.<a href="prompts.html">Prompt Library</a>contains 44 copy-ready prompts.</p>
 
       <div class="callout tip"><strong>Tip:</strong>An MCP server usually does not change n8n itself; it lets AI call the API. You can use it with self-hosted, Cloud, or any n8n instance, including  <code>n8n.woowtech.io</code> after your account is created.</div>
     </section>
@@ -463,9 +480,9 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         <div class="feature-card">
           <h3><a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a></h3>
           <div class="pnote">22.7k ★ · MIT · Very active (1,193 commits)</div>
-          <p>The n8n MCP server with the most stars and broadest feature set: 7 Core Tools (node search, validation, template discovery, docs) and 16 Management Tools (workflow CRUD, execution, folder, credential, audit, health). It covers  <strong>2,541 n8n nodes</strong>（832 core + 1,709 community）99% property。</p>
+          <p>The n8n MCP server with the most stars and broadest feature set: 7 Core Tools (node search, validation, template discovery, docs) and 16 Management Tools (workflow CRUD, execution, folder, credential, audit, health). It covers  <strong>2,541 n8n nodes</strong> (832 core + 1,709 community)99% property.</p>
           <pre class="code-block"><code>npx n8n-mcp</code></pre>
-          <p class="pnote">Installation also supports Docker (<code>ghcr.io/czlonkowski/n8n-mcp</code>), local npm installation, and one-click Railway deployment. <strong>Leading choice for 2026</strong>。</p>
+          <p class="pnote">Installation also supports Docker (<code>ghcr.io/czlonkowski/n8n-mcp</code>), local npm installation, and one-click Railway deployment. <strong>A prominent option in the source snapshot; verify current maintenance and releases before adoption.</strong></p>
         </div>
 
         <div class="feature-card">
@@ -487,13 +504,13 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         <div class="feature-card">
           <h3><a href="https://github.com/ifmelate/n8n-workflow-builder-mcp" rel="noopener">ifmelate/n8n-workflow-builder-mcp</a></h3>
           <div class="pnote">≈200 ★ · Supports VS Code, Cursor, and Claude Code</div>
-          <p>Emphasizes  <strong>「agent mode」</strong>: AI iterates from a natural-language prompt, automatically creating → running → observing errors → modifying. This is closest to AI coding inside an IDE.</p>
+          <p>Emphasizes  <strong>“agent mode”</strong>: AI iterates from a natural-language prompt, automatically creating → running → observing errors → modifying. This is closest to AI coding inside an IDE.</p>
           <pre class="code-block"><code>npx n8n-workflow-builder-mcp</code></pre>
           <p class="pnote">For engineers who already write code in Cursor or VS Code.</p>
         </div>
 
       </div>
-      <p class="pnote" style="margin-top:14px">Also listed: <a href="https://github.com/Jimmy974/n8n-workflow-builder" rel="noopener">Jimmy974/n8n-workflow-builder</a>、<a href="https://github.com/Daniboycg/n8n-workflow-builder-mcp-server" rel="noopener">daniel-carreon/n8n-workflow-builder-mcp-server</a>—similar forks with broadly comparable features for users who prefer a particular maintainer.</p>
+      <p class="pnote" style="margin-top:14px">Also listed: <a href="https://github.com/Jimmy974/n8n-workflow-builder" rel="noopener">Jimmy974/n8n-workflow-builder</a>, <a href="https://github.com/Daniboycg/n8n-workflow-builder-mcp-server" rel="noopener">daniel-carreon/n8n-workflow-builder-mcp-server</a>—similar forks with broadly comparable features for users who prefer a particular maintainer.</p>
     </section>
 
     <section id="collections" data-nav="Popular collections">
@@ -510,7 +527,7 @@ https://github.com/restyler/awesome-n8n</code></pre>
         </div>
 
         <div class="feature-card">
-          <h3><a href="https://www.npmjs.com/search?q=keywords%3An8n-community-node-package" rel="noopener">npmjs.com（keywords）</a></h3>
+          <h3><a href="https://www.npmjs.com/search?q=keywords%3An8n-community-node-package" rel="noopener">npmjs.com (keywords)</a></h3>
           <div class="pnote">Official index · 500+ packages · Download trends</div>
           <p>On npmjs, the  <code>keywords:n8n-community-node-package</code>  search is the newest, most complete primary source. Sort it by downloads or update time.</p>
           <pre class="code-block"><code>npmjs.com/search?q=keywords:n8n-community-node-package</code></pre>
@@ -527,7 +544,7 @@ https://github.com/restyler/awesome-n8n</code></pre>
         <div class="feature-card">
           <h3><a href="https://n8n.io/workflows/" rel="noopener">n8n.io/workflows</a></h3>
           <div class="pnote">Official template gallery · 3,000+ workflows · Direct import</div>
-          <p>This is not a node collection; it contains workflows built by other people. Search for a keyword such as Slack notification or AI Agent to find ready-made JSON, then copy it and change a few fields. See  <a href="ch4_templates.html">Chapter 4</a>。</p>
+          <p>This is not a node collection; it contains workflows built by other people. Search for a keyword such as Slack notification or AI Agent to find ready-made JSON, then copy it and change a few fields. See  <a href="ch4_templates.html">Chapter 4</a>.</p>
           <pre class="code-block"><code>n8n.io/workflows</code></pre>
         </div>
 
@@ -552,7 +569,7 @@ https://github.com/restyler/awesome-n8n</code></pre>
       <h2 data-icon="integration">Compatibility notes</h2>
       <p>Whether a community node or MCP server runs in your environment usually depends on three things:</p>
       <ul>
-        <li><strong>n8n version</strong>: a node often pins a range of n8n minor versions. WoowTech’s  <code>n8n.woowtech.io</code>  currently runs  <code>v2.32.7 Community Edition</code>. Before installation, check  <code>peerDependencies</code>。</li>
+        <li><strong>n8n version</strong>: a node often pins a range of n8n minor versions. WoowTech’s  <code>n8n.woowtech.io</code>  is recorded in this repository as running <code>v2.32.7 Community Edition</code>; the public settings endpoint does not expose a version, so confirm it in the instance. Before installation, check  <code>peerDependencies</code>.</li>
         <li><strong>Node.js version</strong>: a node using newer syntax such as optional chaining or top-level await will fail when n8n runs on an older Node.js. The HAOS add-on defaults to Node 20 and is usually compatible.</li>
         <li><strong>Additional service dependencies</strong>: Puppeteer, for example, needs a Chromium binary not included in the n8n Docker image. Add a Dockerfile or use the standalone image for  <code>n8n-nodes-puppeteer</code> .</li>
       </ul>
@@ -565,8 +582,8 @@ https://github.com/restyler/awesome-n8n</code></pre>
       <div class="callout warn"><strong>Warning:</strong>A community node is an npm package that <strong>can execute arbitrary code</strong>; an MCP server is a process that <strong>can call your n8n API</strong>. Understand the implications before installing either.</div>
       <ul>
         <li><strong>Read the README before installing</strong>: not every package clearly documents the credentials it needs or the requests it sends. Ask Claude to review it if necessary.</li>
-        <li><strong>Pin versions in production</strong>：<code>package.json</code> Use  <code>n8n-nodes-xxx: 1.2.3</code>  rather than  <code>^1.2.3</code> to prevent an unnoticed upgrade from introducing an upstream regression.</li>
-        <li><strong>Use a scoped API key for an MCP server</strong>: create a dedicated n8n API key for MCP and limit access to a specific workflow tag or read-only operations.<strong>Do not use an admin key</strong>。</li>
+        <li><strong>Pin versions in production</strong>: <code>package.json</code> Use  <code>n8n-nodes-xxx: 1.2.3</code>  rather than  <code>^1.2.3</code> to prevent an unnoticed upgrade from introducing an upstream regression.</li>
+        <li><strong>Use a scoped API key for an MCP server</strong>: create a dedicated n8n API key for MCP and limit access to a specific workflow tag or read-only operations.<strong>Do not use an admin key</strong>.</li>
         <li><strong>Review contributors</strong>: a node with only 1 contributor may stop receiving updates if that person leaves. Packages maintained by an official or commercial organization are safer for production.</li>
         <li><strong>Run an audit after installation</strong>: MCP servers provide a  <code>generate_audit</code>  tool. Run it once to detect possible leaks from newly installed nodes.</li>
       </ul>
@@ -599,7 +616,7 @@ description: When a user provides n8n workflow JSON, check its structure—
           <tr><td><code>license</code> / <code>compatibility</code> / <code>allowed-tools</code></td><td>No</td><td>Optional fields for license, compatibility notes, allowed tools, and more.</td></tr>
         </tbody>
       </table>
-      <p>Keep SKILL.md concise. Put supporting files under  <code>references/</code>、<code>scripts/</code>、<code>assets/</code> and read them only when needed to avoid filling the AI context.</p>
+      <p>Keep SKILL.md concise. Put supporting files under  <code>references/</code>, <code>scripts/</code>, <code>assets/</code> and read them only when needed to avoid filling the AI context.</p>
       <div class="callout tip"><strong>Tip:</strong>An n8n skill usually maps a workflow pattern to an MCP tool. For a lighter approach, put the example in the  <a href="prompts.html">Prompt Library</a>instead of making it a skill.</div>
     </section>
 
@@ -619,7 +636,7 @@ description: When a user provides n8n workflow JSON, check its structure—
       </details>
       <details class="faq">
         <summary>Can WoowTech’s  <code>n8n.woowtech.io</code>  users install community nodes themselves?</summary>
-        <div class="body">Not by default. In a multi-user managed environment, adding a node affects every customer. Open a ticket; WoowTech will review the community reputation and security, then install it centrally if approved. For complete control, use the self-hosted option (see the  <a href="sales.html">Sales Handbook</a>）。</div>
+        <div class="body">Not by default. In a multi-user managed environment, adding a node affects every customer. Open a ticket; WoowTech will review the community reputation and security, then install it centrally if approved. For complete control, use the self-hosted option (see the  <a href="sales.html">Sales Handbook</a>).</div>
       </details>
       <details class="faq">
         <summary>Can I star an npm skill/node package and track it without installing it?</summary>
@@ -642,7 +659,7 @@ description: When a user provides n8n workflow JSON, check its structure—
 
     <footer class="site-footer">
       <p>The n8n Skill/Community Nodes Handbook is produced by  <strong>WoowTech</strong>  and released under  <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> . Star counts and download totals are a snapshot from 2026-08-20.</p>
-      <p class="footer-meta">The Smart Space Solution · <a href="index.html">n8n Resource Hub</a> · Community nodes retain their authors’ respective licenses. n8n is licensed under the Sustainable Use License. This site is not affiliated with n8n GmbH.</p>
+      <p class="footer-meta">The Smart Space Solution · <a href="index.html">n8n Resource Hub</a> · Community nodes retain their authors’ respective licenses. n8n is source-available fair-code software under the Sustainable Use License. This site is not affiliated with n8n GmbH.</p>
     </footer>
   </main>
 </div>

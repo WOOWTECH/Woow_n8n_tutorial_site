@@ -417,7 +417,7 @@
         </li>
         <li>
           <h3>The Schedule Trigger did not run the next morning</h3>
-          <p>90% of the time the reason is the <strong>Active toggle at the top right was never switched to Active</strong>. Go and switch it. Other possibilities: (1) you forgot to save before leaving, so the schedule never took effect; (2) the timezone is wrong — you assumed 08:00 meant Taipei time, but a self-hosted n8n defaults to <code>America/New_York</code> (not UTC, and not Taipei), so it actually runs 13 hours late. The fix: Workflow settings → Timezone, choose <code>Asia/Taipei</code>, or change the whole instance's <code>GENERIC_TIMEZONE</code> environment variable; (3) the Trigger node was deactivated (right-click a node to Deactivate; it turns gray and the whole workflow stops running).</p>
+          <p>90% of the time the reason is the <strong>Active toggle at the top right was never switched to Active</strong>. Go and switch it. Other possibilities: (1) you forgot to save before leaving, so the schedule never took effect; (2) the timezone is wrong — you assumed 08:00 meant your local time, but a self-hosted n8n uses its configured instance timezone (the documented default is <code>America/New_York</code>), so the offset depends on your location and daylight saving. Note: set Workflow settings → Timezone to your IANA timezone, for example <code>Europe/London</code>, or ask an administrator to set the instance’s <code>GENERIC_TIMEZONE</code>; (3) the Trigger node was deactivated (right-click a node to Deactivate; it turns gray and the whole workflow stops running).</p>
         </li>
         <li>
           <h3>The Executions page has no records at all</h3>
@@ -463,7 +463,7 @@
       <details class="faq">
         <summary>Which timezone does <code>$now.startOf('day')</code> use for Time Min / Time Max?</summary>
         <div class="body">
-          <p>It uses <strong>the timezone set on that workflow, and falls back to the n8n instance's timezone if none is set</strong>. <strong>A self-hosted n8n defaults to <code>America/New_York</code> (not UTC, and not Taipei time)</strong>, so you have to change it deliberately. There are two places to set it: Workflow settings → Timezone, choose <code>Asia/Taipei</code> (this workflow only), or the instance's <code>GENERIC_TIMEZONE</code> environment variable (every workflow gets it). The WoowTech build usually defaults to Taipei already, but it is still worth confirming that yourself on a newly created workflow. <a href="ch14_expressions.html">Chapter 14</a> fills in the timezone detail.</p>
+          <p>It uses <strong>the timezone set on that workflow, and falls back to the n8n instance's timezone if none is set</strong>. <strong>A self-hosted n8n uses <code>America/New_York</code> as its documented default</strong>, so do not assume it matches your location. Note: set Workflow settings → Timezone to your IANA timezone, for example <code>Europe/London</code> (this workflow only), or ask an administrator to set the instance’s <code>GENERIC_TIMEZONE</code>. Confirm the effective zone on every newly created workflow. <a href="ch14_expressions.html">Chapter 14</a> fills in the timezone detail.</p>
         </div>
       </details>
 
@@ -509,7 +509,7 @@
 
     <footer class="site-footer">
       <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p class="footer-meta">n8n is source-available fair-code software from n8n GmbH under the Sustainable Use License. This independent tutorial is not affiliated with n8n GmbH. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

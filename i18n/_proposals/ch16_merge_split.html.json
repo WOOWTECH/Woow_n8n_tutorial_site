@@ -20,6 +20,11 @@
       "unit": "#faq",
       "zh": "<code>{{ $json.names.filter(n =&gt; n.startsWith('王')) }}</code>",
       "en": "<code>{{ $json.names.filter(n =&gt; n.startsWith('W')) }}</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>{{ $json.names.join('、') }}</code>",
+      "en": "<code>{{ $json.names.join(', ') }}</code>"
     }
   ]
 }

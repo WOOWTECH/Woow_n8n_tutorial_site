@@ -22,6 +22,14 @@
     "navLabel": "資源總覽",
     "pages": ["sales.html", "prompts.html", "skills.html"]
   },
+  "i18n": {
+    "_readme": "hreflang 給 zh 頁自指用；xDefault 指向哪個語系（en 或 primary），一行可反轉。語系清單在 i18n/locales.json。",
+    "hreflang": [
+      "zh-Hant",
+      "zh"
+    ],
+    "xDefault": "en"
+  },
   "chapters": [
     {
       "file": "ch1_what_is_n8n.html",

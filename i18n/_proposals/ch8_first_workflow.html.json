@@ -85,6 +85,16 @@
       "unit": "#troubleshoot",
       "zh": "<code>{{ $json.summary.map(s =&gt; s || '（無標題事件）').join('、') }}</code>",
       "en": "<code>{{ $json.summary.map(s =&gt; s || '(untitled event)').join(', ') }}</code>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>Asia/Taipei</code>",
+      "en": "<code>Europe/London</code>"
     }
   ]
 }

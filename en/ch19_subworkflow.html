@@ -358,7 +358,7 @@ source: backup-daily</code></pre>
           <tr>
             <td><code>[Sub]</code></td>
             <td>A sub-workflow other workflows call (possibly several callers)</td>
-            <td><code>[Sub] Slack Alert</code>, <code>[Sub] Format Date TW</code></td>
+            <td><code>[Sub] Slack Alert</code>, <code>[Sub] Format Local Date</code></td>
           </tr>
           <tr>
             <td><code>[Util]</code></td>
@@ -415,8 +415,8 @@ source: backup-daily</code></pre>
             <td><code>{ logged: true, row_id: 42 }</code></td>
           </tr>
           <tr>
-            <td><code>[Sub] Format Date TW</code></td>
-            <td>Converts any date or time to the Taiwan timezone in the standard <code>YYYY-MM-DD HH:mm:ss</code> format</td>
+            <td><code>[Sub] Format Local Date</code></td>
+            <td>Converts any date or time to the organization’s chosen timezone in the standard <code>YYYY-MM-DD HH:mm:ss</code> format. Note: configure the IANA timezone for your location</td>
             <td><code>{ raw_date }</code> (ISO or a Unix timestamp)</td>
             <td><code>{ formatted: '2026-08-16 14:23:00' }</code></td>
           </tr>
@@ -433,7 +433,7 @@ source: backup-daily</code></pre>
       <ul>
         <li>Need to notify? Do not assemble Slack yourself — call <code>[Sub] Slack Alert</code></li>
         <li>Need a log? Do not assemble Sheets yourself — call <code>[Sub] Log Execution</code></li>
-        <li>Need to show a time to a person? Call <code>[Sub] Format Date TW</code> and the whole company shows one format</li>
+        <li>Need to show a time to a person? Call <code>[Sub] Format Local Date</code> and the whole company shows one format</li>
         <li>Need to look up a colleague? Call <code>[Sub] Get Employee Info</code>, and when the internal API changes URL you edit only this one</li>
       </ul>
 
@@ -554,7 +554,7 @@ source: backup-daily</code></pre>
 
     <footer class="site-footer">
       <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p class="footer-meta">n8n is source-available fair-code software from n8n GmbH under the Sustainable Use License. This independent tutorial is not affiliated with n8n GmbH. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

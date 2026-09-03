@@ -223,7 +223,7 @@
         </tbody>
       </table>
       <p>Every Luxon calendar unit works (<code>days</code>, <code>hours</code>, <code>months</code>, <code>weeks</code>, <code>years</code>) — do not drop the plural s. The <code>toFormat</code> pattern is Luxon-specific too: <code>yyyy</code> is a four-digit year, <code>MM</code> a two-digit month, <code>dd</code> a two-digit day, <code>HH</code> the 24-hour clock, <code>mm</code> minutes.</p>
-      <div class="callout warn"><strong>Warning:</strong> a drifting timezone is the most common date trap. By default n8n uses the <strong>system timezone</strong> (self-hosted takes the container's timezone, Cloud takes your workspace setting). To be exact about Taipei time, open <strong>Settings → Timezone</strong> in the top right of the workflow and set <code>Asia/Taipei</code>; after that <code>$now</code> and <code>$today</code> are Taipei time. For data that crosses timezones, state it explicitly with <code>.setZone('Asia/Taipei')</code>.</div>
+      <div class="callout warn"><strong>Warning:</strong> a drifting timezone is the most common date trap. By default n8n uses the <strong>system timezone</strong> (self-hosted takes the container's timezone, Cloud takes your workspace setting). Note: open <strong>Settings → Timezone</strong> in the workflow and choose the IANA timezone for your location; for example, <code>Europe/London</code>. After that <code>$now</code> and <code>$today</code> use that zone. For cross-timezone data, state the destination explicitly, for example <code>.setZone('Europe/London')</code>.</div>
     </section>
 
     <section id="strings" data-nav="Joining strings">
@@ -438,7 +438,7 @@
         </li>
         <li>
           <h3>The date is in the wrong timezone</h3>
-          <p><code>$now.toFormat('yyyy-MM-dd HH:mm')</code> showing UTC instead of Taipei time? Open <strong>Settings → Timezone</strong> in the top right of the workflow and set <code>Asia/Taipei</code>; after that <code>$now</code> and <code>$today</code> both follow Taipei time. To convert data that is already in UTC, state it explicitly with <code>.setZone('Asia/Taipei')</code>.</p>
+          <p><code>$now.toFormat('yyyy-MM-dd HH:mm')</code> showing the wrong zone? Note: open <strong>Settings → Timezone</strong> in the workflow and choose your location’s IANA timezone; for example, <code>Europe/London</code>. After that <code>$now</code> and <code>$today</code> both follow it. To convert UTC data, state the destination explicitly, for example <code>.setZone('Europe/London')</code>.</p>
         </li>
         <li>
           <h3>The preview shows an old value that does not match the actual run</h3>
@@ -496,7 +496,7 @@
 
     <footer class="site-footer">
       <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p class="footer-meta">n8n is source-available fair-code software from n8n GmbH under the Sustainable Use License. This independent tutorial is not affiliated with n8n GmbH. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

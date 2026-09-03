@@ -101,7 +101,7 @@
       <p>n8n does not actually have that many settings. The problem is that they are <strong>split across several layers</strong> — you flip a switch and it turns out that switch only affects you; or you hunt through your own Settings for something only an admin or an environment variable can change. Cases we have really hit:</p>
       <ul>
         <li><strong>"Switch the interface to Chinese for me"</strong> — that is not something Personal can change. n8n community has no UI language dropdown; it takes the instance's <code>N8N_DEFAULT_LOCALE</code> env var, so ask IT.</li>
-        <li><strong>"Set the Schedule node to Taipei time for me"</strong> — that is the workflow-level Settings tab, or ask IT to change <code>GENERIC_TIMEZONE</code>.</li>
+        <li><strong>"Set the Schedule node to local time for me"</strong> — that is the workflow-level Settings tab, or ask IT to change <code>GENERIC_TIMEZONE</code>.</li>
         <li><strong>"The execution I ran last week is gone!"</strong> — that is the instance-level <code>EXECUTIONS_DATA_MAX_AGE</code>; the default of 336 hours (14 days) auto-purges it, you have no permission to change it, so ask IT.</li>
         <li><strong>"I pressed Manual Execute but there is no record on the Executions page"</strong> — that is <em>Save manual executions</em> in the workflow Settings. The official n8n instance default is actually <strong>on</strong> (<code>EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS=true</code>), but plenty of company IT teams turn it off to save DB space, so not seeing it on your instance does not mean anything is broken — it has been overridden.</li>
       </ul>
@@ -199,7 +199,7 @@
           <tr>
             <td><strong>Timezone</strong></td>
             <td>Follows the instance (<code>GENERIC_TIMEZONE</code>, default <code>America/New_York</code>)</td>
-            <td><strong>Any workflow using a Schedule or Cron node has to set this</strong> — pick <code>Asia/Taipei</code>, or the "every day at 9 in the morning" from <a href="ch10_triggers.html">Chapter 10</a> becomes 9 am in New York (21:00 or 22:00 in Taiwan, depending on daylight saving).</td>
+            <td><strong>Any workflow using a Schedule or Cron node has to set this</strong> — choose your IANA timezone (for example <code>Europe/London</code>), or the "every day at 9 in the morning" from <a href="ch10_triggers.html">Chapter 10</a> runs on the instance clock rather than your intended local clock.</td>
           </tr>
           <tr>
             <td><strong>Error Workflow</strong></td>
@@ -257,7 +257,7 @@
           <tr>
             <td><code>GENERIC_TIMEZONE</code></td>
             <td><code>America/New_York</code></td>
-            <td>The default timezone for the whole n8n instance — every workflow that has not set its own Timezone follows it. At a Taiwanese company, ask IT to change it to <code>Asia/Taipei</code>.</td>
+            <td>The default timezone for the whole n8n instance — every workflow that has not set its own Timezone follows it. Ask IT to set it to the organization’s intended IANA timezone; <code>Europe/London</code> is one example.</td>
           </tr>
           <tr>
             <td><code>TZ</code></td>
@@ -362,13 +362,13 @@
           <tr>
             <td>1 (highest)</td>
             <td>Written explicitly in a node expression</td>
-            <td><code>{{ $now.setZone('Asia/Taipei').toFormat('HH:mm') }}</code></td>
+            <td><code>{{ $now.setZone('Europe/London').toFormat('HH:mm') }}</code></td>
             <td>Only that expression, that one calculation</td>
           </tr>
           <tr>
             <td>2</td>
             <td>Workflow → Settings → Timezone</td>
-            <td>Pick <code>Asia/Taipei</code> from the dropdown</td>
+            <td>Pick <code>Europe/London</code> from the dropdown</td>
             <td>Every node in this workflow, the Schedule / Cron trigger included</td>
           </tr>
           <tr>
@@ -379,20 +379,20 @@
           </tr>
         </tbody>
       </table>
-      <p>With none of them set you get <code>America/New_York</code> — that is the official n8n default for <code>GENERIC_TIMEZONE</code> (not UTC, which is what most people assume). So "the schedule on a freshly installed n8n runs at the wrong time" is a certainty in Taiwan, off by 12 to 13 hours depending on whether New York is on daylight saving at the time. <code>TZ</code> (the Node.js process timezone) follows the base image default instead, and the official Docker image is UTC — the two variables end up out of step, log times and workflow times may not line up, so in practice set <code>GENERIC_TIMEZONE</code> and <code>TZ</code> to the same value.</p>
-      <p>Recommended approach:</p>
+      <p>With none of them set you get <code>America/New_York</code> — that is the official n8n default for <code>GENERIC_TIMEZONE</code> (not UTC, which is what most people assume). So a fresh installation can run a schedule at the wrong local time unless you set the timezone deliberately; the offset varies by location and daylight saving. <code>TZ</code> (the Node.js process timezone) follows the base image default instead, and the official Docker image is UTC — the two variables end up out of step, log times and workflow times may not line up, so in practice set <code>GENERIC_TIMEZONE</code> and <code>TZ</code> to the same value.</p>
+      <p>Note: the English edition uses Europe/London only as a valid IANA example. Replace it with the timezone for your users. Recommended approach:</p>
       <ol class="steps">
         <li>
           <h3>Set the instance floor first</h3>
-          <p>Ask IT to add both <code>GENERIC_TIMEZONE=Asia/Taipei</code> and <code>TZ=Asia/Taipei</code> to <code>.env</code> and restart. New workflows then default to Taipei time and you do not have to set each one by hand.</p>
+          <p>Ask IT to add both <code>GENERIC_TIMEZONE=Europe/London</code> and <code>TZ=Europe/London</code> to <code>.env</code> and restart. New workflows then default to local time and you do not have to set each one by hand.</p>
         </li>
         <li>
           <h3>Set it again on the workflow, for safety</h3>
-          <p>For any workflow using Schedule / Cron, still go into the Settings tab and pick <code>Asia/Taipei</code> explicitly — then even if IT later changes <code>GENERIC_TIMEZONE</code>, or you move to a different n8n, your schedule times do not move.</p>
+          <p>For any workflow using Schedule / Cron, still go into the Settings tab and pick <code>Europe/London</code> explicitly — then even if IT later changes <code>GENERIC_TIMEZONE</code>, or you move to a different n8n, your schedule times do not move.</p>
         </li>
         <li>
           <h3>Only write it in an expression for cross-timezone data</h3>
-          <p>Use <code>.setZone()</code> in an expression only when you are handling data across timezones (for example, showing a UTC timestamp in Taipei time) — do not write it in every node, that is a maintenance nightmare.</p>
+          <p>Use <code>.setZone()</code> in an expression only when you are handling data across timezones (for example, showing a UTC timestamp in local time) — do not write it in every node, that is a maintenance nightmare.</p>
         </li>
       </ol>
     </section>
@@ -409,7 +409,7 @@
       </ul>
       <p><strong>Every time you build a workflow (3 minutes):</strong></p>
       <ul>
-        <li>Settings tab → set <strong>Timezone</strong> to <code>Asia/Taipei</code> (otherwise you get <code>America/New_York</code>)</li>
+        <li>Settings tab → set <strong>Timezone</strong> to <code>Europe/London</code> (or your local IANA zone; otherwise the workflow uses the instance setting, whose documented default is <code>America/New_York</code>)</li>
         <li>Point <strong>Error Workflow</strong> at your handler workflow (build one first if you do not have it — see <a href="ch17_error_handling.html">Chapter 17</a>)</li>
         <li>While building, confirm <strong>Save manual executions</strong> is <em>Save</em> (if IT turned the instance default off, force it on here)</li>
         <li>Turn on <strong>Timeout Workflow</strong> for anything long-running (one hour, say)</li>
@@ -417,7 +417,7 @@
       </ul>
       <p><strong>What IT / admins decide before deploying (once):</strong></p>
       <ul>
-        <li>Set <code>GENERIC_TIMEZONE</code> + <code>TZ</code> to <code>Asia/Taipei</code></li>
+        <li>Set <code>GENERIC_TIMEZONE</code> + <code>TZ</code> to <code>Europe/London</code></li>
         <li>Set <code>WEBHOOK_URL</code> explicitly to the public domain (required behind a reverse proxy)</li>
         <li>Decide <code>EXECUTIONS_DATA_MAX_AGE</code> from your audit requirements (14 days / 30 days / 90 days)</li>
         <li>Generate a strong <code>N8N_ENCRYPTION_KEY</code>, the key that encrypts credentials, and back it up (replace it and no existing credential can be decrypted)</li>
@@ -431,7 +431,7 @@
       <ol class="steps">
         <li>
           <h3>The Schedule / Cron node runs at the wrong time</h3>
-          <p>99% of the time the workflow's Timezone was never set, so it ran on the instance default (officially <code>America/New_York</code>, not UTC). Open the workflow → Settings tab → set Timezone to <code>Asia/Taipei</code> → Save. If the instance has no <code>GENERIC_TIMEZONE</code> either, ask IT to add it while you are at it. The new timezone applies from the next trigger; a run already scheduled still uses the old time.</p>
+          <p>99% of the time the workflow's Timezone was never set, so it ran on the instance default (officially <code>America/New_York</code>, not UTC). Open the workflow → Settings tab → set Timezone to <code>Europe/London</code> → Save. If the instance has no <code>GENERIC_TIMEZONE</code> either, ask IT to add it while you are at it. The new timezone applies from the next trigger; a run already scheduled still uses the old time.</p>
         </li>
         <li>
           <h3>Last week's records are gone from the Executions page</h3>
@@ -492,7 +492,7 @@
       </details>
       <details class="faq">
         <summary>My workflow only runs now and then — can I schedule "the 15th of every month" in the UI?</summary>
-        <div class="body">You can — use the <strong>Schedule Trigger</strong> (<a href="ch10_triggers.html">Chapter 10</a>) node and set Interval to <em>Days</em>, or write a cron expression directly (<code>0 9 15 * *</code> = 9 in the morning on the 15th of each month). This workflow's <strong>Timezone</strong> has to be set to <code>Asia/Taipei</code> in the Settings tab, or 9 o'clock becomes 9 o'clock UTC (17:00 in Taiwan).</div>
+        <div class="body">You can — use the <strong>Schedule Trigger</strong> (<a href="ch10_triggers.html">Chapter 10</a>) node and set Interval to <em>Days</em>, or write a cron expression directly (<code>0 9 15 * *</code> = 9 in the morning on the 15th of each month). This workflow's <strong>Timezone</strong> has to be set to <code>Europe/London</code> in the Settings tab, or 9 o’clock is interpreted in the instance timezone rather than the intended local timezone.</div>
       </details>
       <details class="faq">
         <summary>Can I give myself admin rights and change instance settings?</summary>
@@ -521,7 +521,7 @@
 
     <footer class="site-footer">
       <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p class="footer-meta">n8n is source-available fair-code software from n8n GmbH under the Sustainable Use License. This independent tutorial is not affiliated with n8n GmbH. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

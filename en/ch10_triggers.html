@@ -219,12 +219,12 @@
 
       <div class="callout warn"><strong>Warning (number of cron fields):</strong> The Custom Cron in n8n's Schedule Trigger takes <strong>six fields</strong>, with an extra "second" at the front — not the five fields of a traditional Linux crontab. The order is: <code>second minute hour day month weekday</code>. A <code>0 8 * * *</code> (five fields) copied from somewhere else means something different once you paste it into n8n, and may error out outright. Remember to add the seconds field: "every day at 8:00" should be written <code>0 0 8 * * *</code>.</div>
 
-      <div class="callout danger"><strong>Danger (the timezone trap):</strong> Schedule Trigger reads the clock from <strong>the workflow's timezone setting</strong>, which defaults to UTC. Taiwan is UTC+8, so if you set "8:00" without changing the timezone, it actually runs at <em>4:00 pm Taipei time</em>. This is the number-one thing n8n beginners trip over. The next section covers how to change the setting.</div>
+      <div class="callout danger"><strong>Danger (the timezone trap):</strong> Schedule Trigger reads the clock from <strong>the workflow’s timezone setting</strong>, then falls back to the instance timezone. The documented self-hosted default is America/New_York, so <em>“8:00” may not mean 8:00 where you are</em>. This is a common n8n scheduling mistake. The next section covers how to change the setting.</div>
     </section>
 
     <section id="location" data-nav="Setting the timezone">
       <h2 data-icon="location">How to set the timezone for a schedule</h2>
-      <p>There are two levels of timezone setting, and one overrides the other. Knowing which level you are editing is what saves you half a day of confusion:</p>
+      <p>There are two levels of timezone setting, and one overrides the other. Note: the English edition uses Europe/London only as an example; replace it with the IANA timezone for your location. Knowing which level you are editing is what saves you half a day of confusion:</p>
 
       <table class="data-table">
         <thead>
@@ -234,25 +234,25 @@
           <tr>
             <td><strong>Workflow level</strong> (set separately on each workflow)</td>
             <td>Affects only how <em>this</em> workflow's Schedule Trigger reads the time</td>
-            <td>Open the workflow → Settings at the top right (or <kbd>Ctrl</kbd>+<kbd>,</kbd>) → set Timezone to <code>Asia/Taipei</code></td>
+            <td>Open the workflow → Settings at the top right (or <kbd>Ctrl</kbd>+<kbd>,</kbd>) → set Timezone to <code>Europe/London</code></td>
           </tr>
           <tr>
             <td><strong>Instance level</strong> (global to the whole n8n instance)</td>
             <td>Every workflow on the instance that has no workflow-level timezone of its own falls back to this</td>
-            <td>The environment variable <code>GENERIC_TIMEZONE=Asia/Taipei</code>; set Node.js's <code>TZ=Asia/Taipei</code> to match as well, because if the two disagree, things like <code>new Date()</code> display 8 hours away from what the schedule uses (this means changing server settings — if that is not your job, ask IT)</td>
+            <td>The environment variable <code>GENERIC_TIMEZONE=Europe/London</code>; set Node.js's <code>TZ=Europe/London</code> to match as well, because if the two disagree, values such as <code>new Date()</code> can differ from the schedule clock (this means changing server settings — if that is not your job, ask IT)</td>
           </tr>
         </tbody>
       </table>
 
-      <p>Precedence: <strong>workflow level > instance level > the UTC default</strong>. Which means:</p>
+      <p>Precedence: <strong>workflow level &gt; instance level &gt; the documented America/New_York default</strong>. Which means:</p>
       <ol class="steps">
         <li>
-          <h3>Woow n8n may already have the instance level set</h3>
-          <p>The Woow n8n admin has usually already set <code>GENERIC_TIMEZONE</code> to <code>Asia/Taipei</code>, so when anyone sets 8:00 it means 8:00 in Taiwan. Build a test workflow first, set it to run every minute, and check whether the times on the Executions page look right — if they do, the instance level is fine and you never have to think about timezones again.</p>
+          <h3>Check the instance timezone instead of assuming it</h3>
+          <p>Ask the administrator whether <code>GENERIC_TIMEZONE</code> is set to an appropriate value such as <code>Europe/London</code>. Build a test workflow, run it every minute, and check whether the times on the Executions page match the intended local time. If they do, the instance default is suitable; an explicit workflow timezone is still safer when portability matters.</p>
         </li>
         <li>
           <h3>If they are wrong, set the workflow level</h3>
-          <p>Open the workflow's three-dot menu at the top right → <strong>Settings</strong> → there is a <strong>Timezone</strong> dropdown in the middle; pick <code>Asia/Taipei</code>. Save when you are done.</p>
+          <p>Open the workflow's three-dot menu at the top right → <strong>Settings</strong> → there is a <strong>Timezone</strong> dropdown in the middle; pick your IANA timezone, for example <code>Europe/London</code>. Save when you are done.</p>
         </li>
         <li>
           <h3>Check every workflow that has a Schedule Trigger</h3>
@@ -260,7 +260,7 @@
         </li>
       </ol>
 
-      <div class="callout tip"><strong>Tip:</strong> Not sure which timezone a workflow is on right now? Open the Schedule Trigger node and n8n usually shows "Next execution at: XXXX-XX-XX 08:00 (Asia/Taipei)" — whatever is in the parentheses is the timezone it is using, visible at a glance.</div>
+      <div class="callout tip"><strong>Tip:</strong> Not sure which timezone a workflow is on right now? Open the Schedule Trigger node and n8n usually shows a value such as "Next execution at: XXXX-XX-XX 08:00 (Europe/London)" — whatever is in the parentheses is the timezone it is using, visible at a glance.</div>
     </section>
 
     <section id="integration" data-nav="Event Trigger">
@@ -387,7 +387,7 @@
         </li>
         <li>
           <h3>Set the time on the Schedule Trigger</h3>
-          <p>Open the node panel: set Trigger Interval to <code>Days</code>, Days Between Triggers <code>1</code>, Trigger at Hour <code>9</code>, Trigger at Minute <code>30</code>. Look at the Next execution shown under the node and check that the timezone in the parentheses is <code>Asia/Taipei</code> (if it is not, set it as described in the previous section).</p>
+          <p>Open the node panel: set Trigger Interval to <code>Days</code>, Days Between Triggers <code>1</code>, Trigger at Hour <code>9</code>, Trigger at Minute <code>30</code>. Look at the Next execution shown under the node and check that the timezone in parentheses is <code>Europe/London</code> (or your intended IANA timezone) (if it is not, set it as described in the previous section).</p>
         </li>
         <li>
           <h3>Connect the Schedule Trigger to your existing downstream nodes</h3>
@@ -423,9 +423,9 @@
             <td>Open the workflow and drag Active to green. This is the number-one gotcha.</td>
           </tr>
           <tr>
-            <td>The Schedule runs, but 8 hours off</td>
-            <td>No Timezone set, so it falls back to UTC</td>
-            <td>Workflow → Settings → set Timezone to <code>Asia/Taipei</code>, save, then look at the next Next execution</td>
+            <td>The Schedule runs at the wrong local time</td>
+            <td>No workflow Timezone is set, so it falls back to the instance setting</td>
+            <td>Workflow → Settings → choose your IANA timezone, for example <code>Europe/London</code>, save, then inspect the next execution time</td>
           </tr>
           <tr>
             <td>The Webhook Trigger URL was called but nothing ran</td>
@@ -466,7 +466,7 @@
 
       <details class="faq">
         <summary>Can I set the timezone for every workflow at once instead of changing them one by one?</summary>
-        <div class="body">Yes, but it means changing the server environment variable <code>GENERIC_TIMEZONE=Asia/Taipei</code>. That is an instance-level setting, so only an admin (or someone with IT access) can change it. The Woow n8n admin has usually set the Taipei timezone for you already; build a test workflow that runs every minute and check whether the times on Executions look right. For the full list of environment variables see <a href="appendix_settings_ref.html">Appendix A · Settings reference</a> and the <a href="https://docs.n8n.io/hosting/configuration/configuration-examples/time-zone/">n8n timezone documentation</a>.</div>
+        <div class="body">Yes, but it means changing the server environment variable, for example <code>GENERIC_TIMEZONE=Europe/London</code>. That is an instance-level setting, so only an admin (or someone with IT access) can change it. Do not assume the instance matches your location; ask the administrator or build a one-minute test workflow and inspect its execution times. For the full list of environment variables see <a href="appendix_settings_ref.html">Appendix A · Settings reference</a> and the <a href="https://docs.n8n.io/hosting/configuration/configuration-examples/time-zone/">n8n timezone documentation</a>.</div>
       </details>
 
       <details class="faq">
@@ -513,7 +513,7 @@
 
     <footer class="site-footer">
       <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p class="footer-meta">n8n is source-available fair-code software from n8n GmbH under the Sustainable Use License. This independent tutorial is not affiliated with n8n GmbH. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

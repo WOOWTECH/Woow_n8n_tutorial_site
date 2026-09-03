@@ -374,7 +374,7 @@
         </li>
         <li>
           <h3>Common: Trigger → App that reads → Core that filters → App that writes → App that notifies</h3>
-          <p>"Every morning, fetch the support tickets, keep only the urgent ones, write them into Notion and tell the sales manager" — <code>Schedule Trigger</code> → <code>HTTP Request (read the ticket API)</code> → <code>IF（priority == urgent）</code> → <code>Notion (create a page)</code> → <code>Slack (notify)</code>. This is the classic five-node workflow, and 80% of a company's automation looks like this.</p>
+          <p>"Every morning, fetch the support tickets, keep only the urgent ones, write them into Notion and tell the sales manager" — <code>Schedule Trigger</code> → <code>HTTP Request (read the ticket API)</code> → <code>IF (priority == urgent)</code> → <code>Notion (create a page)</code> → <code>Slack (notify)</code>. This is the classic five-node workflow, and 80% of a company's automation looks like this.</p>
         </li>
         <li>
           <h3>AI: Chat Trigger → AI Agent (Cluster) → reply</h3>
@@ -403,7 +403,7 @@
         </li>
         <li>
           <h3>Nothing found → it may be a community node (community package)</h3>
-          <p>A more niche service (a Taiwan-only SaaS, say) may have no official node, but n8n has a <strong>community nodes</strong> mechanism — an admin has to install the package on the back end. That is an advanced operation, so ask IT to install it for you.</p>
+          <p>A more niche regional or industry-specific SaaS may have no official node, but n8n has a <strong>community nodes</strong> mechanism — an admin has to install the package on the back end. That is an advanced operation, so ask IT to install it for you. Note: the English edition generalizes the source’s region-specific example; check providers and data-residency requirements in your own location.</p>
         </li>
         <li>
           <h3>No node for that SaaS at all → call it yourself with HTTP Request</h3>
@@ -452,7 +452,7 @@
       <details class="faq">
         <summary>How many kinds of node does n8n have in total?</summary>
         <div class="body">
-          <p>n8n officially supports 400+ nodes (the list at <a href="https://n8n.io/integrations/" target="_blank" rel="noopener">n8n.io/integrations</a>), and community packages add several hundred more. In practice 80% of automation uses fewer than 20 nodes, so do not let the number scare you.</p>
+          <p>At the source snapshot, n8n listed 400+ integrations at <a href="https://n8n.io/integrations/" target="_blank" rel="noopener">n8n.io/integrations</a>, with several hundred more community packages; check the live catalogs because the totals change. In practice 80% of automation uses fewer than 20 nodes, so do not let the number scare you.</p>
         </div>
       </details>
       <details class="faq">
@@ -530,7 +530,7 @@
 
     <footer class="site-footer">
       <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p class="footer-meta">n8n is source-available fair-code software from n8n GmbH under the Sustainable Use License. This independent tutorial is not affiliated with n8n GmbH. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

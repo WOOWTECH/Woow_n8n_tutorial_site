@@ -10,6 +10,16 @@
       "unit": "#cat-error",
       "zh": "<code>errorWorkflow: &lt;上一題的 error workflow id&gt;</code>",
       "en": "<code>errorWorkflow: &lt;error workflow ID from the previous prompt&gt;</code>"
+    },
+    {
+      "unit": "#cat-ops",
+      "zh": "<code>n8n-dev.woowtech.io</code>",
+      "en": "<code>dev_abc</code>"
+    },
+    {
+      "unit": "#cat-ops",
+      "zh": "<code>dev_abc</code>",
+      "en": "<code>n8n-dev.woowtech.io</code>"
     }
   ]
 }

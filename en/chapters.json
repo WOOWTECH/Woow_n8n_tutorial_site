@@ -7,8 +7,8 @@
     "baseUrl": "https://n8n-guide.woowtech.io/en",
     "repoUrl": "https://github.com/WOOWTECH/Woow_n8n_tutorial_site",
     "locale": "en_US",
-    "description": "A Traditional Chinese n8n tutorial with 22 chapters and 3 appendices: from signing in, using someone else’s template, and building your first workflow through expressions, the Code node, AI Agent, and Webhook—so your company can hand repetitive work over to automation.",
-    "footerMeta": "Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it.",
+    "description": "An English-language n8n tutorial with 22 chapters and 3 appendices: from signing in, using a template, and building your first workflow through expressions, the Code node, AI Agent, and Webhook—so your company can hand repetitive work over to automation.",
+    "footerMeta": "n8n is source-available fair-code software from n8n GmbH under the Sustainable Use License. This independent tutorial is not affiliated with n8n GmbH.",
     "ogImage": "assets/og/n8n-guide.en.png",
     "license": {
       "name": "CC BY 4.0",
@@ -22,7 +22,8 @@
     "localeAlternate": [
       "zh_TW"
     ],
-    "fontsUrl": "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap"
+    "fontsUrl": "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap",
+    "ogScript": "automate the boring stuff"
   },
   "hub": {
     "_readme": "index.html is the four-category Resource Hub, maintained by hand and not changed by build_nav. build_nav generates the tutorial catalog at the file named by catalog. pages lists the standalone single-file handbooks under the hub; each has its own head and styles and is included in the sitemap and check_links allowlist.",

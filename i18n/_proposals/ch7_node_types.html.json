@@ -15,6 +15,11 @@
       "unit": "#tips",
       "zh": "<code>Slack（通知）</code>",
       "en": "<code>Slack (notify)</code>"
+    },
+    {
+      "unit": "#tips",
+      "zh": "<code>IF（priority == urgent）</code>",
+      "en": "<code>IF (priority == urgent)</code>"
     }
   ]
 }

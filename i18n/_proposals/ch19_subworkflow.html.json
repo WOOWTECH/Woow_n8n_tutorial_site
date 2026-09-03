@@ -20,6 +20,16 @@
       "unit": "#labels",
       "zh": "<code>測試新 API</code>",
       "en": "<code>Test new API</code>"
+    },
+    {
+      "unit": "#labels",
+      "zh": "<code>[Sub] Format Date TW</code>",
+      "en": "<code>[Sub] Format Local Date</code>"
+    },
+    {
+      "unit": "#advanced",
+      "zh": "<code>[Sub] Format Date TW</code>",
+      "en": "<code>[Sub] Format Local Date</code>"
     }
   ]
 }

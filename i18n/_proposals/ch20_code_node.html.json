@@ -40,6 +40,11 @@
       "unit": "#faq",
       "zh": "<code>$('前一個 Code').item.json.x</code>",
       "en": "<code>$('Previous Code').item.json.x</code>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>「」</code>",
+      "en": "<code>“”</code>"
     }
   ]
 }
