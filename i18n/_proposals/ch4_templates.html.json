@@ -1,0 +1,20 @@
+{
+  "file": "ch4_templates.html",
+  "entries": [
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>rss早報_slack</code>",
+      "en": "<code>rss_morning_digest_slack</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>試玩中</code>",
+      "en": "<code>Playing around</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>正式在跑</code>",
+      "en": "<code>Live</code>"
+    }
+  ]
+}

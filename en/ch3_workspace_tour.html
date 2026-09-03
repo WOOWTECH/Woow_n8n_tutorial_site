@@ -70,17 +70,17 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要先認地圖</a>
-      <a href="#concept">主側欄七個項目</a>
-      <a href="#workflow_page">打開一個 workflow</a>
-      <a href="#node_shape">節點長什麼樣</a>
-      <a href="#node_panel">節點抽屜</a>
-      <a href="#executions">Executions 頁</a>
-      <a href="#templates_entry">Templates 入口</a>
-      <a href="#credentials_entry">Credentials 頁</a>
-      <a href="#canvas_tools">右下小工具</a>
-      <a href="#troubleshoot">常見卡關</a>
-      <a href="#faq">常見問題</a>
+      <a href="#why">Why this matters</a>
+      <a href="#concept">The sidebar</a>
+      <a href="#workflow_page">Opening a workflow</a>
+      <a href="#node_shape">Node anatomy</a>
+      <a href="#node_panel">Nodes panel</a>
+      <a href="#executions">Executions page</a>
+      <a href="#templates_entry">Templates entry</a>
+      <a href="#credentials_entry">Credentials page</a>
+      <a href="#canvas_tools">Canvas tools</a>
+      <a href="#troubleshoot">Common pitfalls</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -94,255 +94,255 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch3_workspace_tour.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 3</div>
-      <h1>工作區長什麼樣</h1>
-      <p class="lead">很多人第一次登進 n8n 都會愣三秒——側欄一排陌生名字、中間一片空白畫布、右下角一堆小圖示。這章帶你把每個區塊點過一次，之後任何一章跟你說「打開 Executions」「開一個 Workflow 進去看設定」你都找得到。</p>
+      <h1>What the workspace looks like</h1>
+      <p class="lead">Most people freeze for three seconds the first time they sign in to n8n — a row of unfamiliar names down the sidebar, a blank canvas in the middle, a pile of small icons in the bottom-right corner. This chapter walks you through every area once, so that when a later chapter tells you to "open Executions" or "open a Workflow and look at its settings", you know where to go.</p>
     </div>
 
-    <section id="why" data-nav="為什麼要先認地圖">
-      <h2 data-icon="why">為什麼要先認地圖</h2>
-      <p>n8n 跟 Zapier / Make 最大的差別是「什麼都給你看」——所有 workflow、所有跑過的紀錄、所有金鑰都在同一個介面裡。這是好事，但代價就是<strong>剛開始畫面資訊量比較大</strong>。</p>
-      <p>已經在<a href="ch2_login.html">第 2 章</a>成功登入 <code>n8n.woowtech.io</code> 的話，你眼前應該就是這個工作區。這章不動任何東西，只帶你認：</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why you need the map first</h2>
+      <p>The biggest difference between n8n and Zapier / Make is that it shows you everything — every workflow, every past run and every key sits in the same interface. That is a good thing, but the price is that <strong>there is a lot on screen when you start out</strong>.</p>
+      <p>If <a href="ch2_login.html">Chapter 2</a> got you signed in to <code>n8n.woowtech.io</code>, this workspace is what you are looking at right now. This chapter changes nothing — it only walks you through:</p>
       <ul>
-        <li>左邊<strong>主側欄</strong>那七個項目分別是幹嘛的。</li>
-        <li>打開一個 workflow 之後，<strong>畫面各個角落</strong>都是什麼。</li>
-        <li><strong>Executions 頁</strong>為什麼是 debug 的救命恩人。</li>
-        <li><strong>Templates、Credentials</strong> 這種之後會反覆用到的入口在哪。</li>
+        <li>What each of the seven items in the <strong>main sidebar</strong> on the left is for.</li>
+        <li>What sits in <strong>every corner of the screen</strong> once you open a workflow.</li>
+        <li><strong>The Executions page</strong>, and why it is the thing that rescues you when you debug.</li>
+        <li><strong>Templates and Credentials</strong> — where the entry points you will keep coming back to are.</li>
       </ul>
-      <div class="callout"><strong>本章不用動手：</strong>純粹「跟著我把滑鼠移到每個區塊上讀一次」的導覽章。真正動手做 workflow 要到<a href="ch8_first_workflow.html">第 8 章</a>才開始，這章先讓你不會迷路。</div>
+      <div class="callout"><strong>Nothing to build in this chapter:</strong> this is a pure tour — move the mouse over each area with me and read it once. Building a workflow for real starts in <a href="ch8_first_workflow.html">Chapter 8</a>; this chapter is here so you do not get lost.</div>
     </section>
 
-    <section id="concept" data-nav="主側欄七個項目">
-      <h2 data-icon="concept">主側欄從上到下七個項目</h2>
-      <p>登入後畫面最左邊那條深色欄位就是<strong>主側欄</strong>（Main sidebar）。從上到下按順序長這樣：</p>
+    <section id="concept" data-nav="The sidebar">
+      <h2 data-icon="concept">The seven items in the main sidebar, top to bottom</h2>
+      <p>After you sign in, the dark strip on the far left of the screen is the <strong>main sidebar</strong>. Top to bottom, in order, it goes like this:</p>
       <table class="data-table">
         <thead>
-          <tr><th>項目</th><th>幹嘛用的</th><th>什麼時候會來</th></tr>
+          <tr><th>Item</th><th>What it is for</th><th>When you land here</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>Overview</strong></td><td>首頁儀表板，最近開過的 workflow、最近跑過的紀錄、統計摘要。</td><td>登入後第一眼、想快速回到「昨天弄到一半那個」。</td></tr>
-          <tr><td><strong>Workflows</strong></td><td>你能存取的所有 workflow 清單，可以搜尋、過濾、開新分頁、標星號。</td><td>幾乎每次進來都會用到，是主要工作面。</td></tr>
-          <tr><td><strong>Templates</strong></td><td>官方模板 gallery，幾千個現成 workflow 一鍵複製到你的 workspace。</td><td>想抄別人做好的（<a href="ch4_templates.html">第 4 章</a>詳講）。</td></tr>
-          <tr><td><strong>Credentials</strong></td><td>金鑰、OAuth 授權、API token 的集中儲存。</td><td>要串新的 SaaS 服務時、要跟同事分享共用帳號時（<a href="ch13_credentials.html">第 13 章</a>詳講）。</td></tr>
-          <tr><td><strong>Executions</strong></td><td>整個 workspace 跑過的每一次 workflow 紀錄。</td><td>Debug 的黃金頁——workflow 半夜壞了、想看昨天到底跑了幾筆。</td></tr>
-          <tr><td><strong>Insights</strong></td><td>企業版才有的用量統計、成功率報表。</td><td>Woow 目前用不到，看到灰灰的就對了。</td></tr>
-          <tr><td>側欄最下方：<strong>What's new</strong>（鈴鐺）／<strong>Help</strong>（問號，連文件與社群）／<strong>頭像</strong>（點開才進 <strong>Settings</strong> 與登出）</td><td>版本公告、外部說明文件連結、個人與 workspace 設定入口都在這裡。<strong>Settings</strong> 不是獨立側欄項目，要從頭像進去。</td><td>調語言、換主題、看新版功能、登出。</td></tr>
+          <tr><td><strong>Overview</strong></td><td>The home dashboard: workflows you opened recently, recent execution records, a summary of the numbers.</td><td>The first thing you see after signing in, and the fast way back to "the one you left half-finished yesterday".</td></tr>
+          <tr><td><strong>Workflows</strong></td><td>The list of every workflow you can access. You can search, filter, open in a new tab and star them.</td><td>You use it almost every time you come in; it is the main working surface.</td></tr>
+          <tr><td><strong>Templates</strong></td><td>The official template gallery: thousands of ready-made workflows you can copy into your workspace in one click.</td><td>When you want to copy someone else's work (<a href="ch4_templates.html">Chapter 4</a> covers it in detail).</td></tr>
+          <tr><td><strong>Credentials</strong></td><td>Central storage for keys, OAuth authorizations and API tokens.</td><td>When you wire up a new SaaS service, or share an account with a colleague (<a href="ch13_credentials.html">Chapter 13</a> covers it in detail).</td></tr>
+          <tr><td><strong>Executions</strong></td><td>A record of every workflow run in the whole workspace.</td><td>The golden page for debugging — a workflow died overnight, or you want to see how many items ran yesterday.</td></tr>
+          <tr><td><strong>Insights</strong></td><td>Usage statistics and success-rate reports, Enterprise only.</td><td>WoowTech has no use for it yet, so grayed out is exactly what you should see.</td></tr>
+          <tr><td>At the very bottom of the sidebar: <strong>What's new</strong> (the bell) / <strong>Help</strong> (the question mark, linking to the docs and the community) / <strong>your avatar</strong> (open it to reach <strong>Settings</strong> and sign out)</td><td>Release announcements, links to the external docs and the way into your personal and workspace settings all live here. <strong>Settings</strong> is not a sidebar item of its own; you get to it through the avatar.</td><td>Changing the language, switching the theme, seeing what is new in a release, signing out.</td></tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>提示：</strong>把滑鼠移到任何一個側欄圖示上會跳出中文（或英文）名稱。如果側欄是「收起」狀態（只看得到圖示沒有文字），點側欄底部那個 <code>«</code> / <code>»</code> 箭頭可以展開。</div>
-      <div class="callout warn"><strong>注意：</strong>你看到的側欄項目數量會跟你的權限有關。如果你是 workspace 的一般成員，可能看不到某些系統管理項目（例如 Insights、部分 Settings 分頁），這是正常的，不是壞掉。</div>
+      <div class="callout tip"><strong>Tip:</strong> hover over any sidebar icon and its name pops up in Chinese (or English). If the sidebar is collapsed — icons only, no text — click the <code>«</code> / <code>»</code> arrow at the bottom of the sidebar to expand it.</div>
+      <div class="callout warn"><strong>Warning:</strong> how many sidebar items you see depends on your permissions. If you are an ordinary member of the workspace, some administration items may be hidden (Insights, for example, or parts of the Settings tabs). That is normal, not broken.</div>
       <figure class="shot">
-        <img src="../assets/screenshots/ch3/01_sidebar.png" alt="n8n 主側欄從上到下的七個項目" />
-        <figcaption><strong>圖 3-1</strong>左側主側欄：Overview／Workflows／Templates／Credentials／Executions／Insights，最下面才是 Help 與頭像。</figcaption>
+        <img src="../assets/screenshots/ch3/01_sidebar.png" alt="The seven items in the n8n main sidebar, top to bottom" />
+        <figcaption><strong>Figure 3-1</strong>The main sidebar on the left: Overview / Workflows / Templates / Credentials / Executions / Insights, with Help and the avatar right at the bottom.</figcaption>
       </figure>
     </section>
 
-    <section id="workflow_page" data-nav="打開一個 workflow">
-      <h2 data-icon="what">打開一個 workflow 會看到什麼</h2>
-      <p>從側欄點 <strong>Workflows</strong> → 隨便挑一個 workflow 點進去（沒有就先點右上角 <strong>+ Create Workflow</strong> 開一個空的），你會進入 workflow 編輯畫面。這時候畫面分成好幾塊：</p>
+    <section id="workflow_page" data-nav="Opening a workflow">
+      <h2 data-icon="what">What you see when you open a workflow</h2>
+      <p>From the sidebar, click <strong>Workflows</strong> → open any workflow you like (if you have none yet, click <strong>+ Create Workflow</strong> in the top-right corner to start an empty one). You land in the workflow editor, and the screen splits into several areas:</p>
       <figure class="shot">
-        <img src="../assets/screenshots/ch3/02_workflows_list.png" alt="Workflows 分頁的 workflow 清單" />
-        <figcaption><strong>圖 3-2</strong>Workflows 分頁：所有你能存取的 workflow 一次列在這，右上角就是 + Create Workflow 開新的入口。</figcaption>
+        <img src="../assets/screenshots/ch3/02_workflows_list.png" alt="The workflow list on the Workflows tab" />
+        <figcaption><strong>Figure 3-2</strong>The Workflows tab: every workflow you can access, listed in one place. The + Create Workflow entry point for a new one is in the top-right corner.</figcaption>
       </figure>
       <table class="data-table">
         <thead>
-          <tr><th>位置</th><th>元件</th><th>作用</th></tr>
+          <tr><th>Where</th><th>Element</th><th>What it does</th></tr>
         </thead>
         <tbody>
-          <tr><td>最頂端左邊</td><td>Workflow 名字（點一下可以改名）</td><td>會出現在瀏覽器分頁跟 Workflows 清單。</td></tr>
-          <tr><td>最頂端中間</td><td>三個分頁：<strong>Editor</strong> / <strong>Executions</strong> / <strong>Evaluations</strong></td><td>切換視角——編輯、看跑過的紀錄、看評測（進階）。</td></tr>
-          <tr><td>最頂端右邊</td><td><strong>Save</strong> + <strong>Execute Workflow</strong> + <strong>Publish / Unpublish</strong></td><td>存草稿、手動跑一次測試、把當前草稿發佈上線（讓排程／Webhook／事件觸發器真的開始接收事件）。</td></tr>
-          <tr><td>畫面中央</td><td><strong>Canvas（畫布）</strong></td><td>所有節點跟連線放在這裡，可以縮放拖動。</td></tr>
-          <tr><td>右下角</td><td>一排小工具：Zoom in／Zoom out／Fit view／Tidy up／Mini-map</td><td>畫布縮放與整理。</td></tr>
-          <tr><td>Canvas 右邊或空白處</td><td><strong>+ Add first step</strong>（新 workflow）或 <strong>+</strong> 按鈕（節點之間）</td><td>叫出節點抽屜（Node panel）加新節點。</td></tr>
+          <tr><td>Top left</td><td>The workflow name (click it to rename)</td><td>It shows up in the browser tab and in the Workflows list.</td></tr>
+          <tr><td>Top center</td><td>Three tabs: <strong>Editor</strong> / <strong>Executions</strong> / <strong>Evaluations</strong></td><td>Switch views — edit, read past runs, look at evaluations (advanced).</td></tr>
+          <tr><td>Top right</td><td><strong>Save</strong> + <strong>Execute Workflow</strong> + <strong>Publish / Unpublish</strong></td><td>Save the draft, run one manual test, publish the current draft (so the schedule / Webhook / event triggers really start receiving events).</td></tr>
+          <tr><td>Center of the screen</td><td><strong>Canvas</strong></td><td>Every node and every connection sits here, and you can zoom and pan.</td></tr>
+          <tr><td>Bottom-right corner</td><td>A row of small tools: Zoom in / Zoom out / Fit view / Tidy up / Mini-map</td><td>Zooming and tidying the canvas.</td></tr>
+          <tr><td>To the right of the canvas, or on empty space</td><td><strong>+ Add first step</strong> (a new workflow) or the <strong>+</strong> button (between nodes)</td><td>Opens the nodes panel so you can add a node.</td></tr>
         </tbody>
       </table>
-      <div class="callout"><strong>觀念：</strong>n8n 2.0 之後把過去的「Active 開關」換成<strong>Publish / Unpublish（發佈 / 取消發佈）</strong>模型：你在編輯的一直是<strong>草稿（draft）</strong>，按 <strong>Publish</strong> 才會把當前這個版本推上線，排程 / Webhook / 訊息事件開始接收；沒 Publish 之前只有「Execute Workflow」手動按鈕能跑。這個改動就是為了避免手滑把改一半的 workflow 直接開啟。Woow 這台已經是 n8n 2.x，所以你在畫面右上角看到的會是 <strong>Publish</strong> 而不是 Active 開關。細節在<a href="ch10_triggers.html">第 10 章</a>。</div>
+      <div class="callout"><strong>Concept:</strong> from n8n 2.0 on, the old Active toggle is replaced by the <strong>Publish / Unpublish</strong> model: what you edit is always a <strong>draft</strong>, and only pressing <strong>Publish</strong> pushes the current version live so the schedule, Webhook and message events start arriving. Until you publish, the only thing that can run it is the manual "Execute Workflow" button. The change exists so that nobody switches a half-edited workflow on by accident. Woow n8n already runs n8n 2.x, so what you see in the top-right corner is <strong>Publish</strong>, not an Active toggle. The details are in <a href="ch10_triggers.html">Chapter 10</a>.</div>
       <figure class="shot">
-        <img src="../assets/screenshots/ch3/05_canvas_empty.png" alt="剛開好的空白 Canvas 畫布" />
-        <figcaption><strong>圖 3-3</strong>剛開好的空白 Canvas：中央一顆 + Add first step 是加第一個 Trigger 的入口，右下角是 zoom／fit view／tidy up 小工具列。</figcaption>
+        <img src="../assets/screenshots/ch3/05_canvas_empty.png" alt="A freshly created, empty canvas" />
+        <figcaption><strong>Figure 3-3</strong>A freshly opened, empty canvas: the single + Add first step button in the middle is how you add the first Trigger, and the zoom / fit view / tidy up toolbar sits in the bottom-right corner.</figcaption>
       </figure>
     </section>
 
-    <section id="node_shape" data-nav="節點長什麼樣">
-      <h2 data-icon="what">Canvas 上的節點長什麼樣</h2>
-      <p>每一個節點都是<strong>一張矩形卡片</strong>放在畫布上，元素固定就這幾樣：</p>
+    <section id="node_shape" data-nav="Node anatomy">
+      <h2 data-icon="what">What a node looks like on the canvas</h2>
+      <p>Every node is <strong>a rectangular card</strong> on the canvas, and it always has the same few parts:</p>
       <ul>
-        <li><strong>左邊小圓點</strong>（input）：資料從這邊流進來。Trigger 節點沒有 input，因為它是流程的頭。</li>
-        <li><strong>節點 icon</strong>：Slack 的 <code>#</code>、Gmail 的信封等，一眼認出是哪個服務。</li>
-        <li><strong>節點名字</strong>：預設是節點類型名（例：<code>Schedule Trigger</code>），可以雙擊改成你看得懂的名字（例：<code>每天早上八點</code>）。</li>
-        <li><strong>右邊小圓點</strong>（output）：資料從這邊流出去。有些節點有多個 output（例：IF 節點有 true / false 兩個）。</li>
+        <li><strong>The dot on the left</strong> (input): data flows in here. Trigger nodes have no input, because they are the head of the workflow.</li>
+        <li><strong>The node icon</strong>: Slack's <code>#</code>, Gmail's envelope and so on, so you recognize the service at a glance.</li>
+        <li><strong>The node name</strong>: by default it is the node type (for example <code>Schedule Trigger</code>), and you can double-click it to rename it to something you understand (for example <code>每天早上八點</code>).</li>
+        <li><strong>The dot on the right</strong> (output): data flows out here. Some nodes have several outputs (the IF node, for example, has two: true / false).</li>
       </ul>
-      <p><strong>連線</strong>是節點之間那條曲線：從上一個節點的 output 圓點拉到下一個節點的 input 圓點。滑鼠移到連線上會出現 <code>×</code> 可以刪除。</p>
-      <p><strong>點一下節點</strong>會從右側滑出設定面板，裡面通常有三個分頁：</p>
+      <p>A <strong>connection</strong> is the curve between two nodes: you drag from the previous node's output dot to the next node's input dot. Hover over a connection and an <code>×</code> appears so you can delete it.</p>
+      <p><strong>Click a node</strong> and a settings panel slides out from the right. It usually has three tabs:</p>
       <table class="data-table">
         <thead>
-          <tr><th>分頁</th><th>內容</th></tr>
+          <tr><th>Tab</th><th>Contents</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>Parameters</strong></td><td>這個節點的所有欄位設定（要打哪隻 API、要傳什麼訊息、要抓哪個欄位）。</td></tr>
-          <tr><td><strong>Settings</strong></td><td>節點層設定：錯誤時要不要繼續、重試次數、備註、node ID。</td></tr>
-          <tr><td><strong>Output</strong>（跑過之後才有）</td><td>這個節點上一次跑產生的資料，可以切 Table / JSON / Schema / Binary 看。</td></tr>
+          <tr><td><strong>Parameters</strong></td><td>Every field on this node (which API to call, which message to send, which field to read).</td></tr>
+          <tr><td><strong>Settings</strong></td><td>Node-level settings: whether to continue on error, how many retries, notes, the node ID.</td></tr>
+          <tr><td><strong>Output</strong> (only after a run)</td><td>The data this node produced on its last run. You can switch between Table / JSON / Schema / Binary.</td></tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>提示：</strong>Canvas 上按住 <kbd>Space</kbd> 拖動可以平移畫面，滾輪可以縮放。如果不小心把節點拖到看不見的地方，右下角 <strong>Fit view</strong> 一秒拉回來。</div>
+      <div class="callout tip"><strong>Tip:</strong> hold <kbd>Space</kbd> and drag on the canvas to pan; the scroll wheel zooms. If you drag a node somewhere you can no longer see, <strong>Fit view</strong> in the bottom-right corner brings it back in a second.</div>
     </section>
 
-    <section id="node_panel" data-nav="節點抽屜">
-      <h2 data-icon="tabs">節點抽屜（Node panel）詳解</h2>
-      <p>Canvas 空白處點右鍵或按 <kbd>Tab</kbd>、或直接點節點之間的 <strong>+</strong>、或空 workflow 中央那顆 <strong>+ Add first step</strong>——都會叫出<strong>節點抽屜</strong>從右邊滑出來。這是加節點的唯一入口。</p>
-      <p>抽屜上方有搜尋框，直接輸入服務名（例：<code>slack</code>、<code>gmail</code>、<code>sheet</code>）最快。下方會按<strong>兩大類</strong>展開：</p>
+    <section id="node_panel" data-nav="Nodes panel">
+      <h2 data-icon="tabs">The nodes panel in detail</h2>
+      <p>Right-click empty canvas or press <kbd>Tab</kbd>, click the <strong>+</strong> between two nodes, or click the <strong>+ Add first step</strong> button in the middle of an empty workflow — each of them slides the <strong>nodes panel</strong> in from the right. It is the only way to add a node.</p>
+      <p>There is a search box at the top of the panel, and typing the service name (<code>slack</code>, <code>gmail</code>, <code>sheet</code>) is the fastest route. Below it, the list opens into <strong>two top-level groups</strong>:</p>
       <table class="data-table">
         <thead>
-          <tr><th>類別</th><th>意義</th><th>例子</th></tr>
+          <tr><th>Category</th><th>What it means</th><th>Example</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>Triggers</strong>（觸發器）</td><td>Workflow 的<strong>開頭</strong>——決定什麼時候要跑。一個 workflow 通常只有一個 Trigger。</td><td>Schedule Trigger（時間到）、Webhook（外部打過來）、Gmail Trigger（新信）。</td></tr>
-          <tr><td><strong>Actions</strong>（動作）</td><td>Workflow 的<strong>身體</strong>——真正做事的節點，看是要傳 Slack、寫 Sheet、還是打 API。</td><td>Slack、Google Sheets、HTTP Request、OpenAI。</td></tr>
+          <tr><td><strong>Triggers</strong></td><td>The <strong>start</strong> of a workflow — it decides when the workflow runs. A workflow usually has only one Trigger.</td><td>Schedule Trigger (the time comes round), Webhook (something outside calls in), Gmail Trigger (a new message).</td></tr>
+          <tr><td><strong>Actions</strong></td><td>The <strong>body</strong> of a workflow — the nodes that do the work, whether that is posting to Slack, writing to a sheet or calling an API.</td><td>Slack, Google Sheets, HTTP Request, OpenAI.</td></tr>
         </tbody>
       </table>
-      <p>下方會再依用途分子分類（Communication、Data &amp; Storage、Marketing、Development、AI 等）。找不到就直接搜尋，n8n 內建幾百個節點大部分都靠搜尋而不是分類找。三種節點的差別會在<a href="ch7_node_types.html">第 7 章</a>完整拆解。</p>
-      <div class="callout warn"><strong>注意：</strong>如果你在<strong>空的 workflow</strong> 按 <strong>+</strong>，抽屜只會顯示 Triggers 給你選（因為第一個節點一定要是 Trigger 或 Manual Trigger）。有第一個節點之後，再按 <strong>+</strong> 才會出現 Actions。這不是 bug，是 n8n 硬性規定 workflow 必須有明確的開頭。</div>
+      <p>Below that, nodes are grouped again by purpose (Communication, Data &amp; Storage, Marketing, Development, AI and so on). If you cannot find one, search for it: n8n ships several hundred nodes, and most of them are found by searching rather than by browsing the categories. <a href="ch7_node_types.html">Chapter 7</a> takes the three node types apart in full.</p>
+      <div class="callout warn"><strong>Warning:</strong> in <strong>an empty workflow</strong>, pressing <strong>+</strong> shows you Triggers only, because the first node has to be a Trigger or a Manual Trigger. Once the first node is in place, pressing <strong>+</strong> brings up Actions as well. That is not a bug — n8n insists that a workflow has an explicit start.</div>
     </section>
 
-    <section id="executions" data-nav="Executions 頁">
-      <h2 data-icon="records">Executions 頁是幹嘛的</h2>
-      <p>「Executions」在兩個地方都找得到：</p>
+    <section id="executions" data-nav="Executions page">
+      <h2 data-icon="records">What the Executions page is for</h2>
+      <p>There are two places to find Executions:</p>
       <ul>
-        <li><strong>主側欄的 Executions</strong>：看整個 workspace 所有 workflow 的所有執行紀錄，可以依 workflow 篩選。</li>
-        <li><strong>workflow 內頂端的 Executions 分頁</strong>：只看這個 workflow 自己的紀錄。</li>
+        <li><strong>Executions in the main sidebar</strong>: every execution record for every workflow in the workspace, filterable by workflow.</li>
+        <li><strong>The Executions tab at the top of a workflow</strong>: only that workflow's own records.</li>
       </ul>
-      <p>每一筆紀錄是「這個 workflow 跑過一次」的完整快照，包含：</p>
+      <p>Each record is a complete snapshot of one run of that workflow, and it holds:</p>
       <table class="data-table">
         <thead>
-          <tr><th>欄位</th><th>會告訴你</th></tr>
+          <tr><th>Field</th><th>What it tells you</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>狀態</strong></td><td>Success（綠）／Error（紅）／Running（藍轉圈）／Waiting（等 Wait 節點）。</td></tr>
-          <tr><td><strong>開始時間</strong></td><td>什麼時候被觸發的。</td></tr>
-          <tr><td><strong>執行時間</strong></td><td>總共跑了幾秒。太久要開始擔心 timeout。</td></tr>
-          <tr><td><strong>觸發模式</strong></td><td>是排程自動跑的、還是有人手動按 Execute、還是 Webhook 被打進來。</td></tr>
-          <tr><td><strong>每個節點的資料</strong></td><td>點進紀錄可以逐節點看：吃了什麼 input、吐了什麼 output、錯在哪個節點的哪一行。</td></tr>
+          <tr><td><strong>Status</strong></td><td>Success (green) / Error (red) / Running (a blue spinner) / Waiting (sitting on a Wait node).</td></tr>
+          <tr><td><strong>Start time</strong></td><td>When it was triggered.</td></tr>
+          <tr><td><strong>Run time</strong></td><td>How many seconds it took in total. Once that gets long, start worrying about a timeout.</td></tr>
+          <tr><td><strong>Trigger mode</strong></td><td>Whether a schedule ran it, someone pressed Execute by hand, or a webhook called in.</td></tr>
+          <tr><td><strong>The data at every node</strong></td><td>Open a record and walk it node by node: what input each node took, what output it produced, and which line of which node failed.</td></tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>Debug 神招：</strong>workflow 半夜炸掉，最先來這裡。<strong>紅色</strong>紀錄點進去，n8n 會直接把炸掉的節點紅框標出來，右邊面板 Output 分頁就是完整錯誤訊息。<a href="ch17_error_handling.html">第 17 章</a>錯誤處理會回來這裡教你系統化除錯。</div>
-      <div class="callout"><strong>觀念：</strong>Executions 預設<strong>只保留一段時間</strong>（Woow 這台的設定值可以到 Settings 看），舊的會被清掉。真的要長期存證的資料自己另外寫進 Sheet 或資料庫，不要靠 Executions 當歷史紀錄。</div>
+      <div class="callout tip"><strong>A debugging trick worth knowing:</strong> when a workflow dies overnight, come here first. Open the <strong>red</strong> record and n8n marks the node that died with a red border; the Output tab in the right-hand panel holds the full error message. <a href="ch17_error_handling.html">Chapter 17</a> on error handling comes back here and teaches you to debug systematically.</div>
+      <div class="callout"><strong>Concept:</strong> by default, executions are <strong>kept for a limited time</strong> (you can look up the value for Woow n8n under Settings), and older ones are cleared out. Anything you genuinely need as a long-term record, write to a sheet or a database yourself — do not lean on Executions as your history.</div>
       <figure class="shot">
-        <img src="../assets/screenshots/ch3/03_executions.png" alt="Executions 頁面的執行紀錄清單" />
-        <figcaption><strong>圖 3-4</strong>Executions 頁：每一列是一次 workflow 執行，狀態、開始時間、耗時、觸發模式一次看完，紅色那筆點進去就是 debug 起點。</figcaption>
+        <img src="../assets/screenshots/ch3/03_executions.png" alt="The list of execution records on the Executions page" />
+        <figcaption><strong>Figure 3-4</strong>The Executions page: each row is one workflow run, with status, start time, duration and trigger mode all in one view, and the red row is where debugging starts.</figcaption>
       </figure>
     </section>
 
-    <section id="templates_entry" data-nav="Templates 入口">
-      <h2 data-icon="advanced">Templates 入口在哪</h2>
-      <p>Templates 兩個入口都通：</p>
+    <section id="templates_entry" data-nav="Templates entry">
+      <h2 data-icon="advanced">Where the Templates entry point is</h2>
+      <p>Both Templates entry points get you there:</p>
       <ul>
-        <li><strong>主側欄的 Templates</strong>：直接進 gallery。</li>
-        <li><strong>Workflows 頁右上角</strong>的「Templates」按鈕（有些版本叫 <em>Browse templates</em>）。</li>
+        <li><strong>Templates in the main sidebar</strong>: straight into the gallery.</li>
+        <li><strong>The top-right corner of the Workflows page</strong> has a "Templates" button (some versions call it <em>Browse templates</em>).</li>
       </ul>
-      <p>進去之後可以做這幾件事，不用馬上動：</p>
+      <p>Once you are in, here is what you can do — none of it urgent:</p>
       <ol class="steps">
         <li>
-          <h3>搜尋或分類找模板</h3>
-          <p>搜尋框輸關鍵字（例：<code>slack digest</code>、<code>ai chat</code>），或用左邊分類（AI、Marketing、Sales、DevOps 等）過濾。</p>
+          <h3>Search, or browse by category</h3>
+          <p>Type a keyword into the search box (<code>slack digest</code>, <code>ai chat</code>), or filter with the categories on the left (AI, Marketing, Sales, DevOps and so on).</p>
         </li>
         <li>
-          <h3>預覽 workflow 長怎樣</h3>
-          <p>點進一個模板會看到縮圖、用了哪些節點、作者、下載次數、簡短說明——像 App Store 的 app 頁面。</p>
+          <h3>Preview what the workflow looks like</h3>
+          <p>Open a template and you get a thumbnail, the nodes it uses, the author, the download count and a short description — much like an app page in the App Store.</p>
         </li>
         <li>
-          <h3>一鍵 Use workflow</h3>
-          <p>按 <strong>Use workflow</strong> 按鈕，n8n 會複製這個模板到你的 workspace，變成一個新 workflow 直接讓你進去編輯。原始模板不會被動到。</p>
+          <h3>Use workflow, in one click</h3>
+          <p>Press the <strong>Use workflow</strong> button and n8n copies the template into your workspace as a new workflow, ready for you to open and edit. The original template is left untouched.</p>
         </li>
       </ol>
-      <p>怎麼挑好模板、怎麼看模板需要哪些 credential、模板貼過來要改哪些欄位，<a href="ch4_templates.html">第 4 章</a>會手把手示範一次。</p>
+      <p>How to pick a good template, how to see which credentials a template needs, and which fields to change once you have pasted it in: <a href="ch4_templates.html">Chapter 4</a> walks through all of it once, step by step.</p>
     </section>
 
-    <section id="credentials_entry" data-nav="Credentials 頁">
-      <h2 data-icon="security">Credentials 頁在哪</h2>
-      <p>側欄 <strong>Credentials</strong> 點進去，會列出這個 workspace 裡<strong>所有你有權存取的 credential</strong>：Slack Bot Token、Google OAuth、Gmail、OpenAI API Key、HTTP Header Auth 等等。</p>
-      <p>每一筆 credential 顯示：</p>
+    <section id="credentials_entry" data-nav="Credentials page">
+      <h2 data-icon="security">Where the Credentials page is</h2>
+      <p>Click <strong>Credentials</strong> in the sidebar and you get <strong>every credential you have access to</strong> in this workspace: Slack Bot Token, Google OAuth, Gmail, OpenAI API Key, HTTP Header Auth and so on.</p>
+      <p>Each credential shows:</p>
       <ul>
-        <li>Credential 名字（自己取的，例：<code>Slack - #general 通知</code>）。</li>
-        <li>類型（Slack API、Google Sheets OAuth2 等）。</li>
-        <li>擁有者 / 分享對象。</li>
-        <li>建立與最後編輯時間。</li>
+        <li>The credential name, which you choose yourself (for example <code>Slack - #general 通知</code>).</li>
+        <li>The type (Slack API, Google Sheets OAuth2 and so on).</li>
+        <li>The owner, and who it is shared with.</li>
+        <li>When it was created and last edited.</li>
       </ul>
-      <div class="callout danger"><strong>危險：</strong>Credential 一但存進 n8n，任何在同一個 workflow 裡選到它的節點都能拿去用。跟同事分享 credential 之前先想清楚——他可以用你的 Slack 帳號發任何訊息。細節、OAuth 流程、共用界線都在<a href="ch13_credentials.html">第 13 章</a>。</div>
-      <div class="callout"><strong>觀念：</strong>Credential 跟 workflow 是<strong>分開存的</strong>。刪掉一個 workflow 不會刪 credential；反過來刪掉 credential，用到它的 workflow 會在該節點顯示紅色警告。這個設計是刻意的——同一組 credential 可以被很多 workflow 共用。</div>
+      <div class="callout danger"><strong>Danger:</strong> once a credential is stored in n8n, any node in the same workflow that selects it can use it. Think it through before you share a credential with a colleague — they can send any message they like from your Slack account. The details, the OAuth flow and where sharing stops are all in <a href="ch13_credentials.html">Chapter 13</a>.</div>
+      <div class="callout"><strong>Concept:</strong> credentials and workflows are <strong>stored separately</strong>. Deleting a workflow does not delete the credential; delete a credential and every workflow that used it shows a red warning on that node. The design is deliberate — one credential can be shared by many workflows.</div>
       <figure class="shot">
-        <img src="../assets/screenshots/ch3/04_credentials.png" alt="Credentials 頁面的金鑰清單" />
-        <figcaption><strong>圖 3-5</strong>Credentials 頁：workspace 裡所有你有權存取的金鑰、OAuth 授權、API token 集中放在這，一列就是一組憑證。</figcaption>
+        <img src="../assets/screenshots/ch3/04_credentials.png" alt="The list of credentials on the Credentials page" />
+        <figcaption><strong>Figure 3-5</strong>The Credentials page: every key, OAuth authorization and API token you can access in the workspace, collected in one place, one credential per row.</figcaption>
       </figure>
     </section>
 
-    <section id="canvas_tools" data-nav="右下小工具">
-      <h2 data-icon="tips">右下角三個好用小工具</h2>
-      <p>Canvas 右下角那排小按鈕很多人一整年都沒點過，但其實超救命：</p>
+    <section id="canvas_tools" data-nav="Canvas tools">
+      <h2 data-icon="tips">Three handy tools in the bottom-right corner</h2>
+      <p>Plenty of people go a whole year without clicking the row of small buttons in the bottom-right corner of the canvas, and they are lifesavers:</p>
       <table class="data-table">
         <thead>
-          <tr><th>按鈕</th><th>快捷鍵</th><th>什麼時候用</th></tr>
+          <tr><th>Button</th><th>Shortcut</th><th>When to use it</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>Zoom in / Zoom out</strong>（＋／−）</td><td>滾輪也行</td><td>節點看不清楚、想看細節。</td></tr>
-          <tr><td><strong>Fit view</strong>（田字圖示）</td><td>—</td><td>整個 workflow 一次縮到剛好塞滿畫面。找不到節點時的第一招。</td></tr>
-          <tr><td><strong>Tidy up</strong>（掃把 / 對齊圖示）</td><td>—</td><td>自動把亂七八糟的節點排整齊——比人工拖快 10 倍。</td></tr>
-          <tr><td><strong>Mini-map</strong>（縮圖）</td><td>—</td><td>展開右下角的小地圖，大 workflow（20+ 節點）想快速跳到另一區。</td></tr>
+          <tr><td><strong>Zoom in / Zoom out</strong> (+ / −)</td><td>The scroll wheel works too</td><td>A node is too small to read, or you want the detail.</td></tr>
+          <tr><td><strong>Fit view</strong> (the grid icon)</td><td>—</td><td>Scales the whole workflow to fit the screen exactly. The first thing to try when you cannot find a node.</td></tr>
+          <tr><td><strong>Tidy up</strong> (the broom / align icon)</td><td>—</td><td>Lines up a mess of nodes automatically — 10 times faster than dragging them by hand.</td></tr>
+          <tr><td><strong>Mini-map</strong> (the thumbnail)</td><td>—</td><td>Expands the small map in the bottom-right corner, for jumping across a large workflow (20+ nodes).</td></tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>提示：</strong>n8n 目前<strong>沒有全域的「? 快捷鍵 cheat sheet」浮窗</strong>，官方文件本身就把快捷鍵一頁列出來（搜尋 <em>n8n keyboard shortcuts</em>）。實務上先記住 <kbd>Tab</kbd>（在節點旁按會叫出節點抽屜）、<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>S</kbd>（存草稿）、<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>A</kbd>（框選全部節點）、拖曳時按住 <kbd>Shift</kbd>（貼齊格線）就夠用了。</div>
+      <div class="callout tip"><strong>Tip:</strong> n8n currently has <strong>no global "? keyboard shortcut cheat sheet" popup</strong>; the official docs list the shortcuts on a page of their own instead (search for <em>n8n keyboard shortcuts</em>). In practice, it is enough to remember <kbd>Tab</kbd> (press it beside a node to open the nodes panel), <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>S</kbd> (save the draft), <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>A</kbd> (select every node) and holding <kbd>Shift</kbd> while dragging (snap to the grid).</div>
     </section>
 
-    <section id="troubleshoot" data-nav="常見卡關">
-      <h2 data-icon="troubleshoot">常見卡關</h2>
+    <section id="troubleshoot" data-nav="Common pitfalls">
+      <h2 data-icon="troubleshoot">Common pitfalls</h2>
       <ol class="steps">
         <li>
-          <h3>打開 workflow 是一片空白</h3>
-          <p>正常——這是全新的空 workflow。中央會有一顆 <strong>+ Add first step</strong>，點下去就會出現節點抽屜（只顯示 Triggers）。挑一個 Trigger 開始。</p>
+          <h3>The workflow opens completely blank</h3>
+          <p>That is normal — it is a brand-new, empty workflow. There is a <strong>+ Add first step</strong> button in the middle; click it and the nodes panel appears, showing Triggers only. Pick a Trigger and start.</p>
         </li>
         <li>
-          <h3>節點拖不動 / 改不了設定</h3>
-          <p>大概是<strong>你沒有 Editor 權限</strong>只有 Viewer。頁面右上角會看到「Read only」提示。找 workspace 管理者升權限，或請他把 workflow 分享給你。</p>
+          <h3>Nodes will not move, or settings will not change</h3>
+          <p>Most likely <strong>you do not have Editor permission</strong>, only Viewer. A "Read only" notice appears in the top-right corner of the page. Ask the workspace admin to raise your permission, or to share the workflow with you.</p>
         </li>
         <li>
-          <h3>節點連線連不起來</h3>
-          <p>要<strong>從 output 圓點</strong>（節點右邊）拉<strong>到 input 圓點</strong>（下一個節點左邊）。中間拉的過程中不要放開；接近目標圓點時會亮綠色就可以放。反向（input 拉到 output）拉不起來是刻意的。</p>
+          <h3>The connection will not attach</h3>
+          <p>You have to drag <strong>from the output dot</strong> (on the right of the node) <strong>to the input dot</strong> (on the left of the next node). Do not let go part way; when you get close to the target dot it lights up green and you can release. Dragging the other way, input to output, does not work, and that is deliberate.</p>
         </li>
         <li>
-          <h3>找不到剛才跑的執行紀錄</h3>
-          <p>兩個地方都能看：workflow 內頂端 <strong>Executions</strong> 分頁（只看這個 workflow）、或側欄 <strong>Executions</strong>（看全部）。如果剛才是按 <strong>Execute Workflow</strong> 手動跑，紀錄會標成「Manual」；如果是 Trigger 觸發的會標「Trigger」。</p>
+          <h3>You cannot find the run you just made</h3>
+          <p>Two places show it: the <strong>Executions</strong> tab at the top of the workflow (this workflow only), or <strong>Executions</strong> in the sidebar (everything). If you ran it by hand with <strong>Execute Workflow</strong>, the record is labeled "Manual"; if a Trigger fired it, the label is "Trigger".</p>
         </li>
         <li>
-          <h3>Canvas 縮到看不見自己在哪</h3>
-          <p>右下角 <strong>Fit view</strong>（田字圖示）按下去，整個 workflow 會自動縮回剛好塞滿畫面。這是找不到節點時的第一招，比任何快捷鍵都直覺。</p>
+          <h3>You zoomed the canvas until you lost track of where you are</h3>
+          <p>Press <strong>Fit view</strong> (the grid icon) in the bottom-right corner and the whole workflow scales back to fit the screen. It is the first thing to try when you cannot find a node, and more intuitive than any shortcut.</p>
         </li>
       </ol>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
       <details class="faq">
-        <summary>介面可以切成全中文嗎？</summary>
-        <div class="body">可以。點側欄底部你的頭像 → <strong>Settings</strong> → <strong>Personal</strong> → <strong>Language</strong>，下拉選單有繁體中文可以選（不同 n8n 版本翻譯完整度不太一樣，有些節點內文欄位還是英文，這是正常的）。</div>
+        <summary>Can the interface be switched entirely to Chinese?</summary>
+        <div class="body">Yes. Click your avatar at the bottom of the sidebar → <strong>Settings</strong> → <strong>Personal</strong> → <strong>Language</strong>, and Traditional Chinese is in the dropdown. How complete the translation is varies between n8n versions, and some fields inside nodes stay in English — that is normal.</div>
       </details>
       <details class="faq">
-        <summary>有沒有深色模式？</summary>
-        <div class="body">有。同樣在 <strong>Settings → Personal</strong> 找 <strong>Theme</strong>，可以選 System（跟系統走）／Light／Dark。切完不用重整，即時套用。</div>
+        <summary>Is there a dark mode?</summary>
+        <div class="body">Yes. In the same place, <strong>Settings → Personal</strong>, look for <strong>Theme</strong>: System (follows your system), Light or Dark. No refresh needed; it applies immediately.</div>
       </details>
       <details class="faq">
-        <summary>有沒有快捷鍵一覽？</summary>
-        <div class="body">n8n 目前<strong>沒有在 App 內建的 ? 快捷鍵浮窗</strong>（很多舊教學會這樣寫，但實測按 <kbd>?</kbd> 不會跳）。官方把快捷鍵列在文件的 <em>Keyboard shortcuts</em> 頁面，Google 搜「n8n keyboard shortcuts」就找得到。實務上背 <kbd>Tab</kbd>（節點旁叫抽屜）、<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>S</kbd>（存草稿）、<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Enter</kbd>（Execute Workflow）、拖曳按 <kbd>Shift</kbd>（貼齊）就夠。</div>
+        <summary>Is there a list of keyboard shortcuts?</summary>
+        <div class="body">n8n currently has <strong>no built-in ? shortcut popup inside the app</strong> (plenty of older tutorials say otherwise, but pressing <kbd>?</kbd> does nothing). The official docs list them on a <em>Keyboard shortcuts</em> page, and searching Google for "n8n keyboard shortcuts" finds it. In practice it is enough to memorize <kbd>Tab</kbd> (opens the nodes panel beside a node), <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>S</kbd> (save the draft), <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Enter</kbd> (Execute Workflow) and <kbd>Shift</kbd> while dragging (snap).</div>
       </details>
       <details class="faq">
-        <summary>Canvas 上節點亂成一團怎麼辦？</summary>
-        <div class="body">兩招：右下角 <strong>Tidy up</strong> 讓 n8n 自動對齊排整齊；或框選一批節點（滑鼠框選）拖到你想要的位置。真的很大就開 mini-map 看整體再局部整理。</div>
+        <summary>What if the nodes on the canvas are a tangled mess?</summary>
+        <div class="body">Two moves: <strong>Tidy up</strong> in the bottom-right corner lets n8n align them for you; or rubber-band select a batch of nodes with the mouse and drag them where you want them. If the workflow is genuinely huge, open the mini-map to see the whole thing, then tidy it up section by section.</div>
       </details>
       <details class="faq">
-        <summary>可以同時打開兩個 workflow 嗎？</summary>
-        <div class="body">可以，在瀏覽器<strong>另開分頁</strong>就好——每個 workflow 都是獨立的 URL。從 Workflows 清單按住 <kbd>Ctrl</kbd>（Mac 是 <kbd>Cmd</kbd>）點 workflow 名字會直接開新分頁。</div>
+        <summary>Can I have two workflows open at once?</summary>
+        <div class="body">Yes — just <strong>open another browser tab</strong>. Every workflow has its own URL. From the Workflows list, hold <kbd>Ctrl</kbd> (<kbd>Cmd</kbd> on a Mac) and click a workflow name to open it in a new tab.</div>
       </details>
       <details class="faq">
-        <summary>不小心關掉右邊那個節點設定面板了怎麼辦？</summary>
-        <div class="body">再點一次那個節點就會叫回來。或雙擊節點也可以。面板永遠不會真的「消失」，只是折疊而已。</div>
+        <summary>What if I accidentally closed the node settings panel on the right?</summary>
+        <div class="body">Click that node again and it comes back. Double-clicking the node works too. The panel never really disappears; it is only collapsed.</div>
       </details>
     </section>
 

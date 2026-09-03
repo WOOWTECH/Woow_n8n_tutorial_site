@@ -70,15 +70,15 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要先抄</a>
-      <a href="#concept">Templates 在哪裡</a>
-      <a href="#pick">怎麼挑好模板</a>
-      <a href="#steps-sidebar">從側欄 Templates 進去</a>
-      <a href="#steps-json">貼 JSON 進來</a>
-      <a href="#post-install">裝完該做三件事</a>
-      <a href="#modify-ok">能不能改</a>
-      <a href="#troubleshoot">常見卡關</a>
-      <a href="#faq">常見問題</a>
+      <a href="#why">Why this matters</a>
+      <a href="#concept">Where templates live</a>
+      <a href="#pick">Picking a template</a>
+      <a href="#steps-sidebar">Via the sidebar</a>
+      <a href="#steps-json">Paste the JSON</a>
+      <a href="#post-install">After installing</a>
+      <a href="#modify-ok">Can you edit it</a>
+      <a href="#troubleshoot">Common pitfalls</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -92,256 +92,256 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch4_templates.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 4</div>
-      <h1>從 Templates gallery 起步</h1>
-      <p class="lead">從零寫一個 workflow 很累。n8n 官方 + 社群做了幾千個現成的模板，「表單來了通知 Slack」「Airtable 資料同步 Google Sheet」「AI 幫你摘要 email」——直接抄改改就是你的。這章教你去哪找、怎麼挑、怎麼裝進 Woow n8n。</p>
+      <h1>Start from the Templates gallery</h1>
+      <p class="lead">Writing a workflow from scratch is hard work. n8n and its community have built thousands of ready-made templates — "a form comes in, notify Slack", "sync Airtable data to Google Sheet", "let AI summarize your email" — copy one, change a few things, and it is yours. This chapter shows you where to find them, how to pick one, and how to get one into Woow n8n.</p>
     </div>
 
-    <section id="why" data-nav="為什麼要先抄">
-      <h2 data-icon="why">為什麼要先抄別人的</h2>
-      <p>新手第一週最容易掉進的坑，是打開一個空白 canvas，然後盯著它想「⋯要拉哪個節點？」。半小時過去什麼都沒動。</p>
-      <p>真相是：你想做的事，別人 80% 機率已經做過了。而且做得比你第一次做的好。</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why you should copy someone else's first</h2>
+      <p>The pitfall beginners fall into most often in week one is opening a blank canvas and then staring at it, thinking "…which node do I drag in?". Half an hour goes by and nothing has moved.</p>
+      <p>The truth is: there is an 80% chance someone has already built what you want to build. And built it better than your first attempt would be.</p>
       <ul>
-        <li>想做「Google 表單填完自動通知 Slack」——有現成 template。</li>
-        <li>想做「Airtable 新增一列，寄封感謝信給對方」——有現成 template。</li>
-        <li>想做「每天早上 9:00 抓 RSS 摘要用 AI 生一段內容貼 Notion」——也有現成 template。</li>
+        <li>Want "a Google Form gets submitted, Slack gets notified automatically"? There is a template for it.</li>
+        <li>Want "a new Airtable row sends the person a thank-you email"? There is a template for it.</li>
+        <li>Want "at 9:00 every morning, pull an RSS feed, have AI write a summary and post it to Notion"? There is a template for that too.</li>
       </ul>
-      <p>抄別人的 template 不是偷懶，是<strong>用最快的方式看懂 n8n 怎麼組節點</strong>。你會在 30 分鐘內看到一個能跑的 workflow，比你自己摸索兩週還有效。</p>
-      <div class="callout tip"><strong>提示：</strong>這章的目標是「一小時內把別人的 workflow 跑起來」。真正從零手拉的第一個 workflow 留到<a href="ch8_first_workflow.html">第 8 章</a>——那時你已經看過 5、6 個別人的成品，手感完全不一樣。</div>
+      <p>Copying someone else's template is not laziness, it is <strong>the fastest way to see how n8n puts nodes together</strong>. You will have a working workflow in front of you within 30 minutes, which beats two weeks of feeling your way on your own.</p>
+      <div class="callout tip"><strong>Tip:</strong> The goal of this chapter is "get someone else's workflow running within an hour". Building your own first workflow by hand from scratch waits until <a href="ch8_first_workflow.html">Chapter 8</a> — by then you will have seen five or six finished ones, and it will feel completely different.</div>
     </section>
 
-    <section id="concept" data-nav="Templates 在哪裡">
-      <h2 data-icon="concept">Templates 其實就一池：n8n.io/workflows</h2>
-      <p>先破一個常見誤解：n8n 本體<strong>沒有內建一個「離線」的模板 gallery</strong>。你以為的「兩個入口」，實際上通往同一個地方——公開的 <code>n8n.io/workflows/</code>。</p>
+    <section id="concept" data-nav="Where templates live">
+      <h2 data-icon="concept">Templates all come from one pool: n8n.io/workflows</h2>
+      <p>First, clear up a common misreading: n8n itself <strong>has no built-in "offline" template gallery</strong>. The "two entry points" you think you are seeing actually lead to the same place — the public <code>n8n.io/workflows/</code>.</p>
       <table class="data-table">
         <thead>
           <tr>
-            <th>你以為</th>
-            <th>實際上</th>
+            <th>What you assume</th>
+            <th>What is actually true</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>側欄的 Templates 是 n8n 官方 curate、離線內建的池</td>
-            <td>按下去會把你帶去瀏覽器的 <code>n8n.io/workflows/</code>（除非公司有配置 <em>custom templates library</em>）</td>
+            <td>Templates in the sidebar is an offline, built-in pool that n8n curates</td>
+            <td>Clicking it takes you out to <code>n8n.io/workflows/</code> in your browser (unless your company has configured a <em>custom templates library</em>)</td>
           </tr>
           <tr>
-            <td>兩邊模板不一樣，可以互補</td>
-            <td>是同一個公開池——內容一樣，只是入口不同</td>
+            <td>The two sets of templates differ, so they complement each other</td>
+            <td>It is the same public pool — same content, only a different way in</td>
           </tr>
           <tr>
-            <td>模板頁面有安裝次數 / 星星評分讓你排序</td>
-            <td>官方 gallery 目前<strong>沒有</strong>公開的安裝次數、星等或評分——只有分類、關鍵字、服務 icon</td>
+            <td>Template pages carry install counts / star ratings you can sort by</td>
+            <td>The official gallery currently has <strong>no</strong> public install counts, star levels or ratings — only categories, keywords and service icons</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout"><strong>觀念：</strong>「Templates 在哪裡」的答案是：<strong>都在 <code>n8n.io/workflows/</code></strong>。差別只在你要從側欄按鈕跳過去，還是直接在瀏覽器打開網址。抄過來的模板只是骨架，一定要換 credential、改欄位才會變成你的（<a href="ch6_modify_workflow.html">ch6</a>）。</div>
-      <div class="callout tip"><strong>提示：</strong>如果貴公司自架 n8n 有配 <code>N8N_TEMPLATES_HOST</code> 指向內部模板庫，那才會出現真正的「app 內瀏覽」體驗，內容也可能只有你們公司的模板。Woow n8n 目前用官方預設，所以按 Templates 就是連出去 n8n.io。</div>
+      <div class="callout"><strong>Concept:</strong> The answer to "where do the templates live" is: <strong>all of them at <code>n8n.io/workflows/</code></strong>. The only difference is whether you jump there from the sidebar button or open the address in your browser yourself. A template you copy over is only a skeleton; it becomes yours only once you swap in your own credential and change the fields (<a href="ch6_modify_workflow.html">ch6</a>).</div>
+      <div class="callout tip"><strong>Tip:</strong> If your company's self-hosted n8n sets <code>N8N_TEMPLATES_HOST</code> to an internal template library, then you really do get in-app browsing, and the content may be nothing but your own company's templates. Woow n8n currently runs the official default, so pressing Templates connects you out to n8n.io.</div>
       <figure class="shot">
-        <img src="../assets/screenshots/ch4/01_workflows_page.png" alt="Workflows 頁側欄中的 Templates 入口" />
-        <figcaption><strong>圖 4-1</strong>Workflows 頁側欄：Templates 就藏在 Workflows／Credentials／Executions 這排項目裡，點下去會另開分頁跳去 <code>n8n.io/workflows/</code>。</figcaption>
+        <img src="../assets/screenshots/ch4/01_workflows_page.png" alt="The Templates entry point in the Workflows page sidebar" />
+        <figcaption><strong>Figure 4-1</strong>The Workflows page sidebar: Templates sits in the same row of items as Workflows / Credentials / Executions, and clicking it opens a new tab at <code>n8n.io/workflows/</code>.</figcaption>
       </figure>
     </section>
 
-    <section id="pick" data-nav="怎麼挑好模板">
-      <h2 data-icon="tips">怎麼挑一個好模板</h2>
-      <p>模板池很大，你不會每個都適合。五個判斷點，10 秒內排除 80% 的地雷：</p>
+    <section id="pick" data-nav="Picking a template">
+      <h2 data-icon="tips">How to pick a good template</h2>
+      <p>The pool is large and not every template suits you. Five things to look at will rule out 80% of the duds in 10 seconds:</p>
       <table class="data-table">
         <thead>
           <tr>
-            <th>看什麼</th>
-            <th>好徵兆</th>
-            <th>壞徵兆</th>
+            <th>What to look at</th>
+            <th>Good sign</th>
+            <th>Bad sign</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>節點數量</td>
-            <td>3–8 個節點，一眼看得完</td>
-            <td>超過 15 個節點，光讀就頭暈——新手先跳過</td>
+            <td>Node count</td>
+            <td>3–8 nodes, readable at a glance</td>
+            <td>More than 15 nodes, dizzying just to read — skip it while you are new</td>
           </tr>
           <tr>
-            <td>作者</td>
-            <td>是 n8n 官方帳號或 Verified Creator（頭像旁有勾勾）</td>
-            <td>沒名字的匿名帳號、又只上傳過 1 個——先觀望</td>
+            <td>Author</td>
+            <td>The official n8n account or a Verified Creator (a check next to the avatar)</td>
+            <td>An anonymous account with no name that has uploaded only 1 template — hold off</td>
           </tr>
           <tr>
-            <td>更新日期</td>
-            <td>一年內（點進詳情頁看 Last update）</td>
-            <td>兩年沒動——節點 API 可能已改，跑不起來</td>
+            <td>Last updated</td>
+            <td>Within the past year (open the detail page and look at Last update)</td>
+            <td>Untouched for two years — the node APIs may have changed and it will not run</td>
           </tr>
           <tr>
-            <td>用了哪些節點</td>
-            <td>有你認得的服務（Slack、Google Sheets、Gmail）</td>
-            <td>全是沒聽過的服務，credential 都不知去哪申請</td>
+            <td>Which nodes it uses</td>
+            <td>Services you recognize (Slack, Google Sheets, Gmail)</td>
+            <td>Nothing but services you have never heard of, with no idea where to apply for the credentials</td>
           </tr>
           <tr>
-            <td>描述</td>
-            <td>清楚寫「這是幹嘛的、需要什麼」</td>
-            <td>只有標題沒說明——作者自己都懶得寫</td>
+            <td>Description</td>
+            <td>Says plainly what it is for and what it needs</td>
+            <td>A title and no explanation — the author could not be bothered either</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>提示：</strong>第一次挑，直接找節點數 &lt; 5、又有 Slack / Gmail / Google Sheets 之類你天天用的服務的模板。跑起來的機率最高，成就感最強。</div>
+      <div class="callout tip"><strong>Tip:</strong> For your first pick, go straight for a template with &lt; 5 nodes that uses a service you touch every day, such as Slack / Gmail / Google Sheets. Those have the best odds of running, and the biggest payoff when they do.</div>
     </section>
 
-    <section id="steps-sidebar" data-nav="從側欄 Templates 進去">
-      <h2 data-icon="steps">Steps 甲：從側欄 Templates 進去（跳到 n8n.io）</h2>
-      <p>這是「懶得記網址」的走法。整個過程還是會離開 n8n app 去 n8n.io，但至少入口在你熟悉的側欄。</p>
+    <section id="steps-sidebar" data-nav="Via the sidebar">
+      <h2 data-icon="steps">Path A: go in through the sidebar's Templates item (it jumps to n8n.io)</h2>
+      <p>This is the route for people who would rather not memorize the address. You still leave the n8n app for n8n.io along the way, but at least the way in is the sidebar you already know.</p>
       <ol class="steps">
         <li>
-          <h3>左側欄按「Templates」</h3>
-          <p>登入 Woow n8n 後，左側欄除了 Workflows、Executions、Credentials 之外還有一個 Templates。按下去<strong>會另開一個瀏覽器分頁</strong>連到 <code>n8n.io/workflows/</code>——這是官方的行為，不是 bug。</p>
-          <p>如果側欄看不到 Templates，先看<a href="ch3_workspace_tour.html">第 3 章</a>把介面認熟。</p>
+          <h3>Click "Templates" in the left sidebar</h3>
+          <p>Once you are signed in to Woow n8n, the left sidebar has a Templates item alongside Workflows, Executions and Credentials. Clicking it <strong>opens another browser tab</strong> pointed at <code>n8n.io/workflows/</code> — that is the official behavior, not a bug.</p>
+          <p>If you cannot see Templates in the sidebar, go back to <a href="ch3_workspace_tour.html">Chapter 3</a> and get familiar with the interface first.</p>
         </li>
         <li>
-          <h3>在 n8n.io/workflows 找一個貼近你需求的</h3>
-          <p>用左側分類（AI、Sales、IT Ops、Marketing、Document Ops、Support）或關鍵字。找一個描述看得懂的，例如「Save new Gmail attachments to Google Drive」。</p>
+          <h3>Find one on n8n.io/workflows that is close to what you need</h3>
+          <p>Use the categories on the left (AI, Sales, IT Ops, Marketing, Document Ops, Support) or a keyword. Pick one whose description you understand, for example "Save new Gmail attachments to Google Drive".</p>
         </li>
         <li>
-          <h3>點進去看 canvas 預覽與節點列表</h3>
-          <p>詳情頁會顯示這個模板的節點縮圖、用到哪些服務（Gmail、Drive⋯⋯）、作者、Last update。這一步就在<strong>做「挑模板五個判斷點」</strong>——縮圖看起來一大堆節點、你認不得，就 back 出來換。</p>
+          <h3>Open it and look at the canvas preview and the node list</h3>
+          <p>The detail page shows a thumbnail of the template's nodes, which services it uses (Gmail, Drive…), the author and Last update. This step is where you <strong>run the five checks for picking a template</strong> — if the thumbnail looks like a pile of nodes you do not recognize, go back and pick another.</p>
         </li>
         <li>
-          <h3>按「Use for free」</h3>
-          <p>詳情頁右上角橘色按鈕。按下去會出現一個小視窗，主要提供：<strong>Copy template to clipboard</strong>（複製 JSON）或跳到 n8n Cloud 試玩。我們選 <strong>Copy</strong>——資料要留在 Woow n8n。</p>
-          <div class="callout warn"><strong>注意：</strong>不要按「Try it on n8n Cloud」——那會建立官方雲端的 workflow，不是我們公司這台。</div>
+          <h3>Click "Use for free"</h3>
+          <p>The orange button in the top-right corner of the detail page. Clicking it opens a small dialog offering mainly: <strong>Copy template to clipboard</strong> (copies the JSON) or a jump to n8n Cloud to try it out. Choose <strong>Copy</strong> — the data should stay in Woow n8n.</p>
+          <div class="callout warn"><strong>Warning:</strong> Do not click "Try it on n8n Cloud" — that creates a workflow on the official cloud, not on our company's instance.</div>
         </li>
         <li>
-          <h3>回 Woow n8n，開新 workflow，Ctrl+V 貼上</h3>
-          <p>Workflows 頁 → <strong>+ Add workflow</strong> 開個空白的 → 在 canvas 空白處按 <kbd>Ctrl</kbd>+<kbd>V</kbd>（Mac <kbd>Cmd</kbd>+<kbd>V</kbd>）。節點刷一下就進來、連線也保留。</p>
+          <h3>Go back to Woow n8n, open a new workflow and paste with Ctrl+V</h3>
+          <p>Workflows page → <strong>+ Add workflow</strong> for a blank one → click an empty spot on the canvas and press <kbd>Ctrl</kbd>+<kbd>V</kbd> (on Mac <kbd>Cmd</kbd>+<kbd>V</kbd>). The nodes drop straight in, and the connections come with them.</p>
         </li>
         <li>
-          <h3>綁 credential、填欄位</h3>
-          <p>剛貼進來的節點大多有紅色驚嘆號——沒接你的帳號。點紅節點 → 選 Credential → 選現成的或 <strong>Create New</strong>。細節在<a href="ch13_credentials.html">第 13 章</a>。</p>
+          <h3>Connect the credential and fill in the fields</h3>
+          <p>Most of the nodes you just pasted carry a red exclamation mark — they are not connected to your account. Click a red node → pick Credential → choose an existing one or <strong>Create New</strong>. The details are in <a href="ch13_credentials.html">Chapter 13</a>.</p>
         </li>
         <li>
-          <h3>按 Execute workflow 手動跑一次，OK 再開 Active</h3>
-          <p>右下角紫色按鈕手動跑。全綠才代表通了。<strong>沒手動跑成功之前，右上角的 Active 開關不要打開</strong>——會半夜掛你一堆錯誤 log。</p>
+          <h3>Run it once by hand with Execute workflow, then switch on Active</h3>
+          <p>The purple button in the bottom-right corner runs it by hand. Only all green means the chain works. <strong>Until a manual run succeeds, leave the Active toggle in the top-right corner off</strong> — it will pile up error logs on you overnight.</p>
         </li>
       </ol>
     </section>
 
-    <section id="steps-json" data-nav="貼 JSON 進來">
-      <h2 data-icon="steps">Steps 乙：直接開 n8n.io/workflows 貼 JSON</h2>
-      <p>其實就是 Steps 甲，只是跳過「按側欄」那一步——直接在瀏覽器輸入網址。老手都走這條，省一次點擊。</p>
+    <section id="steps-json" data-nav="Paste the JSON">
+      <h2 data-icon="steps">Path B: open n8n.io/workflows and paste the JSON</h2>
+      <p>This is Path A with the "click the sidebar" step skipped — you type the address into the browser directly. Experienced users all take this route; it saves a click.</p>
       <ol class="steps">
         <li>
-          <h3>瀏覽器打開 <code>https://n8n.io/workflows/</code></h3>
-          <p>官方社群 gallery。左邊有分類（AI、Sales、IT Ops、Marketing、Document Ops、Support⋯⋯），也可以按服務 icon（Google Sheets、OpenAI、Telegram、Gmail⋯⋯）縮小範圍。</p>
+          <h3>Open <code>https://n8n.io/workflows/</code> in your browser</h3>
+          <p>The official community gallery. Categories run down the left (AI, Sales, IT Ops, Marketing, Document Ops, Support…), and you can also narrow things down by service icon (Google Sheets, OpenAI, Telegram, Gmail…).</p>
         </li>
         <li>
-          <h3>用關鍵字搜或按分類挑</h3>
-          <p>例：搜 <code>slack notification</code>、<code>rss to notion</code>、<code>ai email summary</code>。點進看起來像的模板，用前面「五個判斷點」評估一次。</p>
+          <h3>Search by keyword or browse by category</h3>
+          <p>For example, search <code>slack notification</code>, <code>rss to notion</code>, <code>ai email summary</code>. Open a template that looks about right and run it through the five checks above.</p>
         </li>
         <li>
-          <h3>模板詳情頁按「Use for free」</h3>
-          <p>右上角的橘色按鈕。點下去會出現一個小視窗，通常給你兩個選項：一是複製 JSON 到剪貼簿（Copy template to clipboard），二是直接跳到雲端試玩（Try it on n8n Cloud）——我們選 <strong>Copy</strong>。</p>
-          <div class="callout warn"><strong>注意：</strong>看到「Try it on n8n Cloud」不要按，那會跑到 n8n 官方雲端不是我們的 Woow n8n。你的資料要留在公司這一台。</div>
+          <h3>Click "Use for free" on the template's detail page</h3>
+          <p>The orange button in the top-right corner. Clicking it opens a small dialog that usually gives you two options: copy the JSON to the clipboard (Copy template to clipboard), or jump straight to the cloud to try it out (Try it on n8n Cloud) — choose <strong>Copy</strong>.</p>
+          <div class="callout warn"><strong>Warning:</strong> When you see "Try it on n8n Cloud", do not click it; that lands you on n8n's official cloud rather than our Woow n8n. Your data should stay on the company's own instance.</div>
         </li>
         <li>
-          <h3>回 Woow n8n，打開一個 workflow（新的也行）</h3>
-          <p>Workflows 頁 → 按「+ Add workflow」建一個空白的，或打開任一個現有的（貼進去不會蓋掉原本的節點）。</p>
+          <h3>Go back to Woow n8n and open a workflow (a new one is fine)</h3>
+          <p>Workflows page → click "+ Add workflow" to create a blank one, or open any existing one (pasting does not overwrite the nodes already there).</p>
         </li>
         <li>
-          <h3>在 canvas 空白處按 <kbd>Ctrl</kbd>+<kbd>V</kbd>（Mac 是 <kbd>Cmd</kbd>+<kbd>V</kbd>）</h3>
-          <p>整個 workflow 的節點就會刷一下貼進來，連連線都保留。如果快捷鍵沒反應，右鍵空白處會有 Paste 選項。</p>
+          <h3>Click an empty spot on the canvas and press <kbd>Ctrl</kbd>+<kbd>V</kbd> (on Mac it is <kbd>Cmd</kbd>+<kbd>V</kbd>)</h3>
+          <p>The whole workflow's nodes drop in at once, connections and all. If the shortcut does nothing, right-click the empty space for a Paste option.</p>
         </li>
         <li>
-          <h3>存檔並改名</h3>
-          <p>左上角 workflow 名字通常是 <code>My workflow</code> 之類的預設，直接點下去改成看得懂的（例：「RSS 早報摘要」）。按右上角 Save 或 <kbd>Ctrl</kbd>+<kbd>S</kbd>。</p>
+          <h3>Save it and rename it</h3>
+          <p>The workflow name in the top-left corner is usually a default such as <code>My workflow</code>; click it and change it to something you will recognize (for example "RSS morning digest"). Then press Save in the top-right corner, or <kbd>Ctrl</kbd>+<kbd>S</kbd>.</p>
         </li>
       </ol>
-      <div class="callout"><strong>觀念：</strong>貼進來之後，接下來的動作跟 Steps 甲一樣——綁 credential、手動跑一次、確認 OK 再開 Active。</div>
+      <div class="callout"><strong>Concept:</strong> Once it is pasted in, the rest is the same as Path A — connect the credential, run it once by hand, and only switch on Active after that run is clean.</div>
     </section>
 
-    <section id="post-install" data-nav="裝完該做三件事">
-      <h2 data-icon="done">裝完 template 該做的三件事</h2>
-      <p>模板匯進來只是「借了一份骨架」，還不能跑。順序照這個做，錯誤率最低：</p>
+    <section id="post-install" data-nav="After installing">
+      <h2 data-icon="done">Three things to do after you install a template</h2>
+      <p>Importing a template only borrows a skeleton; it will not run yet. Work through these in order and you will make the fewest mistakes:</p>
       <ol class="steps">
         <li>
-          <h3>看每個節點的紅色提示</h3>
-          <p>紅色圓點 / 驚嘆號 = 這個節點少東西。八成是「Credential 沒接」，少數是「必填欄位空著」（例如收件人 email 未填）。從最上游的 Trigger 節點開始一路修下來。</p>
+          <h3>Check every node for a red marker</h3>
+          <p>A red dot / exclamation mark means the node is missing something. Eight times out of ten the credential is not connected; less often a required field is empty (the recipient email address, for example). Start from the most upstream Trigger node and fix your way down.</p>
         </li>
         <li>
-          <h3>看它想連哪些外部服務、你是不是有</h3>
-          <p>如果模板用了 Airtable、你們公司沒 Airtable 帳號，那這個模板對你沒用——早點放棄換一個。或改成用 Google Sheets（可以，但屬於「改 template」範圍，看<a href="ch6_modify_workflow.html">ch6</a>）。</p>
+          <h3>Check which outside services it wants and whether you have them</h3>
+          <p>If the template uses Airtable and your company has no Airtable account, that template is no use to you — give up early and pick another. Or switch it to Google Sheets (you can, but that counts as editing the template; see <a href="ch6_modify_workflow.html">ch6</a>).</p>
         </li>
         <li>
-          <h3>先手動 Execute workflow 跑一次</h3>
-          <p>用右下角紫色的 <strong>Execute workflow</strong> 按鈕手動跑。全綠打勾才代表整條通了。<strong>沒跑成功之前，Active 開關不要開。</strong></p>
+          <h3>Run Execute workflow by hand first</h3>
+          <p>Use the purple <strong>Execute workflow</strong> button in the bottom-right corner to run it by hand. Only green checks all the way through mean the whole chain works. <strong>Until a run succeeds, leave the Active toggle off.</strong></p>
         </li>
       </ol>
-      <div class="callout warn"><strong>注意：</strong>手動跑成功 ≠ 排程跑會成功。有些節點在手動模式下用你的臨時 test 資料，切到正式排程時抓的是真的資料，欄位對不上就會爆。要在排程開之前用真實資料再跑一次。</div>
+      <div class="callout warn"><strong>Warning:</strong> A successful manual run ≠ a successful scheduled run. Some nodes use your temporary test data in manual mode; once the real schedule takes over they pull real data, and fields that do not line up blow up. Run it once more with real data before you turn the schedule on.</div>
     </section>
 
-    <section id="modify-ok" data-nav="能不能改">
-      <h2 data-icon="concept">能不能改 template？可以，而且應該</h2>
-      <p>Template 只是起點，複製過來之後<strong>整份就是你的</strong>，愛怎麼改怎麼改：</p>
+    <section id="modify-ok" data-nav="Can you edit it">
+      <h2 data-icon="concept">Can you change a template? Yes, and you should</h2>
+      <p>A template is only a starting point. Once you copy it over, <strong>the whole thing is yours</strong> and you can change it however you like:</p>
       <ul>
-        <li>把 Slack 通知改成寄 Gmail。</li>
-        <li>加一個 IF 節點，只有金額 &gt; 1000 才發通知。</li>
-        <li>刪掉裡面用不到的節點（例如那個社群作者順便加的「同步到 Airtable」你根本沒用）。</li>
-        <li>把英文欄位訊息改成中文。</li>
+        <li>Turn the Slack notification into a Gmail message.</li>
+        <li>Add an IF node so the notification only goes out when the amount is &gt; 1000.</li>
+        <li>Delete the nodes you do not use (the "sync to Airtable" step that community author threw in, say, which you have no use for).</li>
+        <li>Change the English field text into Chinese.</li>
       </ul>
-      <p>改得越多，跟原本的 template 距離越遠，也越像你自己做的。<a href="ch6_modify_workflow.html">第 6 章</a>會示範完整的「改別人 workflow」流程。</p>
-      <div class="callout tip"><strong>提示：</strong>改之前先「另存新檔」——複製一份出來練習，這樣你把原始版本留著，改壞了還能對照。（在 workflow 列表右邊三個點 → Duplicate。）</div>
+      <p>The more you change, the further it moves from the original template, and the more it looks like something you built. <a href="ch6_modify_workflow.html">Chapter 6</a> walks through the whole process of editing someone else's workflow.</p>
+      <div class="callout tip"><strong>Tip:</strong> Save a copy before you start — practice on the duplicate, so you keep the original and still have something to compare against when you break it. (In the workflow list, the three-dot menu on the right → Duplicate.)</div>
     </section>
 
-    <section id="troubleshoot" data-nav="常見卡關">
-      <h2 data-icon="troubleshoot">常見卡關</h2>
+    <section id="troubleshoot" data-nav="Common pitfalls">
+      <h2 data-icon="troubleshoot">Common pitfalls</h2>
       <ol class="steps">
         <li>
-          <h3>按側欄 Templates 沒反應 / 分頁打不開</h3>
-          <p>按下去應該會另開瀏覽器分頁連 <code>n8n.io/workflows/</code>。如果沒反應：（a）瀏覽器擋了 popup——點網址列右邊的 popup 提示放行；（b）公司網路擋 <code>n8n.io</code>——直接在瀏覽器輸入網址測；（c）真的被 IT 擋了那就走「拿別人下載好的 JSON 檔案匯入」（<a href="ch5_import_workflow.html">ch5</a>）。</p>
+          <h3>Clicking Templates in the sidebar does nothing / the tab will not open</h3>
+          <p>Clicking it should open another browser tab at <code>n8n.io/workflows/</code>. If nothing happens: (a) the browser blocked the popup — click the popup notice at the right of the address bar and allow it; (b) the company network blocks <code>n8n.io</code> — type the address into the browser to test; (c) if IT really has blocked it, take the "import a JSON file someone else downloaded" route (<a href="ch5_import_workflow.html">ch5</a>).</p>
         </li>
         <li>
-          <h3>從 n8n.io 貼 JSON，貼不上去</h3>
-          <p>90% 是複製時漏東西——例如只複製到部分文字。回 n8n.io 那個模板頁面，重新按「Use for free」→「Copy template to clipboard」，這才會複製完整 JSON。另外要確定你點的是 canvas 空白處（不是某個節點）再貼。</p>
+          <h3>You paste JSON from n8n.io and nothing arrives</h3>
+          <p>90% of the time something went missing during the copy — you only picked up part of the text, for instance. Go back to that template page on n8n.io and press "Use for free" → "Copy template to clipboard" again; that is what copies the complete JSON. Also make sure you clicked an empty spot on the canvas (not a node) before pasting.</p>
         </li>
         <li>
-          <h3>貼進來的節點全是紅色 error</h3>
-          <p>兩個主因：（a）Credential 還沒設，一個個點紅節點綁上去；（b）模板用的節點版本你這台 n8n 沒有——最下方會顯示 <em>Unknown node type</em>，這種只能換更新的模板或升級 n8n。</p>
+          <h3>Every pasted node is a red error</h3>
+          <p>Two main causes: (a) the credentials are not set yet, so click each red node and connect one; (b) your n8n does not have the node version the template uses — <em>Unknown node type</em> shows at the bottom, and the only ways out are a newer template or upgrading n8n.</p>
         </li>
         <li>
-          <h3>workflow 匯進來名字很怪，例如「My workflow 7」</h3>
-          <p>直接點左上角的標題就能改名。習慣一開始就改成「用途_服務」的格式（例：<code>rss早報_slack</code>），之後 workflow 列表才找得到。</p>
+          <h3>The imported workflow has an odd name, such as "My workflow 7"</h3>
+          <p>Click the title in the top-left corner to rename it. Get into the habit of changing it to a "purpose_service" format right away (for example <code>rss早報_slack</code>), so that you can find it in the workflow list later.</p>
         </li>
         <li>
-          <h3>Template 描述說要某個節點，但我這邊搜不到</h3>
-          <p>該節點可能是 n8n community edition 沒包（例如某些企業版才有的節點），或該整合被公司在 Woow n8n 停用了。找 IT 或換個用「基本節點 + HTTP Request」實作的模板。<a href="ch12_http_request.html">HTTP Request 節點</a>幾乎可以取代任何 SaaS 專用節點。</p>
+          <h3>The template description calls for a node I cannot find here</h3>
+          <p>The node may not be included in the n8n community edition (some nodes are enterprise-only), or your company may have disabled that integration on Woow n8n. Ask IT, or switch to a template built from basic nodes plus HTTP Request. The <a href="ch12_http_request.html">HTTP Request node</a> can stand in for almost any SaaS-specific node.</p>
         </li>
         <li>
-          <h3>手動跑通了，Active 打開後半夜跑失敗</h3>
-          <p>常見原因：手動跑時你用的是自己臨時貼的測試資料，實際排程觸發時外部 API 回來的欄位長不一樣。看<a href="appendix_errors.html">附錄 B</a>找對應症狀。</p>
+          <h3>The manual run passed, but it fails overnight once Active is on</h3>
+          <p>The usual cause: your manual run used test data you pasted in yourself, and when the schedule fires for real the outside API returns differently shaped fields. See <a href="appendix_errors.html">Appendix B</a> for the matching symptom.</p>
         </li>
       </ol>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
       <details class="faq">
-        <summary>一定要從 template 起步嗎？可以從零寫自己的嗎？</summary>
-        <div class="body">當然可以。但新手強烈建議先抄至少 3、5 個別人的跑起來，你會很快看懂節點怎麼串。從零寫留到<a href="ch8_first_workflow.html">第 8 章</a>——那時你已經有手感，寫起來會順很多。</div>
+        <summary>Do I have to start from a template? Can I write my own from scratch?</summary>
+        <div class="body">Of course you can. But as a beginner you are strongly advised to copy three or five of other people's workflows and get them running first; you will pick up how nodes are strung together very quickly. Writing from scratch waits until <a href="ch8_first_workflow.html">Chapter 8</a> — by then you will have the feel for it and it will go much more smoothly.</div>
       </details>
       <details class="faq">
-        <summary>別人的 template 有沒有病毒 / 惡意程式碼？</summary>
-        <div class="body">n8n template 不會執行任意程式（它只是節點的組合定義）。但要注意：模板可能包含 <code>Code node</code>，裡面有 JavaScript / Python。匯入前把每個 Code node 點開看一下程式碼在做什麼，尤其是有「呼叫外部網址」或「發送資料到不明地方」的要警覺。挑作者旁邊有 <strong>Verified Creator</strong> 勾勾的、或 n8n 官方帳號的，相對安全。</div>
+        <summary>Can someone else's template carry a virus or malicious code?</summary>
+        <div class="body">An n8n template does not run arbitrary programs (it is only a definition of how nodes are combined). But watch out: a template may contain a <code>Code node</code> with JavaScript / Python inside. Before you import, open every Code node and read what the code does, and be especially alert to anything that calls an outside address or sends data somewhere unidentified. Templates from an author with the <strong>Verified Creator</strong> check next to their name, or from the official n8n account, are comparatively safe.</div>
       </details>
       <details class="faq">
-        <summary>Template 都免費嗎？會不會用一用要收費？</summary>
-        <div class="body">n8n templates 本身<strong>全部免費</strong>。要付費的部分不是模板，而是它連接的外部服務——例如某個 template 用 OpenAI 節點，你就要有 OpenAI 的 API 帳號（那個是你付給 OpenAI 的）。跟模板本身沒關係。</div>
+        <summary>Are all templates free? Will one start charging partway through?</summary>
+        <div class="body">The n8n templates themselves are <strong>all free</strong>. What costs money is not the template but the outside services it connects to — a template that uses the OpenAI node, for example, needs you to have an OpenAI API account (and that bill goes to OpenAI). It has nothing to do with the template itself.</div>
       </details>
       <details class="faq">
-        <summary>我改了 template 之後可以貢獻回社群嗎？</summary>
-        <div class="body">可以。到 <code>n8n.io/workflows/</code> 有「Submit a template」按鈕，需要註冊 n8n.io 帳號。但先別急——你剛入門，先讓你的 workflow 在公司裡跑穩幾週，把敏感的 credential、內部 URL、公司名稱都清掉之後再考慮貢獻。</div>
+        <summary>Can I contribute a template back to the community after I have changed it?</summary>
+        <div class="body">Yes. There is a "Submit a template" button at <code>n8n.io/workflows/</code>, and it needs an n8n.io account. But do not rush — you have only just started. Let your workflow run steadily inside the company for a few weeks, clear out the sensitive credentials, internal URLs and company names, and then think about contributing.</div>
       </details>
       <details class="faq">
-        <summary>模板匯進來會佔用 executions 額度嗎？</summary>
-        <div class="body">「匯入」本身完全不算 executions（只是複製了一份定義）。只有你按 Execute workflow 或 Active 打開後排程真的跑，才算一次 execution。放心大膽地匯入試試看。</div>
+        <summary>Does importing a template use up my executions quota?</summary>
+        <div class="body">Importing on its own does not count as an execution at all (it only copies a definition). It counts as one execution only when you press Execute workflow, or when the schedule actually runs after you switch on Active. Import freely and try things out.</div>
       </details>
       <details class="faq">
-        <summary>我可以一次匯入很多 template 嗎？會不會亂？</summary>
-        <div class="body">技術上可以無限匯。但實務上建議：一次匯 1、2 個先跑成功再匯下一個，不然一堆紅色錯誤節點會分不清是哪個 template 的問題。Workflow 列表可以用「標籤（Tags）」分類，例如 <code>試玩中</code>、<code>正式在跑</code>——之後想清理很方便。</div>
+        <summary>Can I import a lot of templates at once? Will it get messy?</summary>
+        <div class="body">Technically you can import without limit. In practice: import one or two, get them running, then import the next; otherwise a pile of red error nodes leaves you unable to tell which template a problem belongs to. The workflow list can be sorted with tags (Tags), for example <code>試玩中</code>, <code>正式在跑</code> — which makes it easy to clean up later.</div>
       </details>
     </section>
 

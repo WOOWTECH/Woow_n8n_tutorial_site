@@ -1,0 +1,15 @@
+{
+  "file": "ch3_workspace_tour.html",
+  "entries": [
+    {
+      "unit": "#node_shape",
+      "zh": "<code>每天早上八點</code>",
+      "en": "<code>Every day at 8 am</code>"
+    },
+    {
+      "unit": "#credentials_entry",
+      "zh": "<code>Slack - #general 通知</code>",
+      "en": "<code>Slack - #general notifications</code>"
+    }
+  ]
+}
