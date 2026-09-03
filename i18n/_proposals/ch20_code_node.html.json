@@ -1,0 +1,45 @@
+{
+  "file": "ch20_code_node.html",
+  "entries": [
+    {
+      "unit": "#pattern_filter",
+      "zh": "<pre class=\"code-block\"><code>// 只留下金額大於 1000 的訂單\nreturn $input.all().filter(item =&gt; item.json.amount &gt; 1000);</code></pre>",
+      "en": "<pre class=\"code-block\"><code>// Keep only orders over 1000\nreturn $input.all().filter(item =&gt; item.json.amount &gt; 1000);</code></pre>"
+    },
+    {
+      "unit": "#pattern_filter",
+      "zh": "<pre class=\"code-block\"><code>// 金額大於 1000 且客戶等級是 gold\nreturn $input.all().filter(item =&gt;\n  item.json.amount &gt; 1000 &amp;&amp; item.json.tier === 'gold'\n);</code></pre>",
+      "en": "<pre class=\"code-block\"><code>// Amount over 1000 and tier is gold\nreturn $input.all().filter(item =&gt;\n  item.json.amount &gt; 1000 &amp;&amp; item.json.tier === 'gold'\n);</code></pre>"
+    },
+    {
+      "unit": "#pattern_map",
+      "zh": "<pre class=\"code-block\"><code>// 把 firstName + lastName 合成 fullName，只保留 fullName 跟 age\nreturn $input.all().map(item =&gt; ({\n  json: {\n    fullName: item.json.firstName + ' ' + item.json.lastName,\n    age: item.json.age\n  }\n}));</code></pre>",
+      "en": "<pre class=\"code-block\"><code>// Combine firstName and lastName into fullName; keep only fullName and age\nreturn $input.all().map(item =&gt; ({\n  json: {\n    fullName: item.json.firstName + ' ' + item.json.lastName,\n    age: item.json.age\n  }\n}));</code></pre>"
+    },
+    {
+      "unit": "#pattern_map",
+      "zh": "<pre class=\"code-block\"><code>// 保留原本所有欄位，再多加 taxAmount 跟 total\nreturn $input.all().map(item =&gt; ({\n  json: {\n    ...item.json,                      // 展開原本欄位\n    taxAmount: item.json.amount * 0.05,\n    total: item.json.amount * 1.05\n  }\n}));</code></pre>",
+      "en": "<pre class=\"code-block\"><code>// Keep every original field, then add taxAmount and total\nreturn $input.all().map(item =&gt; ({\n  json: {\n    ...item.json,                      // spread the original fields\n    taxAmount: item.json.amount * 0.05,\n    total: item.json.amount * 1.05\n  }\n}));</code></pre>"
+    },
+    {
+      "unit": "#pattern_aggregate",
+      "zh": "<pre class=\"code-block\"><code>// 把所有訂單金額加總，算出總營收跟筆數\nconst total = $input.all().reduce((sum, item) =&gt; sum + item.json.amount, 0);\nconst count = $input.all().length;\n\nreturn [{\n  json: {\n    total: total,\n    count: count,\n    average: total / count\n  }\n}];</code></pre>",
+      "en": "<pre class=\"code-block\"><code>// Sum every order amount, then work out revenue and item count\nconst total = $input.all().reduce((sum, item) =&gt; sum + item.json.amount, 0);\nconst count = $input.all().length;\n\nreturn [{\n  json: {\n    total: total,\n    count: count,\n    average: total / count\n  }\n}];</code></pre>"
+    },
+    {
+      "unit": "#pattern_aggregate",
+      "zh": "<pre class=\"code-block\"><code>// 按客戶名字加總金額\nconst groups = $input.all().reduce((acc, item) =&gt; {\n  const key = item.json.customer;\n  acc[key] = (acc[key] || 0) + item.json.amount;\n  return acc;\n}, {});\n\n// 轉成 items 陣列吐出去\nreturn Object.entries(groups).map(([customer, total]) =&gt; ({\n  json: { customer, total }\n}));</code></pre>",
+      "en": "<pre class=\"code-block\"><code>// Total the amounts per customer name\nconst groups = $input.all().reduce((acc, item) =&gt; {\n  const key = item.json.customer;\n  acc[key] = (acc[key] || 0) + item.json.amount;\n  return acc;\n}, {});\n\n// turn it back into an items array and return it\nreturn Object.entries(groups).map(([customer, total]) =&gt; ({\n  json: { customer, total }\n}));</code></pre>"
+    },
+    {
+      "unit": "#pattern_http",
+      "zh": "<pre class=\"code-block\"><code>// 呼叫外部 API，把回應塞成一筆 item\nconst response = await this.helpers.httpRequest({\n  method: 'GET',\n  url: 'https://api.example.com/x',\n  headers: { 'Accept': 'application/json' }\n});\n\nreturn [{ json: response }];</code></pre>",
+      "en": "<pre class=\"code-block\"><code>// Call an external API and return the response as one item\nconst response = await this.helpers.httpRequest({\n  method: 'GET',\n  url: 'https://api.example.com/x',\n  headers: { 'Accept': 'application/json' }\n});\n\nreturn [{ json: response }];</code></pre>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>$('前一個 Code').item.json.x</code>",
+      "en": "<code>$('Previous Code').item.json.x</code>"
+    }
+  ]
+}

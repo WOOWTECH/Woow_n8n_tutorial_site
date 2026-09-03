@@ -1,0 +1,10 @@
+{
+  "file": "appendix_settings_ref.html",
+  "entries": [
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>WEBHOOK_URL=https://n8n.你的公司.com</code>",
+      "en": "<code>WEBHOOK_URL=https://n8n.your-company.example</code>"
+    }
+  ]
+}

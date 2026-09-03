@@ -1,0 +1,25 @@
+{
+  "file": "ch22_webhook.html",
+  "entries": [
+    {
+      "unit": "#steps",
+      "zh": "<pre class=\"code-block\"><code>curl -X POST https://n8n.woowtech.io/webhook-test/form-contact \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\":\"王小明\",\"email\":\"ming@example.com\",\"message\":\"想詢問報價\"}'</code></pre>",
+      "en": "<pre class=\"code-block\"><code>curl -X POST https://n8n.woowtech.io/webhook-test/form-contact \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\":\"Wang Xiaoming\",\"email\":\"ming@example.com\",\"message\":\"I would like a quote\"}'</code></pre>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<pre class=\"code-block\"><code>curl -X POST https://n8n.woowtech.io/webhook/form-contact \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\":\"李小華\",\"email\":\"hua@example.com\",\"message\":\"正式送出\"}'</code></pre>",
+      "en": "<pre class=\"code-block\"><code>curl -X POST https://n8n.woowtech.io/webhook/form-contact \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\":\"Li Xiaohua\",\"email\":\"hua@example.com\",\"message\":\"Live submission\"}'</code></pre>"
+    },
+    {
+      "unit": "#line_bot",
+      "zh": "<pre class=\"code-block\"><code>{{ $json.body.events[0].message.text }}      →  使用者輸入的文字\n{{ $json.body.events[0].replyToken }}        →  回覆這則要用的 token\n{{ $json.body.events[0].source.userId }}     →  使用者 ID</code></pre>",
+      "en": "<pre class=\"code-block\"><code>{{ $json.body.events[0].message.text }}      →  the text the user typed\n{{ $json.body.events[0].replyToken }}        →  the token you reply with\n{{ $json.body.events[0].source.userId }}     →  the user's ID</code></pre>"
+    },
+    {
+      "unit": "#line_bot",
+      "zh": "<code>Authorization: Bearer &lt;你的 Channel Access Token&gt;</code>",
+      "en": "<code>Authorization: Bearer &lt;your-channel-access-token&gt;</code>"
+    }
+  ]
+}

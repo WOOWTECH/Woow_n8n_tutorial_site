@@ -70,17 +70,17 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要抽 sub-workflow</a>
-      <a href="#concept">什麼是 sub-workflow</a>
-      <a href="#compare">什麼時候該抽</a>
-      <a href="#steps">建一個 sub-workflow</a>
-      <a href="#assign">從另一個 workflow 呼叫</a>
-      <a href="#modes">傳參數的兩種模式</a>
-      <a href="#warning">限制與注意</a>
-      <a href="#labels">命名慣例</a>
-      <a href="#advanced">Utility 家族實例</a>
-      <a href="#troubleshoot">常見卡關</a>
-      <a href="#faq">常見問題</a>
+      <a href="#why">Why this matters</a>
+      <a href="#concept">What it is</a>
+      <a href="#compare">When to split</a>
+      <a href="#steps">Build one</a>
+      <a href="#assign">Call it</a>
+      <a href="#modes">Passing parameters</a>
+      <a href="#warning">Limits and caveats</a>
+      <a href="#labels">Naming conventions</a>
+      <a href="#advanced">Utility family</a>
+      <a href="#troubleshoot">Common pitfalls</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -94,451 +94,451 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch19_subworkflow.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 19</div>
-      <h1>Sub-workflow：把常用邏輯抽成小工作流</h1>
-      <p class="lead">同一段流程你已經在五個 workflow 都複製貼上過？改一次要改五次、還怕漏掉？這章教你把「共用邏輯」抽成 sub-workflow：一改全改、乾淨到你回頭看以前那些拉麵一樣長的 workflow 會嫌棄自己。</p>
+      <h1>Sub-workflow: pull shared logic into its own workflow</h1>
+      <p class="lead">Have you already copy-pasted the same run of steps into five workflows? One change means five edits, and you still worry you missed one. This chapter shows you how to pull shared logic out into a sub-workflow: change it in one place and every caller follows — clean enough that you will wince at your own older workflows, the ones as long as a strand of ramen.</p>
     </div>
 
-    <section id="why" data-nav="為什麼要抽 sub-workflow">
-      <h2 data-icon="why">為什麼要學這個</h2>
-      <p>你已經跟著<a href="ch7_node_types.html">第 7 章</a>認完節點三大類、跟著<a href="ch15_if_switch.html">第 15 章</a>學會 IF/Switch、跟著<a href="ch17_error_handling.html">第 17 章</a>設好 Error workflow、跟著<a href="ch18_set_function.html">第 18 章</a>把資料整形整乾淨了。你的 workflow 越拉越多、越拉越像。</p>
-      <p>然後有一天你翻開自己的 n8n 首頁，發現：</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why learn this</h2>
+      <p>You have worked through <a href="ch7_node_types.html">Chapter 7</a> and know the three node families, <a href="ch15_if_switch.html">Chapter 15</a> and can use IF/Switch, <a href="ch17_error_handling.html">Chapter 17</a> and have an Error workflow in place, and <a href="ch18_set_function.html">Chapter 18</a> and can shape your data cleanly. You have more and more workflows, and they look more and more alike.</p>
+      <p>Then one day you open your own n8n home page and notice:</p>
       <ul>
-        <li><strong>「傳 Slack 通知」</strong>的那四步驟（IF 判斷 severity → Set 標題 → Slack 發訊息 → Sheets log）—— 在五個 workflow 都在複製貼上</li>
-        <li>老闆突然說「以後所有通知都要多附一句『請於 24 小時內回覆』」—— 你要改五個地方</li>
-        <li>Slack channel 從 <code>#alerts</code> 改成 <code>#ops-alerts</code>—— 又要改五個地方</li>
-        <li>某天有一個 workflow 忘記改，同事收不到通知，鍋你揹</li>
+        <li>Those four steps for <strong>"send a Slack notification"</strong> (IF on severity → Set the title → Slack sends the message → log to Sheets) are copy-pasted into five workflows</li>
+        <li>Your boss suddenly says every notification from now on has to carry the line "please reply within 24 hours" — that is five places to edit</li>
+        <li>The Slack channel changes from <code>#alerts</code> to <code>#ops-alerts</code> — five places again</li>
+        <li>One day you forget one of them, a colleague never gets the notification, and you carry the blame</li>
       </ul>
-      <p>這是「複製貼上式開發」必然的下場。解法：把那四步驟抽成一個獨立的小工作流叫 <strong>Sub-workflow</strong>，其他 workflow 用 <strong>Execute Workflow</strong> 節點呼叫它。之後改共用邏輯只要改那一個 sub-workflow，所有呼叫方自動吃到新版。</p>
-      <div class="callout"><strong>觀念：</strong>Sub-workflow 就是「工作流版本的函式（function）」。同一段邏輯在 3+ 個 workflow 都出現，就是抽的訊號。這是進階技巧，但學會的投報率極高——之後所有維護痛點都會少一大半。</div>
+      <p>That is where copy-paste development always ends up. The fix: pull those four steps out into a small standalone workflow called a <strong>sub-workflow</strong>, and have the other workflows call it with an <strong>Execute Workflow</strong> node. From then on, changing the shared logic means changing that one sub-workflow, and every caller picks up the new version automatically.</p>
+      <div class="callout"><strong>Concept:</strong> A sub-workflow is a function in workflow form. The same piece of logic showing up in 3+ workflows is the signal to split it out. It is an advanced technique, but the return is enormous — from then on, more than half of your maintenance pain disappears.</div>
     </section>
 
-    <section id="concept" data-nav="什麼是 sub-workflow">
-      <h2 data-icon="concept">什麼是 sub-workflow：兩個角色</h2>
-      <p>Sub-workflow 不是一個特別的節點類型，也不需要任何 add-on。它就是<strong>一個普通的 workflow</strong>，只是設計成給別人呼叫的。整套機制靠兩個節點分別扮演兩個角色：</p>
+    <section id="concept" data-nav="What it is">
+      <h2 data-icon="concept">What a sub-workflow is: two roles</h2>
+      <p>A sub-workflow is not a special node type, and it needs no add-on. It is <strong>an ordinary workflow</strong>, just one designed to be called by others. The whole mechanism rests on two nodes playing two roles:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>角色</th><th>用哪個節點</th><th>它在做什麼</th></tr>
+          <tr><th>Role</th><th>Which node to use</th><th>What it does</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>呼叫方</strong>（Parent workflow）</td>
-            <td><code>Execute Sub-workflow</code>（Action 類節點；舊版介面顯示為 <code>Execute Workflow</code>）</td>
-            <td>拉這節點、選要呼叫的 workflow、丟 items 進去、等結果回來（或不等）</td>
+            <td><strong>The caller</strong> (parent workflow)</td>
+            <td><code>Execute Sub-workflow</code> (an action node; older interfaces show it as <code>Execute Workflow</code>)</td>
+            <td>Drop this node in, pick the workflow to call, hand it items, and wait for the result (or do not wait)</td>
           </tr>
           <tr>
-            <td><strong>被呼叫方</strong>（Sub-workflow）</td>
-            <td><code>Execute Sub-workflow Trigger</code>（Trigger 類節點，當 workflow 開頭；舊版介面顯示為 <code>Execute Workflow Trigger</code>）</td>
-            <td>接住上面丟進來的 items 當作 input，跑完後 workflow 的最後一個節點的 output 就是回傳值</td>
+            <td><strong>The callee</strong> (the sub-workflow)</td>
+            <td><code>Execute Sub-workflow Trigger</code> (a trigger node that starts the workflow; older interfaces show it as <code>Execute Workflow Trigger</code>)</td>
+            <td>Catches the items handed in above as its input; once the run finishes, the output of the workflow's last node is the return value</td>
           </tr>
         </tbody>
       </table>
 
-      <p>整個機制長得像程式語言的<strong>函式呼叫</strong>：</p>
+      <p>The whole mechanism looks like a <strong>function call</strong> in a programming language:</p>
       <ul>
-        <li>呼叫方傳「參數」（items）給 sub-workflow</li>
-        <li>Sub-workflow 拿參數去執行</li>
-        <li>Sub-workflow 執行完把「回傳值」（最後一個節點的 items）交還給呼叫方</li>
-        <li>呼叫方把回傳值當作 <code>Execute Workflow</code> 節點的 output，繼續往下游流</li>
+        <li>The caller passes "arguments" (items) to the sub-workflow</li>
+        <li>The sub-workflow takes those arguments and runs</li>
+        <li>When it finishes, the sub-workflow hands the "return value" (the last node's items) back to the caller</li>
+        <li>The caller treats that return value as the <code>Execute Workflow</code> node's output and carries on downstream</li>
       </ul>
 
-      <div class="callout tip"><strong>提示：</strong>如果你有寫過任何程式語言的函式（Python 的 <code>def</code>、JavaScript 的 <code>function</code>），把 sub-workflow 想成 n8n 版的函式就對了。同樣是「輸入 → 處理 → 輸出」，同樣的重用價值。</div>
+      <div class="callout tip"><strong>Tip:</strong> If you have ever written a function in any programming language (Python's <code>def</code>, JavaScript's <code>function</code>), think of a sub-workflow as n8n's version of one. Same input → processing → output, same value in reuse.</div>
     </section>
 
-    <section id="compare" data-nav="什麼時候該抽">
-      <h2 data-icon="compare">什麼時候該抽 sub-workflow、什麼時候不用</h2>
-      <p>不是每段邏輯都值得抽。太積極抽反而會讓 workspace 一堆碎片工作流，反過來難管。用下面這張表判斷：</p>
+    <section id="compare" data-nav="When to split">
+      <h2 data-icon="compare">When to split out a sub-workflow, and when not to</h2>
+      <p>Not every piece of logic is worth splitting out. Split too eagerly and your workspace fills with fragment workflows, which makes it harder to manage, not easier. Use this table to decide:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>情境</th><th>該抽嗎？</th><th>理由</th></tr>
+          <tr><th>Scenario</th><th>Split it out?</th><th>Why</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>同一段邏輯（3 個以上節點）在 <strong>3+ 個 workflow</strong> 都出現</td>
-            <td>該抽</td>
-            <td>複製貼上維護噩夢，抽出來一改全改</td>
+            <td>The same logic (three or more nodes) appears in <strong>3+ workflows</strong></td>
+            <td>Split it</td>
+            <td>Copy-paste is a maintenance nightmare; split it out and one change covers them all</td>
           </tr>
           <tr>
-            <td>某段邏輯很複雜（10+ 節點），連自己都覺得亂</td>
-            <td>該抽</td>
-            <td>抽出來當「黑盒子」，主 workflow 剩下高階步驟，讀起來清爽</td>
+            <td>A piece of logic is complicated (10+ nodes) and even you find it messy</td>
+            <td>Split it</td>
+            <td>Split it out and it becomes a black box; the parent workflow is left with the high-level steps and reads cleanly</td>
           </tr>
           <tr>
-            <td>邏輯只在一個 workflow 用</td>
-            <td>不用抽</td>
-            <td>沒有共用需求，抽出去反而多一次跳轉，讀起來更累</td>
+            <td>The logic is used in only one workflow</td>
+            <td>Leave it</td>
+            <td>Nothing needs sharing, and splitting it adds a jump that makes reading harder</td>
           </tr>
           <tr>
-            <td>只有一兩個節點（例：一個 Slack 發訊息）</td>
-            <td>不用抽</td>
-            <td>抽了也沒省多少，反而多一個檔案要維護</td>
+            <td>Only one or two nodes (one Slack message, say)</td>
+            <td>Leave it</td>
+            <td>You save very little and gain another file to maintain</td>
           </tr>
           <tr>
-            <td>你想「集中管理某段設定」（例：Slack channel 名稱）</td>
-            <td>該抽</td>
-            <td>之後 channel 改名只要改 sub-workflow，所有呼叫方跟著吃到新值</td>
+            <td>You want one piece of configuration managed in one place (a Slack channel name, say)</td>
+            <td>Split it</td>
+            <td>When the channel is renamed later you change the sub-workflow only, and every caller picks up the new value</td>
           </tr>
           <tr>
-            <td>要外部團隊／同事來 call 你的邏輯</td>
-            <td>該抽</td>
-            <td>Sub-workflow 就是提供給別人的 API 介面，比讓別人抄你的 workflow 乾淨</td>
+            <td>Another team or a colleague needs to call your logic</td>
+            <td>Split it</td>
+            <td>A sub-workflow is the interface you hand other people — cleaner than letting them copy your workflow</td>
           </tr>
         </tbody>
       </table>
 
-      <div class="callout warn"><strong>注意：</strong>抽之前先確定這段邏輯「未來不太會為某個特定呼叫方調整」。如果之後每個呼叫方都想要自己的變體，你會回到複製貼上的地獄——甚至更糟，因為 sub-workflow 會塞一堆 if 判斷變得無法讀。</div>
+      <div class="callout warn"><strong>Warning:</strong> Before you split, make sure this logic is unlikely to need per-caller adjustments later. If every caller ends up wanting its own variant, you are back in copy-paste hell — worse, in fact, because the sub-workflow fills up with IF checks until nobody can read it.</div>
     </section>
 
-    <section id="steps" data-nav="建一個 sub-workflow">
-      <h2 data-icon="steps">動手：建一個「統一發 Slack 通知」sub-workflow</h2>
-      <p>用一個具體案例走一遍。要抽的邏輯：<em>「收到一個事件，依 severity（error/warn/info）決定 channel 跟顏色，發到 Slack。」</em> 之後任何 workflow 要通知都直接呼叫這一個。</p>
+    <section id="steps" data-nav="Build one">
+      <h2 data-icon="steps">Hands-on: build a shared "send a Slack alert" sub-workflow</h2>
+      <p>Walk through one concrete case. The logic to split out: <em>"take an event, decide the channel and the color from its severity (error/warn/info), and send it to Slack."</em> After that, any workflow that needs to notify calls this one.</p>
 
       <ol class="steps">
         <li>
-          <h3>開一個新 workflow，命名 <code>[Sub] Slack Alert</code></h3>
-          <p>首頁 <strong>Workflows</strong> → <strong>+ Create workflow</strong>。右上角 workflow 名稱點下去改成 <code>[Sub] Slack Alert</code>。前綴 <code>[Sub]</code> 是慣例（後面命名慣例段會講），一眼就知道這個 workflow 是要給別人呼叫的、不會自己主動跑。</p>
+          <h3>Create a new workflow and name it <code>[Sub] Slack Alert</code></h3>
+          <p>From the home page, <strong>Workflows</strong> → <strong>+ Create workflow</strong>. Click the workflow name in the top right and change it to <code>[Sub] Slack Alert</code>. The <code>[Sub]</code> prefix is a convention (the naming section below covers it) that tells you at a glance this workflow is there to be called and never runs on its own.</p>
         </li>
         <li>
-          <h3>Trigger 節點選 <code>Execute Workflow Trigger</code></h3>
-          <p>畫布上按 <kbd>Tab</kbd> 或點 <strong>+</strong> 打開節點抽屜，搜尋 <code>Execute Workflow Trigger</code>（在 Trigger 類）拉進來。這個節點的角色就是「當我被別人呼叫時，我從這裡開始」。沒有它，別人的 <code>Execute Workflow</code> 節點會找不到入口。</p>
+          <h3>Pick <code>Execute Workflow Trigger</code> as the trigger node</h3>
+          <p>On the canvas press <kbd>Tab</kbd> or click <strong>+</strong> to open the nodes panel, search for <code>Execute Workflow Trigger</code> (in the trigger family) and drag it in. This node's role is "when somebody calls me, I start here". Without it, another workflow's <code>Execute Workflow</code> node finds no entry point.</p>
         </li>
         <li>
-          <h3>設 Input Data Mode = <code>Define using JSON example</code></h3>
-          <p>點開 Execute Sub-workflow Trigger 節點，找到 <strong>Input data mode</strong> 下拉，官方共三個選項：<code>Define using fields below</code>（一欄一欄敲名字＋型別）、<code>Define using JSON example</code>（貼一段範例 JSON、n8n 幫你推 schema）、<code>Accept all data</code>（不驗證、來什麼收什麼）。這裡選 <code>Define using JSON example</code>，貼上：</p>
+          <h3>Set Input Data Mode to <code>Define using JSON example</code></h3>
+          <p>Open the Execute Sub-workflow Trigger node and find the <strong>Input data mode</strong> dropdown. There are three official options: <code>Define using fields below</code> (type in each field name and type by hand), <code>Define using JSON example</code> (paste a sample JSON and n8n infers the schema for you) and <code>Accept all data</code> (no validation, whatever arrives is taken). Choose <code>Define using JSON example</code> here and paste:</p>
           <pre class="code-block"><code>{
   "severity": "error",
   "message": "資料庫連線失敗",
   "source": "backup-daily"
 }</code></pre>
-          <p>好處：呼叫方在他的 Execute Sub-workflow 節點裡會看到這個 schema 提示，直接依樣拼資料傳進來。省掉「我到底要傳什麼」的溝通成本。想要「介面契約先行」的團隊選 <code>Define using fields below</code>；想「先跑再說什麼都收」的選 <code>Accept all data</code>。</p>
+          <p>The benefit: the caller sees this schema hint in its own Execute Sub-workflow node and can assemble the data to match. That saves the back-and-forth over "what am I supposed to send you". A team that wants the interface contract written down first picks <code>Define using fields below</code>; a team that wants to take anything and sort it out later picks <code>Accept all data</code>.</p>
         </li>
         <li>
-          <h3>加 IF 節點：判斷 severity</h3>
-          <p>接一個 <strong>IF</strong> 節點，條件寫 <code>{{ $json.severity }}</code> equals <code>error</code>。True 分支走「發到 <code>#ops-error</code> 頻道、紅色 icon」；False 分支再接一個 IF 判 <code>warn</code>／<code>info</code>，或者直接用 <strong>Switch</strong> 節點三分（<a href="ch15_if_switch.html">第 15 章</a>教過 Switch 就是為這種情境設計的）。</p>
+          <h3>Add an IF node to test severity</h3>
+          <p>Wire in an <strong>IF</strong> node with the condition <code>{{ $json.severity }}</code> equals <code>error</code>. The true branch goes to "post in the <code>#ops-error</code> channel with a red icon"; the false branch gets another IF for <code>warn</code> / <code>info</code>, or you can split three ways with a <strong>Switch</strong> node directly (<a href="ch15_if_switch.html">Chapter 15</a> taught that Switch is designed for exactly this).</p>
         </li>
         <li>
-          <h3>Slack 節點：依 severity 決定 channel</h3>
-          <p>每個分支各拉一個 <strong>Slack → Message → Send</strong> 節點：<code>error</code> 分支的 Channel 填 <code>#ops-error</code>、<code>warn</code> 填 <code>#ops-warn</code>、<code>info</code> 填 <code>#ops-info</code>。Text 欄位用 expression 統一拼：<code>[{{ $json.severity | upper }}] {{ $json.source }}: {{ $json.message }}</code>。這樣三個 channel 訊息長相一致，維護一次到位。</p>
+          <h3>Slack nodes: the channel follows the severity</h3>
+          <p>Give each branch its own <strong>Slack → Message → Send</strong> node: the <code>error</code> branch's Channel is <code>#ops-error</code>, <code>warn</code> takes <code>#ops-warn</code>, and <code>info</code> takes <code>#ops-info</code>. Build the Text field from one shared expression: <code>[{{ $json.severity | upper }}] {{ $json.source }}: {{ $json.message }}</code>. All three channels then get the same-looking message, and you maintain it in one place.</p>
         </li>
         <li>
-          <h3>結尾：讓 workflow 自然結束（不用 Respond to Webhook）</h3>
-          <p>三個 Slack 節點各自是分支的終點就好。<strong>Sub-workflow 執行完，最後一個節點的 items 會自動被當作回傳值送回呼叫方</strong>——不用另外接 <code>Respond to Webhook</code>（那是給 Webhook 節點用的，不是 sub-workflow）。想回傳自訂結構的話，最後可以接一個 <a href="ch18_set_function.html">Set/Edit Fields</a> 節點整成想要的樣子（例：<code>{ "notified": true, "channel": "#ops-error" }</code>）。</p>
+          <h3>Finish: let the workflow end on its own (no Respond to Webhook)</h3>
+          <p>Let each of the three Slack nodes be the end of its branch. <strong>When a sub-workflow finishes, the last node's items are sent back to the caller as the return value automatically</strong> — you do not add a <code>Respond to Webhook</code> (that one is for the Webhook node, not for sub-workflows). If you want to return a structure of your own, put a <a href="ch18_set_function.html">Set / Edit Fields</a> node at the end and build it there (for example <code>{ "notified": true, "channel": "#ops-error" }</code>).</p>
         </li>
         <li>
-          <h3>Save（<kbd>Ctrl</kbd>+<kbd>S</kbd>）並複製 workflow ID</h3>
-          <p>存檔後看瀏覽器網址列，會像 <code>https://n8n.woowtech.io/workflow/abc123XYZ</code>——最後那段就是 workflow ID。等下呼叫方 Execute Workflow 節點下拉找不到時，你可以直接貼這串 ID。<strong>注意：sub-workflow 不用把 Active toggle 打開</strong>，因為它不是靠自己的 trigger 主動跑，是等別人來呼叫。</p>
+          <h3>Save (<kbd>Ctrl</kbd>+<kbd>S</kbd>) and copy the workflow ID</h3>
+          <p>After saving, look at the browser address bar: it reads something like <code>https://n8n.woowtech.io/workflow/abc123XYZ</code> — that last segment is the workflow ID. If the caller's Execute Workflow dropdown cannot find the workflow later, you can paste that ID straight in. <strong>Note: a sub-workflow does not need its Active toggle switched on</strong>, because it does not run from a trigger of its own — it waits to be called.</p>
         </li>
         <li>
-          <h3>用 Execute Workflow Trigger 節點的「Execute step」按鈕測一次</h3>
-          <p>點 Execute Workflow Trigger 節點右上角 <strong>Execute step</strong>，會用你剛剛在 JSON Example 貼的資料當 input 試跑一次。三個 Slack 節點應該只有 <code>error</code> 分支被觸發（因為 example 的 severity 是 <code>error</code>）。真的收到 Slack 訊息就代表 sub-workflow 本身沒問題。</p>
+          <h3>Test it once with the "Execute step" button on the Execute Workflow Trigger node</h3>
+          <p>Click <strong>Execute step</strong> in the top right of the Execute Workflow Trigger node and it does a trial run using the data you just pasted into the JSON example as its input. Of the three Slack nodes, only the <code>error</code> branch should fire (the example's severity is <code>error</code>). A Slack message actually arriving means the sub-workflow itself is sound.</p>
         </li>
       </ol>
     </section>
 
-    <section id="assign" data-nav="從另一個 workflow 呼叫">
-      <h2 data-icon="assign">動手：從別的 workflow 呼叫這個 sub-workflow</h2>
-      <p>Sub-workflow 建好了。現在打開一個既有的 workflow（例如「每天備份資料庫」），把原本自己塞在裡面的四個 Slack 通知節點刪掉，改成一個 Execute Workflow 節點呼叫 sub-workflow。</p>
+    <section id="assign" data-nav="Call it">
+      <h2 data-icon="assign">Hands-on: call that sub-workflow from another workflow</h2>
+      <p>The sub-workflow is built. Now open an existing workflow — "back up the database daily", say — delete the four Slack notification nodes you had stuffed inside it, and replace them with a single Execute Workflow node that calls the sub-workflow.</p>
 
       <ol class="steps">
         <li>
-          <h3>打開要改造的 workflow</h3>
-          <p>假設你有一條「每天凌晨備份資料庫」的 workflow，Schedule Trigger → 執行備份 → IF 判斷 exit code → 成功／失敗各發 Slack。現在把「發 Slack」那段拆掉。</p>
+          <h3>Open the workflow you are reworking</h3>
+          <p>Say you have a workflow that backs up the database in the small hours: Schedule Trigger → run the backup → IF on the exit code → a Slack message each for success and failure. Take that "send to Slack" stretch apart now.</p>
         </li>
         <li>
-          <h3>刪掉原本的 Slack 節點群，改拉 <code>Execute Workflow</code></h3>
-          <p>把原本自己的 IF/Set/Slack 那些節點刪光。從節點抽屜搜尋 <code>Execute Workflow</code>（Action 類，別跟 Trigger 版搞混了），拉進來接在 IF 節點後面。</p>
+          <h3>Delete the old Slack nodes and drag in <code>Execute Workflow</code></h3>
+          <p>Delete your own IF/Set/Slack nodes entirely. Search the nodes panel for <code>Execute Workflow</code> (the action one — do not mix it up with the trigger version) and wire it in after the IF node.</p>
         </li>
         <li>
-          <h3>Source 選 <code>Database</code>，Workflow 下拉選 <code>[Sub] Slack Alert</code></h3>
-          <p>節點打開，<strong>Source</strong> 有四個模式：<code>Database</code>（從 workspace 現有 workflow 挑，最常用）、<code>Local File</code>（讀本機 JSON 檔）、<code>Parameter</code>（把整段 workflow JSON 貼進節點）、<code>URL</code>（指定 workflow URL）。保留預設 <code>Database</code>，下拉找 <code>[Sub] Slack Alert</code>；找不到再切別的模式手動指定。</p>
+          <h3>Set Source to <code>Database</code> and pick <code>[Sub] Slack Alert</code> in the Workflow dropdown</h3>
+          <p>Open the node. <strong>Source</strong> has four modes: <code>Database</code> (pick from the workflows already in the workspace, the usual choice), <code>Local File</code> (read a JSON file from the machine), <code>Parameter</code> (paste the whole workflow JSON into the node) and <code>URL</code> (point at a workflow URL). Keep the default <code>Database</code> and find <code>[Sub] Slack Alert</code> in the dropdown; if it is not there, switch to another mode and point at it by hand.</p>
         </li>
         <li>
-          <h3>檢查 <strong>Wait for Sub-workflow Completion</strong></h3>
-          <p>這個 toggle 決定「我要等 sub-workflow 跑完拿到回傳值再繼續嗎」。打勾＝等；不勾＝呼叫完就繼續往下（fire-and-forget，適合純通知不 care 結果）。想用 sub-workflow 的回傳資料繼續處理的話一定要打勾。官方文件沒明說預設值，實務上建 Execute Sub-workflow 節點時是打勾的，不放心請自己確認一次。</p>
+          <h3>Check <strong>Wait for Sub-workflow Completion</strong></h3>
+          <p>This toggle decides whether you wait for the sub-workflow to finish and hand back a return value before carrying on. On = wait; off = carry on as soon as the call goes out (fire-and-forget, which suits a pure notification where you do not care about the result). If you want to keep working with the data the sub-workflow returns, it has to be on. The official docs do not state the default; in practice a newly created Execute Sub-workflow node has it on, so check it yourself if you want to be sure.</p>
         </li>
         <li>
-          <h3>Mode 選 <code>Run once with all items</code></h3>
-          <p><strong>Mode</strong> 有兩個選項：<code>Run once with all items</code>（把上游全部 items 一次丟進 sub-workflow，sub-workflow 跑一次）或 <code>Run once for each item</code>（每筆 item 各觸發一次 sub-workflow，跑 N 次）。通知這種一次一筆的情境選 <em>Run once with all items</em> 就好。</p>
+          <h3>Set Mode to <code>Run once with all items</code></h3>
+          <p><strong>Mode</strong> has two options: <code>Run once with all items</code> (hand every upstream item to the sub-workflow at once, and the sub-workflow runs once) or <code>Run once for each item</code> (each item triggers the sub-workflow separately, so it runs N times). For a one-at-a-time case like a notification, <em>Run once with all items</em> is fine.</p>
         </li>
         <li>
-          <h3>設要傳的 items：用 <strong>Workflow Inputs</strong> 或 Set 節點預整形</h3>
-          <p>Sub-workflow 若在 Trigger 端定義了 schema（<code>Define using fields below</code> 或 <code>Define using JSON example</code>），Execute Sub-workflow 節點會自動顯示 <strong>Workflow Inputs</strong> 表格讓你逐欄填 expression、還有一個 <strong>Attempt to convert types</strong> toggle 幫忙做型別轉換。如果 sub-workflow 是 <code>Accept all data</code>，這區塊不會出現，上游 items 原封不動就是 input。想大幅改結構的話，先加一個 <a href="ch18_set_function.html">Set/Edit Fields</a> 節點整成 <code>{ severity, message, source }</code> 再接：</p>
+          <h3>Set the items you pass: use <strong>Workflow Inputs</strong>, or reshape with a Set node first</h3>
+          <p>If the sub-workflow defined a schema on its trigger (<code>Define using fields below</code> or <code>Define using JSON example</code>), the Execute Sub-workflow node automatically shows a <strong>Workflow Inputs</strong> table where you fill in an expression per field, plus an <strong>Attempt to convert types</strong> toggle that handles type conversion for you. If the sub-workflow is on <code>Accept all data</code>, that block does not appear and the upstream items go in untouched. To change the structure substantially, add a <a href="ch18_set_function.html">Set / Edit Fields</a> node first, reshape to <code>{ severity, message, source }</code>, and wire it in:</p>
           <pre class="code-block"><code>severity: error
 message: {{ $json.error_message }}
 source: backup-daily</code></pre>
-          <p>Save 存檔，手動 <strong>Execute Workflow</strong> 跑一次驗證：Sub-workflow 那邊會被喚醒、Slack 應該收到訊息、Execute Workflow 節點在呼叫方這邊會顯示回傳的 items。</p>
+          <p>Save, then run it once by hand with <strong>Execute Workflow</strong> to verify: the sub-workflow wakes up, Slack should get the message, and the Execute Workflow node on the caller's side shows the items that came back.</p>
         </li>
       </ol>
 
-      <div class="callout tip"><strong>提示：</strong>改成 sub-workflow 呼叫後，主 workflow 從「12 個節點」瘦身到「6 個節點 + 一個 Execute Workflow」。讀起來清爽很多。之後老闆說「Slack 通知要加一個 emoji」，你只改 sub-workflow 就好，所有呼叫方跟著吃到。</div>
+      <div class="callout tip"><strong>Tip:</strong> Once it calls a sub-workflow, the parent workflow slims down from 12 nodes to 6 nodes plus one Execute Workflow. It reads far more cleanly. When your boss later says the Slack notification needs an emoji, you change the sub-workflow only and every caller picks it up.</div>
     </section>
 
-    <section id="modes" data-nav="傳參數的兩種模式">
-      <h2 data-icon="modes">傳參數的兩種模式</h2>
-      <p>Execute Workflow 節點怎麼決定要丟什麼給 sub-workflow？主要兩種模式，任選：</p>
+    <section id="modes" data-nav="Passing parameters">
+      <h2 data-icon="modes">Two ways to pass parameters</h2>
+      <p>How does the Execute Workflow node decide what to hand the sub-workflow? Two main modes, your choice:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>模式</th><th>怎麼設</th><th>什麼時候用</th></tr>
+          <tr><th>Mode</th><th>How to set it</th><th>When to use it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Items pass-through</strong>（直通）</td>
-            <td>Execute Workflow 節點的 Mode 選 <code>Run once with all items</code>，什麼都不動—— 上游 items 直接被當 sub-workflow 的 input</td>
-            <td>上游 items 的結構已經跟 sub-workflow 期待的一樣（例：都是 <code>{severity, message}</code>）</td>
+            <td><strong>Items pass-through</strong> (straight through)</td>
+            <td>Set the Execute Workflow node's Mode to <code>Run once with all items</code> and change nothing else — the upstream items become the sub-workflow's input directly</td>
+            <td>The upstream items already have the shape the sub-workflow expects (both <code>{severity, message}</code>, say)</td>
           </tr>
           <tr>
-            <td><strong>Set 節點預整形</strong></td>
-            <td>Execute Workflow 前面先加一個 <code>Set</code>（或 <code>Edit Fields</code>），把 items 改成 sub-workflow 期待的 schema</td>
-            <td>上游來的資料結構跟 sub-workflow 不合（欄位名不同、缺欄位、多欄位），這是常態</td>
+            <td><strong>Reshape with a Set node first</strong></td>
+            <td>Add a <code>Set</code> (or <code>Edit Fields</code>) node in front of Execute Workflow and rewrite the items into the schema the sub-workflow expects</td>
+            <td>The upstream data does not match the sub-workflow (different field names, missing fields, extra fields) — which is the normal case</td>
           </tr>
           <tr>
             <td><strong>Run once for each item</strong></td>
-            <td>Mode 選 <code>Run once for each item</code></td>
-            <td>你要對每一筆 item 都單獨呼叫一次 sub-workflow（例：發 100 筆通知就跑 100 次 sub-workflow）</td>
+            <td>Set Mode to <code>Run once for each item</code></td>
+            <td>You want to call the sub-workflow separately for every single item (100 notifications means 100 sub-workflow runs)</td>
           </tr>
         </tbody>
       </table>
 
-      <div class="callout warn"><strong>注意：</strong>Mode 選 <code>Run once for each item</code> 時，sub-workflow 會被呼叫 N 次、Executions 頁面會出現 N 筆 sub-workflow 執行紀錄。大量迴圈時會拖慢整體、也吃 executions quota。真的要處理大批資料建議先 batch，再一次丟進 sub-workflow 用 <code>Run once with all items</code>。</div>
+      <div class="callout warn"><strong>Warning:</strong> With Mode set to <code>Run once for each item</code>, the sub-workflow is called N times and the Executions page fills with N sub-workflow execution records. A large loop slows the whole thing down and eats your executions quota. For a genuinely large batch, batch it first and then hand it to the sub-workflow in one go with <code>Run once with all items</code>.</div>
     </section>
 
-    <section id="warning" data-nav="限制與注意">
-      <h2 data-icon="warning">Sub-workflow 的限制與注意事項</h2>
-      <p>抽出來很爽，但有幾個現實限制要放在心上，不然半年後會踩雷：</p>
+    <section id="warning" data-nav="Limits and caveats">
+      <h2 data-icon="warning">Sub-workflow limits and things to watch</h2>
+      <p>Splitting logic out feels good, but a few practical limits are worth keeping in mind, or you will trip over them six months from now:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>項目</th><th>細節</th><th>建議做法</th></tr>
+          <tr><th>Item</th><th>Details</th><th>What we suggest</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>Execution 各算各的</td>
-            <td>呼叫方跑一次是一筆 execution、Sub-workflow 跑一次也是一筆 execution。Executions 頁面兩邊分開列</td>
-            <td>要追一個完整流程要交叉看兩邊；<a href="ch17_error_handling.html">Error workflow</a> 也建議兩邊都設</td>
+            <td>Executions are counted separately</td>
+            <td>One caller run is one execution, and one sub-workflow run is another execution. The Executions page lists the two sides separately</td>
+            <td>Tracing one complete process means cross-referencing both sides; set an <a href="ch17_error_handling.html">Error workflow</a> on both as well</td>
           </tr>
           <tr>
-            <td>呼叫 chain 太深會卡</td>
-            <td>Sub-workflow 呼叫 sub-sub-workflow 沒問題，但層數多會慢、也難 debug。實務上不要超過 <strong>3-4 層</strong></td>
-            <td>真的很深就重新設計流程，或把幾層合成一層</td>
+            <td>A call chain that runs too deep bogs down</td>
+            <td>A sub-workflow calling a sub-sub-workflow is fine, but many levels get slow and hard to debug. In practice, do not go past <strong>3-4 levels</strong></td>
+            <td>If it really is that deep, redesign the process, or collapse a few levels into one</td>
           </tr>
           <tr>
-            <td>版本管理</td>
-            <td>改 sub-workflow 會立刻影響<em>所有</em>呼叫方。沒有回滾按鈕、沒有 branch</td>
-            <td>改前先 <strong>Duplicate workflow</strong> 一份存為 <code>[Sub] Slack Alert - backup 20260816</code>，或用 <a href="ch17_error_handling.html">JSON 匯出</a>備份</td>
+            <td>Version control</td>
+            <td>Changing a sub-workflow immediately affects <em>every</em> caller. There is no rollback button and no branch</td>
+            <td>Before you change it, <strong>Duplicate workflow</strong> and save the copy as <code>[Sub] Slack Alert - backup 20260816</code>, or back it up by <a href="ch17_error_handling.html">exporting the JSON</a></td>
           </tr>
           <tr>
-            <td>Sub-workflow 沒回傳的話呼叫方拿到空</td>
-            <td>Sub-workflow 如果最後一個節點是 IF 且某分支沒接任何節點，那個分支跑完呼叫方會拿到 <code>[]</code></td>
-            <td>Sub-workflow 每個路徑都要有實際的終點節點（Set 一個結果 object 也行）</td>
+            <td>If the sub-workflow returns nothing, the caller gets nothing</td>
+            <td>If the sub-workflow's last node is an IF and one branch has no node wired after it, a run down that branch leaves the caller with <code>[]</code></td>
+            <td>Every path in the sub-workflow needs a real end node (a Set node producing a result object counts)</td>
           </tr>
           <tr>
-            <td>Wait 選項的雙面刃</td>
-            <td>Wait for Sub-workflow 打勾＝呼叫方會等；如果 sub-workflow 很慢（例：跑 5 分鐘），呼叫方也會被卡 5 分鐘</td>
-            <td>純通知類（不 care 回傳）改成不勾 Wait，呼叫完就走，速度快很多</td>
+            <td>The Wait option cuts both ways</td>
+            <td>Wait for Sub-workflow on = the caller waits; if the sub-workflow is slow (five minutes, say), the caller is stuck for those five minutes too</td>
+            <td>For pure notifications, where the return value does not matter, turn Wait off so the caller moves on the moment it calls — much faster</td>
           </tr>
           <tr>
-            <td>Sub-workflow 出錯的錯誤訊息會冒到呼叫方</td>
-            <td>Sub-workflow 內某節點失敗，Execute Workflow 節點會整個變紅、呼叫方 workflow 也失敗</td>
-            <td>想讓呼叫方無視 sub-workflow 錯誤的話，Execute Workflow 節點的 <strong>On Error</strong> 設 <code>Continue</code></td>
+            <td>An error inside the sub-workflow surfaces in the caller</td>
+            <td>A node failing inside the sub-workflow turns the whole Execute Workflow node red, and the caller's workflow fails too</td>
+            <td>To have the caller ignore sub-workflow errors, set the Execute Workflow node's <strong>On Error</strong> to <code>Continue</code></td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="labels" data-nav="命名慣例">
-      <h2 data-icon="labels">命名慣例：一眼看出誰是誰</h2>
-      <p>Workspace 用久了會有幾十上百個 workflow，一半是主 workflow、一半是被呼叫的。全部混在一起找不到人。用前綴分類是最簡單有效的做法：</p>
+    <section id="labels" data-nav="Naming conventions">
+      <h2 data-icon="labels">Naming conventions: tell them apart at a glance</h2>
+      <p>After a while a workspace holds dozens or hundreds of workflows, half of them parent workflows and half of them called by others. All mixed together, you cannot find anything. Sorting them by prefix is the simplest thing that works:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>前綴</th><th>意義</th><th>範例</th></tr>
+          <tr><th>Prefix</th><th>What it means</th><th>Example</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><code>[Sub]</code></td>
-            <td>被別人呼叫的 sub-workflow（可能有多個呼叫方）</td>
-            <td><code>[Sub] Slack Alert</code>、<code>[Sub] Format Date TW</code></td>
+            <td>A sub-workflow other workflows call (possibly several callers)</td>
+            <td><code>[Sub] Slack Alert</code>, <code>[Sub] Format Date TW</code></td>
           </tr>
           <tr>
             <td><code>[Util]</code></td>
-            <td>純工具型，一定被 sub-workflow 或內部使用，不對外</td>
+            <td>Pure utility, always used by a sub-workflow or internally, never exposed</td>
             <td><code>[Util] Escape Slack Markdown</code></td>
           </tr>
           <tr>
             <td><code>[Prod]</code> / <code>[Dev]</code></td>
-            <td>正式版／測試版並存時區隔</td>
-            <td><code>[Prod] Daily Backup</code>、<code>[Dev] Daily Backup</code></td>
+            <td>Keeps the live version and the test version apart when both exist</td>
+            <td><code>[Prod] Daily Backup</code>, <code>[Dev] Daily Backup</code></td>
           </tr>
           <tr>
             <td><code>[Cron]</code></td>
-            <td>Schedule Trigger 啟動的排程 workflow</td>
+            <td>A scheduled workflow started by a Schedule Trigger</td>
             <td><code>[Cron] 每小時同步 CRM</code></td>
           </tr>
           <tr>
             <td><code>[Webhook]</code></td>
-            <td>由外部系統打進來觸發的 workflow</td>
+            <td>A workflow triggered by an outside system calling in</td>
             <td><code>[Webhook] Line Bot 回應</code></td>
           </tr>
           <tr>
-            <td>沒前綴</td>
-            <td>一般手動測試中或還在草稿的</td>
+            <td>No prefix</td>
+            <td>Something you are still testing by hand, or a draft</td>
             <td><code>測試新 API</code></td>
           </tr>
         </tbody>
       </table>
 
-      <p>Workflow 列表頁支援搜尋，打 <code>[Sub]</code> 就能一次看到所有 sub-workflow，改起來、盤點起來都方便。這個慣例在 Woow 內部團隊沿用很久，新同事看到也一秒理解。</p>
+      <p>The workflow list page supports search, so typing <code>[Sub]</code> brings up every sub-workflow at once, which makes both editing and taking stock easy. WoowTech's own team has used this convention for a long time, and a new colleague gets it in a second.</p>
 
-      <div class="callout tip"><strong>提示：</strong>n8n 也有 <strong>Tags</strong>（workflow 設定裡）可以分類。前綴＋Tags 一起用效果最好：前綴管「這是什麼類型」，Tags 管「這屬於哪個專案／哪個部門」。</div>
+      <div class="callout tip"><strong>Tip:</strong> n8n also has <strong>Tags</strong> (in the workflow settings) for sorting. Prefixes and tags work best together: the prefix covers "what type is this", the tags cover "which project or department does it belong to".</div>
     </section>
 
-    <section id="advanced" data-nav="Utility 家族實例">
-      <h2 data-icon="advanced">實例：一組 utility sub-workflow 家族</h2>
-      <p>有了 sub-workflow 觀念以後，你可以幫團隊建一組「共用工具箱」。以下是很多公司實際跑的四個 sub-workflow，供參考：</p>
+    <section id="advanced" data-nav="Utility family">
+      <h2 data-icon="advanced">Worked example: a family of utility sub-workflows</h2>
+      <p>Once the sub-workflow idea has landed, you can build your team a shared toolbox. Here are four sub-workflows plenty of companies actually run, for reference:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>Sub-workflow 名字</th><th>做什麼</th><th>Input schema</th><th>Output</th></tr>
+          <tr><th>Sub-workflow name</th><th>What it does</th><th>Input schema</th><th>Output</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><code>[Sub] Slack Alert</code></td>
-            <td>統一發 Slack 通知，依 severity 分流到不同 channel</td>
+            <td>Sends every Slack notification, routing by severity to a different channel</td>
             <td><code>{ severity, message, source }</code></td>
             <td><code>{ notified: true, channel: '...' }</code></td>
           </tr>
           <tr>
             <td><code>[Sub] Log Execution</code></td>
-            <td>把「哪個 workflow 什麼時候跑了、成功／失敗、多久」寫進共用 Google Sheet</td>
+            <td>Writes which workflow ran when, whether it succeeded or failed, and how long it took into a shared Google Sheet</td>
             <td><code>{ workflow_name, status, duration_ms, note }</code></td>
             <td><code>{ logged: true, row_id: 42 }</code></td>
           </tr>
           <tr>
             <td><code>[Sub] Format Date TW</code></td>
-            <td>把任意日期／時間統一轉成台灣時區、標準格式 <code>YYYY-MM-DD HH:mm:ss</code></td>
-            <td><code>{ raw_date }</code>（ISO 或 Unix timestamp）</td>
+            <td>Converts any date or time to the Taiwan timezone in the standard <code>YYYY-MM-DD HH:mm:ss</code> format</td>
+            <td><code>{ raw_date }</code> (ISO or a Unix timestamp)</td>
             <td><code>{ formatted: '2026-08-16 14:23:00' }</code></td>
           </tr>
           <tr>
             <td><code>[Sub] Get Employee Info</code></td>
-            <td>用 email 或員工編號查內部 HR API，回員工姓名／部門／主管</td>
-            <td><code>{ email }</code> 或 <code>{ employee_id }</code></td>
+            <td>Looks up the internal HR API by email or employee number and returns the person's name, department and manager</td>
+            <td><code>{ email }</code> or <code>{ employee_id }</code></td>
             <td><code>{ name, department, manager_email }</code></td>
           </tr>
         </tbody>
       </table>
 
-      <p>建完這四個以後，你所有 workflow 都乾淨很多：</p>
+      <p>With those four built, all your workflows get much cleaner:</p>
       <ul>
-        <li>要通知？不自己拼 Slack，呼叫 <code>[Sub] Slack Alert</code></li>
-        <li>要記 log？不自己拼 Sheets，呼叫 <code>[Sub] Log Execution</code></li>
-        <li>要顯示時間給人看？呼叫 <code>[Sub] Format Date TW</code>，全公司格式一致</li>
-        <li>要查同事？呼叫 <code>[Sub] Get Employee Info</code>，內部 API 換 URL 也只改這一個</li>
+        <li>Need to notify? Do not assemble Slack yourself — call <code>[Sub] Slack Alert</code></li>
+        <li>Need a log? Do not assemble Sheets yourself — call <code>[Sub] Log Execution</code></li>
+        <li>Need to show a time to a person? Call <code>[Sub] Format Date TW</code> and the whole company shows one format</li>
+        <li>Need to look up a colleague? Call <code>[Sub] Get Employee Info</code>, and when the internal API changes URL you edit only this one</li>
       </ul>
 
-      <p>之後 HR API 網址換了、Slack channel 改名、時區格式微調——只改對應的那一個 sub-workflow，全公司所有 workflow 自動吃到新版。這就是 sub-workflow 真正的威力。</p>
+      <p>Later the HR API address changes, the Slack channel is renamed, the timezone format is adjusted — you edit only the matching sub-workflow, and every workflow in the company picks up the new version automatically. That is what sub-workflows are really worth.</p>
       <figure class="shot">
-        <img src="../assets/screenshots/ch19/01_bni_mcp.png" alt="BNI MCP workflow 呼叫 sub-workflow 的實例" />
-        <figcaption><strong>圖 19-1</strong>實戰範例：BNI MCP workflow 用 Execute Workflow 節點呼叫子 workflow，把共用邏輯抽出來重用。</figcaption>
+        <img src="../assets/screenshots/ch19/01_bni_mcp.png" alt="A real BNI MCP workflow calling a sub-workflow" />
+        <figcaption><strong>Figure 19-1</strong>A real example: the BNI MCP workflow uses an Execute Workflow node to call a sub-workflow, pulling shared logic out for reuse.</figcaption>
       </figure>
 
-      <div class="callout"><strong>觀念：</strong>Sub-workflow 就像公司內部的「共用函式庫」。第一次要花時間建、要跟同事講清楚介面（要傳什麼、會回什麼），但一旦建好就是複利。每多一個呼叫方，這組 sub-workflow 的投報率就再翻一倍。</div>
+      <div class="callout"><strong>Concept:</strong> A sub-workflow is like a shared function library inside the company. The first one costs you time to build and an interface to explain to colleagues (what to send, what comes back), but once it exists it compounds. Every extra caller doubles the return on that set of sub-workflows again.</div>
     </section>
 
-    <section id="troubleshoot" data-nav="常見卡關">
-      <h2 data-icon="troubleshoot">常見卡關與怎麼救</h2>
+    <section id="troubleshoot" data-nav="Common pitfalls">
+      <h2 data-icon="troubleshoot">Common pitfalls and fixes</h2>
       <table class="data-table">
         <thead>
-          <tr><th>症狀</th><th>原因</th><th>怎麼救</th></tr>
+          <tr><th>Symptom</th><th>Cause</th><th>How to fix it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>Execute Sub-workflow 節點的 Workflow 下拉找不到目標</td>
-            <td>Workflow ID 錯了、Sub-workflow 被刪了、或你在別的 workspace</td>
-            <td>先去 Workflows 頁確認 sub-workflow 還在。或把 <strong>Source</strong> 從 <code>Database</code> 切成 <code>URL</code>／<code>Local File</code>／<code>Parameter</code> 手動指定目標 workflow</td>
+            <td>The Workflow dropdown on the Execute Sub-workflow node cannot find the target</td>
+            <td>Wrong workflow ID, the sub-workflow was deleted, or you are in a different workspace</td>
+            <td>Check on the Workflows page that the sub-workflow is still there. Or switch <strong>Source</strong> from <code>Database</code> to <code>URL</code> / <code>Local File</code> / <code>Parameter</code> and point at the target workflow by hand</td>
           </tr>
           <tr>
-            <td>執行時報 <code>Sub-workflow could not be started</code></td>
-            <td>Sub-workflow 的 Trigger 節點不是 <code>Execute Sub-workflow Trigger</code>（是別的 Trigger 例如 Manual、Schedule）</td>
-            <td>回 sub-workflow 把開頭改成 <code>Execute Sub-workflow Trigger</code> 節點。這是 sub-workflow 專用的入口</td>
+            <td>The run reports <code>Sub-workflow could not be started</code></td>
+            <td>The sub-workflow's trigger node is not <code>Execute Sub-workflow Trigger</code> (it is another trigger, Manual or Schedule for example)</td>
+            <td>Go back to the sub-workflow and make an <code>Execute Sub-workflow Trigger</code> node its first node. That is the entry point sub-workflows use</td>
           </tr>
           <tr>
-            <td>呼叫方傳了 items 但 sub-workflow 收到空的</td>
-            <td>Execute Workflow 節點的 <strong>Mode</strong> 設錯（例如選 <code>Run once for each item</code> 但上游沒有 items）</td>
-            <td>在 Execute Workflow 節點上游加一個節點觀察 items 有沒有真的出現；確認 Mode 對；上游是空的話 sub-workflow 也不會被呼叫</td>
+            <td>The caller passed items but the sub-workflow received nothing</td>
+            <td>The Execute Workflow node's <strong>Mode</strong> is set wrong (<code>Run once for each item</code> selected, say, but there are no upstream items)</td>
+            <td>Add a node upstream of the Execute Workflow node to watch whether items really show up; confirm the Mode is right; if upstream is empty, the sub-workflow is never called at all</td>
           </tr>
           <tr>
-            <td>Sub-workflow 執行超級慢，呼叫方整個卡</td>
-            <td><strong>Wait for Sub-workflow Completion</strong> 打勾但 sub-workflow 本身要跑很久；或呼叫方用 <code>Run once for each item</code> 迴圈了 N 次</td>
-            <td>純通知不 care 回傳的話關掉 Wait；要並行的話改用 batch + <code>Run once with all items</code>；真的慢的地方去 sub-workflow 找瓶頸</td>
+            <td>The sub-workflow is extremely slow and the caller is stuck behind it</td>
+            <td><strong>Wait for Sub-workflow Completion</strong> is on but the sub-workflow itself takes a long time; or the caller used <code>Run once for each item</code> and looped N times</td>
+            <td>For a pure notification where the return value does not matter, turn Wait off; to run things side by side, switch to a batch plus <code>Run once with all items</code>; if it really is slow, go find the bottleneck inside the sub-workflow</td>
           </tr>
           <tr>
-            <td>Sub-workflow 執行失敗，但呼叫方 workflow 也整條爆掉</td>
-            <td>Execute Workflow 節點的 On Error 預設是 <code>Stop Workflow</code>，sub-workflow 內錯誤會冒到呼叫方</td>
-            <td>如果 sub-workflow 錯了呼叫方仍要繼續（例：Slack 通知失敗但主流程不受影響），Execute Workflow 節點 On Error 改成 <code>Continue</code></td>
+            <td>The sub-workflow fails, and the caller's whole workflow blows up with it</td>
+            <td>The Execute Workflow node's On Error defaults to <code>Stop Workflow</code>, so an error inside the sub-workflow surfaces in the caller</td>
+            <td>If the caller should carry on when the sub-workflow fails (the Slack notification fails but the main process is unaffected, say), change the Execute Workflow node's On Error to <code>Continue</code></td>
           </tr>
           <tr>
-            <td>改了 sub-workflow 之後其中一個呼叫方壞掉</td>
-            <td>你動到了 sub-workflow 期待的 input schema（改了欄位名、加了必填），但那個呼叫方沒跟著更新</td>
-            <td>Sub-workflow 的 <code>Execute Sub-workflow Trigger</code> 節點的 Input Data Mode（fields/JSON example）就是介面契約，改介面前要盤點所有呼叫方一起更新；破壞性改動建議另建 <code>[Sub] Slack Alert v2</code> 併行過渡</td>
+            <td>One of the callers broke after you changed the sub-workflow</td>
+            <td>You touched the input schema the sub-workflow expects (renamed a field, added a required one) and that caller was not updated with it</td>
+            <td>The Input Data Mode (fields / JSON example) on the sub-workflow's <code>Execute Sub-workflow Trigger</code> node is the interface contract: before you change the interface, take stock of every caller and update them together. For a breaking change, build a separate <code>[Sub] Slack Alert v2</code> and run both through the transition</td>
           </tr>
           <tr>
-            <td>出錯不知道在 sub-workflow 還是呼叫方</td>
-            <td>Executions 頁把呼叫方跟被呼叫方兩筆分開列，不會自動串起來</td>
-            <td>從呼叫方 execution 點進 Execute Sub-workflow 節點，回傳 output 通常帶對應的 sub-execution 連結／ID，或直接到 Executions 頁按時間交叉比對；不放心就設 <a href="ch17_error_handling.html">Error workflow</a> 統一收</td>
+            <td>Something failed and you cannot tell whether it was the sub-workflow or the caller</td>
+            <td>The Executions page lists the caller and the callee as two separate records and does not string them together for you</td>
+            <td>Open the Execute Sub-workflow node inside the caller's execution — the returned output usually carries the matching sub-execution link or ID — or go straight to the Executions page and cross-reference by time. If that leaves you uneasy, set an <a href="ch17_error_handling.html">Error workflow</a> to collect them in one place</td>
           </tr>
           <tr>
-            <td>Sub-workflow 有回傳但呼叫方看到 items 是空的</td>
-            <td>Sub-workflow 最後一個節點的分支沒有連接任何東西（例：IF 的其中一支懸空）</td>
-            <td>Sub-workflow 內確認所有分支都有實際的終點節點。想「什麼都不做但要回東西」的話接一個 Set 節點寫 <code>{ done: true }</code></td>
+            <td>The sub-workflow returns something but the caller sees empty items</td>
+            <td>A branch off the sub-workflow's last node has nothing connected to it (one leg of an IF left dangling, say)</td>
+            <td>Inside the sub-workflow, make sure every branch has a real end node. If you want it to do nothing but still return something, wire in a Set node with <code>{ done: true }</code></td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
 
       <details class="faq">
-        <summary>Sub-workflow 可以再呼叫另一個 sub-workflow 嗎？可以巢狀嗎？</summary>
-        <div class="body">可以。Sub-workflow 內完全可以再放 Execute Workflow 節點呼叫另一個 sub-workflow，形成 A → B → C 的呼叫鏈。<strong>但層數多會慢跟難 debug</strong>——每一層都是一筆 execution，Executions 頁面會出現三筆紀錄，出錯要跳三次才追到。實務上建議控制在 <strong>3-4 層以內</strong>，超過就重新設計，或把中間層合併。</div>
+        <summary>Can a sub-workflow call another sub-workflow? Can they nest?</summary>
+        <div class="body">Yes. A sub-workflow can perfectly well hold an Execute Workflow node that calls another sub-workflow, forming an A → B → C call chain. <strong>But many levels get slow and hard to debug</strong> — every level is its own execution, so the Executions page shows three records and tracing one failure takes three jumps. In practice, keep it <strong>within 3-4 levels</strong>; past that, redesign, or merge the middle levels.</div>
       </details>
 
       <details class="faq">
-        <summary>Sub-workflow 有版本管理嗎？改壞可以回滾嗎？</summary>
-        <div class="body">n8n Community（自架版）<strong>沒有 native 的版本管理</strong>，改了就是改了、沒有 undo 按鈕。實務上兩種做法：<strong>(1)</strong> 命名慣例——改前 <em>Duplicate workflow</em> 存成 <code>[Sub] Slack Alert - backup 20260816</code>；<strong>(2)</strong> 匯出 JSON 存 Git——workflow 右上角 <strong>⋯ → Download</strong> 拿到 JSON、丟到自家 Git repo，就有完整版本歷史。n8n Cloud 跟 Enterprise 有內建 workflow history／versioning 功能可以直接用。</div>
+        <summary>Do sub-workflows have version control? Can you roll back a bad change?</summary>
+        <div class="body">n8n Community (the self-hosted edition) has <strong>no native version control</strong> — once you have changed it, it is changed, and there is no undo button. Two things people do in practice: <strong>(1)</strong> the naming convention — <em>Duplicate workflow</em> before you edit and save the copy as <code>[Sub] Slack Alert - backup 20260816</code>; <strong>(2)</strong> export the JSON into Git — <strong>⋯ → Download</strong> at the workflow's top right gets you the JSON, drop it into your own Git repo and you have the full version history. n8n Cloud and Enterprise ship workflow history / versioning you can use directly.</div>
       </details>
 
       <details class="faq">
-        <summary>多人同時改同一個 sub-workflow 會怎樣？</summary>
-        <div class="body">n8n 沒有 merge、沒有 conflict detection——<strong>後 save 的人會覆蓋前 save 的人</strong>。這也是為什麼 sub-workflow 很值錢時，命名慣例＋Tags 分權責很重要。建議做法：<strong>(1)</strong> 團隊約好每個 sub-workflow 有一個「owner」，其他人動之前先 ping owner；<strong>(2)</strong> 大改動先在自己的 <code>[Dev]</code> 副本上做，測完再 copy 回 <code>[Prod]</code>；<strong>(3)</strong> Enterprise 版本有 role-based permission 可以真的把「唯讀」跟「可寫」分開。</div>
+        <summary>What happens when several people edit the same sub-workflow at once?</summary>
+        <div class="body">n8n has no merge and no conflict detection — <strong>whoever saves last overwrites whoever saved first</strong>. That is also why, once a sub-workflow is worth something, naming conventions plus tags to divide responsibility matter. What we suggest: <strong>(1)</strong> agree as a team that every sub-workflow has one owner, and ping that owner before touching it; <strong>(2)</strong> do big changes on your own <code>[Dev]</code> copy first and copy them back to <code>[Prod]</code> once tested; <strong>(3)</strong> the Enterprise edition has role-based permissions that genuinely separate read-only from writable.</div>
       </details>
 
       <details class="faq">
-        <summary>Sub-workflow 可以 disable 嗎？disable 後呼叫方會發生什麼？</summary>
-        <div class="body">Sub-workflow 沒有 Active toggle（它靠別人來呼叫，不會自己主動跑），所以「disable」的意思是——你可以把它整個刪掉、或改名、或把 Execute Workflow Trigger 節點停用。<strong>被呼叫時會失敗</strong>，呼叫方的 Execute Workflow 節點會報「找不到 sub-workflow」或執行錯誤。如果你設了 <a href="ch17_error_handling.html">Error workflow</a>，Error workflow 會收到這筆錯誤通知你。「臨時關掉某段邏輯」的做法：在 sub-workflow 開頭加一個 IF 節點檢查 flag、flag 是 false 就走空分支不做事，這樣呼叫方不會壞、但 sub-workflow 實質不動作。</div>
+        <summary>Can you disable a sub-workflow? What happens to the callers afterwards?</summary>
+        <div class="body">A sub-workflow has no Active toggle (it relies on being called and never runs by itself), so "disabling" it means deleting it outright, renaming it, or disabling the Execute Workflow Trigger node. <strong>Calls to it then fail</strong>: the caller's Execute Workflow node reports that the sub-workflow cannot be found, or errors out. If you set an <a href="ch17_error_handling.html">Error workflow</a>, it receives that failure and tells you. The way to switch a piece of logic off temporarily: put an IF node at the start of the sub-workflow that checks a flag, and when the flag is false send it down an empty branch that does nothing — the callers do not break, but the sub-workflow effectively does nothing.</div>
       </details>
 
       <details class="faq">
-        <summary>Sub-workflow 跟 Code node（JavaScript）比，什麼時候用哪個？</summary>
-        <div class="body"><a href="ch20_code_node.html">Code node</a>（下一章會講）是「單一節點裡寫幾行 JS 做資料處理」；Sub-workflow 是「一整段跨節點的邏輯可以在多處重用」。判斷方式：<strong>(1)</strong> 只是要對資料做轉換／過濾／計算 → Code node 快；<strong>(2)</strong> 邏輯本身包含多個節點呼叫（Slack + Sheets + 判斷）→ Sub-workflow；<strong>(3)</strong> 想給非技術同事讀懂邏輯 → Sub-workflow（視覺化）；<strong>(4)</strong> 邏輯要在多個 workflow 重用 → 都可以，但 sub-workflow 比較適合非開發者維護。</div>
+        <summary>Sub-workflow or Code node (JavaScript) — when do you use which?</summary>
+        <div class="body">The <a href="ch20_code_node.html">Code node</a> (the next chapter) is "a few lines of JS inside a single node to work on data"; a sub-workflow is "a whole stretch of logic across nodes that can be reused in several places". How to decide: <strong>(1)</strong> you only need to transform, filter or calculate data → the Code node is faster; <strong>(2)</strong> the logic itself involves several node calls (Slack + Sheets + a test) → sub-workflow; <strong>(3)</strong> you want non-technical colleagues to be able to read the logic → sub-workflow, because it is visual; <strong>(4)</strong> the logic has to be reused across several workflows → either works, but a sub-workflow suits maintenance by non-developers better.</div>
       </details>
 
       <details class="faq">
-        <summary>Sub-workflow 執行時會用哪個 credential？呼叫方的還是被呼叫方的？</summary>
-        <div class="body">用<strong>被呼叫方（sub-workflow）自己設定的 credential</strong>。也就是說，如果 <code>[Sub] Slack Alert</code> 裡的 Slack 節點綁的是「Slack 公司 workspace」，不管誰呼叫它、呼叫方綁什麼帳號都不影響——一律用公司 workspace 發訊息。這是好事，代表 sub-workflow 是自足的，呼叫方不用關心它的認證。也是為什麼企業 setup 常見「一組共用 sub-workflow 全部綁 service account」，人員離職不影響。</div>
+        <summary>Which credential does a sub-workflow run with — the caller's or the callee's?</summary>
+        <div class="body">The one <strong>the callee (the sub-workflow) has configured for itself</strong>. So if the Slack node inside <code>[Sub] Slack Alert</code> is bound to the company Slack workspace, it makes no difference who calls it or what account the caller is bound to — the message always goes out through the company workspace. That is a good thing: it means the sub-workflow is self-contained and the caller does not have to care about its authentication. It is also why enterprise setups often bind a shared set of sub-workflows entirely to a service account, so nothing breaks when someone leaves.</div>
       </details>
 
       <details class="faq">
-        <summary>Sub-workflow 有 timeout 嗎？無限跑會怎樣？</summary>
-        <div class="body">Sub-workflow 執行時間繼承自 n8n instance 的 <code>EXECUTIONS_TIMEOUT</code> 環境變數（Woow n8n 預設通常是 3600 秒 = 1 小時）。超過會被強制中止，呼叫方會看到 execution failed。如果 sub-workflow 本來就會跑很久（例：跑外部 API 抓資料），評估要不要拆成「呼叫方觸發 sub-workflow → 不 Wait → sub-workflow 跑完自己寫 log／通知」的非同步模式，比較不會卡住呼叫方。</div>
+        <summary>Do sub-workflows have a timeout? What happens if one runs forever?</summary>
+        <div class="body">A sub-workflow's run time is inherited from the n8n instance's <code>EXECUTIONS_TIMEOUT</code> environment variable (on Woow n8n the default is usually 3600 seconds = 1 hour). Past that it is forcibly stopped and the caller sees the execution fail. If the sub-workflow is long-running by nature (fetching data from an outside API, say), weigh up splitting it into an asynchronous pattern — the caller triggers the sub-workflow, does not Wait, and the sub-workflow logs or notifies on its own once it finishes — which keeps the caller from being stuck.</div>
       </details>
 
       <details class="faq">
-        <summary>可以把 sub-workflow 轉成公開 API 給其他系統打嗎？</summary>
-        <div class="body">Execute Workflow Trigger 本身<strong>只能被同 workspace 的其他 workflow 呼叫</strong>，外部系統打不到。要讓外部系統打進來要改用 <a href="ch22_webhook.html">Webhook 節點</a>當開頭。實務上常見「外殼」pattern：一個 <code>[Webhook] Slack Alert API</code> workflow 用 Webhook 當入口、接個 auth 檢查、然後 Execute Workflow 呼叫內部 <code>[Sub] Slack Alert</code>——這樣同一段邏輯內部靠 sub-workflow、外部靠 Webhook，共用同一個實作。</div>
+        <summary>Can you turn a sub-workflow into a public API for other systems to call?</summary>
+        <div class="body">The Execute Workflow Trigger itself <strong>can only be called by other workflows in the same workspace</strong>; an outside system cannot reach it. To let outside systems call in, start with a <a href="ch22_webhook.html">Webhook node</a> instead. The common "wrapper" pattern: a <code>[Webhook] Slack Alert API</code> workflow uses a Webhook as its entry point, runs an auth check, and then uses Execute Workflow to call the internal <code>[Sub] Slack Alert</code> — so the same logic is reached internally through the sub-workflow and externally through the Webhook, over one implementation.</div>
       </details>
     </section>
 

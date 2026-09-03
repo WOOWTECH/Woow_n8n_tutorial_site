@@ -70,18 +70,18 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要學 Webhook</a>
-      <a href="#concept">Webhook 是門鈴</a>
-      <a href="#test_vs_prod">Test 對 Production URL</a>
-      <a href="#steps">做第一個 Webhook</a>
-      <a href="#http_methods">HTTP 方法對照</a>
-      <a href="#response_modes">Response 三種模式</a>
-      <a href="#sources">常見打進來的來源</a>
-      <a href="#auth">加 auth 擋亂人</a>
-      <a href="#line_bot">實例 · Line Bot 接 AI</a>
-      <a href="#troubleshoot">常見卡關</a>
-      <a href="#closing">收尾</a>
-      <a href="#faq">常見問題</a>
+      <a href="#why">Why this matters</a>
+      <a href="#concept">The doorbell</a>
+      <a href="#test_vs_prod">Test vs Production</a>
+      <a href="#steps">First webhook</a>
+      <a href="#http_methods">HTTP methods</a>
+      <a href="#response_modes">Response modes</a>
+      <a href="#sources">Common callers</a>
+      <a href="#auth">Adding auth</a>
+      <a href="#line_bot">Example · LINE bot</a>
+      <a href="#troubleshoot">Common pitfalls</a>
+      <a href="#closing">Wrapping up</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -95,458 +95,458 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch22_webhook.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 22</div>
-      <h1>Webhook：讓外部系統打進 n8n</h1>
-      <p class="lead">前面 21 章教的都是「n8n 主動去做事」——按時間排程、去打別人 API、去讀 Gmail。這章反過來：<strong>讓別人打你</strong>。表單填完自動觸發、Line Bot 收到訊息、HA 感應器動了、GitHub 有人 push——全部走 Webhook 節點進 n8n。這也是整本書的最後一章，收尾看到最後。</p>
+      <h1>Webhook: let outside systems call into n8n</h1>
+      <p class="lead">The first 21 chapters were all about "n8n going out and doing things" — running on a schedule, calling someone else's API, reading Gmail. This chapter turns it around: <strong>you let other people call you</strong>. A form is submitted, a LINE bot receives a message, an HA sensor trips, someone pushes to GitHub — all of it reaches n8n through the Webhook node. This is also the last chapter in the book, so stay with it to the wrap-up.</p>
     </div>
 
-    <section id="why" data-nav="為什麼要學 Webhook">
-      <h2 data-icon="why">為什麼 Webhook 是最後一塊拼圖</h2>
-      <p>把前面幾章的觸發方式攤開，你會發現一件事：</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why Webhook is the last piece of the puzzle</h2>
+      <p>Lay out the trigger types from the last few chapters and one thing stands out:</p>
       <ul>
-        <li><strong>Manual Trigger</strong>（<a href="ch10_triggers.html">第 10 章</a>）——你按按鈕，workflow 才動。</li>
-        <li><strong>Schedule Trigger</strong>——時間到，workflow 自己動。</li>
-        <li><strong>Gmail / Slack / Sheets Trigger</strong>（<a href="ch11_saas_integrations.html">第 11 章</a>）——SaaS 那邊有新事件，n8n <em>定期去輪詢</em>拿回來。</li>
-        <li><strong>HTTP Request 節點</strong>（<a href="ch12_http_request.html">第 12 章</a>）——n8n 主動去打別人的 API。</li>
+        <li><strong>Manual Trigger</strong> (<a href="ch10_triggers.html">Chapter 10</a>) — the workflow only moves when you press the button.</li>
+        <li><strong>Schedule Trigger</strong> — the time comes and the workflow moves by itself.</li>
+        <li><strong>Gmail / Slack / Sheets Trigger</strong> (<a href="ch11_saas_integrations.html">Chapter 11</a>) — the SaaS side has a new event and n8n <em>polls for it on a timer</em> to bring it back.</li>
+        <li><strong>The HTTP Request node</strong> (<a href="ch12_http_request.html">Chapter 12</a>) — n8n goes out and calls someone else's API.</li>
       </ul>
-      <p>共通點：<strong>都是 n8n 自己出手</strong>。少了一種模式——「外部系統想主動叫醒你的 workflow」。這就是 Webhook 節點在做的事。</p>
-      <p>會用到 Webhook 的情境比你想的多很多：</p>
+      <p>What they share: <strong>n8n is always the one making the move</strong>. One mode is missing — "an outside system wants to wake your workflow up". That is exactly what the Webhook node does.</p>
+      <p>Webhook comes up in far more situations than you would think:</p>
       <ul>
-        <li><strong>公司網站的聯絡表單</strong>填完，資料自動進 Google Sheets、發 Slack 通知業務、寫進 CRM。</li>
-        <li><strong>Line 官方帳號</strong>收到客人訊息，走 AI Agent（<a href="ch21_ai_agent.html">第 21 章</a>）產生回覆，再回傳給 Line。</li>
-        <li><strong>Home Assistant</strong> 門磁感應到「有人回家」，觸發 n8n workflow 記日誌到 Notion、順便關公司 VPN。</li>
-        <li><strong>GitHub</strong> 有人開 PR，通知 QA、開 Jira ticket、跑一輪內部 lint。</li>
-        <li><strong>Stripe / 綠界</strong>金流有新訂單，寫進 ERP、寄發票、加會員紅利。</li>
+        <li>Someone fills in <strong>the contact form on your company website</strong>, and the data goes into Google Sheets, a Slack notification goes to sales, and a record goes into the CRM.</li>
+        <li>Your <strong>LINE Official Account</strong> receives a customer message, AI Agent (<a href="ch21_ai_agent.html">Chapter 21</a>) produces the reply, and it goes back to LINE.</li>
+        <li>A <strong>Home Assistant</strong> door sensor detects "someone came home" and triggers an n8n workflow that logs it to Notion and turns off the company VPN while it is at it.</li>
+        <li>Someone opens a PR on <strong>GitHub</strong>: notify QA, open a Jira ticket, run a round of internal lint.</li>
+        <li>A new order arrives through <strong>Stripe / ECPay</strong> payments: write it into the ERP, send the invoice, add loyalty points.</li>
       </ul>
-      <p>簡單講：<strong>只要對方系統有「webhook」或「回呼 URL」欄位可填，就能打進 n8n</strong>。這一章教你怎麼收、怎麼設定、怎麼回覆、怎麼避免亂人來打。</p>
-      <div class="callout"><strong>本章目標：</strong>會建 Webhook 節點、看懂 Test URL 跟 Production URL 的差別、會設定 auth 擋掉亂人、會用 Respond to Webhook 節點客製回應、跑一次真的能收到外部打進來的資料。</div>
+      <p>Put simply: <strong>if the other system has a "webhook" or "callback URL" field you can fill in, it can call into n8n</strong>. This chapter covers how to receive the call, how to configure it, how to reply, and how to keep strangers from hammering it.</p>
+      <div class="callout"><strong>Chapter goal:</strong> build a Webhook node, understand the difference between the Test URL and the Production URL, set up auth to keep strangers out, customize the response with the Respond to Webhook node, and run it once so data really does arrive from outside.</div>
     </section>
 
-    <section id="concept" data-nav="Webhook 是門鈴">
-      <h2 data-icon="concept">Webhook 是「你的 workflow 的門鈴」</h2>
-      <p>用最白話的比喻：</p>
+    <section id="concept" data-nav="The doorbell">
+      <h2 data-icon="concept">A webhook is your workflow's doorbell</h2>
+      <p>The plainest way to put it:</p>
       <ul>
-        <li>Schedule Trigger 是<strong>鬧鐘</strong>——時間到就響。</li>
-        <li>HTTP Request 節點是<strong>你打電話出去</strong>——主動要問人家事情。</li>
-        <li>Webhook 節點是<strong>門鈴</strong>——別人來了、按一下、你就會知道。</li>
+        <li>Schedule Trigger is an <strong>alarm clock</strong> — it goes off when the time comes.</li>
+        <li>The HTTP Request node is <strong>you making a phone call</strong> — you go out to ask someone something.</li>
+        <li>The Webhook node is a <strong>doorbell</strong> — someone arrives, presses it, and you know about it.</li>
       </ul>
-      <p>當你在 workflow 裡加一個 Webhook 節點，n8n 會給你一個 URL，長得像：</p>
+      <p>When you add a Webhook node to a workflow, n8n hands you a URL that looks like this:</p>
       <pre class="code-block"><code>https://n8n.woowtech.io/webhook/form-abc123</code></pre>
-      <p><strong>任何人</strong>（人、伺服器、Line、HA、curl 指令）打這個 URL，你的 workflow 就會被觸發。打進來的資料（body、query string、header）會全部變成 workflow 第一個 item 的 <code>$json</code>——你後面的節點就可以用 <a href="ch14_expressions.html">Expression</a>（<code>{{ $json.name }}</code> 等等）拿出來用。</p>
-      <p>換句話說，Webhook 節點把你的 workflow 變成一個<strong>簡易 HTTP API</strong>。任何知道 URL 的服務都能觸發它。這也是為什麼你在 Zapier / Make 也會看到「Webhooks」這種 trigger——是自動化平台之間彼此通用的橋樑。</p>
-      <div class="callout tip"><strong>提示：</strong>Webhook 節點跟 <a href="ch12_http_request.html">第 12 章的 HTTP Request 節點</a>是<strong>對稱的一對</strong>。HTTP Request 是「n8n 打出去」；Webhook 是「別人打進來」。方向相反，觀念一樣是 HTTP。</div>
+      <p><strong>Anyone</strong> (a person, a server, LINE, HA, a curl command) who calls that URL triggers your workflow. Everything that comes in (body, query string, headers) becomes the <code>$json</code> of the workflow's first item — so the nodes after it can pull the values out with an <a href="ch14_expressions.html">expression</a> (<code>{{ $json.name }}</code> and so on).</p>
+      <p>In other words, the Webhook node turns your workflow into a <strong>simple HTTP API</strong>. Any service that knows the URL can trigger it. That is also why Zapier / Make have a "Webhooks" trigger of their own — it is the bridge every automation platform shares.</p>
+      <div class="callout tip"><strong>Tip:</strong> The Webhook node and <a href="ch12_http_request.html">the HTTP Request node in Chapter 12</a> are <strong>a symmetric pair</strong>. HTTP Request is "n8n calling out"; Webhook is "someone calling in". Opposite directions, the same HTTP idea underneath.</div>
     </section>
 
-    <section id="test_vs_prod" data-nav="Test 對 Production URL">
-      <h2 data-icon="compare">兩種 URL：Test 跟 Production 差在哪</h2>
-      <p>打開 Webhook 節點的設定面板，你會看到<strong>兩個 URL</strong>——這是新手第一個大坑。</p>
+    <section id="test_vs_prod" data-nav="Test vs Production">
+      <h2 data-icon="compare">Two URLs: how Test and Production differ</h2>
+      <p>Open the Webhook node's settings panel and you see <strong>two URLs</strong> — the first big trap for beginners.</p>
       <table class="data-table">
         <thead>
-          <tr><th>類型</th><th>什麼時候活著</th><th>用途</th><th>存活時間</th></tr>
+          <tr><th>Type</th><th>When it is live</th><th>What it is for</th><th>How long it stays live</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Test URL</strong></td>
-            <td>你按下節點裡的 <em>Listen for test event</em> 按鈕之後才活。</td>
-            <td>開發時測試——按下按鈕、去打一次、看資料進來的樣子。</td>
-            <td>按下按鈕後開始 listen，收到一次事件就自動關掉；沒事件時官方沒明講超時，實務上約兩分鐘會停，重按可再開一次。</td>
+            <td>Only after you press the <em>Listen for test event</em> button inside the node.</td>
+            <td>Testing while you build — press the button, call it once, see what the incoming data looks like.</td>
+            <td>It starts listening when you press the button and closes itself after one event; with no event the docs state no timeout, but in practice it stops after about two minutes, and pressing again reopens it.</td>
           </tr>
           <tr>
             <td><strong>Production URL</strong></td>
-            <td>workflow 被 <strong>Active</strong>（右上角開關打開）之後永久活。</td>
-            <td>正式上線——交給外部服務長期使用。</td>
-            <td>只要 workflow 保持 Active 就一直活；關 Active 就 404。</td>
+            <td>Live permanently once the workflow is <strong>Active</strong> (the toggle at the top right is on).</td>
+            <td>Going live — the URL you hand to an outside service for the long term.</td>
+            <td>Live for as long as the workflow stays Active; turn Active off and it is a 404.</td>
           </tr>
         </tbody>
       </table>
-      <p>這兩個 URL 差別很細節但很重要：</p>
+      <p>The differences between the two URLs are small but they matter:</p>
       <ul>
-        <li>兩者的 URL <strong>path 不一樣</strong>——Test URL 通常是 <code>/webhook-test/xxx</code>，Production 是 <code>/webhook/xxx</code>。你在節點面板複製時務必看清楚選對。</li>
-        <li>Test URL 每次觸發只吃一次事件就自己關掉，適合對著調欄位、看 Schema。</li>
-        <li>Production URL 是<strong>不會出現在 Executions 的即時預覽</strong>——你要看實際跑起來的紀錄要去 <em>Executions</em> 分頁看。</li>
+        <li>The two URLs have <strong>different paths</strong> — the Test URL is usually <code>/webhook-test/xxx</code> and Production is <code>/webhook/xxx</code>. Look carefully and pick the right one when you copy from the node panel.</li>
+        <li>The Test URL takes one event per trigger and then closes itself, which suits tweaking fields and reading the schema.</li>
+        <li>The Production URL <strong>does not show up as the live preview in Executions</strong> — to see the records of runs that really happened, open the <em>Executions</em> tab.</li>
       </ul>
-      <div class="callout warn"><strong>注意：</strong><strong>最常見的錯</strong>——把 Test URL 交給外部服務或客戶。他們設定完某天要用時，你早就關掉 Listen mode 了，所以永遠打不進來。<strong>正式上線的原則：workflow 必須 Active、給的 URL 必須是 Production URL（<code>/webhook/</code> 不是 <code>/webhook-test/</code>）</strong>。</div>
+      <div class="callout warn"><strong>Warning:</strong> <strong>The most common mistake</strong> — handing the Test URL to an outside service or a customer. By the time they have it set up and want to use it, you closed listen mode long ago, so nothing ever gets through. <strong>The rule for going live: the workflow must be Active, and the URL you hand over must be the Production URL (<code>/webhook/</code>, not <code>/webhook-test/</code>)</strong>.</div>
     </section>
 
-    <section id="steps" data-nav="做第一個 Webhook">
-      <h2 data-icon="steps">動手做：收表單資料存進 Google Sheets</h2>
-      <p>最經典也最實用的入門範例：對外露一個 URL，讓網頁表單把使用者填的資料 POST 進來，n8n 自動寫進 Google Sheets。做完你就能拿去接自家官網或 landing page 的聯絡表單。</p>
+    <section id="steps" data-nav="First webhook">
+      <h2 data-icon="steps">Hands-on: catch form data and write it to Google Sheets</h2>
+      <p>The most classic and most useful starter example: expose one URL, let a web form POST what the user typed, and have n8n write it into Google Sheets automatically. Once it works you can wire it straight to the contact form on your own site or landing page.</p>
       <ol class="steps">
         <li>
-          <h3>開新 workflow，第一個節點選 Webhook</h3>
-          <p>右上 <strong>+ Add workflow</strong> → 進入空 canvas → 點中間 <strong>+</strong> → 在節點抽屜搜 <em>Webhook</em>（在 Triggers 分類底下）。加進來。</p>
+          <h3>Create a new workflow and pick Webhook as the first node</h3>
+          <p>Top right <strong>+ Add workflow</strong> → you land on an empty canvas → click the <strong>+</strong> in the middle → search the nodes panel for <em>Webhook</em> (under the Triggers category). Add it.</p>
         </li>
         <li>
-          <h3>設定 HTTP Method 跟 Path</h3>
-          <p>Webhook 節點打開後：</p>
+          <h3>Set the HTTP Method and the Path</h3>
+          <p>Once the Webhook node is open:</p>
           <ul>
-            <li><strong>HTTP Method</strong> 選 <code>POST</code>——表單送資料進來預設用 POST。</li>
-            <li><strong>Path</strong> 隨便取一個好記的英文名字，例：<code>form-contact</code>。這段會加到 URL 末端。</li>
+            <li>Set <strong>HTTP Method</strong> to <code>POST</code> — a form sending data in uses POST by default.</li>
+            <li>Give <strong>Path</strong> any memorable English name, for example <code>form-contact</code>. It is appended to the end of the URL.</li>
           </ul>
-          <p>設完，節點面板下方會顯示兩個 URL：</p>
+          <p>Once that is set, the bottom of the node panel shows both URLs:</p>
           <pre class="code-block"><code>Test URL:       https://n8n.woowtech.io/webhook-test/form-contact
 Production URL: https://n8n.woowtech.io/webhook/form-contact</code></pre>
         </li>
         <li>
-          <h3>按 Listen for test event，跟 curl 打一次</h3>
-          <p>Webhook 節點右上角按 <strong>Listen for test event</strong>——節點會進入等待狀態（收到第一次事件就自動結束，若一直沒事件實務上約兩分鐘停）。開一個 terminal，用 <code>curl</code> 打 Test URL 送假資料：</p>
+          <h3>Press Listen for test event and call it once with curl</h3>
+          <p>Press <strong>Listen for test event</strong> at the top right of the Webhook node — the node goes into waiting mode (it ends by itself after the first event, and in practice it stops after about two minutes if no event arrives). Open a terminal and use <code>curl</code> to send fake data to the Test URL:</p>
           <pre class="code-block"><code>curl -X POST https://n8n.woowtech.io/webhook-test/form-contact \
   -H "Content-Type: application/json" \
   -d '{"name":"王小明","email":"ming@example.com","message":"想詢問報價"}'</code></pre>
-          <p>回到 n8n canvas，Webhook 節點會亮綠、右邊 output 面板出現剛剛的 JSON。<strong>看到資料進來，這一步就成功了</strong>。</p>
+          <p>Back on the n8n canvas, the Webhook node turns green and the output panel on the right shows the JSON you just sent. <strong>Once you see the data arrive, this step is done</strong>.</p>
         </li>
         <li>
-          <h3>接 Google Sheets 節點：Append Row</h3>
-          <p>Webhook 節點後面接 <strong>Google Sheets</strong> 節點。Operation 選 <em>Append Row in Sheet</em>。Credentials 選好（第一次用要新增，見 <a href="ch13_credentials.html">第 13 章</a>）。挑一個試算表跟工作表（欄位建好 <code>name</code>、<code>email</code>、<code>message</code>、<code>received_at</code>）。</p>
-          <p>Columns 區塊每個欄位切 Expression 模式，對應到：</p>
+          <h3>Wire up a Google Sheets node: Append Row</h3>
+          <p>Add a <strong>Google Sheets</strong> node after the Webhook node. Set Operation to <em>Append Row in Sheet</em>. Pick your credential (create one the first time; see <a href="ch13_credentials.html">Chapter 13</a>). Choose a spreadsheet and a sheet (with the columns <code>name</code>, <code>email</code>, <code>message</code>, <code>received_at</code> already created).</p>
+          <p>Switch every field in the Columns block to Expression mode and map them like this:</p>
           <pre class="code-block"><code>name          →  {{ $json.body.name }}
 email         →  {{ $json.body.email }}
 message       →  {{ $json.body.message }}
 received_at   →  {{ $now.toISO() }}</code></pre>
-          <p>注意 Webhook 節點的 body 內容包在 <code>$json.body</code> 底下，query string 在 <code>$json.query</code>，header 在 <code>$json.headers</code>。</p>
+          <p>Note that the Webhook node keeps the body under <code>$json.body</code>, the query string under <code>$json.query</code>, and the headers under <code>$json.headers</code>.</p>
         </li>
         <li>
-          <h3>Execute step 確認 Sheet 真的多了一列</h3>
-          <p>對 Google Sheets 節點按 <strong>Execute step</strong>——會拿剛剛 Webhook 收到的 item 送一次。開 Google Sheets 檢查有沒有多一列剛剛的資料。有的話代表整條鏈接通。</p>
+          <h3>Execute step and confirm the Sheet really has a new row</h3>
+          <p>Press <strong>Execute step</strong> on the Google Sheets node — it sends the item the Webhook just received. Open Google Sheets and check whether a row with that data appeared. If it did, the whole chain is connected.</p>
           <figure class="shot">
-            <img src="../assets/screenshots/ch22/01_webhook_workflow.png" alt="Webhook → Send Email 三節點 workflow canvas" />
-            <figcaption><strong>圖 22-1</strong>Webhook 觸發後串接下游節點的典型三節點結構：外部 POST 打進 Webhook 節點，資料流到下一個節點做事。</figcaption>
+            <img src="../assets/screenshots/ch22/01_webhook_workflow.png" alt="Webhook → Send Email three-node workflow canvas" />
+            <figcaption><strong>Figure 22-1</strong>The typical three-node shape after a Webhook trigger: an outside POST hits the Webhook node, and the data flows on to the next node to do the work.</figcaption>
           </figure>
         </li>
         <li>
-          <h3>Save，然後右上把 Active 打開</h3>
-          <p>右上 <strong>Save</strong> 存檔。存完後把右上的 <strong>Active</strong> 開關撥到開啟——這一步很重要，不開 Production URL 是 404。</p>
+          <h3>Save, then switch Active on at the top right</h3>
+          <p>Press <strong>Save</strong> at the top right. Then flip the <strong>Active</strong> toggle at the top right to on — this step matters, because without it the Production URL is a 404.</p>
         </li>
         <li>
-          <h3>用 Production URL 打一次驗證</h3>
-          <p>回 terminal 改打 Production URL（把 <code>/webhook-test/</code> 換成 <code>/webhook/</code>）：</p>
+          <h3>Verify by calling the Production URL once</h3>
+          <p>Back in the terminal, call the Production URL instead (replace <code>/webhook-test/</code> with <code>/webhook/</code>):</p>
           <pre class="code-block"><code>curl -X POST https://n8n.woowtech.io/webhook/form-contact \
   -H "Content-Type: application/json" \
   -d '{"name":"李小華","email":"hua@example.com","message":"正式送出"}'</code></pre>
-          <p>Sheet 又多一列——這條 URL 就可以直接交給外部前端工程師或客戶用了。要看歷史紀錄去左側 <em>Executions</em> 分頁。</p>
+          <p>Another row appears in the Sheet — this URL is now ready to hand to an outside frontend engineer or a customer. For the history, go to the <em>Executions</em> tab in the sidebar.</p>
         </li>
       </ol>
-      <div class="callout tip"><strong>提示：</strong>Test URL 適合「開發階段一次一次調」，Production URL 適合「上線後長期收」。<strong>兩者是共存的</strong>——workflow 上線之後，你要改欄位測試，還是可以按 Listen for test event 用 Test URL 邊調邊看。改完 Save 就自動同步到 Production。</div>
+      <div class="callout tip"><strong>Tip:</strong> The Test URL suits "tuning one call at a time while you build", the Production URL suits "receiving for the long haul once you are live". <strong>The two coexist</strong> — after the workflow is live you can still press Listen for test event and use the Test URL to tweak fields and watch the result. Save when you are done and it syncs to Production automatically.</div>
     </section>
 
-    <section id="http_methods" data-nav="HTTP 方法對照">
-      <h2 data-icon="modes">HTTP 方法：什麼時候用哪個</h2>
-      <p>Webhook 節點的 HTTP Method 下拉可以選 GET / POST / PUT / PATCH / DELETE / HEAD。實務上你只會常用前兩種，其他是做 REST 風格 API 才用得到。</p>
+    <section id="http_methods" data-nav="HTTP methods">
+      <h2 data-icon="modes">HTTP methods: which one to use when</h2>
+      <p>The Webhook node's HTTP Method dropdown offers GET / POST / PUT / PATCH / DELETE / HEAD. In practice you only use the first two often; the rest come up when you are building a REST-style API.</p>
       <table class="data-table">
         <thead>
-          <tr><th>Method</th><th>對方拿它做什麼</th><th>資料在哪裡</th><th>經典場景</th></tr>
+          <tr><th>Method</th><th>What the caller does with it</th><th>Where the data is</th><th>Classic use</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><code>GET</code></td>
-            <td>外部想「查詢」或「觸發但不帶太多資料」。</td>
-            <td>Query string（URL 後面的 <code>?key=value</code>），n8n 收在 <code>$json.query</code>。</td>
-            <td>簡單 ping、健康檢查、瀏覽器貼網址測試。</td>
+            <td>The outside system wants to "look something up" or "trigger without carrying much data".</td>
+            <td>The query string (the <code>?key=value</code> after the URL); n8n keeps it in <code>$json.query</code>.</td>
+            <td>A simple ping, a health check, testing by pasting the URL into a browser.</td>
           </tr>
           <tr>
             <td><code>POST</code></td>
-            <td>外部「送新資料」進來。</td>
-            <td>Body（JSON 或表單），n8n 收在 <code>$json.body</code>。</td>
-            <td>表單提交、Line webhook、GitHub webhook、金流回調——<strong>最常用</strong>。</td>
+            <td>The outside system "sends new data" in.</td>
+            <td>The body (JSON or a form); n8n keeps it in <code>$json.body</code>.</td>
+            <td>Form submissions, LINE webhooks, GitHub webhooks, payment callbacks — <strong>the one you use most</strong>.</td>
           </tr>
           <tr>
             <td><code>PUT</code></td>
-            <td>外部「整筆更新」某個資源。</td>
-            <td>Body。</td>
-            <td>把 n8n 當 REST API 給別人用時才用得到。</td>
+            <td>The outside system "replaces a whole record" of some resource.</td>
+            <td>The body.</td>
+            <td>Only when you hand n8n to someone else as a REST API.</td>
           </tr>
           <tr>
             <td><code>PATCH</code></td>
-            <td>外部「部分更新」某個資源。</td>
-            <td>Body。</td>
-            <td>同上，只更新幾個欄位的情境。</td>
+            <td>The outside system "partially updates" some resource.</td>
+            <td>The body.</td>
+            <td>Same as above, for the case where only a few fields change.</td>
           </tr>
           <tr>
             <td><code>DELETE</code></td>
-            <td>外部「刪除」某個資源。</td>
-            <td>URL path 或 query。</td>
-            <td>同上，REST 風格 API 才需要。</td>
+            <td>The outside system "deletes" some resource.</td>
+            <td>The URL path or the query.</td>
+            <td>Same as above; only a REST-style API needs it.</td>
           </tr>
         </tbody>
       </table>
-      <p><strong>選錯 Method 會 404</strong>——外部用 POST 打，你 Webhook 節點設 GET，n8n 會直接回 404（因為它認為「這個 path 沒有 POST 路由」）。查資料進來卡住時，第一件事就是確認雙方 Method 對齊。</p>
-      <div class="callout"><strong>觀念：</strong>絕大部分情境選 <strong>POST</strong>。除非你只是要做「瀏覽器貼網址就觸發」的簡易 trigger，那用 GET；或者對方系統的文件明確講「我們用 GET/PUT/DELETE」，才照對方要求選。</div>
+      <p><strong>The wrong Method gives you a 404</strong> — the outside system calls with POST while your Webhook node is set to GET, and n8n answers 404 outright (because as far as it is concerned, "this path has no POST route"). When incoming data is stuck, the first thing to do is confirm that both sides use the same Method.</p>
+      <div class="callout"><strong>Concept:</strong> Pick <strong>POST</strong> in almost every situation. Use GET only when all you want is a simple "paste the URL in a browser and it fires" trigger; or when the other system's docs say plainly "we use GET/PUT/DELETE", in which case follow what they ask for.</div>
     </section>
 
-    <section id="response_modes" data-nav="Response 三種模式">
-      <h2 data-icon="modes">Response 模式：n8n 要回什麼給外部</h2>
-      <p>Webhook 節點的 <em>Respond</em> 選項決定「外部打進來後，n8n 要回什麼 HTTP response」。這件事很重要——Line、Slack、Stripe 這種服務都會<strong>看你回什麼</strong>來判斷 webhook 有沒有成功。回不對的話它們可能會重試（造成重複執行）或直接停用你的 webhook。</p>
+    <section id="response_modes" data-nav="Response modes">
+      <h2 data-icon="modes">Response modes: what n8n sends back to the caller</h2>
+      <p>The Webhook node's <em>Respond</em> option decides "what HTTP response n8n returns once an outside call comes in". This matters — services like LINE, Slack and Stripe all <strong>read what you return</strong> to judge whether the webhook succeeded. Answer wrong and they may retry (which gives you duplicate runs) or disable your webhook outright.</p>
       <table class="data-table">
         <thead>
-          <tr><th>Response 模式</th><th>行為</th><th>什麼時候用</th></tr>
+          <tr><th>Response mode</th><th>Behavior</th><th>When to use it</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Immediately</strong></td>
-            <td>n8n 收到 request 立刻回 <code>200 OK</code> 空 body，workflow 在背景繼續跑。</td>
-            <td>對方只在乎「收到沒」不看內容；workflow 跑很久（如 AI Agent 生成 30 秒）不想讓對方等；Stripe / GitHub 這種要「3 秒內回」的 webhook。</td>
+            <td>n8n answers <code>200 OK</code> with an empty body the moment the request arrives, and the workflow keeps running in the background.</td>
+            <td>The caller only cares "did it arrive" and does not read the content; the workflow takes a long time (an AI Agent generating for 30 seconds) and you do not want to keep the caller waiting; webhooks like Stripe / GitHub that want "an answer within 3 seconds".</td>
           </tr>
           <tr>
             <td><strong>When Last Node Finishes</strong></td>
-            <td>整個 workflow 跑完，把<strong>最後一個節點的 output</strong>當作 response 回傳。</td>
-            <td>對方想要拿到 workflow 處理後的結果（例：Line Bot 收訊息、n8n 處理完直接把回覆傳回 Line）。workflow 要在幾秒內跑完。</td>
+            <td>The whole workflow runs to the end, and <strong>the last node's output</strong> goes back as the response.</td>
+            <td>The caller wants the result the workflow produced (for example a LINE bot receives a message and n8n sends the finished reply straight back to LINE). The workflow has to finish within a few seconds.</td>
           </tr>
           <tr>
             <td><strong>Using 'Respond to Webhook' Node</strong></td>
-            <td>由你在 workflow 中間某個節點指定「這裡回覆」——把 <em>Respond to Webhook</em> 節點插在你想回應的位置。</td>
-            <td>要客製回應——回什麼 status code、什麼 header、什麼 body、什麼 content type，都自己決定。做 API 給別人用時的正確選擇。</td>
+            <td>You name the node in the middle of the workflow that does the answering — drop a <em>Respond to Webhook</em> node at the point you want to reply from.</td>
+            <td>When you need a custom response — the status code, the headers, the body and the content type are all yours to decide. The right choice when you are building an API for someone else.</td>
           </tr>
           <tr>
             <td><strong>Streaming Response</strong></td>
-            <td>以串流方式一段一段回，多半配合 AI Agent 這種會產生 chunked 內容的節點。</td>
-            <td>要做 ChatGPT 風格的即時逐字輸出前端，或串接支援 SSE / streaming 的下游。</td>
+            <td>It streams the answer back piece by piece, usually paired with a node like AI Agent that produces chunked content.</td>
+            <td>When you want a ChatGPT-style frontend that types out live, or a downstream that supports SSE / streaming.</td>
           </tr>
         </tbody>
       </table>
-      <p><strong>Respond to Webhook 節點</strong>是搭配第三種模式的關鍵——把它插在 workflow 你想回應的節點後面（不一定要在最後），可以指定：</p>
+      <p><strong>The Respond to Webhook node</strong> is the key to that third mode — put it after whichever node you want to answer from (it does not have to be the last one) and you can set:</p>
       <ul>
-        <li><strong>Respond With</strong>——選回什麼形態：<em>JSON</em>、<em>Text</em>、<em>Binary File</em>、<em>Redirect</em>、<em>JWT Token</em>、<em>No Data</em>、<em>All Incoming Items</em>、<em>First Incoming Item</em>。</li>
-        <li><strong>Response Code</strong>——自己填數字。常見：<code>200</code>（成功）、<code>201</code>（Created）、<code>400</code>（客戶端錯）、<code>500</code>（伺服器錯）。</li>
-        <li><strong>Response Headers</strong>——例：<code>Content-Type: application/json</code>、CORS 相關 header。</li>
+        <li><strong>Respond With</strong> — the shape of the answer: <em>JSON</em>, <em>Text</em>, <em>Binary File</em>, <em>Redirect</em>, <em>JWT Token</em>, <em>No Data</em>, <em>All Incoming Items</em>, <em>First Incoming Item</em>.</li>
+        <li><strong>Response Code</strong> — type the number yourself. Common ones: <code>200</code> (success), <code>201</code> (Created), <code>400</code> (client error), <code>500</code> (server error).</li>
+        <li><strong>Response Headers</strong> — for example <code>Content-Type: application/json</code>, or CORS-related headers.</li>
       </ul>
-      <p><strong>要注意</strong>：Respond to Webhook 節點只處理<strong>第一筆 incoming item</strong>；就算前面節點吐出很多筆，也只有第一筆會被拿來回覆。同一個 workflow 若跑到第二個 Respond to Webhook 節點會被忽略；若整個 workflow 跑完都沒經過任何 Respond to Webhook 節點，n8n 會自動回一個標準的 200；若中途錯誤未經該節點，會回 500。</p>
-      <div class="callout tip"><strong>提示：</strong>不確定選哪個？—— <strong>對方是 SaaS webhook（Stripe / GitHub / Slack event）選 Immediately</strong>；<strong>對方是 Line / 表單想要看回覆選 When last node finishes</strong>；<strong>要蓋自己的 REST API 選 Using Respond to Webhook Node</strong>。</div>
+      <p><strong>Watch out</strong>: the Respond to Webhook node only handles <strong>the first incoming item</strong>; even if the node before it emits many, only the first one is used for the reply. A second Respond to Webhook node in the same workflow is ignored. If the workflow runs to the end without passing through any Respond to Webhook node, n8n answers a standard 200 by itself; if it errors on the way and never reaches the node, it answers 500.</p>
+      <div class="callout tip"><strong>Tip:</strong> Not sure which one to pick? — <strong>a SaaS webhook on the other end (Stripe / GitHub / a Slack event) means Immediately</strong>; <strong>a LINE bot or a form that wants to see the reply means When last node finishes</strong>; <strong>building your own REST API means Using Respond to Webhook Node</strong>.</div>
     </section>
 
-    <section id="sources" data-nav="常見打進來的來源">
-      <h2 data-icon="integration">常見會打 Webhook 進來的服務</h2>
-      <p>幾乎所有現代 SaaS 都有 webhook 功能——他們有事件想通知你時，會 POST 到你指定的 URL。把 URL 填成 n8n Webhook 節點的 Production URL 就串起來了。以下是最常見的幾家：</p>
+    <section id="sources" data-nav="Common callers">
+      <h2 data-icon="integration">Services that commonly call your webhook</h2>
+      <p>Almost every modern SaaS has a webhook feature — when they have an event to tell you about, they POST to a URL you name. Put your n8n Webhook node's Production URL in that field and the two are wired together. Here are the ones you meet most often:</p>
       <table class="data-table">
         <thead>
-          <tr><th>來源</th><th>怎麼設定</th><th>要注意</th></tr>
+          <tr><th>Source</th><th>How to set it up</th><th>Watch out for</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Google Forms</strong></td>
-            <td>Google Forms 沒有原生 webhook——需要 Apps Script 或 Zapier / Make 當橋樑。或改用 <em>Tally</em>、<em>Typeform</em> 這種有原生 webhook 的表單服務。</td>
-            <td>如果一定要用 Google Forms，也可以走 <a href="ch11_saas_integrations.html">Google Sheets Trigger</a>（表單答案會寫進 Sheet）。</td>
+            <td>Google Forms has no native webhook — you need Apps Script, or Zapier / Make as a bridge. Or switch to a form service with a native webhook such as <em>Tally</em> or <em>Typeform</em>.</td>
+            <td>If Google Forms is a must, you can also go through the <a href="ch11_saas_integrations.html">Google Sheets Trigger</a> (form answers get written into a Sheet).</td>
           </tr>
           <tr>
-            <td><strong>Line 官方帳號</strong></td>
-            <td>Line Developers Console → Messaging API channel → <em>Webhook URL</em> 貼 n8n Production URL。開啟 <em>Use webhook</em>。</td>
-            <td>Line 要求 3 秒內回 200，選 Response = Immediately；驗簽章要用 Header <code>X-Line-Signature</code>。</td>
+            <td><strong>LINE Official Account</strong></td>
+            <td>LINE Developers Console → Messaging API channel → paste the n8n Production URL into <em>Webhook URL</em>. Turn on <em>Use webhook</em>.</td>
+            <td>LINE wants a 200 within 3 seconds, so set Response = Immediately; signature verification uses the <code>X-Line-Signature</code> header.</td>
           </tr>
           <tr>
             <td><strong>Home Assistant</strong></td>
-            <td>HA Automation → Trigger 選 <em>Webhook</em>，指定一個 webhook_id → 在 HA 觸發（例：門磁感應）時它會打你指定的 URL。或反過來，HA 收 webhook：把 URL 設在 <em>webhook trigger</em>。</td>
-            <td>HA 打出去時可以自己選 Method 跟 body，跟 n8n Webhook 節點設定要對齊。</td>
+            <td>HA Automation → set Trigger to <em>Webhook</em> and give it a webhook_id → when HA fires (a door sensor, say) it calls the URL you named. Or the other way around, HA receiving a webhook: set the URL on the <em>webhook trigger</em>.</td>
+            <td>When HA calls out you pick the Method and the body yourself, and they have to line up with the Webhook node's settings.</td>
           </tr>
           <tr>
             <td><strong>Typeform / Tally</strong></td>
-            <td>Form 設定裡的 <em>Integrations</em> 或 <em>Webhooks</em> 分頁貼 URL。填答有人送出就打你 n8n。</td>
-            <td>對方 body 是他們自己的 schema，先用 Test URL 看清楚欄位路徑再對映。</td>
+            <td>Paste the URL on the <em>Integrations</em> or <em>Webhooks</em> tab in the form settings. Every submission then calls your n8n.</td>
+            <td>Their body follows their own schema, so use the Test URL to read the field paths clearly before you map them.</td>
           </tr>
           <tr>
             <td><strong>GitHub / GitLab</strong></td>
-            <td>Repo Settings → Webhooks → Add webhook → Payload URL 貼 n8n URL。選 events（push / PR / issue）。</td>
-            <td>GitHub 會發<strong>非常多</strong>種 event，用 IF 節點（<a href="ch15_if_switch.html">第 15 章</a>）過濾只處理你關心的。</td>
+            <td>Repo Settings → Webhooks → Add webhook → paste the n8n URL into Payload URL. Pick the events (push / PR / issue).</td>
+            <td>GitHub sends <strong>a great many</strong> kinds of event, so use an IF node (<a href="ch15_if_switch.html">Chapter 15</a>) to filter down to the ones you care about.</td>
           </tr>
           <tr>
             <td><strong>Slack slash command / event</strong></td>
-            <td>Slack App 設定 → <em>Slash Commands</em> 或 <em>Event Subscriptions</em> → Request URL 貼 n8n URL。</td>
-            <td>Slack 也要 3 秒內回 200；Event Subscriptions 第一次會發驗證 challenge，要回 <code>challenge</code> 欄位。</td>
+            <td>Slack App settings → <em>Slash Commands</em> or <em>Event Subscriptions</em> → paste the n8n URL into Request URL.</td>
+            <td>Slack also wants a 200 within 3 seconds; Event Subscriptions sends a verification challenge the first time, and you have to return the <code>challenge</code> field.</td>
           </tr>
           <tr>
-            <td><strong>Stripe / 綠界 / TapPay</strong></td>
-            <td>金流後台的 webhook / 通知網址設定。</td>
-            <td>驗簽章、Idempotency、失敗會重試——一定要選 Immediately 快速回 200，實際處理丟給後面節點慢慢跑。</td>
+            <td><strong>Stripe / ECPay / TapPay</strong></td>
+            <td>The webhook / notification URL setting in the payment provider's dashboard.</td>
+            <td>Signature verification, idempotency, retries on failure — always pick Immediately so a 200 goes back fast, and leave the real processing to the nodes behind it.</td>
           </tr>
         </tbody>
       </table>
-      <p><strong>共通規則</strong>：任何服務在 webhook 送出時，都會用它自己的 JSON schema——先用 Test URL 手動觸發一次、把 body 拉出來看清楚欄位路徑，再往下寫節點。閉眼寫 <code>$json.body.foo</code> 常常會 undefined。</p>
+      <p><strong>The rule that holds everywhere</strong>: every service sends its webhook in its own JSON schema — trigger it once by hand with the Test URL, pull the body up and read the field paths, and only then write the nodes downstream. Writing <code>$json.body.foo</code> blind usually gives you undefined.</p>
     </section>
 
-    <section id="auth" data-nav="加 auth 擋亂人">
-      <h2 data-icon="security">加 auth：避免亂人猜到 URL 亂打</h2>
-      <p>Webhook URL 一但曝光就<strong>誰都能打</strong>。惡意的話可以塞垃圾資料到你 Sheet、觸發成本很高的 AI Agent、發垃圾 Line 訊息。有幾種保護做法，從最簡到最進階：</p>
+    <section id="auth" data-nav="Adding auth">
+      <h2 data-icon="security">Add auth so nobody can guess the URL and hammer it</h2>
+      <p>Once a Webhook URL is out there, <strong>anyone can call it</strong>. Someone malicious can stuff junk into your Sheet, fire an expensive AI Agent, or send spam LINE messages. There are several ways to protect it, from the simplest to the most advanced:</p>
       <table class="data-table">
         <thead>
-          <tr><th>方式</th><th>設定位置</th><th>安全性</th><th>什麼時候用</th></tr>
+          <tr><th>Method</th><th>Where to set it</th><th>Security</th><th>When to use it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>不設 auth，只靠 URL 難猜</strong></td>
-            <td>Webhook 節點 Authentication = <em>None</em>。Path 用 UUID 或長亂數。</td>
-            <td>低——URL 就是密碼。</td>
-            <td>只給信賴的內部服務用（HA、內部工具）。<strong>絕對不要放 client side JavaScript 或公開文件</strong>。</td>
+            <td><strong>No auth, relying on a URL that is hard to guess</strong></td>
+            <td>Webhook node Authentication = <em>None</em>. Use a UUID or a long random string as the Path.</td>
+            <td>Low — the URL is the password.</td>
+            <td>Only for internal services you trust (HA, internal tools). <strong>Never put it in client side JavaScript or in public documentation</strong>.</td>
           </tr>
           <tr>
             <td><strong>Basic Auth</strong></td>
-            <td>Authentication 選 <em>Basic Auth</em>，設 username / password。</td>
-            <td>中——打的人要在 header 帶 <code>Authorization: Basic base64(user:pass)</code>。</td>
-            <td>簡單伺服器對伺服器場景，對方支援 Basic Auth 時。</td>
+            <td>Set Authentication to <em>Basic Auth</em> and set a username / password.</td>
+            <td>Medium — the caller has to carry <code>Authorization: Basic base64(user:pass)</code> in the header.</td>
+            <td>Simple server-to-server cases, when the other side supports Basic Auth.</td>
           </tr>
           <tr>
             <td><strong>Header Auth</strong></td>
-            <td>Authentication 選 <em>Header Auth</em>，指定 header 名字與值（例：<code>X-Api-Key: your-secret-value</code>）。</td>
-            <td>中——沒帶 header 或值不對 n8n 直接回 401。</td>
-            <td>大部分現代 API 慣例，最推薦的「一般用」選項。</td>
+            <td>Set Authentication to <em>Header Auth</em> and name the header and its value (for example <code>X-Api-Key: your-secret-value</code>).</td>
+            <td>Medium — with no header, or the wrong value, n8n answers 401 outright.</td>
+            <td>The convention for most modern APIs, and the "general purpose" option we recommend most.</td>
           </tr>
           <tr>
             <td><strong>JWT</strong></td>
-            <td>Authentication 選 <em>JWT Auth</em>，設 secret / algorithm。n8n 會驗簽章。</td>
-            <td>高——搭配過期時間、簽章驗證。</td>
-            <td>對方是有 JWT 發放能力的正式系統（企業 SSO、行動 App）。</td>
+            <td>Set Authentication to <em>JWT Auth</em> and set the secret / algorithm. n8n verifies the signature.</td>
+            <td>High — it comes with an expiry time and signature verification.</td>
+            <td>The caller is a real system that can issue JWTs (enterprise SSO, a mobile app).</td>
           </tr>
           <tr>
-            <td><strong>HMAC 簽章驗證</strong></td>
-            <td>Authentication 選 <em>None</em>，改用 Code 節點（<a href="ch7_node_types.html">第 7 章</a>）算 HMAC 對比 header。</td>
-            <td>高——每個 request 都有唯一簽章。</td>
-            <td>Line、Stripe、GitHub 都用這招；照對方文件實作。</td>
+            <td><strong>HMAC signature verification</strong></td>
+            <td>Set Authentication to <em>None</em> and use a Code node (<a href="ch7_node_types.html">Chapter 7</a>) to compute the HMAC and compare it with the header.</td>
+            <td>High — every request carries a signature of its own.</td>
+            <td>LINE, Stripe and GitHub all use this; implement it the way their docs describe.</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout warn"><strong>注意：</strong>就算你設了 auth，<strong>URL 本身也不該外流</strong>——把 auth 想成第二道鎖，第一道鎖還是 URL 本身。secret 存進 <a href="ch13_credentials.html">Credentials</a>、不要 hard-code 在節點欄位裡，才不會截圖或 export workflow 時洩漏。</div>
-      <div class="callout danger"><strong>危險：</strong>Webhook 節點沒設 auth 又對外開放時，很容易被<strong>掃 URL 的機器人</strong>打——常見症狀是 Executions 突然爆量、莫名觸發、AI 或發訊息類節點成本狂升。發現這種情況第一件事：關 Active、把 Path 改成新的長亂數、加上 Header Auth 再重新啟用。</div>
+      <div class="callout warn"><strong>Warning:</strong> Even with auth set up, <strong>the URL itself should not leak</strong> — think of auth as the second lock, with the URL still the first one. Store secrets in <a href="ch13_credentials.html">Credentials</a> instead of hard-coding them in node fields, so nothing leaks when you take a screenshot or export the workflow.</div>
+      <div class="callout danger"><strong>Danger:</strong> A Webhook node with no auth that is open to the world is easy prey for <strong>bots that scan for URLs</strong> — the usual symptoms are a sudden flood of Executions, runs you cannot explain, and the cost of AI or messaging nodes shooting up. The first thing to do when you see this: turn Active off, change the Path to a new long random string, add Header Auth, and switch it back on.</div>
     </section>
 
-    <section id="line_bot" data-nav="實例 · Line Bot 接 AI">
-      <h2 data-icon="ai">實例：Line Bot 打進 n8n → AI Agent 回覆</h2>
-      <p>整合 Webhook + AI Agent（<a href="ch21_ai_agent.html">第 21 章</a>）+ HTTP Request（<a href="ch12_http_request.html">第 12 章</a>），做出一個「客人在 Line 傳訊息，n8n 用 GPT 產出回覆，再自動回傳給客人」的完整鏈——所有前面章節的內容在這裡收斂成一個實戰。</p>
+    <section id="line_bot" data-nav="Example · LINE bot">
+      <h2 data-icon="ai">Worked example: a LINE bot calls n8n and AI Agent replies</h2>
+      <p>Combine Webhook + AI Agent (<a href="ch21_ai_agent.html">Chapter 21</a>) + HTTP Request (<a href="ch12_http_request.html">Chapter 12</a>) into the complete chain "a customer sends a message on LINE, n8n produces a reply with GPT, and it goes back to the customer automatically" — everything from the earlier chapters comes together here in one real build.</p>
       <ol class="steps">
         <li>
-          <h3>Line Developers Console 建 Messaging API channel</h3>
-          <p>到 <code>developers.line.biz</code> 登入 → 建 Provider → 新增 <em>Messaging API</em> channel。填基本資訊送出。</p>
+          <h3>Create a Messaging API channel in the LINE Developers Console</h3>
+          <p>Go to <code>developers.line.biz</code> and sign in → create a Provider → add a <em>Messaging API</em> channel. Fill in the basics and submit.</p>
         </li>
         <li>
-          <h3>拿 Channel Secret 跟 Access Token</h3>
-          <p>Channel 建好後，在 <em>Basic settings</em> 分頁抄下 <strong>Channel Secret</strong>；在 <em>Messaging API</em> 分頁最下面 <strong>Channel Access Token</strong> 按 Issue 產一個抄下來。這兩個等下要存進 n8n Credentials。</p>
+          <h3>Get the Channel Secret and the Access Token</h3>
+          <p>Once the channel exists, go to the <em>Basic settings</em> tab and copy down the <strong>Channel Secret</strong>; at the bottom of the <em>Messaging API</em> tab, press Issue under <strong>Channel Access Token</strong> to generate one and copy it. Both of these go into n8n Credentials in a moment.</p>
         </li>
         <li>
-          <h3>n8n 新 workflow：Webhook 節點 POST + 生 URL</h3>
-          <p>n8n 建新 workflow，加 Webhook 節點：Method = POST、Path = <code>line-bot</code>、Response = <strong>Immediately</strong>（Line 要求 3 秒內回 200）。抄下 Production URL——但這時還不能用，因為 workflow 沒 Active。先按 Listen for test event 用 Test URL 開發。</p>
+          <h3>New n8n workflow: a Webhook node on POST, and the URL it gives you</h3>
+          <p>Create a new workflow in n8n and add a Webhook node: Method = POST, Path = <code>line-bot</code>, Response = <strong>Immediately</strong> (LINE wants a 200 within 3 seconds). Copy the Production URL — but you cannot use it yet, because the workflow is not Active. For now, press Listen for test event and build against the Test URL.</p>
         </li>
         <li>
-          <h3>Line 那邊 Webhook URL 填 n8n URL</h3>
-          <p>回 Line Console 的 Messaging API 分頁 → <em>Webhook settings</em> → 貼 n8n Test URL → 開啟 <em>Use webhook</em>。按 <em>Verify</em> 應該顯示 Success（Line 會實測打一次）。</p>
+          <h3>On the LINE side, put the n8n URL in Webhook URL</h3>
+          <p>Back in the LINE Console on the Messaging API tab → <em>Webhook settings</em> → paste the n8n Test URL → turn on <em>Use webhook</em>. Press <em>Verify</em> and it should say Success (LINE really does call it once).</p>
         </li>
         <li>
-          <h3>用手機加 Line Bot 為好友、傳訊息</h3>
-          <p>用手機掃 Line Console 顯示的 QR code 加官方帳號為好友，傳一句「你好」。回 n8n canvas，Webhook 節點會亮綠、output 出現 Line 的 payload。找到訊息內容的路徑，通常是：</p>
+          <h3>Add the LINE bot as a friend on your phone and send it a message</h3>
+          <p>Scan the QR code shown in the LINE Console with your phone to add the Official Account as a friend, and send it a "hello". Back on the n8n canvas, the Webhook node turns green and the output shows LINE's payload. Find the path to the message text; it is usually:</p>
           <pre class="code-block"><code>{{ $json.body.events[0].message.text }}      →  使用者輸入的文字
 {{ $json.body.events[0].replyToken }}        →  回覆這則要用的 token
 {{ $json.body.events[0].source.userId }}     →  使用者 ID</code></pre>
         </li>
         <li>
-          <h3>接 AI Agent 節點產生回覆</h3>
-          <p>接 <strong>AI Agent</strong> 節點（<a href="ch21_ai_agent.html">第 21 章</a>）。Text 欄位用 Expression 帶入使用者訊息：<code>{{ $json.body.events[0].message.text }}</code>。掛好 Chat Model（OpenAI GPT-4o mini 或其他）。可視情況加 Memory 記住對話。</p>
+          <h3>Add an AI Agent node to produce the reply</h3>
+          <p>Add an <strong>AI Agent</strong> node (<a href="ch21_ai_agent.html">Chapter 21</a>). Use an expression in the Text field to bring in the user's message: <code>{{ $json.body.events[0].message.text }}</code>. Attach a Chat Model (OpenAI GPT-4o mini or another). Add Memory if you want it to remember the conversation.</p>
         </li>
         <li>
-          <h3>接 HTTP Request 節點打 Line Reply API</h3>
-          <p>接 <strong>HTTP Request</strong>：Method = POST、URL = <code>https://api.line.me/v2/bot/message/reply</code>、Authentication 選 Header Auth，帶 <code>Authorization: Bearer &lt;你的 Channel Access Token&gt;</code>。Body 用 JSON：</p>
+          <h3>Add an HTTP Request node to call the LINE Reply API</h3>
+          <p>Add <strong>HTTP Request</strong>: Method = POST, URL = <code>https://api.line.me/v2/bot/message/reply</code>, Authentication set to Header Auth, carrying <code>Authorization: Bearer &lt;你的 Channel Access Token&gt;</code>. Use JSON for the body:</p>
           <pre class="code-block"><code>{
   "replyToken": "{{ $('Webhook').item.json.body.events[0].replyToken }}",
   "messages": [
     { "type": "text", "text": "{{ $json.output }}" }
   ]
 }</code></pre>
-          <p><code>$('Webhook')</code> 是回頭抓 Webhook 節點的 replyToken；<code>$json.output</code> 是 AI Agent 剛產生的回覆。</p>
+          <p><code>$('Webhook')</code> reaches back to the Webhook node for the replyToken; <code>$json.output</code> is the reply AI Agent has just produced.</p>
         </li>
         <li>
-          <h3>Save + Active，把 Line webhook 換成 Production URL</h3>
-          <p>Save 存檔、開 Active。回 Line Console 把 Webhook URL 從 Test URL 換成 Production URL（<code>/webhook/line-bot</code>）。手機再傳訊息一次——秒回。</p>
+          <h3>Save + Active, then switch the LINE webhook to the Production URL</h3>
+          <p>Save, then switch Active on. Back in the LINE Console, change the Webhook URL from the Test URL to the Production URL (<code>/webhook/line-bot</code>). Send another message from your phone — the answer comes back in a second.</p>
         </li>
       </ol>
-      <div class="callout"><strong>觀念：</strong>這整條鏈接是本書把所有東西串起來的示範——<a href="ch10_triggers.html">Trigger</a>（Webhook）、<a href="ch14_expressions.html">Expression</a> 抓 payload、<a href="ch13_credentials.html">Credentials</a> 存 Line token、<a href="ch21_ai_agent.html">AI Agent</a> 產內容、<a href="ch12_http_request.html">HTTP Request</a> 回打 Line API。每一段在對應章節都學過，這裡只是把它們接成一條線。</div>
+      <div class="callout"><strong>Concept:</strong> This whole chain is the book's demonstration of everything wired together — a <a href="ch10_triggers.html">Trigger</a> (Webhook), an <a href="ch14_expressions.html">expression</a> to grab the payload, <a href="ch13_credentials.html">Credentials</a> to hold the LINE token, <a href="ch21_ai_agent.html">AI Agent</a> to produce the content, and <a href="ch12_http_request.html">HTTP Request</a> to call the LINE API back. You learned every piece in its own chapter; here they are simply joined into one line.</div>
     </section>
 
-    <section id="troubleshoot" data-nav="常見卡關">
-      <h2 data-icon="troubleshoot">常見卡關</h2>
+    <section id="troubleshoot" data-nav="Common pitfalls">
+      <h2 data-icon="troubleshoot">Common pitfalls</h2>
       <ol class="steps">
         <li>
-          <h3>Test URL 打完沒反應、n8n 沒收到</h3>
-          <p>兩個原因：（a）沒按 <strong>Listen for test event</strong>——Test URL 只在 listen mode 存活；（b）Listen session <strong>過期</strong>了（收到一次事件會結束、久沒事件實務上也會停）——重按一次就好。另外要看 URL 有沒有選對——複製時務必看清楚是 <code>/webhook-test/</code> 那條。</p>
+          <h3>You called the Test URL and nothing happened; n8n received nothing</h3>
+          <p>Two causes: (a) you did not press <strong>Listen for test event</strong> — the Test URL only lives in listen mode; (b) the listen session <strong>expired</strong> (it ends after one event, and in practice it also stops when nothing arrives for a while) — just press it again. Also check that you picked the right URL — when you copy, make sure it is the <code>/webhook-test/</code> one.</p>
         </li>
         <li>
-          <h3>Production URL 打了回 404 Not Found</h3>
-          <p>幾乎一定是 <strong>workflow 沒有 Active</strong>——右上開關關著時 Production URL 就是 404。解法：Save 完把右上 Active 開啟。如果 Active 開了還 404，檢查 Path 有沒有跟你打的一致（大小寫敏感、多空白會出事）。</p>
+          <h3>Calling the Production URL returns 404 Not Found</h3>
+          <p>Almost always <strong>the workflow is not Active</strong> — while the toggle at the top right is off, the Production URL is a 404. The fix: save, then switch Active on at the top right. If it still returns 404 with Active on, check that the Path matches what you are calling (it is case sensitive, and a stray space breaks it).</p>
         </li>
         <li>
-          <h3>Webhook 有收到但 body 是空的</h3>
-          <p>對方的 request 沒設 <code>Content-Type</code>，或者設成 <code>text/plain</code> 而不是 <code>application/json</code>——n8n 不會自動 parse。要對方在打時加 header <code>Content-Type: application/json</code>；或者 Webhook 節點 <em>Options</em> → <em>Raw Body</em> 打開，用 Code 節點自己 parse。另外注意 n8n Webhook 節點<strong>單次 payload 最大 16MB</strong>——超過會直接被擋掉，大檔案要走 upload URL 或分段丟。</p>
+          <h3>The webhook arrives but the body is empty</h3>
+          <p>Their request set no <code>Content-Type</code>, or set it to <code>text/plain</code> instead of <code>application/json</code> — n8n will not parse it for you. Ask them to add the <code>Content-Type: application/json</code> header when they call; or turn on <em>Options</em> → <em>Raw Body</em> on the Webhook node and parse it yourself in a Code node. Also note that the n8n Webhook node caps <strong>a single payload at 16MB</strong> — anything larger is rejected outright, so large files have to go through an upload URL or be sent in pieces.</p>
         </li>
         <li>
-          <h3>回 405 Method Not Allowed</h3>
-          <p>對方用的 Method 跟 Webhook 節點設定不一致——外部 POST 但你節點設 GET，或反過來。到節點面板改成一致的 Method。有時候是外部服務預設用 GET 但你以為是 POST，用 curl 或 Postman 手動測一次確認。</p>
+          <h3>You get 405 Method Not Allowed</h3>
+          <p>The Method the caller uses does not match the Webhook node's setting — they POST while your node is set to GET, or the other way around. Open the node panel and set both sides to the same Method. Sometimes the outside service defaults to GET while you assumed POST, so test it by hand once with curl or Postman.</p>
         </li>
         <li>
-          <h3>對方一直重試同一個 request（同一筆資料處理很多次）</h3>
-          <p>對方（Stripe / Line / GitHub）沒在時效內收到 200 就會重試。原因通常是你選 Response = <em>When last node finishes</em> 而 workflow 跑超過對方 timeout（Line 是 3 秒、Stripe 是 3 秒、GitHub 是 10 秒）。解法：改成 <strong>Response = Immediately</strong>，讓 n8n 秒回 200，處理放背景跑。</p>
+          <h3>The caller keeps retrying the same request (the same record is processed many times)</h3>
+          <p>The caller (Stripe / LINE / GitHub) retries when it does not get a 200 in time. The usual cause is that you picked Response = <em>When last node finishes</em> and the workflow runs past their timeout (LINE is 3 seconds, Stripe is 3 seconds, GitHub is 10 seconds). The fix: switch to <strong>Response = Immediately</strong> so n8n answers 200 instantly and the processing runs in the background.</p>
         </li>
         <li>
-          <h3>打太快被 n8n 拒掉、Executions 排隊</h3>
-          <p>n8n instance 有 concurrency 限制——短時間打進來太多，會有請求塞車或直接被拒。解法：（a）開 <a href="appendix_errors.html">Queue Mode</a>（附錄 B）加 worker；（b）搭配 <a href="ch16_merge_split.html">Split In Batches</a> 或 Wait 節點錯開處理；（c）把「收到就存」跟「後續處理」拆兩個 workflow，前者只做寫入很快回，後者定時來讀。</p>
+          <h3>Calls come in too fast, n8n rejects them, Executions queue up</h3>
+          <p>An n8n instance has a concurrency limit — too many calls in a short window and requests jam up or get rejected outright. The fixes: (a) turn on <a href="appendix_errors.html">Queue Mode</a> (Appendix B) and add workers; (b) pair it with <a href="ch16_merge_split.html">Split In Batches</a> or a Wait node to stagger the work; (c) split "receive and store" from "process afterwards" into two workflows, where the first only writes and answers fast, and the second reads on a schedule.</p>
         </li>
         <li>
-          <h3>Auth 開了但對方一直 401</h3>
-          <p>對方 header 名稱或值打錯——大小寫敏感、多空白、value 前後有 quote 都會 fail。用 curl 手動打模擬對方帶的 header 測一次；或者對方文件的 header 名字跟 n8n Header Auth 節點裡的欄位名要對齊。也可能是選錯 Authentication 類型（Basic vs Header）。</p>
+          <h3>Auth is on but the caller keeps getting 401</h3>
+          <p>They typed the header name or the value wrong — it is case sensitive, and a stray space or a quote around the value makes it fail. Use curl by hand to send the same header they send and test it once; and the header name in their docs has to line up with the field name in the n8n Header Auth node. It can also be the wrong Authentication type (Basic vs Header).</p>
         </li>
         <li>
-          <h3>Executions 看不到 Webhook 觸發的紀錄</h3>
-          <p>Executions 分頁預設只顯示<strong>最近的成功執行</strong>——上方 filter 有 <em>Include failed</em> 打開才看得到失敗的。另外<strong>把 workflow Setting 裡的 Save Execution Progress 打開</strong>才能看每個節點的細節。開發階段建議 Save Manual / Save Failed / Save Successful 三個都設 <em>Save</em>。</p>
+          <h3>Executions shows no record of the webhook firing</h3>
+          <p>The Executions tab shows only <strong>recent successful runs</strong> by default — the filter at the top has <em>Include failed</em>, and you have to turn it on to see the failures. Beyond that, <strong>turn on Save Execution Progress in the workflow Settings</strong> to see the detail of each node. While you are building, set all three of Save Manual / Save Failed / Save Successful to <em>Save</em>.</p>
         </li>
       </ol>
     </section>
 
-    <section id="closing" data-nav="收尾">
-      <h2 data-icon="done">收尾：22 章走完，接下來換你做</h2>
-      <p>你已經走完這整本《Woow n8n 入住指南》。從第 1 章「什麼是 n8n」到第 22 章「Webhook」，這條學習路徑帶你從「聽過 Zapier」走到「能自己接 Line Bot 給 workflow 一顆會想的腦」。整理一下你現在能做的事：</p>
+    <section id="closing" data-nav="Wrapping up">
+      <h2 data-icon="done">Wrapping up: 22 chapters done — now it is your turn</h2>
+      <p>You have worked through the whole Woow n8n Onboarding Guide. From Chapter 1, "What n8n is", to Chapter 22, "Webhook", this learning path took you from "I have heard of Zapier" to "I can wire up a LINE bot myself and give a workflow a brain that thinks". Here is what you can do now:</p>
       <ul>
-        <li><strong>能自己開新 workflow、拉節點、串 Trigger + Action + Core</strong>（第 7～10 章）。</li>
-        <li><strong>能整合公司最常用的 SaaS</strong>——Slack、Gmail、Google Sheets、Drive、任何有 API 的服務（第 11～13 章）。</li>
-        <li><strong>能寫 Expression 抓上游資料、能用 IF/Switch 做條件、能用 Merge/Split 處理多筆</strong>（第 14～16 章）。</li>
-        <li><strong>能處理錯誤、能整形資料、能抽 sub-workflow 重用、能寫幾行 Code 逃生</strong>（第 17～20 章）。</li>
-        <li><strong>能讓 workflow 有 AI 判斷力、能收外部 webhook</strong>（第 21～22 章）。</li>
+        <li><strong>Create a new workflow yourself, drop nodes in, and chain Trigger + Action + Core</strong> (Chapters 7–10).</li>
+        <li><strong>Integrate the SaaS your company uses most</strong> — Slack, Gmail, Google Sheets, Drive, any service with an API (Chapters 11–13).</li>
+        <li><strong>Write expressions to grab upstream data, branch with IF/Switch, and handle many items with Merge/Split</strong> (Chapters 14–16).</li>
+        <li><strong>Handle errors, reshape data, pull reusable logic into a sub-workflow, and write a few lines of Code as an escape hatch</strong> (Chapters 17–20).</li>
+        <li><strong>Give a workflow AI judgment, and receive webhooks from outside</strong> (Chapters 21–22).</li>
       </ul>
-      <p>剩下的就是<strong>動手</strong>。真心建議：<strong>找一個公司內部過去三個月來重複做過的事</strong>——每天早上手動整理報表、每週寄提醒信、客人來 Line 一律先手動回制式訊息——開一個 workflow 把它幹掉。第一個 workflow 上線那一刻你會發現：「原來這種事真的可以不用人做。」然後就會停不下來。</p>
-      <p>過程遇到卡關的時候：</p>
+      <p>The rest is <strong>doing it</strong>. Honest advice: <strong>find one thing your company has done over and over in the past three months</strong> — tidying a report by hand every morning, sending a reminder email every week, replying to every LINE customer with the same canned message — and open a workflow that kills it off. The moment your first workflow goes live you will realize: "so this really does not need a person at all." And then you will not be able to stop.</p>
+      <p>When you get stuck along the way:</p>
       <ul>
-        <li><strong>忘記某個節點怎麼設</strong> → 翻對應章節（章節目錄一開始就有列）。</li>
-        <li><strong>節點紅色框、跑不動</strong> → 翻 <a href="appendix_errors.html">附錄 B · 常見錯誤排錯</a>。</li>
-        <li><strong>設定不知道在哪</strong> → 翻附錄 A · 設定速查。</li>
-        <li><strong>想深入了解 self-host</strong> → 翻附錄 C · 底層架構。</li>
+        <li><strong>You forgot how to configure a node</strong> → go back to the matching chapter (the contents list them all at the start).</li>
+        <li><strong>A node with a red border that does not run</strong> → see <a href="appendix_errors.html">Appendix B · Error troubleshooting</a>.</li>
+        <li><strong>You cannot find a setting</strong> → see Appendix A · Settings reference.</li>
+        <li><strong>You want to go deeper on self-hosting</strong> → see Appendix C · How it works underneath.</li>
       </ul>
-      <p>祝你的 workflow 都跑得順、上線都不出事、老闆看到自動化成果都給你加薪。有問題永遠可以回來翻章節，或者到 n8n 官方社群 <code>community.n8n.io</code> 問——多的是同路人。</p>
-      <div class="callout tip"><strong>提示：</strong>學會用 n8n 之後最容易犯的一個錯是<strong>「所有事都想自動化」</strong>——先評估「這個流程一週執行幾次」，一週只執行一次的事情不見得值得花兩小時做 workflow。<strong>優先自動化的是「一天做很多次、又不需要判斷力的事」</strong>——這種投報率最高。</div>
+      <p>May your workflows all run smoothly, may they go live without incident, and may your boss give you a raise when the automation lands. You can always come back to a chapter, or ask the official n8n community at <code>community.n8n.io</code> — plenty of people are walking the same road.</p>
+      <div class="callout tip"><strong>Tip:</strong> The easiest mistake to make once you know n8n is <strong>"wanting to automate everything"</strong> — first work out "how many times a week does this process run". Something that runs once a week is not necessarily worth two hours of building a workflow. <strong>Automate first the things "you do many times a day that need no judgment"</strong> — that is where the return is highest.</div>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
       <details class="faq">
-        <summary>Webhook URL 會不會被爬蟲爬到、被外人猜到亂打？</summary>
-        <div class="body">URL 的 <em>path</em> 部分（例：<code>/webhook/form-abc123</code>）如果是像 <code>form-abc123</code> 這種好猜的字串，機器人掃站確實可能撞到。用 <strong>UUID</strong> 當 path（例：<code>/webhook/8f3b2c9a-...</code>），機率極低。<strong>再加 Header Auth 更安全</strong>。真的很怕就把 URL 當作只有一層鎖、實際靠 auth 或 IP 白名單當第二層。</div>
+        <summary>Can crawlers find my Webhook URL, or can outsiders guess it and hammer it?</summary>
+        <div class="body">If the <em>path</em> part of the URL (for example <code>/webhook/form-abc123</code>) is a guessable string like <code>form-abc123</code>, a scanning bot really can stumble onto it. Use a <strong>UUID</strong> as the path (for example <code>/webhook/8f3b2c9a-...</code>) and the odds get very low. <strong>Add Header Auth on top and it is safer still</strong>. If you are genuinely worried, treat the URL as only one lock and rely on auth or an IP allowlist as the second.</div>
       </details>
       <details class="faq">
-        <summary>一個 workflow 可以有幾個 Webhook 節點？</summary>
-        <div class="body">可以有<strong>很多個</strong>，各自不同 Path 就好。實務上常見一個 workflow 開兩個 Webhook 節點：一個給正式業務用、一個給 health check 或 admin 動作用。或者一個 workflow 對外露多個 endpoint（例：<code>/webhook/order-create</code>、<code>/webhook/order-cancel</code>）走不同分支處理。</div>
+        <summary>How many Webhook nodes can one workflow have?</summary>
+        <div class="body">It can have <strong>plenty</strong>, as long as each one has its own Path. A common pattern is two Webhook nodes in one workflow: one for the real business traffic and one for a health check or an admin action. Or one workflow exposing several endpoints (for example <code>/webhook/order-create</code> and <code>/webhook/order-cancel</code>) that go down different branches.</div>
       </details>
       <details class="faq">
-        <summary>Webhook 節點的 URL 換了要怎麼辦？外部服務要重設嗎？</summary>
-        <div class="body">是的。Webhook URL 是根據節點的 <em>Path</em> 欄位動態產生的——你改 Path、URL 就換了。<strong>外部所有已經設好舊 URL 的服務都要一起改</strong>，不然就 404。改的時機建議：（a）發現舊 URL 被亂人打、（b）換到新 workflow、（c）Path 命名不合適要 refactor。改完務必通知所有下游服務。</div>
+        <summary>What if the Webhook node's URL changes? Do the outside services have to be set up again?</summary>
+        <div class="body">Yes. The Webhook URL is generated from the node's <em>Path</em> field — change the Path and the URL changes. <strong>Every outside service already holding the old URL has to be changed too</strong>, or it gets a 404. Good moments to change it: (a) you find strangers calling the old URL, (b) you are moving to a new workflow, (c) the Path is badly named and needs a refactor. Always tell every downstream service once you have changed it.</div>
       </details>
       <details class="faq">
-        <summary>n8n 的 Webhook 可以觸發<strong>另一個</strong> n8n workflow 嗎？</summary>
-        <div class="body">兩種做法：（a）workflow A 用 <a href="ch12_http_request.html">HTTP Request 節點</a>打 workflow B 的 Webhook URL——像對外服務那樣，隔離乾淨但要走一次 HTTP；（b）workflow A 用 <em>Execute Workflow</em> 節點（<a href="ch7_node_types.html">Core 節點</a>）直接呼叫 workflow B，資料直接傳，不走 HTTP，速度更快。內部叫用選 Execute Workflow；跨 instance 或跨帳號才用 HTTP Request 打 Webhook。</div>
+        <summary>Can an n8n Webhook trigger <strong>another</strong> n8n workflow?</summary>
+        <div class="body">Two ways: (a) workflow A uses the <a href="ch12_http_request.html">HTTP Request node</a> to call workflow B's Webhook URL — just like an outside service, cleanly isolated but with one round trip over HTTP; (b) workflow A uses the <em>Execute Workflow</em> node (a <a href="ch7_node_types.html">Core node</a>) to call workflow B directly, passing the data straight across without HTTP, which is faster. For internal calls pick Execute Workflow; only reach for HTTP Request on a Webhook when you cross instances or accounts.</div>
       </details>
       <details class="faq">
-        <summary>Webhook 節點會不會有 timeout？我的 workflow 跑 5 分鐘會斷嗎？</summary>
-        <div class="body">Webhook 節點本身不會斷——但<strong>對方（呼叫者）幾乎都有 timeout</strong>：Line 3 秒、GitHub 10 秒、Stripe 幾秒、瀏覽器一般 30～60 秒。超過對方 timeout，對方會判定失敗（可能重試）。長工作的解法：Response 選 <strong>Immediately</strong> 秒回 200，實際處理在背景跑；完成後再另外通知或寫回結果。</div>
+        <summary>Does the Webhook node have a timeout? Will my workflow be cut off if it runs for 5 minutes?</summary>
+        <div class="body">The Webhook node itself is not cut off — but <strong>the caller almost always has a timeout</strong>: LINE 3 seconds, GitHub 10 seconds, Stripe a few seconds, a browser usually 30–60 seconds. Go past their timeout and they treat it as a failure (and may retry). The answer for long jobs: set Response to <strong>Immediately</strong> so a 200 goes back instantly and the real processing runs in the background; notify separately or write the result back once it finishes.</div>
       </details>
       <details class="faq">
-        <summary>Test URL 跟 Production URL 資料格式一樣嗎？測 Test 過的直接放 Production 會有問題嗎？</summary>
-        <div class="body">格式<strong>完全一樣</strong>——只有 URL path 不一樣、觸發時機不一樣。Test 通、Production 就會通。<strong>但要注意</strong>：Test 開發時你可能沒開 Active 也沒設 Credentials 的 sharing，Production 打進來時剛好卡在後面某個節點 credential 掉線——正式切之前跑一次完整鏈確認。</div>
+        <summary>Do the Test URL and the Production URL use the same data format? Is it safe to go straight to Production once Test works?</summary>
+        <div class="body">The format is <strong>exactly the same</strong> — only the URL path and what triggers it differ. If Test works, Production works. <strong>But watch out</strong>: while developing against Test you may not have switched Active on or set up sharing on the Credentials, and then a live call gets stuck at some node further down whose credential is disconnected — run the full chain once before you cut over.</div>
       </details>
       <details class="faq">
-        <summary>怎麼 debug Webhook？打進來看不到 log 該怎麼辦？</summary>
-        <div class="body">三招：（a）用 Test URL + Listen mode 看即時 payload——最快最直觀；（b）workflow Settings 把 <em>Save Successful Executions</em> 跟 <em>Save Failed Executions</em> 都設 Save，然後去 <em>Executions</em> 分頁一筆一筆看；（c）第一個節點插一個 <em>Set / Edit Fields</em> 節點只 pass-through，這樣至少能在 Executions 看到收到的原始資料。</div>
+        <summary>How do I debug a webhook? What do I do when a call comes in and I see no log?</summary>
+        <div class="body">Three tricks: (a) use the Test URL plus listen mode to watch the payload live — fastest and most direct; (b) in the workflow Settings, set both <em>Save Successful Executions</em> and <em>Save Failed Executions</em> to Save, then go through the <em>Executions</em> tab record by record; (c) put a <em>Set / Edit Fields</em> node in as the first node that only passes data through, so at least the raw incoming data shows up in Executions.</div>
       </details>
       <details class="faq">
-        <summary>Webhook 收到資料可以先<strong>存起來慢慢處理</strong>嗎，不想連動處理節點？</summary>
-        <div class="body">常見的解耦做法：Webhook 收到後只做一件事——寫進 Google Sheets / Postgres / Redis / 甚至一個 n8n Data Table——馬上 Immediately 回 200。另外做一個 Schedule Trigger workflow 每分鐘讀新進的資料處理。這樣<strong>對方永遠是秒回、後面處理慢也不影響</strong>，也不會因為節點掛掉造成資料掉。這是接高流量或不穩定第三方 API 的正確架構。</div>
+        <summary>Can a webhook <strong>store the data and process it slowly</strong>, instead of chaining the processing nodes onto it?</summary>
+        <div class="body">The usual way to decouple: once the Webhook receives, it does exactly one thing — write into Google Sheets / Postgres / Redis / even an n8n Data Table — and answers 200 straight away with Immediately. Then build a separate Schedule Trigger workflow that reads the new data every minute and processes it. That way <strong>the caller always gets an instant answer, and slow processing behind it changes nothing</strong>, and a node dying does not lose data. This is the right architecture for high traffic or an unreliable third-party API.</div>
       </details>
     </section>
 

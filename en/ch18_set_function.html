@@ -106,7 +106,7 @@
         <li>The HTTP Request node hands back: <code>{ firstName: "小明", lastName: "王", email: "a@b.com", age: 28, avatar_url: "...", ... }</code></li>
         <li>But the next node, Google Sheets, only needs three fields: <code>{ 姓名: "王小明", 信箱: "a@b.com", 年齡: 28 }</code></li>
       </ul>
-      <p>You do not want to hand-assemble ten lines of expression inside the Sheets node, and you do not want to open a Code node and write JavaScript every time either. <strong>What you want is a waypoint that washes the upstream JSON into the shape the downstream node expects</strong> — and that is the Set node. It calls no API, triggers nothing, does nothing to the outside world; it purely gives the JSON a new shape and passes it on.</p>
+      <p>You do not want to hand-assemble ten lines of expression inside the Sheets node, and you do not want to open a Code node and write JavaScript every time either. <strong>What you want is a waypoint that cleans the upstream JSON up into the shape the downstream node wants</strong> — and that is the Set node. It calls no API, triggers nothing, does nothing to the outside world; it purely gives the JSON a new shape and passes it on.</p>
       <div class="callout"><strong>Concept:</strong> The Set node is the dressing table of a workflow — upstream data comes in, gets combed, made up and changed into fresh clothes, then goes on downstream. Everything it does is limited to changing the JSON structure, so it never causes a side effect.</div>
     </section>
 
@@ -143,7 +143,7 @@
           <tr>
             <td><strong>Manual Mapping</strong> (the default)</td>
             <td>Add one field at a time with Add Field: <em>Name</em> (what the new field is called) + <em>Type</em> (String / Number / Boolean / Array / Object) + <em>Value</em> (an expression or a fixed value)</td>
-            <td>90% of cases. Adding a few fields, renaming a few, filling in a few defaults — the manual interface shows you the most</td>
+            <td>90% of cases. Adding a few fields, renaming a few, filling in a few defaults — the manual interface is the clearest to read</td>
           </tr>
           <tr>
             <td><strong>JSON</strong></td>
@@ -181,7 +181,7 @@
         </li>
         <li>
           <h3>Put <code>full_name</code> in Name</h3>
-          <p>This is the new field's name, and it is what shows up in the JSON downstream nodes see.</p>
+          <p>This is the new field's name, and it is the name that appears in the JSON downstream nodes see.</p>
         </li>
         <li>
           <h3>Put the expression <code>{{ $json.lastName }}{{ $json.firstName }}</code> in Value</h3>
@@ -213,7 +213,7 @@
             <td><code>{{ $now }}</code> for the current time; <code>已處理</code> as a plain string</td>
           </tr>
           <tr>
-            <td><strong>Rename a field</strong> (rename)</td>
+            <td><strong>Rename a field</strong></td>
             <td>Add Field with the new name, pull the old value with <code>{{ $json.舊欄位 }}</code>; then turn Include Other Input Fields <em>off</em>, or list every field you want to keep</td>
             <td>Name = <code>customer_email</code>, Value = <code>{{ $json.email }}</code></td>
           </tr>
@@ -235,7 +235,7 @@
         </tbody>
       </table>
       <p>All five are within reach of Manual Mapping mode — no Code node, no functions to write. Most of the built-in JavaScript functions available in an expression (<code>Number</code>, <code>String</code>, <code>Boolean</code>, <code>Math.round</code>, <code>Date</code>, and string methods such as <code>.toUpperCase()</code>, <code>.trim()</code> and <code>.split()</code>) can be written directly.</p>
-      <div class="callout tip"><strong>Tip:</strong> Besides typing an expression, you can drag into the Value field — drag a field from the input panel on the left straight into the Value box and n8n pastes in the right <code>{{ $json.xxx }}</code> for you. That is the least effort when you are new.</div>
+      <div class="callout tip"><strong>Tip:</strong> Besides typing an expression, you can drag into the Value field — drag a field from the input panel on the left straight into the Value box and n8n pastes in the right <code>{{ $json.xxx }}</code> for you. It is the least-effort route when you are new.</div>
     </section>
 
     <section id="warning" data-nav="The Include toggle">
@@ -265,7 +265,7 @@
         <li><strong>Security</strong> — the upstream API response holds sensitive fields (token, password_hash) you do not want carried downstream → <em>turn it off</em> and let through only the safe ones.</li>
       </ul>
       <div class="callout warn"><strong>Warning:</strong> If you turn this toggle off but forget to add <code>email</code> under Fields to Set, your downstream nodes will never get an email — this is the "my field disappeared" bug beginners hit most. When a field is missing from the output panel, check this toggle first. One more common misreading: the toggle only keeps the fields of the current input item; to reference the payload of a node <em>several steps earlier</em>, you still need <code>{{ $('節點名').item.json.xxx }}</code> (see the last FAQ entry).</div>
-      <p>In the old interface this toggle was called <strong>Keep Only Set Fields</strong>, and the logic was exactly reversed: ticked = keep only what you set. From v1 it is <strong>Include Other Input Fields</strong> (ticked = keep the others), which reads far more naturally. Note that the official n8n docs page still says Keep Only Set Fields to this day, so it not matching the wording you see in the UI is entirely normal; go by the UI.</p>
+      <p>In the old interface this toggle was called <strong>Keep Only Set Fields</strong>, and the logic was exactly reversed: ticked = keep only what you set. From v1 it is <strong>Include Other Input Fields</strong> (ticked = keep the others), which reads far more naturally. Note that the official n8n docs page still says Keep Only Set Fields to this day, so the docs not matching the wording you see in the UI is entirely normal; go by the UI.</p>
     </section>
 
     <section id="advanced" data-nav="JSON mode">
@@ -309,16 +309,16 @@
           <p>JSON mode has the same toggle. Most of the time you paste JSON precisely because you are restructuring, so you <em>turn it off</em> — keeping only the fields the JSON template defines.</p>
         </li>
         <li>
-          <h3>Run Execute Node and check the structure is right</h3>
+          <h3>Run Execute Node and check that the structure is right</h3>
           <p>The Output panel shows the JSON structure you pasted, with every expression already filled in with real values. Now you can wire up the downstream HTTP Request node and call the API.</p>
         </li>
       </ol>
-      <div class="callout"><strong>Concept:</strong> What JSON mode is worth comes down to seeing the final structure at a glance. When the structure is complex (several levels of nesting, arrays), adding one line at a time in Manual Mapping gets you lost; JSON mode puts the finished shape in front of you, which is both quicker to edit and clearer to read.</div>
+      <div class="callout"><strong>Concept:</strong> The core value of JSON mode is that you can see at a glance what the final structure will look like. When the structure is complex (several levels of nesting, arrays), adding one line at a time in Manual Mapping gets you lost; JSON mode puts the finished shape in front of you, which is both quicker to edit and clearer to read.</div>
     </section>
 
     <section id="records" data-nav="Example · sheet row">
       <h2 data-icon="records">Worked example: turn a nested API response into one sheet row</h2>
-      <p>String the Set node skills from the previous sections together into a short flow you would really use. The situation: you called an order API with HTTP Request, the JSON that comes back is nested, and you have to append it to an order-tracking sheet in Google Sheets (one row, 4 columns).</p>
+      <p>Put the Set node skills from the previous sections together into a short workflow you would really use. The situation: you called an order API with HTTP Request, the JSON that comes back is nested, and you have to append it to an order-tracking sheet in Google Sheets (one row, 4 columns).</p>
       <p><strong>What the upstream HTTP Request node returns</strong>:</p>
       <pre class="code-block"><code>{
   "data": {
@@ -339,7 +339,7 @@
       <p>Put a Set node in the middle to do the reshaping:</p>
       <ol class="steps">
         <li>
-          <h3>Set the node's Mode to Manual Mapping</h3>
+          <h3>Pick Manual Mapping as the Set node's Mode</h3>
           <p>You are mapping onto the sheet's fixed columns, so setting one field at a time is the clearest way.</p>
         </li>
         <li>
@@ -408,7 +408,7 @@
           </tr>
         </tbody>
       </table>
-      <p><strong>How do you choose?</strong> Ask yourself first: "can Set do this?" If it can, use Set; only move up to Code when it cannot. The Set node is visual, easy to read, hard to get wrong and quick to run; the Code node can do more, but you have to write code, handle the errors, and a non-engineer who inherits it will have a harder time.</p>
+      <p><strong>How do you choose?</strong> Ask yourself first: "Can Set do this?" If it can, use Set; only move up to Code when it cannot. The Set node is visual, easy to read, hard to get wrong and quick to run; the Code node can do more, but you have to write code, handle the errors, and a non-engineer who inherits it will have a harder time.</p>
       <div class="callout warn"><strong>Warning:</strong> The Function node was replaced by the Code node in <strong>v0.198.0 (released June 2022)</strong>, and the official documentation says plainly "Code node replaces Function and Function Item nodes". Function nodes in old workflows still run (backward compatibility), but searching "function" in the nodes panel will not turn one up any more — only Code. Use Code for anything new; do not go looking for a way to bring Function back.</div>
     </section>
 
@@ -426,11 +426,11 @@
       <h3>2. Covering many items in one pass</h3>
       <p>Like every other node, the Set node runs once for each item automatically. So you do not write a loop — send 10 items in from upstream and Set produces 10 reshaped outputs. On each pass <code>$json</code> points at the item being processed right then.</p>
 
-      <h3>3. Use Continue On Fail so a broken item does not block the whole flow</h3>
-      <p>The <strong>Settings</strong> gear at the top right of the Set node holds <strong>Continue On Fail</strong>. When an expression fails on one item (a field that does not exist producing <code>undefined.foo</code>, say) and this is off, the whole workflow stops in red. With it on, that item is marked as an error but the flow keeps running: you can see in the output which items broke while the rest carry on downstream.</p>
+      <h3>3. Use Continue On Fail so a broken item does not block the whole workflow</h3>
+      <p>The <strong>Settings</strong> gear at the top right of the Set node holds <strong>Continue On Fail</strong>. When an expression fails on one item (a field that does not exist producing <code>undefined.foo</code>, say) and this is off, the whole workflow stops in red. With it on, that item is marked as an error but the workflow keeps running: you can see in the output which items broke while the rest carry on downstream.</p>
 
-      <h3>4. A Set node at the start of a flow makes a fake-data generator</h3>
-      <p>No real trigger yet, but you want to test the logic of the nodes after it? Drop in a Manual Trigger plus a Set node, set the Set node's Mode to JSON, paste a block of fake JSON and turn Include Other Input Fields off — now pressing Execute Workflow sends one fake item down the flow. A lifesaver for debugging.</p>
+      <h3>4. A Set node at the start of a workflow makes a fake-data generator</h3>
+      <p>No real trigger yet, but you want to test the logic of the nodes after it? Drop in a Manual Trigger plus a Set node, set the Set node's Mode to JSON, paste a block of fake JSON and turn Include Other Input Fields off — now pressing Execute Workflow sends one fake item down the workflow. A lifesaver for debugging.</p>
 
       <div class="callout tip"><strong>Tip:</strong> If you want to delete a field, Manual Mapping has no explicit delete action. What you do instead: tick Include Other Input Fields, Add Field with the same name, leave Value empty and pick any Type you like — the field becomes empty. To really remove a field, key and all, you need a Code node and <code>delete item.json.欄位名</code>.</p>
       </div>
@@ -507,12 +507,12 @@
 
       <details class="faq">
         <summary>Why did the newer interface rename Set to Edit Fields?</summary>
-        <div class="body">Because "Set" is not intuitive enough for non-engineers — only a programmer calls giving something a value a set; everyone else reads "Set" as "a group of things", or cannot tell whether it is a verb or a noun. <strong>Edit Fields (Set)</strong> states the intent far more plainly: edit the fields (with Set kept in brackets so long-time users still recognize it). This was one part of n8n's interface overhaul around v1 (2023 or thereabouts); folding the Function node into Code was a separate, earlier change in v0.198.0 (June 2022), not the same wave. A Set node in an old workflow is automatically treated as Edit Fields (Set), with exactly the same behavior, so compatibility is nothing to worry about.</div>
+        <div class="body">Because "Set" is not intuitive enough for non-engineers — only a programmer would call "giving something a value" a set; everyone else reads "Set" as "a group of things", or cannot tell whether it is a verb or a noun. <strong>Edit Fields (Set)</strong> states the intent far more plainly: edit the fields (with Set kept in brackets so long-time users still recognize it). This was one part of n8n's interface overhaul around v1 (2023 or thereabouts); folding the Function node into Code was a separate, earlier change in v0.198.0 (June 2022), not the same wave. A Set node in an old workflow is automatically treated as Edit Fields (Set), with exactly the same behavior, so compatibility is nothing to worry about.</div>
       </details>
 
       <details class="faq">
         <summary>Can the Set node reshape an "array" field? Turning <code>tags: ["a","b","c"]</code> into <code>tags: "a, b, c"</code>, for instance?</summary>
-        <div class="body">Yes. Call a JavaScript array method from an expression: Name = <code>tags</code>, Type = <code>String</code>, Value = <code>{{ $json.tags.join(', ') }}</code>. The other way round, to split a string into an array: <code>{{ $json.csv.split(',') }}</code>, with Type set to Array. Set can do any array work inside a single item; but flattening or merging the whole items array (one item becoming three, or three becoming one) needs the Split In Batches / Merge nodes from <a href="ch16_merge_split.html">Chapter 16</a>, or Code written directly.</div>
+        <div class="body">Yes. Call a JavaScript array method from an expression: Name = <code>tags</code>, Type = <code>String</code>, Value = <code>{{ $json.tags.join(', ') }}</code>. The other way round, to split a string into an array: <code>{{ $json.csv.split(',') }}</code>, with Type set to Array. Set can do any array work inside a single item; but flattening or merging the whole items array (one item becoming three, or three becoming one) needs the Split In Batches / Merge nodes from <a href="ch16_merge_split.html">Chapter 16</a>, or writing Code yourself.</div>
       </details>
 
       <details class="faq">

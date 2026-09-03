@@ -70,18 +70,18 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要 Code node</a>
-      <a href="#when_to_use">Code 還是 Set</a>
-      <a href="#two_languages">JS 還是 Python</a>
-      <a href="#two_modes">兩種執行模式</a>
-      <a href="#pattern_filter">pattern 1：過濾</a>
-      <a href="#pattern_map">pattern 2：映射</a>
-      <a href="#pattern_aggregate">pattern 3：聚合</a>
-      <a href="#pattern_http">pattern 4：呼叫外部</a>
-      <a href="#helpers">常用 helper API</a>
-      <a href="#debug">Code node 除錯</a>
-      <a href="#troubleshoot">常見卡關</a>
-      <a href="#faq">常見問題</a>
+      <a href="#why">Why this matters</a>
+      <a href="#when_to_use">Code or Set</a>
+      <a href="#two_languages">JS or Python</a>
+      <a href="#two_modes">Two run modes</a>
+      <a href="#pattern_filter">Pattern 1 · filter</a>
+      <a href="#pattern_map">Pattern 2 · map</a>
+      <a href="#pattern_aggregate">Pattern 3 · aggregate</a>
+      <a href="#pattern_http">Pattern 4 · call an API</a>
+      <a href="#helpers">Helper APIs</a>
+      <a href="#debug">Debugging Code</a>
+      <a href="#troubleshoot">Common pitfalls</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -95,157 +95,157 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch20_code_node.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 20</div>
-      <h1>Code node：在 workflow 裡寫幾行 JavaScript</h1>
-      <p class="lead">現成節點做得到 90% 的事，剩下 10% 的怪需求——複雜資料轉換、多來源合併邏輯、動態產生內容——n8n 給你一個逃生口：Code node。這章教你在 workflow 裡塞幾行 JavaScript 補洞。<strong>新手警告</strong>：這章有 JS，看不懂完全沒關係，直接 copy 我給的 pattern 改參數就好；真的跟不上，直接跳到<a href="ch21_ai_agent.html">第 21 章 AI Agent</a> 也完全 OK，多數業務場景根本用不到 Code node。</p>
+      <h1>Code node: a few lines of JavaScript inside a workflow</h1>
+      <p class="lead">The ready-made nodes cover 90% of what you need. The odd 10% — complex data transformations, merge logic across several sources, content generated on the fly — is what n8n gives you an escape hatch for: the Code node. This chapter shows you how to plug that gap with a few lines of JavaScript inside a workflow. <strong>Beginner warning</strong>: this chapter contains JS. It is completely fine if you cannot read it — copy the patterns I give you and change the parameters. If you really cannot follow, jumping straight to <a href="ch21_ai_agent.html">Chapter 21 AI Agent</a> is fine too; most business situations never need the Code node.</p>
     </div>
 
-    <section id="why" data-nav="為什麼要 Code node">
-      <h2 data-icon="why">為什麼要 Code node</h2>
-      <p>前面 19 章講完，你會發現八成情境用 <a href="ch7_node_types.html">core node</a> 加 <a href="ch11_saas_integrations.html">SaaS 整合節點</a> 就搞得定：拉資料、過濾、發訊息、寫資料庫。<a href="ch18_set_function.html">Set 節點</a>幫你整形，<a href="ch14_expressions.html">Expression</a> 幫你動態填空，<a href="ch16_merge_split.html">Merge/Split</a> 幫你重組。</p>
-      <p>但總有那 10% 現成節點做不到的怪需求：</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why the Code node</h2>
+      <p>After the first 19 chapters you will have noticed that eight cases out of ten are handled by a <a href="ch7_node_types.html">core node</a> plus a <a href="ch11_saas_integrations.html">SaaS integration node</a>: pull data, filter it, send a message, write to a database. The <a href="ch18_set_function.html">Set node</a> reshapes it, <a href="ch14_expressions.html">expressions</a> fill values in dynamically, and <a href="ch16_merge_split.html">Merge/Split</a> put it back together.</p>
+      <p>But there is always that 10% the ready-made nodes cannot do:</p>
       <ul>
-        <li>從 CRM 拉出來的訂單，要按<strong>「客戶等級 × 商品類別」</strong>兩個維度重新分組——Set 節點做不到，因為那要跑 loop。</li>
-        <li>API 回來的資料塞在 <code>{ result: { data: { items: [...] } } }</code> 巢狀三層，你只要 items 陣列——Expression 一行寫得出來，但邏輯稍微多一點就變一坨。</li>
-        <li>Shopify 給你 20 筆訂單，你要算「金額前三大訂單佔總營收幾 %」——這需要 sort、slice、reduce 一起用。</li>
-        <li>要把 100 筆資料轉成 <strong>Slack Block Kit</strong> 的 JSON 結構——一堆巢狀 <code>{ type, elements: [...] }</code>，用 Set 節點會瘋掉。</li>
+        <li>Orders pulled out of a CRM that have to be regrouped along two dimensions, <strong>customer tier × product category</strong> — the Set node cannot do it, because that takes a loop.</li>
+        <li>An API response buried three levels deep in <code>{ result: { data: { items: [...] } } }</code> when all you want is the items array — one expression can do it, but add a little more logic and it turns into a mess.</li>
+        <li>Shopify hands you 20 orders and you have to work out what percentage of total revenue the three largest ones account for — that takes sort, slice and reduce together.</li>
+        <li>Turning 100 items into the JSON structure <strong>Slack Block Kit</strong> expects — piles of nested <code>{ type, elements: [...] }</code>, which would drive you mad in the Set node.</li>
       </ul>
-      <p>這時候就是 Code node 上場。它給你一個空白 JavaScript 編輯器，讓你寫幾行 code 把 items 進來、items 出去。<strong>不需要你會寫應用程式</strong>——大多場景抄下面四個 pattern 改參數就夠用。</p>
+      <p>That is where the Code node comes in. It gives you a blank JavaScript editor: items go in, you write a few lines of code, items come out. <strong>You do not need to know how to build applications</strong> — for most situations, copying one of the four patterns below and changing the parameters is enough.</p>
       <figure class="shot">
-        <img src="../assets/screenshots/ch20/01_ha_agent.png" alt="AI HA 管家 18 節點 workflow 含 Code 節點" />
-        <figcaption><strong>圖 20-1</strong>實戰範例：AI HA 管家 18 節點 workflow，中間用 Code 節點做內建節點做不到的資料整形與邏輯處理。</figcaption>
+        <img src="../assets/screenshots/ch20/01_ha_agent.png" alt="The AI HA agent workflow, 18 nodes, including a Code node" />
+        <figcaption><strong>Figure 20-1</strong>A real example: the AI HA agent workflow, 18 nodes, with a Code node in the middle doing the data shaping and logic the built-in nodes cannot.</figcaption>
       </figure>
-      <div class="callout warn"><strong>新手警告：</strong>這章跟前面 19 章不一樣，會出現真的 JavaScript code。看不懂完全 OK——實務上業務／行銷同仁很少需要自己寫 Code node，能認出「這裡有一段程式碼在做 X」就夠了。真的跟不上，直接翻<a href="ch21_ai_agent.html">第 21 章 AI Agent</a> 跟<a href="ch17_error_handling.html">第 17 章錯誤處理</a>，完全不影響。</div>
+      <div class="callout warn"><strong>Beginner warning:</strong> unlike the first 19 chapters, this one contains real JavaScript code. It is completely fine if you cannot read it — in practice, sales / marketing colleagues rarely have to write a Code node themselves, and recognizing that "there is a piece of code here doing X" is enough. If you really cannot follow, turn to <a href="ch21_ai_agent.html">Chapter 21 AI Agent</a> and <a href="ch17_error_handling.html">Chapter 17 error handling</a> instead; nothing is affected.</div>
     </section>
 
-    <section id="when_to_use" data-nav="Code 還是 Set">
-      <h2 data-icon="compare">先問：能用 Set 就別用 Code</h2>
-      <p>看到 Code node 很酷不代表要濫用。<strong>能用 Set／IF／Switch 解決的，就別開 Code node</strong>——因為 Code node 用 JavaScript，日後別人（或未來的你）維護時要重讀 code、還要懂 JS，門檻比視覺化節點高很多。</p>
+    <section id="when_to_use" data-nav="Code or Set">
+      <h2 data-icon="compare">Ask first: if Set can do it, do not use Code</h2>
+      <p>The Code node looking cool is not a reason to overuse it. <strong>If Set / IF / Switch can solve it, do not open a Code node</strong> — because the Code node is JavaScript, and whoever maintains it later (or future you) has to read the code and know JS as well. That bar is a lot higher than a visual node.</p>
       <table class="data-table">
         <thead>
-          <tr><th>你要做的事</th><th>優先用</th><th>什麼時候升級到 Code</th></tr>
+          <tr><th>What you want to do</th><th>Use this first</th><th>When to move up to Code</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>把 <code>firstName</code> 跟 <code>lastName</code> 合成 <code>fullName</code></td>
-            <td><strong>Set / Edit Fields 節點</strong>——用 Expression <code>{{ $json.firstName + ' ' + $json.lastName }}</code> 一行搞定，視覺化最快。</td>
-            <td>不需要升級。</td>
+            <td>Combine <code>firstName</code> and <code>lastName</code> into <code>fullName</code></td>
+            <td><strong>The Set / Edit Fields node</strong> — one expression, <code>{{ $json.firstName + ' ' + $json.lastName }}</code>, and it is done; the visual route is fastest.</td>
+            <td>No need to move up.</td>
           </tr>
           <tr>
-            <td>金額 &gt; 1000 才走 A 路徑，否則走 B</td>
-            <td><strong>IF 節點</strong>——兩條分支明確畫在畫布上，一眼看懂邏輯。</td>
-            <td>不需要升級。</td>
+            <td>Amount &gt; 1000 takes path A, everything else takes B</td>
+            <td><strong>The IF node</strong> — two branches drawn plainly on the canvas, so the logic reads at a glance.</td>
+            <td>No need to move up.</td>
           </tr>
           <tr>
-            <td>按「訂單狀態」分成三個路徑</td>
-            <td><strong>Switch 節點</strong>——多路分支的原生節點。</td>
-            <td>不需要升級。</td>
+            <td>Split into three paths by "order status"</td>
+            <td><strong>The Switch node</strong> — the native node for multi-way branching.</td>
+            <td>No need to move up.</td>
           </tr>
           <tr>
-            <td>把 items 過濾成「金額 &gt; 1000」的那幾筆</td>
-            <td><strong>Filter 節點</strong>（新版有這個），或 IF 節點單邊接。</td>
-            <td>條件牽扯多個欄位交叉判斷、或要動態算條件，升 Code。</td>
+            <td>Filter items down to the ones where amount &gt; 1000</td>
+            <td><strong>The Filter node</strong> (newer versions have it), or an IF node with one output wired.</td>
+            <td>Move up to Code when the condition crosses several fields, or when the condition itself has to be calculated.</td>
           </tr>
           <tr>
-            <td>對每筆 item 做「加欄位、算新值」</td>
-            <td><strong>Set 節點 + Expression</strong>——大多能搞定。</td>
-            <td>要跑 loop、或條件轉換超過 3-4 個 case 時升 Code。</td>
+            <td>Add a field or calculate a new value on every item</td>
+            <td><strong>The Set node plus an expression</strong> — that covers most of it.</td>
+            <td>Move up to Code when you need a loop, or when the conditional transformation runs past 3-4 cases.</td>
           </tr>
           <tr>
-            <td>把所有 items 加總、算平均、group by</td>
-            <td><strong>Aggregate 節點</strong>（有內建），或 Summarize 節點。</td>
-            <td>要算「前 N 名」、多維度分組、比較複雜的統計時升 Code。</td>
+            <td>Sum all the items, average them, group them by something</td>
+            <td><strong>The Aggregate node</strong> (built in), or the Summarize node.</td>
+            <td>Move up to Code for a top-N ranking, grouping on several dimensions, or anything statistically involved.</td>
           </tr>
           <tr>
-            <td>把巢狀 API response 拆解、重新組合 JSON 結構</td>
-            <td><strong>Set 節點</strong> 加 Expression 通常撐得住。</td>
-            <td>三層以上巢狀、或需要跑 map/reduce 才升 Code。</td>
+            <td>Take a nested API response apart and rebuild the JSON structure</td>
+            <td><strong>The Set node</strong> plus expressions usually holds up.</td>
+            <td>Move up to Code only at three levels of nesting or more, or when you need map/reduce.</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>提示：</strong>判斷公式——「這個邏輯用 3 個 Set 節點做得到嗎？」做得到就用 Set，做不到再開 Code。Set 節點雖然多，但下次別人打開 workflow 一眼看得懂，這比省 2 個節點但塞一堆 code 划算太多。</div>
+      <div class="callout tip"><strong>Tip:</strong> the test to apply — "could three Set nodes do this?" If they could, use Set; if not, open a Code node. Several Set nodes look like more work, but the next person who opens the workflow understands it at a glance, and that is worth far more than saving two nodes by burying a pile of code in one.</div>
     </section>
 
-    <section id="two_languages" data-nav="JS 還是 Python">
-      <h2 data-icon="tabs">Code node 有兩種語言可以選</h2>
-      <p>打開 Code node，右上角 <strong>Language</strong> 有兩個選項：JavaScript 跟 Python。實務上 <strong>99% 情況選 JavaScript</strong>，理由如下。</p>
+    <section id="two_languages" data-nav="JS or Python">
+      <h2 data-icon="tabs">The Code node gives you two languages</h2>
+      <p>Open a Code node and the <strong>Language</strong> option in the top right has two choices: JavaScript and Python. In practice, <strong>pick JavaScript 99% of the time</strong>. Here is why.</p>
       <table class="data-table">
         <thead>
-          <tr><th>語言</th><th>怎麼跑</th><th>優點</th><th>缺點</th><th>建議</th></tr>
+          <tr><th>Language</th><th>How it runs</th><th>Upside</th><th>Downside</th><th>Recommendation</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>JavaScript</strong>（預設）</td>
-            <td>透過 n8n 內建 sandbox 執行；自架時也可切到<strong>task runners</strong>（獨立子行程，較新的官方推薦架構）。</td>
-            <td>官方主打；helper API 完整；範例最多；跑得快。</td>
-            <td>預設 sandbox 不能 <code>require</code> 外部 npm 套件（要開 <code>NODE_FUNCTION_ALLOW_EXTERNAL</code>）。</td>
-            <td><strong>預設選這個。</strong>沒有特別理由就用 JS。</td>
+            <td><strong>JavaScript</strong> (the default)</td>
+            <td>Runs in n8n's built-in sandbox; when self-hosted you can also switch to <strong>task runners</strong> (separate child processes, the newer architecture n8n recommends).</td>
+            <td>The one n8n leads with; the helper API is complete; there are the most examples; it runs fast.</td>
+            <td>The default sandbox cannot <code>require</code> external npm packages (you have to enable <code>NODE_FUNCTION_ALLOW_EXTERNAL</code>).</td>
+            <td><strong>Pick this by default.</strong> Without a specific reason, use JS.</td>
           </tr>
           <tr>
             <td><strong>Python</strong></td>
-            <td>n8n 2 起改用 <strong>native Python task runner</strong>（1.111.0 引進、n8n 2 stable）；早期用的 <em>Pyodide</em>（WebAssembly）已標為 legacy、n8n 2 <strong>不再支援</strong>。</td>
-            <td>有 Python 現成邏輯要搬；能 <code>pip install</code> 標準庫 + 第三方套件（自架設好 task runner 才行）。</td>
-            <td>native Python 只吃<strong>括號存取</strong>（<code>_input.item['json']</code>，不能寫 <code>.json</code>）；Cloud 版是否啟用要看方案；社群範例仍以 JS 為主。</td>
-            <td>只在<strong>有現成 Python 邏輯要移植</strong>時才選。純粹「我比較會 Python」不是好理由——因為社群跟範例都在 JS 那邊。</td>
+            <td>From n8n 2 on it uses the <strong>native Python task runner</strong> (introduced in 1.111.0, stable in n8n 2); the earlier <em>Pyodide</em> (WebAssembly) route is marked legacy and n8n 2 <strong>no longer supports it</strong>.</td>
+            <td>You have existing Python logic to move over; you can <code>pip install</code> the standard library plus third-party packages (only when you self-host and have the task runner set up).</td>
+            <td>Native Python only takes <strong>bracket access</strong> (<code>_input.item['json']</code>, not <code>.json</code>); whether Cloud has it enabled depends on your plan; community examples are still mostly JS.</td>
+            <td>Pick it only when you have <strong>existing Python logic to port</strong>. "I am better at Python" on its own is not a good reason — the community and the examples are all on the JS side.</td>
           </tr>
         </tbody>
       </table>
-      <p>本章接下來所有範例都用 JavaScript。Python 語法差在：變數改成底線開頭（<code>_input</code>、<code>_json</code>），而且 native Python runner 只吃<strong>括號存取</strong>（<code>_input.item['json']['amount']</code>）——舊 Pyodide 允許的 <code>_input.item.json.amount</code> 點語法已不能用。需要時參考官方文件 <code>docs.n8n.io/build/code-in-n8n/using-the-code-node/</code>。</p>
+      <p>Every remaining example in this chapter is JavaScript. The Python syntax differs like this: variables start with an underscore (<code>_input</code>, <code>_json</code>), and the native Python runner only takes <strong>bracket access</strong> (<code>_input.item['json']['amount']</code>) — the <code>_input.item.json.amount</code> dot syntax that old Pyodide allowed no longer works. When you need it, see the official docs at <code>docs.n8n.io/build/code-in-n8n/using-the-code-node/</code>.</p>
     </section>
 
-    <section id="two_modes" data-nav="兩種執行模式">
-      <h2 data-icon="modes">兩種執行模式：一次全部 vs 逐筆</h2>
-      <p>打開 Code node，右側 <strong>Parameters</strong> 面板最上方（在 Language 選項旁）有一個 <strong>Mode</strong> 下拉——官方文件的原話是「Choose a mode」。兩個選項差很大，選錯會造成資料重複或漏掉。</p>
+    <section id="two_modes" data-nav="Two run modes">
+      <h2 data-icon="modes">Two run modes: all items at once vs one item at a time</h2>
+      <p>Open a Code node and at the top of the <strong>Parameters</strong> panel on the right (next to the Language option) there is a <strong>Mode</strong> dropdown — the official docs word it "Choose a mode". The two options behave very differently, and picking the wrong one duplicates or drops data.</p>
       <table class="data-table">
         <thead>
-          <tr><th>Mode</th><th>行為</th><th>什麼時候用</th><th>常見場景</th></tr>
+          <tr><th>Mode</th><th>Behavior</th><th>When to use it</th><th>Common use</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Run Once for All Items</strong>（預設）</td>
-            <td>整份 items 陣列一次進來，你的 code 跑<strong>一次</strong>，吐出新的 items 陣列。</td>
-            <td>要看到全部資料才能做決定：聚合、排序、group、算前 N 名。</td>
-            <td>「算總營收」「取前 5 大客戶」「按類別 group」「合併兩個上游」。</td>
+            <td><strong>Run Once for All Items</strong> (the default)</td>
+            <td>The whole items array comes in at once, your code runs <strong>once</strong>, and it returns a new items array.</td>
+            <td>When you have to see all the data before you can decide: aggregate, sort, group, rank the top N.</td>
+            <td>"Total the revenue", "take the top 5 customers", "group by category", "merge two upstreams".</td>
           </tr>
           <tr>
             <td><strong>Run Once for Each Item</strong></td>
-            <td>對<strong>每個 item</strong> 各跑一次你的 code，就像 for loop 幫你跑好。</td>
-            <td>只需看單筆資料就能決定，且轉換規則對每筆都一樣。</td>
-            <td>「幫每筆訂單加 tax」「每筆訊息重新格式化」「單筆呼叫 API 補資料」。</td>
+            <td>Your code runs once for <strong>each item</strong>, as if a for loop had already been written for you.</td>
+            <td>When a single item is enough to decide, and the transformation rule is the same for every one.</td>
+            <td>"Add tax to each order", "reformat each message", "call an API per item to fill in data".</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout warn"><strong>注意：</strong>Mode 選不同，code 寫法也不一樣：
+      <div class="callout warn"><strong>Warning:</strong> the mode you pick changes how the code is written:
         <ul>
-          <li>All Items：用 <code>$input.all()</code> 拿全部；<code>return</code> 要回傳<strong>陣列</strong> <code>[{ json: {} }, ...]</code>。</li>
-          <li>Each Item：用 <code>$input.item.json</code> 拿當前那筆；<code>return</code> 回<strong>一個</strong> <code>{ json: {} }</code>。</li>
+          <li>All Items: use <code>$input.all()</code> to get everything; <code>return</code> has to return an <strong>array</strong>, <code>[{ json: {} }, ...]</code>.</li>
+          <li>Each Item: use <code>$input.item.json</code> to get the current one; <code>return</code> returns <strong>a single</strong> <code>{ json: {} }</code>.</li>
         </ul>
-        搞混會噴 <code>Items to return were not valid</code> 或吐出空 output。<strong>本章範例默認 All Items 模式</strong>，除非特別註明。
+        Mixing them up throws <code>Items to return were not valid</code> or produces empty output. <strong>Examples in this chapter assume All Items mode</strong> unless stated otherwise.
       </div>
     </section>
 
-    <section id="pattern_filter" data-nav="pattern 1：過濾">
-      <h2 data-icon="steps">Pattern 1：過濾（filter）</h2>
-      <p>從一堆 items 挑出符合條件的那幾筆。<strong>All Items 模式</strong>。</p>
+    <section id="pattern_filter" data-nav="Pattern 1 · filter">
+      <h2 data-icon="steps">Pattern 1: filter</h2>
+      <p>Pick the items that match a condition out of a pile of them. <strong>All Items mode</strong>.</p>
       <pre class="code-block"><code>// 只留下金額大於 1000 的訂單
 return $input.all().filter(item =&gt; item.json.amount &gt; 1000);</code></pre>
-      <p>白話拆解：</p>
+      <p>In plain words:</p>
       <ul>
-        <li><code>$input.all()</code>：拿到<strong>全部進來的 items</strong>（陣列）。</li>
-        <li><code>.filter(item =&gt; ...)</code>：JavaScript 陣列的內建方法，對每筆跑那個判斷式，只留下判斷是 <code>true</code> 的。</li>
-        <li><code>item.json.amount &gt; 1000</code>：判斷式本體。<strong>把這裡改成你的條件就好。</strong></li>
-        <li><code>return ...</code>：吐回去給下游。</li>
+        <li><code>$input.all()</code>: gives you <strong>every item that came in</strong> (an array).</li>
+        <li><code>.filter(item =&gt; ...)</code>: a built-in JavaScript array method. It runs that test on every item and keeps only the ones where it is <code>true</code>.</li>
+        <li><code>item.json.amount &gt; 1000</code>: the test itself. <strong>Change this to your own condition and you are done.</strong></li>
+        <li><code>return ...</code>: hands the result to the downstream node.</li>
       </ul>
-      <p>Copy 這段、把 <code>amount &gt; 1000</code> 換成你要的條件（<code>item.json.status === 'paid'</code>、<code>item.json.tags.includes('VIP')</code> 都可以），就完成了。多條件用 <code>&amp;&amp;</code>（且）跟 <code>||</code>（或）串：</p>
+      <p>Copy this, swap <code>amount &gt; 1000</code> for the condition you want (<code>item.json.status === 'paid'</code> and <code>item.json.tags.includes('VIP')</code> both work), and that is it. Chain several conditions with <code>&amp;&amp;</code> (and) and <code>||</code> (or):</p>
       <pre class="code-block"><code>// 金額大於 1000 且客戶等級是 gold
 return $input.all().filter(item =&gt;
   item.json.amount &gt; 1000 &amp;&amp; item.json.tier === 'gold'
 );</code></pre>
-      <div class="callout tip"><strong>提示：</strong>Filter node 也能做這件事、還不用寫 code。但當條件牽扯多個欄位交叉判斷、或條件本身要動態算，Code node 更清楚。</div>
+      <div class="callout tip"><strong>Tip:</strong> the Filter node does this too, without any code. But when the condition crosses several fields, or the condition itself has to be calculated, the Code node is clearer.</div>
     </section>
 
-    <section id="pattern_map" data-nav="pattern 2：映射">
-      <h2 data-icon="steps">Pattern 2：映射（map / 轉換每筆）</h2>
-      <p>對每筆 item 做轉換：加欄位、改欄位、算新值。<strong>All Items 模式</strong>。</p>
+    <section id="pattern_map" data-nav="Pattern 2 · map">
+      <h2 data-icon="steps">Pattern 2: map (transform each item)</h2>
+      <p>Transform every item: add a field, change a field, calculate a new value. <strong>All Items mode</strong>.</p>
       <pre class="code-block"><code>// 把 firstName + lastName 合成 fullName，只保留 fullName 跟 age
 return $input.all().map(item =&gt; ({
   json: {
@@ -253,13 +253,13 @@ return $input.all().map(item =&gt; ({
     age: item.json.age
   }
 }));</code></pre>
-      <p>白話拆解：</p>
+      <p>In plain words:</p>
       <ul>
-        <li><code>.map(item =&gt; ({...}))</code>：對每筆 item 跑那個函式，回傳「新的 item」。</li>
-        <li><code>{ json: {...} }</code>：<strong>n8n item 的規定格式</strong>——每個 item 都要包一層 <code>json</code>。這個很容易忘，忘了就會噴 <code>Items to return were not valid</code>。</li>
-        <li><code>fullName: ...</code>、<code>age: ...</code>：你想輸出的欄位。想加什麼欄位就寫什麼。</li>
+        <li><code>.map(item =&gt; ({...}))</code>: runs that function on every item and returns a new item.</li>
+        <li><code>{ json: {...} }</code>: <strong>the format n8n requires for an item</strong> — every item has to be wrapped in a <code>json</code> layer. This one is easy to forget, and forgetting it throws <code>Items to return were not valid</code>.</li>
+        <li><code>fullName: ...</code>, <code>age: ...</code>: the fields you want in the output. Write whichever fields you want to add.</li>
       </ul>
-      <p>如果你只是要在原本 item 上「加一個欄位」而不是重建，用 spread 語法 <code>...item.json</code> 保留原本所有欄位再加新的：</p>
+      <p>If you only want to add a field to the original item rather than rebuild it, use the spread syntax <code>...item.json</code> to keep every original field and then add the new ones:</p>
       <pre class="code-block"><code>// 保留原本所有欄位，再多加 taxAmount 跟 total
 return $input.all().map(item =&gt; ({
   json: {
@@ -268,12 +268,12 @@ return $input.all().map(item =&gt; ({
     total: item.json.amount * 1.05
   }
 }));</code></pre>
-      <p><code>...item.json</code> 三個點是 JavaScript 的 <strong>spread</strong>——「把 <code>item.json</code> 所有欄位攤平在這裡」。這種寫法可以避免手動列所有欄位。</p>
+      <p>The three dots in <code>...item.json</code> are JavaScript's <strong>spread</strong> — "flatten every field of <code>item.json</code> in right here". Writing it this way saves you listing every field by hand.</p>
     </section>
 
-    <section id="pattern_aggregate" data-nav="pattern 3：聚合">
-      <h2 data-icon="steps">Pattern 3：聚合（aggregate）</h2>
-      <p>把一堆 items 縮成一筆總計。<strong>All Items 模式</strong>。</p>
+    <section id="pattern_aggregate" data-nav="Pattern 3 · aggregate">
+      <h2 data-icon="steps">Pattern 3: aggregate</h2>
+      <p>Shrink a pile of items down to one total. <strong>All Items mode</strong>.</p>
       <pre class="code-block"><code>// 把所有訂單金額加總，算出總營收跟筆數
 const total = $input.all().reduce((sum, item) =&gt; sum + item.json.amount, 0);
 const count = $input.all().length;
@@ -285,13 +285,13 @@ return [{
     average: total / count
   }
 }];</code></pre>
-      <p>白話拆解：</p>
+      <p>In plain words:</p>
       <ul>
-        <li><code>.reduce((sum, item) =&gt; sum + item.json.amount, 0)</code>：JavaScript 的 <strong>reduce</strong>，用來「把陣列一路加起來」。<code>sum</code> 從 <code>0</code> 開始（第二個參數），每次把 <code>item.json.amount</code> 加上去，最後回傳總和。</li>
-        <li><code>$input.all().length</code>：陣列長度就是筆數。</li>
-        <li><code>return [{ json: {...} }]</code>：注意<strong>還是要包成陣列</strong>，就算只吐一筆——<code>[{ json: {} }]</code>。忘了外層 <code>[]</code> 就會爆。</li>
+        <li><code>.reduce((sum, item) =&gt; sum + item.json.amount, 0)</code>: JavaScript's <strong>reduce</strong>, for adding an array up as it goes. <code>sum</code> starts at <code>0</code> (the second argument), each pass adds <code>item.json.amount</code> to it, and the total comes back at the end.</li>
+        <li><code>$input.all().length</code>: the length of the array is the item count.</li>
+        <li><code>return [{ json: {...} }]</code>: note that it <strong>still has to be wrapped in an array</strong>, even when you return only one item — <code>[{ json: {} }]</code>. Forget the outer <code>[]</code> and it blows up.</li>
       </ul>
-      <p>要 group by（例：按客戶分別加總），用 <code>reduce</code> 搭配物件累積：</p>
+      <p>To group by something (totalling per customer, say), pair <code>reduce</code> with an object accumulator:</p>
       <pre class="code-block"><code>// 按客戶名字加總金額
 const groups = $input.all().reduce((acc, item) =&gt; {
   const key = item.json.customer;
@@ -303,12 +303,12 @@ const groups = $input.all().reduce((acc, item) =&gt; {
 return Object.entries(groups).map(([customer, total]) =&gt; ({
   json: { customer, total }
 }));</code></pre>
-      <p>這段做的事：把所有訂單按 <code>customer</code> 分堆、每堆加總、最後每個客戶吐一筆。這是 Code node 最常見的「Set 做不到但 Code 一段就搞定」的例子。</p>
+      <p>What this does: sort every order into piles by <code>customer</code>, total each pile, and return one item per customer. This is the most common example of "Set cannot do it, but one block of Code can".</p>
     </section>
 
-    <section id="pattern_http" data-nav="pattern 4：呼叫外部">
-      <h2 data-icon="steps">Pattern 4：從 Code node 呼叫外部 API（很少用）</h2>
-      <p>Code node 內可以用 <code>await</code> 直接呼叫外部 API，但<strong>通常用 <a href="ch12_http_request.html">HTTP Request 節點</a>更好維護</strong>——它有 UI 幫你設 headers、auth、retry。真的要在 Code 內呼叫的話：</p>
+    <section id="pattern_http" data-nav="Pattern 4 · call an API">
+      <h2 data-icon="steps">Pattern 4: call an external API from the Code node (rare)</h2>
+      <p>Inside a Code node you can <code>await</code> a call to an external API directly, but <strong>the <a href="ch12_http_request.html">HTTP Request node</a> is usually easier to maintain</strong> — it has a UI for headers, auth and retry. If you really do need the call inside Code:</p>
       <pre class="code-block"><code>// 呼叫外部 API，把回應塞成一筆 item
 const response = await this.helpers.httpRequest({
   method: 'GET',
@@ -317,165 +317,165 @@ const response = await this.helpers.httpRequest({
 });
 
 return [{ json: response }];</code></pre>
-      <p><code>this.helpers.httpRequest(...)</code> 是 n8n 內建的 helper，等同 HTTP Request 節點但寫在 code 裡。<strong>使用時機：</strong>要在同一段邏輯裡連續呼叫 N 個 API、或依照某筆資料的欄位動態決定要不要打 API。純粹「呼叫一次 API」的話拉個 HTTP Request 節點就好。</p>
-      <div class="callout tip"><strong>提示：</strong>Code node sandbox 有限制，不是所有 Node.js API 都能用。<code>this.helpers.httpRequest</code>（跟其他 <code>this.helpers.*</code> 例如 <code>getBinaryDataBuffer</code>）、<code>crypto</code>（部分）、內建陣列/字串／JSON 方法都可以；<code>fs</code>、外部 <code>require</code>、直接 <code>fetch</code> 預設不行。要用 npm 套件請看官方文件的環境變數 <code>NODE_FUNCTION_ALLOW_EXTERNAL</code>（僅 self-host 有效，Cloud 無法）。</div>
+      <p><code>this.helpers.httpRequest(...)</code> is a helper n8n builds in — the HTTP Request node, written in code. <strong>When to use it:</strong> when one stretch of logic has to call N APIs in a row, or when a field on an item decides whether to call at all. For a plain single API call, drop in an HTTP Request node.</p>
+      <div class="callout tip"><strong>Tip:</strong> the Code node sandbox has limits — not every Node.js API is available. <code>this.helpers.httpRequest</code> (and the other <code>this.helpers.*</code>, such as <code>getBinaryDataBuffer</code>), <code>crypto</code> (partly) and the built-in array, string and JSON methods all work; <code>fs</code>, external <code>require</code> and a bare <code>fetch</code> do not, by default. For npm packages, see the environment variable <code>NODE_FUNCTION_ALLOW_EXTERNAL</code> in the official docs (self-host only; not possible on Cloud).</div>
     </section>
 
-    <section id="helpers" data-nav="常用 helper API">
-      <h2 data-icon="what">常用 helper API 速查</h2>
-      <p>Code node 有一堆 n8n 幫你注入的 helper（<code>$</code> 開頭的變數）。90% 時候只會用到下面幾個。</p>
+    <section id="helpers" data-nav="Helper APIs">
+      <h2 data-icon="what">Common helper APIs at a glance</h2>
+      <p>The Code node comes with a pile of helpers n8n injects for you (the variables starting with <code>$</code>). 90% of the time you only ever use the few below.</p>
       <table class="data-table">
         <thead>
-          <tr><th>寫法</th><th>是什麼</th><th>能不能在哪個 mode 用</th></tr>
+          <tr><th>How to write it</th><th>What it is</th><th>Which mode it works in</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><code>$input.all()</code></td>
-            <td>當前節點吃到的<strong>全部 items 陣列</strong>。</td>
-            <td>All Items 模式主用；Each Item 也能用但少見。</td>
+            <td><strong>The whole array of items</strong> this node received.</td>
+            <td>Mainly All Items mode; it works in Each Item too, but that is rare.</td>
           </tr>
           <tr>
             <td><code>$input.item</code></td>
-            <td>當前這筆 item（完整物件，含 <code>json</code> 跟 <code>binary</code>）。</td>
-            <td><strong>只在 Each Item 模式有意義。</strong></td>
+            <td>The current item (the full object, including <code>json</code> and <code>binary</code>).</td>
+            <td><strong>Only meaningful in Each Item mode.</strong></td>
           </tr>
           <tr>
             <td><code>$input.item.json</code></td>
-            <td>當前 item 的 <code>json</code> 部分（=<a href="ch14_expressions.html">Expression</a> 裡的 <code>$json</code>）。</td>
-            <td>Each Item 模式常用。</td>
+            <td>The <code>json</code> part of the current item (what an <a href="ch14_expressions.html">expression</a> calls <code>$json</code>).</td>
+            <td>Common in Each Item mode.</td>
           </tr>
           <tr>
             <td><code>$('Node Name').all()</code></td>
-            <td>抓<strong>指定上游節點</strong>的全部 items（不限直接上游）。</td>
-            <td>兩個 mode 都能用。</td>
+            <td>Grabs every item from <strong>a named upstream node</strong> (it does not have to be the direct upstream).</td>
+            <td>Works in both modes.</td>
           </tr>
           <tr>
             <td><code>$('Node Name').first()</code> / <code>.last()</code></td>
-            <td>抓指定上游節點的第一筆 / 最後一筆。</td>
-            <td>兩個 mode 都能用。</td>
+            <td>The first / last item from a named upstream node.</td>
+            <td>Works in both modes.</td>
           </tr>
           <tr>
             <td><code>$now</code></td>
-            <td>當前時間（<a href="ch14_expressions.html">Luxon</a> DateTime 物件）。</td>
-            <td>兩個 mode 都能用。</td>
+            <td>The current time (a <a href="ch14_expressions.html">Luxon</a> DateTime object).</td>
+            <td>Works in both modes.</td>
           </tr>
           <tr>
             <td><code>$today</code></td>
-            <td>今天 00:00（Luxon）。</td>
-            <td>兩個 mode 都能用。</td>
+            <td>Today at 00:00 (Luxon).</td>
+            <td>Works in both modes.</td>
           </tr>
           <tr>
             <td><code>$workflow.id</code> / <code>$workflow.name</code></td>
-            <td>當前 workflow 的 id 跟名稱。</td>
-            <td>兩個 mode 都能用。</td>
+            <td>The current workflow's id and name.</td>
+            <td>Works in both modes.</td>
           </tr>
           <tr>
             <td><code>$execution.id</code></td>
-            <td>當前這次執行的 id（Executions 頁面能查）。</td>
-            <td>兩個 mode 都能用。</td>
+            <td>The id of this run (you can look it up on the Executions page).</td>
+            <td>Works in both modes.</td>
           </tr>
           <tr>
             <td><code>console.log(x)</code></td>
-            <td>印到<a href="ch10_triggers.html">Executions 頁面</a>該節點的 log 分頁。</td>
-            <td>兩個 mode 都能用（debug 神器）。</td>
+            <td>Prints to that node's log tab on the <a href="ch10_triggers.html">Executions page</a>.</td>
+            <td>Works in both modes (the debugging workhorse).</td>
           </tr>
           <tr>
             <td><code>this.helpers.httpRequest({...})</code></td>
-            <td>呼叫外部 API（等同 HTTP Request 節點）。</td>
-            <td>兩個 mode 都能用，需 <code>await</code>。</td>
+            <td>Calls an external API (the equivalent of the HTTP Request node).</td>
+            <td>Works in both modes; needs <code>await</code>.</td>
           </tr>
         </tbody>
       </table>
-      <p>完整清單去官方文件 <code>docs.n8n.io/code/builtin/overview/</code>，還有 <code>$jmespath()</code>（JMESPath 查詢）、<code>$max()</code>／<code>$min()</code>、<code>DateTime</code>（直接叫 Luxon 建構器）這些進階的。</p>
+      <p>For the full list see the official docs at <code>docs.n8n.io/code/builtin/overview/</code>, which also covers the more advanced ones: <code>$jmespath()</code> (JMESPath queries), <code>$max()</code> / <code>$min()</code>, and <code>DateTime</code> (calling the Luxon constructor directly).</p>
     </section>
 
-    <section id="debug" data-nav="Code node 除錯">
-      <h2 data-icon="troubleshoot">Code node 出錯怎麼辦</h2>
-      <p>Code node 是最容易噴 error 的節點類型，因為你在寫程式碼。好消息是 n8n 的 error 訊息通常寫得夠清楚——照下面 4 步走。</p>
+    <section id="debug" data-nav="Debugging Code">
+      <h2 data-icon="troubleshoot">What to do when the Code node fails</h2>
+      <p>The Code node throws more errors than any other node type, because you are writing code. The good news is that n8n's error messages are usually clear enough — work through the 4 steps below.</p>
       <ol class="steps">
         <li>
-          <h3>看節點面板下方的紅色 error 訊息</h3>
-          <p>Code node 執行失敗時，節點本身會變紅、下方會顯示 error 訊息，通常包含<strong>行號</strong>。例：<code>SyntaxError at line 3</code>——直接跳到第 3 行看是不是引號沒對、括號沒閉。</p>
+          <h3>Read the red error message under the node panel</h3>
+          <p>When a Code node fails, the node itself turns red and an error message appears below it, usually including a <strong>line number</strong>. For example <code>SyntaxError at line 3</code> — jump straight to line 3 and check for an unmatched quote or an unclosed bracket.</p>
         </li>
         <li>
-          <h3>去 Executions 頁面看該節點的 log</h3>
-          <p>左側選單 <strong>Executions</strong> → 點失敗那筆 → 點 Code node → 上方切到 <strong>Logs</strong> 分頁。你在 code 裡打的 <code>console.log(x)</code> 全在這裡看得到。dev 期間狂 log 沒關係，沒人會怪你。</p>
+          <h3>Check that node's log on the Executions page</h3>
+          <p>Left sidebar <strong>Executions</strong> → click the failed run → click the Code node → switch to the <strong>Logs</strong> tab at the top. Every <code>console.log(x)</code> you wrote shows up here. Log as much as you like while you are still building; nobody will hold it against you.</p>
         </li>
         <li>
-          <h3>檢查 output 是不是正確格式</h3>
-          <p>Code node 成功執行但下游拿不到資料？看 output 是不是 <code>[{ json: {...} }]</code> 這個格式——外層要陣列、每筆要包 <code>json</code>。忘了包 <code>json</code> 是<strong>最常見的錯</strong>，例：直接 <code>return [{ name: 'Elmo' }]</code> 會被 n8n 認為每筆的資料是空的。正確：<code>return [{ json: { name: 'Elmo' } }]</code>。</p>
+          <h3>Check the output is in the right format</h3>
+          <p>The Code node ran fine but the downstream node gets nothing? Check whether the output is in the <code>[{ json: {...} }]</code> shape — an array on the outside, every item wrapped in <code>json</code>. Forgetting the <code>json</code> wrapper is <strong>the most common mistake</strong>: a bare <code>return [{ name: 'Elmo' }]</code> makes n8n read every item as empty. Correct: <code>return [{ json: { name: 'Elmo' } }]</code>.</p>
         </li>
         <li>
-          <h3>用 <code>console.log(JSON.stringify(x, null, 2))</code> 印巢狀物件</h3>
-          <p>直接 <code>console.log(item)</code> 有時只印 <code>[object Object]</code> 看不到內容，用 <code>JSON.stringify(item, null, 2)</code> 把物件轉成好讀的 JSON 字串再印，巢狀多層也一目了然。</p>
+          <h3>Print nested objects with <code>console.log(JSON.stringify(x, null, 2))</code></h3>
+          <p>A plain <code>console.log(item)</code> sometimes prints only <code>[object Object]</code> and shows you nothing. Use <code>JSON.stringify(item, null, 2)</code> to turn the object into readable JSON before printing, and even several layers of nesting are clear at a glance.</p>
         </li>
       </ol>
-      <div class="callout"><strong>觀念：</strong>Code node 的除錯循環很單純——<strong>改 code → 點 Execute step → 看 output / log → 再改</strong>。不要寫一大段才第一次執行，寫兩三行就試跑一次，這樣哪一行壞立刻抓出來。這跟前端寫 JS 的心法一模一樣。</div>
+      <div class="callout"><strong>Concept:</strong> the debugging loop for a Code node is simple — <strong>edit the code → click Execute step → read the output / log → edit again</strong>. Do not write a long block before your first run; run it after two or three lines and you catch the broken line immediately. This is exactly how front-end JS is written.</div>
     </section>
 
-    <section id="troubleshoot" data-nav="常見卡關">
-      <h2 data-icon="troubleshoot">常見卡關</h2>
+    <section id="troubleshoot" data-nav="Common pitfalls">
+      <h2 data-icon="troubleshoot">Common pitfalls</h2>
       <ol class="steps">
         <li>
-          <h3><code>SyntaxError: Unexpected token</code> 或 <code>Unexpected identifier</code></h3>
-          <p>JavaScript 語法錯，通常是<strong>引號不對稱、括號沒閉、分號亂放</strong>。error 訊息會告訴你行號，跳過去看那行前後。常見：混用中文引號 <code>「」</code> 跟英文 <code>''</code>（前者不是有效 JS 引號）；花括號 <code>{}</code> 少一邊；<code>=&gt;</code> 打成 <code>-&gt;</code>。</p>
+          <h3><code>SyntaxError: Unexpected token</code> or <code>Unexpected identifier</code></h3>
+          <p>A JavaScript syntax error, usually <strong>unmatched quotes, an unclosed bracket, or a stray semicolon</strong>. The error message gives you the line number; go and look at that line and the ones around it. Common cases: mixing Chinese quotation marks <code>「」</code> with English <code>''</code> (the first pair are not valid JS quotes); one half of a curly brace <code>{}</code> missing; <code>=&gt;</code> typed as <code>-&gt;</code>.</p>
         </li>
         <li>
           <h3><code>Cannot read properties of undefined (reading 'xxx')</code></h3>
-          <p>你要抓的欄位<strong>它的父層根本沒東西</strong>。例：<code>item.json.customer.email</code>，但 <code>customer</code> 這個欄位不存在。解法：（a）用 optional chaining <code>item.json.customer?.email</code>；（b）加 if 判斷 <code>if (!item.json.customer) return null;</code>；（c）先修上游節點，確認它真的回傳 <code>customer</code>。</p>
+          <p>The field you are reaching for has <strong>nothing in its parent</strong>. For example <code>item.json.customer.email</code>, when the <code>customer</code> field does not exist. Fixes: (a) use optional chaining, <code>item.json.customer?.email</code>; (b) add an if test, <code>if (!item.json.customer) return null;</code>; (c) fix the upstream node first and confirm it really returns <code>customer</code>.</p>
         </li>
         <li>
-          <h3>Output 空的，下游拿不到資料</h3>
-          <p>三個常見原因：（a）<strong>忘了寫 <code>return</code></strong>——function 沒 return 等於回 <code>undefined</code>；（b）<strong>忘了包 <code>{ json: {} }</code></strong>——n8n 認不出你的 output；（c）<strong>filter 條件太嚴格</strong>——沒有任何 item 符合，結果空陣列，正常但要檢查條件是不是打太緊。</p>
+          <h3>The output is empty and the downstream node gets nothing</h3>
+          <p>Three common causes: (a) <strong>you forgot the <code>return</code></strong> — a function with no return gives back <code>undefined</code>; (b) <strong>you forgot the <code>{ json: {} }</code> wrapper</strong> — n8n does not recognize your output; (c) <strong>the filter condition is too strict</strong> — no item matches, so the result is an empty array. That is normal, but check whether you tightened the condition too far.</p>
         </li>
         <li>
-          <h3>Code 執行很慢（&gt;30 秒 timeout）</h3>
-          <p>通常是大陣列（&gt;10,000 筆）在跑 <code>.map</code> / <code>.filter</code>。解法：上游先接 <a href="ch16_merge_split.html">Split In Batches 節點</a> 分批處理，每批 500-1000 筆送進 Code node。或者檢查 code 有沒有<strong>巢狀 loop</strong>（<code>.map</code> 內又 <code>.filter</code>）——那是 O(n²)，資料一多就爆炸。</p>
+          <h3>Code runs very slowly (&gt;30-second timeout)</h3>
+          <p>Usually a large array (&gt;10,000 items) running <code>.map</code> / <code>.filter</code>. The fix: put a <a href="ch16_merge_split.html">Split In Batches node</a> upstream and work in batches, feeding 500-1000 items into the Code node at a time. Or check the code for a <strong>nested loop</strong> (a <code>.map</code> with a <code>.filter</code> inside it) — that is O(n²), and it blows up as soon as the data grows.</p>
         </li>
         <li>
           <h3><code>Items to return were not valid</code></h3>
-          <p>你 return 的東西不是 n8n item 格式。正確格式：<code>[{ json: {...} }]</code>——外層陣列、每個元素是有 <code>json</code> key 的物件。錯誤：<code>return { name: 'Elmo' }</code>（不是陣列）、<code>return [{ name: 'Elmo' }]</code>（沒包 <code>json</code>）。Each Item 模式回 <strong>一個</strong> <code>{ json: {} }</code>；All Items 模式回<strong>陣列</strong>。</p>
+          <p>What you returned is not in n8n's item format. The correct shape: <code>[{ json: {...} }]</code> — an array on the outside, and every element an object with a <code>json</code> key. Wrong: <code>return { name: 'Elmo' }</code> (not an array), <code>return [{ name: 'Elmo' }]</code> (no <code>json</code> wrapper). Each Item mode returns <strong>a single</strong> <code>{ json: {} }</code>; All Items mode returns an <strong>array</strong>.</p>
         </li>
         <li>
-          <h3><code>ReferenceError: fetch is not defined</code> 或 <code>require is not defined</code></h3>
-          <p>Community 版 sandbox 沒開 <code>fetch</code> 跟 <code>require</code>。呼叫 API 改用 <code>await this.helpers.httpRequest({...})</code>；想引 npm 套件的話，self-host 才有解——設環境變數 <code>NODE_FUNCTION_ALLOW_EXTERNAL=lodash</code> 才會開放（Cloud 版無法）。</p>
+          <h3><code>ReferenceError: fetch is not defined</code> or <code>require is not defined</code></h3>
+          <p>The Community edition sandbox does not enable <code>fetch</code> or <code>require</code>. Call APIs with <code>await this.helpers.httpRequest({...})</code> instead; to pull in an npm package, self-hosting is the only route — set the environment variable <code>NODE_FUNCTION_ALLOW_EXTERNAL=lodash</code> to open it up (not possible on Cloud).</p>
         </li>
       </ol>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
       <details class="faq">
-        <summary>我完全不會 JavaScript，一定要學嗎？</summary>
-        <div class="body">不用。本章教的<strong>四個 pattern（filter / map / aggregate / http）</strong>抄起來、把條件跟欄位名改成你的就 80% 夠用。實務上業務／行銷同仁很少需要自己寫 Code node——如果真的遇到，把需求丟給工程師或 AI 助理，附上「上游 output 長這樣、我要輸出這樣」的範例，10 分鐘就能生出 code。這章看不懂完全 OK，直接跳到<a href="ch21_ai_agent.html">第 21 章 AI Agent</a> 也不影響後面的學習。</div>
+        <summary>I do not know any JavaScript. Do I have to learn it?</summary>
+        <div class="body">No. Copy the <strong>four patterns this chapter teaches (filter / map / aggregate / http)</strong>, change the conditions and field names to yours, and that is 80% of what you need. In practice, sales / marketing colleagues rarely have to write a Code node themselves — and when it does come up, hand the requirement to an engineer or an AI assistant along with an example of "the upstream output looks like this, I want output like this", and you get code in 10 minutes. It is completely fine if this chapter goes over your head; jumping straight to <a href="ch21_ai_agent.html">Chapter 21 AI Agent</a> costs you nothing later on.</div>
       </details>
       <details class="faq">
-        <summary>Python 好還是 JavaScript 好？</summary>
-        <div class="body"><strong>優先 JavaScript</strong>。理由：（a）官方主打 JS，helper API 最完整；（b）社群範例 90% 以上是 JS；（c）n8n 2 起 Python 走 <strong>native task runner</strong>（自架要另外開 runner；先前的 Pyodide/WASM 版本在 n8n 2 已 legacy／不再支援）；（d）native Python 只吃括號存取（<code>_input.item['json']['x']</code>），從 JS 範例改寫要注意。<strong>什麼時候用 Python：</strong>你有現成 Python 邏輯（例：某個字串處理 function、公司內部工具的 Python 片段）要直接搬過來、又能 <code>pip install</code> 需要的套件。純粹「我比較會 Python」不是好理由。</div>
+        <summary>Is Python or JavaScript the better choice?</summary>
+        <div class="body"><strong>JavaScript first</strong>. Why: (a) n8n leads with JS and its helper API is the most complete; (b) over 90% of community examples are JS; (c) from n8n 2 on, Python runs through the <strong>native task runner</strong> (self-hosting means standing up a runner separately; the earlier Pyodide/WASM version is legacy / no longer supported in n8n 2); (d) native Python only takes bracket access (<code>_input.item['json']['x']</code>), so watch out when you rewrite a JS example. <strong>When to use Python:</strong> when you have existing Python logic (a string-handling function, say, or a Python snippet from an internal tool) to move over as-is, and you can <code>pip install</code> the packages it needs. "I am better at Python" on its own is not a good reason.</div>
       </details>
       <details class="faq">
-        <summary>Code node 可以用 npm 套件（例：<code>lodash</code>、<code>axios</code>）嗎？</summary>
-        <div class="body"><strong>Cloud 版跟預設的 Community 版：不行</strong>，sandbox 只開內建 modules（<code>crypto</code>、<code>querystring</code> 這種）。<strong>Self-host 可以</strong>，但要在 n8n container 的環境變數設 <code>NODE_FUNCTION_ALLOW_EXTERNAL=lodash,axios</code>（用逗號列你要開的套件名），還要 <code>npm install</code> 進 container。Cloud 用戶想要類似效果，把邏輯拆成 sub-workflow（<a href="ch19_subworkflow.html">第 19 章</a>）或改用 HTTP Request 呼叫外部服務。</div>
+        <summary>Can the Code node use npm packages (<code>lodash</code> or <code>axios</code>, say)?</summary>
+        <div class="body"><strong>Cloud and the default Community edition: no</strong> — the sandbox only opens the built-in modules (<code>crypto</code>, <code>querystring</code> and the like). <strong>Self-hosting: yes</strong>, but you have to set the environment variable <code>NODE_FUNCTION_ALLOW_EXTERNAL=lodash,axios</code> on the n8n container (list the package names you want to open, comma separated) and <code>npm install</code> them into the container. Cloud users who want a similar effect can split the logic into a sub-workflow (<a href="ch19_subworkflow.html">Chapter 19</a>) or call an outside service with HTTP Request instead.</div>
       </details>
       <details class="faq">
-        <summary>兩個 Code node 之間可以共用變數嗎？</summary>
-        <div class="body"><strong>不能。</strong>每個 Code node 是<strong>獨立 sandbox</strong>，一個 Code node 裡宣告的 <code>const x = 5</code> 在下一個 Code node 看不到。要在節點之間傳資料，就走 n8n 的正規做法：把資料塞進 output 的 <code>json</code>，下一個節點用 <code>$('前一個 Code').item.json.x</code> 抓。想全 workflow 共用常數的話用 <strong>Set 節點</strong>存或 <strong>workflow variables</strong>（Enterprise 才有 <code>$vars</code>）。</div>
+        <summary>Can two Code nodes share a variable?</summary>
+        <div class="body"><strong>No.</strong> Every Code node is <strong>its own sandbox</strong>: a <code>const x = 5</code> declared in one Code node is invisible in the next. To pass data between nodes, take n8n's regular route — put the data in the output's <code>json</code>, and read it in the next node with <code>$('前一個 Code').item.json.x</code>. For a constant shared across the whole workflow, store it in a <strong>Set node</strong> or use <strong>workflow variables</strong> (<code>$vars</code> is Enterprise only).</div>
       </details>
       <details class="faq">
-        <summary>Code node 可以 <code>await</code> 呼叫其他 workflow 嗎？</summary>
-        <div class="body">不能直接呼叫其他 workflow——那是 <a href="ch19_subworkflow.html">Execute Workflow 節點</a>的工作。Code node 內能 <code>await</code> 的東西是 <code>this.helpers.httpRequest</code>（呼叫外部 API）跟其他回 Promise 的內建 helper。想在 Code node 裡跑 sub-workflow 的話，改成：Code node 準備好資料 → Execute Workflow 節點 → 下一個 Code node 接續處理。這樣分工也比較清楚。</div>
+        <summary>Can a Code node <code>await</code> a call to another workflow?</summary>
+        <div class="body">It cannot call another workflow directly — that is the <a href="ch19_subworkflow.html">Execute Workflow node</a>'s job. What a Code node can <code>await</code> is <code>this.helpers.httpRequest</code> (calling an external API) and the other built-in helpers that return a Promise. If you want a sub-workflow to run from inside a Code node, restructure it: the Code node prepares the data → Execute Workflow node → the next Code node carries on. The division of labor is clearer that way too.</div>
       </details>
       <details class="faq">
-        <summary>ChatGPT 生的 Code node code 能不能直接貼？</summary>
-        <div class="body"><strong>可以，但要驗證兩件事：</strong>（a）它用的變數是<strong>正確的 n8n helper</strong>——常見錯誤是 AI 生 <code>items[0].json</code>（舊 v0 寫法）而不是 <code>$input.all()[0].json</code>（新寫法），跑起來會 <code>items is not defined</code>；（b）output 有沒有包 <code>{ json: {} }</code> 格式。給 AI 生 code 時明確告訴它「n8n Code node、JavaScript、Run Once for All Items 模式、用 <code>$input.all()</code>」，會生對的機率高很多。生完先小資料量試跑一次再上線。</div>
+        <summary>Can I paste Code node code that ChatGPT generated straight in?</summary>
+        <div class="body"><strong>Yes, but verify two things:</strong> (a) that the variables it used are <strong>real n8n helpers</strong> — a common failure is the AI writing <code>items[0].json</code> (the old v0 style) instead of <code>$input.all()[0].json</code> (the current one), which fails at run time with <code>items is not defined</code>; (b) whether the output is wrapped in the <code>{ json: {} }</code> format. When you ask an AI for the code, tell it plainly: "n8n Code node, JavaScript, Run Once for All Items mode, use <code>$input.all()</code>" — the odds of getting it right go up a lot. Run the result on a small amount of data once before you take it live.</div>
       </details>
       <details class="faq">
-        <summary>Code node 跟 <a href="ch14_expressions.html">Expression</a> 差在哪？</summary>
-        <div class="body">Expression 是「<strong>單一欄位</strong>的動態填空」，只能寫一行、不能宣告變數、不能 loop、不能 <code>await</code>。Code node 是<strong>完整節點</strong>，可以寫很多行、能宣告變數、能跑 loop、能 <code>await</code>、能 <code>console.log</code>。<strong>判斷公式：</strong>邏輯一行 <code>{{ }}</code> 塞得下就用 Expression；一行塞不下（要 if/else 多分支、要 for loop、要暫存中間值）就用 Code node。Expression 適合「動態填值」，Code node 適合「處理邏輯」。</div>
+        <summary>What is the difference between the Code node and an <a href="ch14_expressions.html">expression</a>?</summary>
+        <div class="body">An expression is a dynamic fill-in-the-blank for <strong>a single field</strong>: one line only, no variable declarations, no loops, no <code>await</code>. The Code node is <strong>a whole node</strong>: many lines, variables, loops, <code>await</code>, <code>console.log</code>. <strong>The test to apply:</strong> if the logic fits inside one <code>{{ }}</code>, use an expression; if it does not (if/else with several branches, a for loop, an intermediate value to hold on to), use the Code node. Expressions are for filling in values dynamically; the Code node is for handling logic.</div>
       </details>
       <details class="faq">
-        <summary>怎麼知道我寫的 code 在 Cloud 版能不能跑？</summary>
-        <div class="body">最快的方法：<strong>直接在 Cloud 版試跑</strong>。sandbox 限制的東西執行時會噴 error（<code>fetch is not defined</code>、<code>require is not defined</code>、<code>Module not found</code>）。原則上：（a）內建 JS 語法全部 OK（陣列方法、字串方法、JSON、Math、Date）；（b）n8n helper（<code>$input</code>、<code>$now</code>、<code>this.helpers.httpRequest</code>）OK；（c）npm 套件、<code>fs</code> 檔案系統、直接 <code>fetch</code> 通常不行。有疑慮先做 sandbox test workflow 跑幾行試水溫。</div>
+        <summary>How do I know whether my code will run on Cloud?</summary>
+        <div class="body">The fastest method: <strong>run it on Cloud and see</strong>. Anything the sandbox blocks throws an error at run time (<code>fetch is not defined</code>, <code>require is not defined</code>, <code>Module not found</code>). As a rule: (a) all built-in JS syntax is fine (array methods, string methods, JSON, Math, Date); (b) n8n helpers (<code>$input</code>, <code>$now</code>, <code>this.helpers.httpRequest</code>) are fine; (c) npm packages, the <code>fs</code> file system and a bare <code>fetch</code> generally are not. If you are unsure, make a sandbox test workflow and run a few lines to feel it out.</div>
       </details>
     </section>
 

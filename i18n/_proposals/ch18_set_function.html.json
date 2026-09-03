@@ -1,0 +1,150 @@
+{
+  "file": "ch18_set_function.html",
+  "entries": [
+    {
+      "unit": "#why",
+      "zh": "<code>{ firstName: \"小明\", lastName: \"王\", email: \"a@b.com\", age: 28, avatar_url: \"...\", ... }</code>",
+      "en": "<code>{ firstName: \"Xiaoming\", lastName: \"Wang\", email: \"a@b.com\", age: 28, avatar_url: \"...\", ... }</code>"
+    },
+    {
+      "unit": "#why",
+      "zh": "<code>{ 姓名: \"王小明\", 信箱: \"a@b.com\", 年齡: 28 }</code>",
+      "en": "<code>{ Name: \"Wang Xiaoming\", Email: \"a@b.com\", Age: 28 }</code>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<pre class=\"code-block\"><code>{\n  \"firstName\": \"小明\",\n  \"lastName\": \"王\",\n  \"email\": \"xiaoming@example.com\",\n  \"age\": 28\n}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>{\n  \"firstName\": \"Xiaoming\",\n  \"lastName\": \"Wang\",\n  \"email\": \"xiaoming@example.com\",\n  \"age\": 28\n}</code></pre>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<code>王小明</code>",
+      "en": "<code>Wang Xiaoming</code>"
+    },
+    {
+      "unit": "#steps",
+      "zh": "<code>{ firstName: \"小明\", lastName: \"王\", email: \"...\", age: 28, full_name: \"王小明\" }</code>",
+      "en": "<code>{ firstName: \"Xiaoming\", lastName: \"Wang\", email: \"...\", age: 28, full_name: \"Wang Xiaoming\" }</code>"
+    },
+    {
+      "unit": "#tips",
+      "zh": "<code>已處理</code>",
+      "en": "<code>Processed</code>"
+    },
+    {
+      "unit": "#tips",
+      "zh": "<code>{{ $json.舊欄位 }}</code>",
+      "en": "<code>{{ $json.oldField }}</code>"
+    },
+    {
+      "unit": "#tips",
+      "zh": "<code>{{ $json.phone || '未提供' }}</code>",
+      "en": "<code>{{ $json.phone || 'not provided' }}</code>"
+    },
+    {
+      "unit": "#tips",
+      "zh": "<code>條件 ? A : B</code>",
+      "en": "<code>condition ? A : B</code>"
+    },
+    {
+      "unit": "#tips",
+      "zh": "<code>{{ $json.amount &gt; 1000 ? 'VIP' : '一般' }}</code>",
+      "en": "<code>{{ $json.amount &gt; 1000 ? 'VIP' : 'Standard' }}</code>"
+    },
+    {
+      "unit": "#warning",
+      "zh": "<code>{{ $('節點名').item.json.xxx }}</code>",
+      "en": "<code>{{ $('Node Name').item.json.xxx }}</code>"
+    },
+    {
+      "unit": "#advanced",
+      "zh": "<pre class=\"code-block\"><code>{\n  \"id\": \"ORD-1234\",\n  \"firstName\": \"小明\",\n  \"lastName\": \"王\",\n  \"amount\": 1500\n}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>{\n  \"id\": \"ORD-1234\",\n  \"firstName\": \"Xiaoming\",\n  \"lastName\": \"Wang\",\n  \"amount\": 1500\n}</code></pre>"
+    },
+    {
+      "unit": "#advanced",
+      "zh": "<pre class=\"code-block\"><code>{\n  \"orderId\": \"ORD-1234\",\n  \"customer\": {\n    \"name\": \"王小明\",\n    \"vip\": true\n  }\n}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>{\n  \"orderId\": \"ORD-1234\",\n  \"customer\": {\n    \"name\": \"Wang Xiaoming\",\n    \"vip\": true\n  }\n}</code></pre>"
+    },
+    {
+      "unit": "#records",
+      "zh": "<pre class=\"code-block\"><code>{\n  \"data\": {\n    \"user\": {\n      \"name\": \"王小明\",\n      \"email\": \"xiaoming@example.com\"\n    },\n    \"order\": {\n      \"id\": \"ORD-9527\",\n      \"amount\": 2800\n    },\n    \"meta\": {\n      \"ts\": \"2026-08-16T10:30:00Z\"\n    }\n  }\n}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>{\n  \"data\": {\n    \"user\": {\n      \"name\": \"Wang Xiaoming\",\n      \"email\": \"xiaoming@example.com\"\n    },\n    \"order\": {\n      \"id\": \"ORD-9527\",\n      \"amount\": 2800\n    },\n    \"meta\": {\n      \"ts\": \"2026-08-16T10:30:00Z\"\n    }\n  }\n}</code></pre>"
+    },
+    {
+      "unit": "#records",
+      "zh": "<code>訂單編號 | 姓名 | 信箱 | 金額 | 時間 | VIP</code>",
+      "en": "<code>Order ID | Name | Email | Amount | Timestamp | VIP</code>"
+    },
+    {
+      "unit": "#records",
+      "zh": "<code>訂單編號</code>",
+      "en": "<code>Order ID</code>"
+    },
+    {
+      "unit": "#records",
+      "zh": "<code>姓名</code>",
+      "en": "<code>Name</code>"
+    },
+    {
+      "unit": "#records",
+      "zh": "<code>信箱</code>",
+      "en": "<code>Email</code>"
+    },
+    {
+      "unit": "#records",
+      "zh": "<code>金額</code>",
+      "en": "<code>Amount</code>"
+    },
+    {
+      "unit": "#records",
+      "zh": "<code>時間</code>",
+      "en": "<code>Timestamp</code>"
+    },
+    {
+      "unit": "#records",
+      "zh": "<code>{{ $json.data.order.amount &gt; 1000 ? 'VIP' : '一般' }}</code>",
+      "en": "<code>{{ $json.data.order.amount &gt; 1000 ? 'VIP' : 'Standard' }}</code>"
+    },
+    {
+      "unit": "#records",
+      "zh": "<code>{ 訂單編號: \"ORD-9527\", 姓名: \"王小明\", 信箱: \"...\", 金額: 2800, 時間: \"...\", VIP: \"VIP\" }</code>",
+      "en": "<code>{ \"Order ID\": \"ORD-9527\", \"Name\": \"Wang Xiaoming\", \"Email\": \"...\", \"Amount\": 2800, \"Timestamp\": \"...\", \"VIP\": \"VIP\" }</code>"
+    },
+    {
+      "unit": "#pro_tips",
+      "zh": "<code>{ customer: { name: \"小明\", email: \"...\" } }</code>",
+      "en": "<code>{ customer: { name: \"Xiaoming\", email: \"...\" } }</code>"
+    },
+    {
+      "unit": "#pro_tips",
+      "zh": "<code>delete item.json.欄位名</code>",
+      "en": "<code>delete item.json.fieldName</code>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>$json.欄 名</code>",
+      "en": "<code>$json.field name</code>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>{{ $json['欄 名'] }}</code>",
+      "en": "<code>{{ $json['field name'] }}</code>"
+    },
+    {
+      "unit": "#troubleshoot",
+      "zh": "<code>{{ $json['姓 名'] }}</code>",
+      "en": "<code>{{ $json['full name'] }}</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>「已隱藏」</code>",
+      "en": "<code>\"hidden\"</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>{{ $('節點名稱').item.json.欄位 }}</code>",
+      "en": "<code>{{ $('Node Name').item.json.field }}</code>"
+    }
+  ]
+}

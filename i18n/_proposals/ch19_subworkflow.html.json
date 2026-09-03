@@ -1,0 +1,25 @@
+{
+  "file": "ch19_subworkflow.html",
+  "entries": [
+    {
+      "unit": "#steps",
+      "zh": "<pre class=\"code-block\"><code>{\n  \"severity\": \"error\",\n  \"message\": \"資料庫連線失敗\",\n  \"source\": \"backup-daily\"\n}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>{\n  \"severity\": \"error\",\n  \"message\": \"Database connection failed\",\n  \"source\": \"backup-daily\"\n}</code></pre>"
+    },
+    {
+      "unit": "#labels",
+      "zh": "<code>[Cron] 每小時同步 CRM</code>",
+      "en": "<code>[Cron] Hourly CRM sync</code>"
+    },
+    {
+      "unit": "#labels",
+      "zh": "<code>[Webhook] Line Bot 回應</code>",
+      "en": "<code>[Webhook] LINE bot reply</code>"
+    },
+    {
+      "unit": "#labels",
+      "zh": "<code>測試新 API</code>",
+      "en": "<code>Test new API</code>"
+    }
+  ]
+}
