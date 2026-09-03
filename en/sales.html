@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WoowTech n8n 自動化方案 · 銷售手冊 · HAOS add-on 與雲端 PaaS 兩種模式</title>
-  <meta name="description" content="把公司裡「有人在做但不該有人做」的重複勞動，交給 24 小時待命的 n8n workflow。WoowTech 提供兩種模式：HAOS 內建 add-on ＋ 代寫 workflow，或直接租用 n8n.woowtech.io 雲端帳號，都由 WoowTech 代維護。" />
+  <title>WoowTech n8n Automation · Sales Handbook · Two options: self-hosted and managed by WoowTech</title>
+  <meta name="description" content="Hand the repetitive work that people do—but should not have to do—to n8n workflows that run around the clock. WoowTech offers Option A (self-hosted) and Option B (managed by WoowTech), including workflow implementation and maintenance." />
   <meta name="author" content="WoowTech" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/sales.html" />
@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
   <style>
-/* n8n 銷售手冊 — Woow_ha_tutorial_site 版型 × woowtech Brand Prompt Library v2 */
+/* n8n Sales Handbook — Woow_ha_tutorial_site layout × WoowTech Brand Prompt Library v2 */
 :root {
   --ww-blue: #6183FC;
   --ww-blue-600: #4A6DE8;
@@ -166,7 +166,7 @@ section h3 {
 }
 section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 
-/* 功能卡（沿用目錄頁 chapter-card 視覺） */
+/* Feature cards (following the catalog chapter-card design) */
 .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .feature-card {
   padding: 26px 24px; border: 1px solid var(--hairline); border-radius: var(--radius);
@@ -181,7 +181,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .feature-card h3 { margin: 0 0 8px; font-size: 18px; }
 .feature-card > p { margin: 0 0 14px; color: var(--ink-700); font-size: 14.5px; }
 
-/* Mode（兩種模式）大卡 */
+/* Large option cards */
 .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 20px; }
 .mode-card {
   padding: 28px 26px; border: 1.5px solid var(--hairline); border-radius: var(--radius);
@@ -204,7 +204,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .mode-card ul { margin: 0 0 14px; padding-left: 20px; font-size: 14px; }
 .mode-card ul li { margin-bottom: 6px; color: var(--ink-700); }
 
-/* 對話範例 chips */
+/* Conversation-example chips */
 .chips { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 0; max-width: var(--max-content); }
 .chip {
   background: var(--surface-alt); border: 1px solid var(--hairline);
@@ -244,7 +244,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .callout.warn::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B94D22' d='M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z'/%3E%3C/svg%3E"); }
 .callout strong { color: var(--ink-900); }
 
-/* 資料表格 */
+/* Data tables */
 .data-table {
   width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
   font-size: 14px; background: var(--surface);
@@ -316,7 +316,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 .site-footer p { margin: 0 0 6px; }
 .site-footer .footer-meta { color: var(--ink-500); font-size: 12.5px; }
 
-/* 手機版側欄收合 */
+/* Collapsible mobile sidebar */
 .nav-toggle {
   display: none; width: 100%; align-items: center; justify-content: space-between; gap: 8px;
   margin: 4px 0 0; padding: 12px 16px;
@@ -356,211 +356,211 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 <body>
 <div class="layout">
   <aside class="sidebar" id="sidebar">
-    <a class="brand" href="#top">WoowTech n8n 自動化方案</a>
+    <a class="brand" href="#top">WoowTech n8n Automation</a>
     <div class="brand-sub">WoowTech · The Smart Space Solution</div>
     <!-- i18n:switch --><nav class="lang-switch" aria-label="Language"><a href="../sales.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="sales.html" lang="en" aria-current="page">EN</a></nav><!-- /i18n:switch -->
-    <a class="hub-link" href="index.html">◂ n8n 資源總覽</a>
-    <button class="nav-toggle" id="navToggle" type="button">本冊內容<span class="nav-toggle-caret"></span></button>
+    <a class="hub-link" href="index.html">◂ n8n Resource Hub</a>
+    <button class="nav-toggle" id="navToggle" type="button">In this handbook<span class="nav-toggle-caret"></span></button>
     <div class="toc-in-chapter">
-      <h2>本冊內容</h2>
-      <a href="#why">為什麼需要 n8n</a>
-      <a href="#what">n8n 是什麼</a>
-      <a href="#modes">兩種模式</a>
-      <a href="#mode-onprem">模式 A：HAOS add-on</a>
-      <a href="#mode-cloud">模式 B：雲端 PaaS</a>
-      <a href="#scenarios">實際使用場景</a>
+      <h2>In this handbook</h2>
+      <a href="#why">Why n8n</a>
+      <a href="#what">What n8n is</a>
+      <a href="#modes">Two options</a>
+      <a href="#mode-onprem">Option A: self-hosted</a>
+      <a href="#mode-cloud">Option B: managed by WoowTech</a>
+      <a href="#scenarios">Real scenarios</a>
       <a href="#templates">Template Package</a>
-      <a href="#compare">方案比一比</a>
-      <a href="#security">資安與 SLA</a>
-      <a href="#faq">常見問題</a>
-      <a href="#cta">預約諮詢</a>
+      <a href="#compare">Compare options</a>
+      <a href="#security">Security and SLA</a>
+      <a href="#faq">FAQ</a>
+      <a href="#cta">Book a consultation [CONTACT CHANNEL TBD]</a>
     </div>
   </aside>
 
   <main class="content" id="top">
     <div class="chapter-header">
       <span class="kicker-script">automate everything boring</span>
-      <div class="kicker">WoowTech 銷售手冊</div>
-      <h1>把重複工作外包給流程自動化，公司也不用自己養一個 n8n 團隊</h1>
-      <p class="lead">n8n 是全球排名第一的開源工作流引擎，但自架、代管、維護、寫 workflow 都是專業活。WoowTech 幫你把這一整段外包成兩種現成方案——你只要負責「講清楚重複的是什麼」，剩下的都在我們手上。</p>
+      <div class="kicker">WoowTech Sales Handbook</div>
+      <h1>Hand repetitive work over to automation without building an in-house n8n team</h1>
+      <p class="lead">n8n is an open-source workflow automation engine, but self-hosting, operations, maintenance, and workflow development all require specialist skills. WoowTech packages that work into two options. You describe the repetitive task; we implement and operate the automation.</p>
       <div class="kpi-frame">
-        <div class="kpi"><div class="num">2 種模式</div><div class="cap">內建 add-on 或雲端 PaaS</div></div>
-        <div class="kpi"><div class="num">0 位工程師</div><div class="cap">不用自己養 n8n 維運人力</div></div>
-        <div class="kpi"><div class="num">1 個窗口</div><div class="cap">代寫、代維、代排錯，一條龍</div></div>
+        <div class="kpi"><div class="num">2 options</div><div class="cap">Self-hosted or managed by WoowTech</div></div>
+        <div class="kpi"><div class="num">0 engineers</div><div class="cap">No in-house n8n operations team required</div></div>
+        <div class="kpi"><div class="num">1 point of contact</div><div class="cap">Implementation, maintenance, and troubleshooting</div></div>
       </div>
     </div>
 
-    <section id="why" data-nav="為什麼需要 n8n">
-      <h2 data-icon="why">為什麼公司需要 n8n</h2>
-      <p>翻開公司裡任何一個部門，都有一堆「有人在做，但其實不該有人做」的重複工作：把訂單資料從 A 系統手工複製到 B 表格、Line 客戶問題手動轉派、每天早上 8:00 打開 Excel 抓昨天業績再貼進報表——這些每天吃掉 1-2 小時，一年就是 300 個工時。</p>
-      <p>這一類工作的共通點是：<strong>規則明確、資料在系統裡、動作重複</strong>。這正是 n8n 的甜蜜點——把「規則」畫成 workflow，n8n 24 小時幫你跑，你只要偶爾看報表確認沒壞。</p>
-      <div class="callout"><strong>觀念：</strong>Zapier／Make 大家聽過，n8n 是它們的開源版：一樣拖拉節點畫流程，但可以自架、資料留在自己家、按量計費不用綁月費、想接什麼就接什麼。GitHub 上超過 130k ★，是這類工具裡社群最活的一個。</div>
+    <section id="why" data-nav="Why n8n">
+      <h2 data-icon="why">Why your company needs n8n</h2>
+      <p>Every department has repetitive work that someone does but nobody should have to do: manually copying orders from system A to spreadsheet B, routing customer questions by hand, or opening Excel at 8:00 every morning to paste yesterday’s results into a report. These tasks consume 1–2 hours a day, or 300 staff hours a year.</p>
+      <p>These tasks have three things in common: <strong>clear rules, data already in systems, and repeated actions</strong>. That is where n8n fits: represent the rules as a workflow, let n8n run it around the clock, and review the reports periodically to confirm it is healthy.</p>
+      <div class="callout"><strong>Concept:</strong>Like Zapier and Make, n8n lets you connect nodes visually. Unlike them, it is open source: you can self-host it, retain your data, avoid a fixed monthly plan with usage-based infrastructure, and integrate any API. It has more than 130k ★ on GitHub and one of the most active communities in this category.</div>
     </section>
 
-    <section id="what" data-nav="n8n 是什麼">
-      <h2 data-icon="what">n8n 是什麼</h2>
-      <p>n8n（讀作「n-eight-n」）是一款開源工作流自動化引擎。畫面上是一片畫布，你把「觸發器」（Trigger）跟「動作節點」（Action）拉出來連起來，就是一條 workflow：</p>
+    <section id="what" data-nav="What n8n is">
+      <h2 data-icon="what">What n8n is</h2>
+      <p>n8n (pronounced “n-eight-n”) is an open-source workflow automation engine. On its canvas, connect a Trigger to action nodes to create a workflow:</p>
       <ul>
-        <li><strong>觸發</strong>可以是排程（每天早上 8:00）、Webhook（有人填表單）、系統事件（Gmail 收到新信）。</li>
-        <li><strong>動作</strong>是接下來要做的事：查 Google Sheets、發 Slack、開 Notion 頁、丟 HTTP request 到內部系統。</li>
-        <li><strong>資料</strong>從第一個節點流到最後一個，中間可以判斷、分岔、合流、轉換格式。</li>
+        <li><strong>A trigger</strong>can be a schedule (8:00 every morning), a webhook (someone submits a form), or a system event (Gmail receives a message).</li>
+        <li><strong>An action</strong>is what happens next: query Google Sheets, post to Slack, create a Notion page, or send an HTTP request to an internal system.</li>
+        <li><strong>Data</strong>flows from the first node to the last. Along the way, a workflow can evaluate conditions, branch, merge, and transform formats.</li>
       </ul>
-      <p>官方 + 社群加起來超過 <strong>2,500 個節點</strong>（Slack、Gmail、Notion、Airtable、Google Workspace、Salesforce、Stripe、Line、Telegram、Discord、AI Agent……）——沒有現成節點的服務，用 HTTP Request 節點手打 API 也能接。</p>
-      <div class="callout tip"><strong>提示：</strong>你不需要理解上面這段。這本手冊接下來的兩種模式，就是把「n8n 是什麼」全部藏起來——你只要開口說「我想自動化這件事」，剩下的 WoowTech 接手。</div>
+      <p>Official and community integrations provide more than  <strong>2,500 nodes</strong>(Slack, Gmail, Notion, Airtable, Google Workspace, Salesforce, Stripe, LINE, Telegram, Discord, AI Agent, and more). For a service without a ready-made node, use HTTP Request to call its API.</p>
+      <div class="callout tip"><strong>Tip:</strong>You do not need to master those details. Both options hide the n8n implementation. Tell WoowTech what you want to automate, and we handle the rest.</div>
     </section>
 
-    <section id="modes" data-nav="兩種模式">
-      <h2 data-icon="modes">兩種模式，看你要不要自己有一顆</h2>
-      <p>不管走哪一條，你都不會碰到 n8n 的畫布——WoowTech 代寫、代維、代排錯。差別只在：<strong>n8n 這台伺服器要放在你家，還是放我們家</strong>。</p>
+    <section id="modes" data-nav="Two options">
+      <h2 data-icon="modes">Two options, depending on whether you want to self-host</h2>
+      <p>With either option, WoowTech builds, maintains, and troubleshoots the workflows. The difference is where the n8n server runs: <strong>on your infrastructure or infrastructure managed by WoowTech</strong>。</p>
       <div class="mode-grid">
 
         <div class="mode-card">
           <div class="tile"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="#6183FC" d="M12,3L2,12H5V20H19V12H22L12,3M12,7.7L17,12.2V18H7V12.2L12,7.7M9,14V16H15V14H9Z"/></svg></div>
-          <h3>模式 A · HAOS add-on 版</h3>
-          <div class="who">給：已經有 Home Assistant OS 或想把資料留在自家的中小企業／個人／診所／店家</div>
-          <p>n8n 以 Home Assistant Add-on 形式裝在你自家的 HAOS 主機上，資料完全不出家門。WoowTech 代寫 workflow、遠端維護、templates 打包送。</p>
+          <h3>Option A · Self-hosted</h3>
+          <div class="who">For organizations or individuals that already use Home Assistant OS or need to keep data on their own premises</div>
+          <p>n8n runs as a Home Assistant add-on on your HAOS host, so the data stays on your premises. WoowTech builds the workflows, maintains the system remotely, and delivers templates.</p>
           <ul>
-            <li>n8n 跑在你自家的機器，資料 100% 本地</li>
-            <li>WoowTech 代寫 workflow，含測試與上線</li>
-            <li>Template Package：從我們既有 workflow 庫挑合適的直接搬過來</li>
-            <li>季度巡檢 + 出問題 8 小時內回覆</li>
-            <li>與同一台 HA 上的 pi agent、smart home 打通</li>
+            <li>n8n runs on your machine; data remains 100% local</li>
+            <li>WoowTech builds, tests, and deploys the workflows</li>
+            <li>Template Package: select suitable workflows from our existing library</li>
+            <li>Quarterly review + response within 8 hours when an issue occurs</li>
+            <li>Integrates with pi agent and smart-home services on the same HA host</li>
           </ul>
         </div>
 
         <div class="mode-card recommended">
-          <div class="badge">最好上手</div>
+          <div class="badge">EASIEST START</div>
           <div class="tile"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="#6183FC" d="M19.35,10.03C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.03C2.34,8.36 0,10.9 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.03Z"/></svg></div>
-          <h3>模式 B · 雲端 PaaS 版</h3>
-          <div class="who">給：想立刻上線、不想自架、可接受 workflow 跑在 WoowTech 雲端的公司</div>
-          <p>直接在 <code>n8n.woowtech.io</code> 開一個帳號，共用 WoowTech 維護的 n8n 雲端環境。多用戶、免自架、含 SaaS credentials pool（部分服務可共用授權）。</p>
+          <h3>Option B · Managed by WoowTech</h3>
+          <div class="who">For companies that want to launch immediately without self-hosting and accept workflows running on infrastructure managed by WoowTech</div>
+          <p>At <code>n8n.woowtech.io</code>, create an account in an n8n environment maintained by WoowTech. It supports multiple users, requires no self-hosting, and offers an optional SaaS credentials pool for services that allow shared authorization.</p>
           <ul>
-            <li>當天開帳號、當天用，免自架、免維護</li>
-            <li>版本、備份、SSL、監控全部 WoowTech 顧</li>
-            <li>共享 credentials pool（省 SaaS 授權費）</li>
-            <li>使用量計費，off-peak 幾乎不算錢</li>
-            <li>複雜／機敏 workflow 可搬回 add-on 模式</li>
+            <li>Provision and use the account the same day, with no self-hosting or maintenance</li>
+            <li>WoowTech manages versions, backups, SSL, and monitoring</li>
+            <li>Shared credentials pool where permitted (reduces SaaS license costs)</li>
+            <li>Usage-based pricing; off-peak usage costs very little</li>
+            <li>Move complex or sensitive workflows to the self-hosted option</li>
           </ul>
         </div>
 
       </div>
-      <div class="callout tip"><strong>提示：</strong>不確定選哪個？大部分公司從模式 B（雲端）試水一個月，兩三支 workflow 見到成效之後，敏感度較高的（客戶名單、財務）再搬到模式 A（本地 add-on）。</div>
+      <div class="callout tip"><strong>Tip:</strong>Not sure which option to choose? Many companies trial Option B for one month. After two or three workflows demonstrate value, move sensitive workloads such as customer lists or financial data to Option A.</div>
     </section>
 
-    <section id="mode-onprem" data-nav="模式 A：HAOS add-on">
-      <h2 data-icon="onprem">模式 A · HAOS add-on 版細節</h2>
-      <p>如果你家／公司已經有一台 Home Assistant OS 主機（甚至是 pi agent 教學裡那台），n8n 只是多裝一顆 Add-on。整個安裝、設定、workflow 部署都由 WoowTech 遠端做，你只要把 HA 的存取權限開一個給我們就好。</p>
+    <section id="mode-onprem" data-nav="Option A: self-hosted">
+      <h2 data-icon="onprem">Option A · Self-hosted, in detail</h2>
+      <p>If your home or company already has a Home Assistant OS host—even the one from the pi agent tutorial—n8n is another add-on. WoowTech remotely handles installation, configuration, and workflow deployment after you provide appropriate HA access.</p>
 
-      <h3>你會拿到什麼</h3>
+      <h3>What you receive</h3>
       <ul>
-        <li><strong>n8n add-on 裝機服務</strong>：從 add-on repository 加入、安裝、初始化、SSL / reverse proxy 設定，一次到位。</li>
-        <li><strong>N 支代寫 workflow</strong>：專案簽約時你列 5-10 個想自動化的場景，WoowTech 逐一畫成 workflow、跟你的實際帳號測試、上線。</li>
-        <li><strong>Template Package</strong>：從 WoowTech 既有 workflow 庫（訂單通知、客戶追蹤、每日報表、Line Bot 客服……）挑合適的直接搬過來，加你的欄位就能用。</li>
-        <li><strong>季度巡檢</strong>：每季一次遠端進去看 execution 錯誤率、更新版本、清理過期資料。</li>
-        <li><strong>問題支援</strong>：workflow 半夜掛了，WoowTech 值班工程師 8 小時內回覆（工作日）；緊急案例（付款、營運）另定 SLA。</li>
+        <li><strong>n8n add-on installation</strong>: repository setup, installation, initialization, SSL, and reverse proxy configuration.</li>
+        <li><strong>N implemented workflows</strong>: list 5–10 scenarios when the project starts; WoowTech builds each workflow, tests it with your accounts, and deploys it.</li>
+        <li><strong>Template Package</strong>: select suitable workflows from WoowTech’s library, such as order notifications, customer tracking, daily reports, and LINE bot support; add your fields and deploy.</li>
+        <li><strong>Quarterly review</strong>: remotely review execution error rates, update the version, and remove expired data once per quarter.</li>
+        <li><strong>Issue support</strong>: if a workflow fails overnight, an on-call WoowTech engineer responds within 8 hours on business days. A separate SLA applies to urgent payment or operations cases.</li>
       </ul>
 
-      <h3>什麼公司適合這條路</h3>
+      <h3>Who this option fits</h3>
       <ul>
-        <li>客戶名單、財務、病歷、內部 SOP——資料敏感度高、法規要求本地儲存的公司</li>
-        <li>已經在用 Home Assistant 管辦公室、機房、案場的公司</li>
-        <li>希望 n8n 跟同一台 HA 上的 pi agent 或 smart home 深度整合的用戶</li>
-        <li>網路品質不穩、需要斷網也能跑內部 workflow 的場所</li>
+        <li>Organizations with sensitive customer, financial, medical, or internal SOP data, or regulations requiring local storage</li>
+        <li>Organizations already using Home Assistant for offices, server rooms, or project sites</li>
+        <li>Users who want deep integration between n8n, pi agent, or smart-home services on the same HA host</li>
+        <li>Sites with unreliable internet that need internal workflows to continue offline</li>
       </ul>
 
-      <div class="callout"><strong>硬體門檻：</strong>n8n add-on 對硬體不苛：RPi 5 (8GB)、NUC、或任何跑得動 HAOS 的 x86 機器都行。單機建議上限 30-50 支活躍 workflow，超過建議升級或改走模式 B。</div>
+      <div class="callout"><strong>Hardware requirements:</strong>The n8n add-on has modest hardware requirements: an RPi 5 (8GB), NUC, or any x86 machine that runs HAOS. The recommended limit is 30–50 active workflows on one host; beyond that, upgrade the host or use Option B.</div>
     </section>
 
-    <section id="mode-cloud" data-nav="模式 B：雲端 PaaS">
-      <h2 data-icon="cloud">模式 B · 雲端 PaaS 版細節</h2>
-      <p>不想碰硬體、不想想 IT 的公司走這條。WoowTech 在雲端跑一組 n8n 實例（<code>n8n.woowtech.io</code>，目前 v2.32.7 Community 版），你來開一個 workspace，跟其他客戶邏輯隔離、資料獨立。裝機成本零、開通當天可用。</p>
+    <section id="mode-cloud" data-nav="Option B: managed by WoowTech">
+      <h2 data-icon="cloud">Option B · Managed by WoowTech, in detail</h2>
+      <p>Choose this option to avoid hardware and IT operations. WoowTech runs an n8n environment (<code>n8n.woowtech.io</code>, currently Community Edition v2.32.7). Your workspace is logically isolated from other customers with separate data. There is no installation cost, and it can be provisioned the same day.</p>
 
-      <h3>你會拿到什麼</h3>
+      <h3>What you receive</h3>
       <ul>
-        <li><strong>專屬 workspace</strong>：多用戶、獨立資料庫、獨立 execution 歷史；跟其他客戶完全隔離。</li>
-        <li><strong>共享 credentials pool（選配）</strong>：SendGrid、Twilio、OpenAI、Slack 官方 App 等常用服務可以掛在 WoowTech 池底下，你不用申請帳號、按用量分攤——第一次自動化最省事的做法。</li>
-        <li><strong>代寫 workflow 服務</strong>：跟模式 A 一樣，WoowTech 代寫、代測、代上線。</li>
-        <li><strong>使用量計費</strong>：一支 workflow 一天跑 24 次跟跑 24,000 次差很多，我們按實際 execution 數計價，off-peak 用戶幾乎不算錢。</li>
-        <li><strong>SLA 99.5%</strong>：全站監控＋自動備份，重大事件 4 小時內回覆。</li>
+        <li><strong>Dedicated workspace</strong>: multiple users, a separate database and execution history, and isolation from other customers.</li>
+        <li><strong>Shared credentials pool (optional)</strong>: common services such as SendGrid, Twilio, OpenAI, and the official Slack app can use WoowTech’s pool where terms permit. You do not need a separate account, and costs are allocated by usage.</li>
+        <li><strong>Workflow implementation</strong>: as with Option A, WoowTech builds, tests, and deploys the workflows.</li>
+        <li><strong>Usage-based pricing</strong>: a workflow that runs 24 times a day differs from one that runs 24,000 times. Pricing is based on actual executions, and off-peak users pay very little. [PRICING AND CURRENCY TBD]</li>
+        <li><strong>SLA 99.5%</strong>: service-wide monitoring and automated backups, with a response to major incidents within 4 hours.</li>
       </ul>
 
-      <h3>什麼公司適合這條路</h3>
+      <h3>Who this option fits</h3>
       <ul>
-        <li>從來沒碰過 n8n、想找一支 workflow 試水的公司</li>
-        <li>資料本身就在雲端 SaaS（Google Workspace、Notion、Airtable、Slack）——搬到 WoowTech 雲跟原本沒差</li>
-        <li>不想維護硬體、不想想版本升級的公司</li>
-        <li>先用雲端半年，之後有敏感度需求再局部搬到模式 A 的公司</li>
+        <li>Companies new to n8n that want to trial one workflow</li>
+        <li>Companies whose data already resides in cloud SaaS products such as Google Workspace, Notion, Airtable, and Slack</li>
+        <li>Companies that do not want to maintain hardware or plan version upgrades</li>
+        <li>Companies that want to use the managed option for six months, then move selected sensitive workflows to Option A</li>
       </ul>
 
-      <div class="callout tip"><strong>提示：</strong>雲端版跟本地版是同一套 n8n，workflow 可以互相匯出匯入。今天在雲端做的 workflow，明天想搬到自己家的 add-on，直接匯出 JSON 過去就是同一支。</div>
+      <div class="callout tip"><strong>Tip:</strong>Both options use the same n8n. Workflows can be exported from one and imported into the other. Export the JSON from a managed workflow to move it to your own add-on.</div>
     </section>
 
-    <section id="scenarios" data-nav="實際使用場景">
-      <h2 data-icon="scenarios">六個真的省下時間的場景</h2>
-      <p>從 WoowTech 過去的專案裡挑六個最典型的，看看 workflow 能替公司做什麼：</p>
+    <section id="scenarios" data-nav="Real scenarios">
+      <h2 data-icon="scenarios">Six scenarios that genuinely save time</h2>
+      <p>These six representative WoowTech projects show what workflows can do for a company:</p>
       <div class="chip-legend">
-        <div class="chip say"><span class="who">你說</span>藍色框＝簽約時你列的需求</div>
-        <div class="chip"><span class="who ai">交付</span>灰色框＝WoowTech 交付的 workflow 效果</div>
+        <div class="chip say"><span class="who">You say</span>Blue = the requirement you provide when the project starts</div>
+        <div class="chip"><span class="who ai">Delivery</span>Gray = the outcome of the workflow WoowTech delivers</div>
       </div>
       <div class="feature-grid">
 
         <div class="feature-card">
           <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M20,8H4V6H20M20,18H4V12H20M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/></svg></span>
-          <h3>訂單自動通知＋抄寫</h3>
-          <p>電商後台一有新訂單，自動抓下來寫到 Google Sheets、丟 Slack、通知出貨窗口——不用再有人上午 10:00 定時登入後台。</p>
+          <h3>Automated order notifications and recording</h3>
+          <p>When a new order reaches the commerce back end, automatically write it to Google Sheets, post to Slack, and notify shipping. Nobody needs to sign in at 10:00 every morning.</p>
           <div class="chips">
-            <div class="chip say"><span class="who">你說</span>「訂單一進來，Sheet 新增一列、Slack 通知出貨群組。訂單 &gt;10,000 元再多發一封信給業務主管。」</div>
-            <div class="chip"><span class="who ai">交付</span>Webhook 觸發 → Set 節點整理欄位 → Google Sheets Append → IF 判斷金額 → Slack + Gmail 分流。上線後每天省下 1.5 小時抄寫。</div>
+            <div class="chip say"><span class="who">You say</span>“When an order arrives, add a row to the sheet and notify the shipping group in Slack. If the order is over  &gt;10,000 [CURRENCY TBD], also email the sales manager.”</div>
+            <div class="chip"><span class="who ai">Delivery</span>Webhook trigger → Set reshapes fields → Google Sheets Append → IF checks the amount → Slack + Gmail branches. After deployment, it saves 1.5 hours of copying each day.</div>
           </div>
         </div>
 
         <div class="feature-card">
           <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M20,17A2,2 0 0,0 22,15V4A2,2 0 0,0 20,2H9.46C9.81,2.61 10,3.3 10,4H20V15H11V17M15,7V9H9V22H7V16H5V22H3V14H1.5V9A2,2 0 0,1 3.5,7H15M8,4A2,2 0 0,1 6,6A2,2 0 0,1 4,4A2,2 0 0,1 6,2A2,2 0 0,1 8,4Z"/></svg></span>
-          <h3>Line／Slack 客服分派</h3>
-          <p>客戶在 Line 官方帳號問問題，AI Agent 節點先自動分類，屬於「退換貨」丟客服窗口、屬於「技術問題」丟工程窗口、其他丟通用池。</p>
+          <h3>LINE/Slack customer-support routing</h3>
+          <p>When a customer asks a question through the official LINE account, AI Agent classifies it first. It routes returns to customer support, technical issues to engineering, and everything else to the general queue.</p>
           <div class="chips">
-            <div class="chip say"><span class="who">你說</span>「Line 客服訊息太多回不完，希望自動分派。」</div>
-            <div class="chip"><span class="who ai">交付</span>Line Webhook → AI Agent 分類 → Switch 節點分流 → 各自 push 到對應 Slack channel + 記錄到 Notion。上線後客服回覆時間從平均 4 小時降到 30 分鐘。</div>
+            <div class="chip say"><span class="who">You say</span>“We receive too many LINE support messages to answer. Route them automatically.”</div>
+            <div class="chip"><span class="who ai">Delivery</span>LINE Webhook → AI Agent classifies → Switch branches → post to the corresponding Slack channel + record in Notion. After deployment, average support response time fell from 4 hours to 30 minutes.</div>
           </div>
         </div>
 
         <div class="feature-card">
           <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z"/></svg></span>
-          <h3>每日／每週報表自動出</h3>
-          <p>Cron 觸發器每天早上 8:00 跑：抓昨天各系統的數據、算出關鍵指標、整理成一份 Google Slides、寄到主管信箱。</p>
+          <h3>Automated daily/weekly reports</h3>
+          <p>A cron trigger runs at 8:00 every morning: retrieve yesterday’s data from each system, calculate key metrics, prepare Google Slides, and email management.</p>
           <div class="chips">
-            <div class="chip say"><span class="who">你說</span>「行銷每天要拉五個平台的昨日數據，人做 40 分鐘。」</div>
-            <div class="chip"><span class="who ai">交付</span>Schedule Trigger → 5 支 API 並行抓數據 → Code node 算指標 → Google Sheets 寫入 → Gmail 帶連結寄出。上線後那 40 分鐘還給行銷同事。</div>
+            <div class="chip say"><span class="who">You say</span>“Marketing pulls yesterday’s data from five platforms every day. It takes 40 minutes.”</div>
+            <div class="chip"><span class="who ai">Delivery</span>Schedule Trigger → 5 APIs retrieve data in parallel → Code node calculates metrics → Google Sheets writes results → Gmail sends a link. After deployment, marketing gets those 40 minutes back.</div>
           </div>
         </div>
 
         <div class="feature-card">
           <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M20,2H4C2.9,2 2,2.9 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M20,16H5.17L4,17.17V4H20V16Z"/></svg></span>
-          <h3>會議前一天自動整理</h3>
-          <p>行事曆隔天有會議，前一天 17:00 自動抓相關的：Notion 文件、上次會議紀錄、待辦事項，整理成一封信寄給參與者。</p>
+          <h3>Automated meeting preparation one day ahead</h3>
+          <p>When a meeting is on tomorrow’s calendar, collect the related Notion documents, previous meeting notes, and action items at 17:00 the day before, then email the participants.</p>
           <div class="chips">
-            <div class="chip say"><span class="who">你說</span>「每次會議前要花 20 分鐘找文件跟 recap。」</div>
-            <div class="chip"><span class="who ai">交付</span>Google Calendar Trigger（提前 24hr）→ Notion 搜尋相關頁 → AI Agent 摘要上次會議 → Gmail 統一寄出。上線後準備會議時間降到 5 分鐘。</div>
+            <div class="chip say"><span class="who">You say</span>“We spend 20 minutes finding documents and the recap before every meeting.”</div>
+            <div class="chip"><span class="who ai">Delivery</span>Google Calendar Trigger (24hr ahead) → Notion searches related pages → AI Agent summarizes the previous meeting → Gmail sends one message. After deployment, meeting preparation fell to 5 minutes.</div>
           </div>
         </div>
 
         <div class="feature-card">
           <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,18H4V8L12,13L20,8V18M20,6L12,11L4,6H20Z"/></svg></span>
-          <h3>Email 自動歸檔＋回覆</h3>
-          <p>特定客戶／關鍵字的 Email 進來，自動標籤、存到 Google Drive、回覆制式訊息、記錄到 CRM。</p>
+          <h3>Automated email archiving and replies</h3>
+          <p>When an email from a specified customer or with a specified keyword arrives, label it, save it to Google Drive, send a standard reply, and record it in the CRM.</p>
           <div class="chips">
-            <div class="chip say"><span class="who">你說</span>「合約 Email 常常漏歸檔，客戶問一次找半天。」</div>
-            <div class="chip"><span class="who ai">交付</span>Gmail Trigger（含關鍵字） → Google Drive Upload → Airtable 建卡 → Gmail 回覆確認信 → Slack 通知法務窗口。上線後零漏檔。</div>
+            <div class="chip say"><span class="who">You say</span>“Contract emails are often not archived. Finding one for a customer takes half a day.”</div>
+            <div class="chip"><span class="who ai">Delivery</span>Gmail Trigger (with keyword) → Google Drive Upload → create Airtable record → Gmail confirmation → notify legal in Slack. No files were missed after deployment.</div>
           </div>
         </div>
 
         <div class="feature-card">
           <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M12,1L9,9L1,12L9,15L12,23L15,15L23,12L15,9L12,1Z"/></svg></span>
-          <h3>AI Agent 資料整理</h3>
-          <p>把 100 份客戶回饋 PDF 丟到雲端資料夾，n8n 一份一份讀，用 AI Agent 節點抽出重點、標籤、情緒，寫到 Airtable 供分析。</p>
+          <h3>AI Agent data organization</h3>
+          <p>Put 100 customer-feedback PDFs in a cloud folder. n8n reads each file, uses AI Agent to extract key points, tags, and sentiment, then writes them to Airtable for analysis.</p>
           <div class="chips">
-            <div class="chip say"><span class="who">你說</span>「今年做了 3 次滿意度調查，收回幾百份 PDF 沒人看。」</div>
-            <div class="chip"><span class="who ai">交付</span>Drive Watcher → Loop 每份 → AI Agent（Chat Model + Structured Output）→ Airtable Upsert。上線一週分析完歷史積壓，之後新的 PDF 進來當天分析完。</div>
+            <div class="chip say"><span class="who">You say</span>“We ran 3 satisfaction surveys this year and received hundreds of PDFs that nobody has reviewed.”</div>
+            <div class="chip"><span class="who ai">Delivery</span>Drive Watcher → loop over each file → AI Agent (Chat Model + Structured Output) → Airtable Upsert. It processed the historical backlog in one week; each new PDF is analyzed the day it arrives.</div>
           </div>
         </div>
 
@@ -568,189 +568,189 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
     </section>
 
     <section id="templates" data-nav="Template Package">
-      <h2 data-icon="templates">Template Package · 從既有庫直接搬</h2>
-      <p>WoowTech 過去做過的 workflow，能通用的都整理成 template：<strong>模式 A 客戶</strong>由我們遠端匯入你的 add-on、<strong>模式 B 客戶</strong>開通 workspace 時就已預裝可挑。每支都附設定表，欄位換一換就上線。</p>
+      <h2 data-icon="templates">Template Package · Start from the existing library</h2>
+      <p>WoowTech turns reusable workflows from previous projects into templates: <strong>Option A customers</strong>: we remotely import them into your add-on; <strong>Option B customers</strong>: choose from templates preinstalled when the workspace is provisioned. Each includes a configuration sheet; replace the fields and deploy.</p>
       <table class="data-table">
         <thead>
-          <tr><th>分類</th><th>Template 舉例</th><th>典型客戶</th></tr>
+          <tr><th>Category</th><th>Template examples</th><th>Typical customers</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>行銷</strong></td>
-            <td>五平台每日數據 → Slides · GA + FB Ads 週報 · 電子報訂閱同步</td>
-            <td>電商、內容媒體</td>
+            <td><strong>Marketing</strong></td>
+            <td>Daily data from five platforms → Slides · GA + FB Ads weekly report · Newsletter subscription sync</td>
+            <td>E-commerce, content media</td>
           </tr>
           <tr>
-            <td><strong>業務</strong></td>
-            <td>表單填寫 → CRM 建卡 · 報價後 3 天未回自動追蹤 · 訂單狀態通知客戶</td>
-            <td>B2B 顧問、SaaS 銷售</td>
+            <td><strong>Sales</strong></td>
+            <td>Form submission → CRM record · Automated follow-up after 3 days without a reply to a quote · Customer order-status notifications</td>
+            <td>B2B consulting, SaaS sales</td>
           </tr>
           <tr>
-            <td><strong>客服</strong></td>
-            <td>Line 分類分派 · Email 自動回覆 · Zendesk / Freshdesk 事件通知</td>
-            <td>零售、線上教育</td>
+            <td><strong>Customer support</strong></td>
+            <td>LINE classification and routing · Automated email replies · Zendesk / Freshdesk event notifications</td>
+            <td>Retail, online education</td>
           </tr>
           <tr>
-            <td><strong>財務</strong></td>
-            <td>發票 OCR → 記帳 · 每月結帳提醒 · 應收帳款逾期通知</td>
-            <td>設計工作室、代理商</td>
+            <td><strong>Finance</strong></td>
+            <td>Invoice OCR → bookkeeping · Monthly closing reminders · Overdue receivables notifications</td>
+            <td>Design studios, agencies</td>
           </tr>
           <tr>
             <td><strong>HR</strong></td>
-            <td>請假單簽核路由 · 新人 onboarding checklist · 出勤異常通知</td>
-            <td>50-200 人企業</td>
+            <td>Leave-request approval routing · New-hire onboarding checklist · Attendance anomaly notifications</td>
+            <td>Companies with 50–200 employees</td>
           </tr>
           <tr>
-            <td><strong>營運</strong></td>
-            <td>庫存警戒補貨 · 供應商每週對帳 · 設備維護排程</td>
-            <td>製造、餐飲連鎖</td>
+            <td><strong>Operations</strong></td>
+            <td>Low-inventory replenishment · Weekly supplier reconciliation · Equipment-maintenance schedule</td>
+            <td>Manufacturing, restaurant chains</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>提示：</strong>找不到你要的？把場景寫成一句話，簽約時提出來，WoowTech 客製一支就好——之後也會變成 template 給後來的客戶用。</div>
+      <div class="callout tip"><strong>Tip:</strong>Cannot find what you need? Describe the scenario in one sentence when the project starts. WoowTech can build it, then turn it into a template for future customers.</div>
     </section>
 
-    <section id="compare" data-nav="方案比一比">
-      <h2 data-icon="compare">跟其他做法比一比</h2>
+    <section id="compare" data-nav="Compare options">
+      <h2 data-icon="compare">How it compares with the alternatives</h2>
       <table class="data-table">
         <thead>
           <tr>
             <th></th>
-            <th>Zapier / Make 直接用</th>
-            <th>公司自架 n8n</th>
-            <th class="pi-col">WoowTech n8n 方案</th>
+            <th>Use Zapier / Make directly</th>
+            <th>Self-host n8n in-house</th>
+            <th class="pi-col">WoowTech n8n service</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th>開始成本</th>
-            <td>低——但每支 workflow 一走量就跳到高月費</td>
-            <td>高——先自己會裝、會維護才有得談</td>
-            <td class="pi-col">兩種模式起步都低；規模長大按量走</td>
+            <th>Starting cost</th>
+            <td>Low—but monthly charges rise when workflows scale</td>
+            <td>High—you must first know how to install and maintain it</td>
+            <td class="pi-col">Low to start with either option; usage-based as you scale [PRICING TBD]</td>
           </tr>
           <tr>
-            <th>資料放哪</th>
-            <td>Zapier／Make 的美國雲</td>
-            <td>你自己家</td>
-            <td class="pi-col">模式 A 你自己家；模式 B WoowTech 台灣雲</td>
+            <th>Data location</th>
+            <td>Zapier/Make cloud infrastructure in the United States</td>
+            <td>Your infrastructure</td>
+            <td class="pi-col">Option A: your infrastructure; Option B: infrastructure managed by WoowTech [HOSTING REGION TBD]</td>
           </tr>
           <tr>
-            <th>要不要自己會用</th>
-            <td>要——每支 workflow 你都得會拉</td>
-            <td>要，且要會維護 n8n 本身</td>
-            <td class="pi-col">不用。WoowTech 代寫、代改、代排錯</td>
+            <th>In-house expertise required</th>
+            <td>Yes—you build every workflow</td>
+            <td>Yes, including maintaining n8n itself</td>
+            <td class="pi-col">No. WoowTech builds, changes, and troubleshoots the workflows</td>
           </tr>
           <tr>
-            <th>SaaS 授權費</th>
-            <td>自己申請每一個</td>
-            <td>自己申請每一個</td>
-            <td class="pi-col">模式 B 可共用 credentials pool，多家分攤</td>
+            <th>SaaS license costs</th>
+            <td>Purchase each one yourself</td>
+            <td>Purchase each one yourself</td>
+            <td class="pi-col">Option B can share a credentials pool where permitted and allocate costs across customers</td>
           </tr>
           <tr>
-            <th>出問題怎麼辦</th>
-            <td>官方英文論壇自己查</td>
-            <td>自己救</td>
-            <td class="pi-col">WoowTech 8 小時內回覆</td>
+            <th>When something fails</th>
+            <td>Search the official English-language forum yourself</td>
+            <td>Fix it yourself</td>
+            <td class="pi-col">WoowTech responds within 8 hours</td>
           </tr>
           <tr>
-            <th>Workflow 進階能力</th>
-            <td>受平台功能限制</td>
-            <td>完整——但要自己會</td>
-            <td class="pi-col">完整——WoowTech 幫你用完整</td>
+            <th>Advanced workflow capabilities</th>
+            <td>Limited by platform features</td>
+            <td>Complete—but you need the expertise</td>
+            <td class="pi-col">Complete—with WoowTech implementing it for you</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="security" data-nav="資安與 SLA">
-      <h2 data-icon="security">資安、備份、SLA</h2>
+    <section id="security" data-nav="Security and SLA">
+      <h2 data-icon="security">Security, backups, and SLA</h2>
 
-      <h3>資料儲存位置</h3>
+      <h3>Data storage location</h3>
       <ul>
-        <li><strong>模式 A（HAOS add-on）</strong>：所有 workflow 定義、execution 歷史、credentials 都在你自家的 HAOS 主機。WoowTech 只透過遠端連線協助維護，事後即斷線，不留 copy。</li>
-        <li><strong>模式 B（雲端 PaaS）</strong>：資料存於 WoowTech 台灣機房的 VM，每日自動異地備份。跨客戶邏輯隔離、每個 workspace 獨立資料庫。</li>
+        <li><strong>Option A (self-hosted)</strong>: all workflow definitions, execution history, and credentials remain on your HAOS host. WoowTech connects remotely for maintenance, disconnects afterward, and retains no copy.</li>
+        <li><strong>Option B (managed by WoowTech)</strong>: data is stored on a WoowTech-managed VM, with automated daily off-site backups. Customers are logically isolated, with a separate database for each workspace. [HOSTING REGION TBD]</li>
       </ul>
 
-      <h3>Credentials（金鑰）保管</h3>
+      <h3>Credential storage</h3>
       <ul>
-        <li>兩種模式都採 n8n 原生的加密儲存機制（AES-256），只有 workflow runtime 能解密。</li>
-        <li>WoowTech 工程師遠端維護時，不能匯出、不能複製到別處——n8n 本身沒有這個功能，我們也不繞開。</li>
+        <li>Both options use n8n’s native encrypted storage (AES-256). Only the workflow runtime can decrypt credentials.</li>
+        <li>During remote maintenance, WoowTech engineers cannot export credentials or copy them elsewhere. n8n does not provide that function, and we do not bypass it.</li>
       </ul>
 
       <h3>SLA</h3>
       <table class="data-table">
         <thead>
-          <tr><th>項目</th><th>模式 A</th><th class="pi-col">模式 B</th></tr>
+          <tr><th>Item</th><th>Option A</th><th class="pi-col">Option B</th></tr>
         </thead>
         <tbody>
-          <tr><td>系統可用性</td><td>依你自家硬體</td><td class="pi-col">99.5%（月保證）</td></tr>
-          <tr><td>問題回覆</td><td>工作日 8 小時</td><td class="pi-col">工作日 4 小時，緊急 1 小時</td></tr>
-          <tr><td>備份</td><td>WoowTech 每季協助</td><td class="pi-col">每日自動＋異地</td></tr>
-          <tr><td>版本更新</td><td>由 WoowTech 遠端執行</td><td class="pi-col">WoowTech 統一升</td></tr>
+          <tr><td>System availability</td><td>Depends on your hardware</td><td class="pi-col">99.5% monthly guarantee</td></tr>
+          <tr><td>Issue response</td><td>8 business hours</td><td class="pi-col">4 business hours; 1 hour for emergencies</td></tr>
+          <tr><td>Backups</td><td>Quarterly assistance from WoowTech</td><td class="pi-col">Automated daily + off-site</td></tr>
+          <tr><td>Version updates</td><td>Performed remotely by WoowTech</td><td class="pi-col">Managed centrally by WoowTech</td></tr>
         </tbody>
       </table>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
 
       <details class="faq">
-        <summary>費用怎麼算？</summary>
-        <div class="body">兩種模式都是「一次性建置費 + 月費（含代維護與 N 支 workflow 免費更改）」。實際費率會依 workflow 數量、預期 execution 量、SLA 等級調整——請洽 WoowTech 業務或您的經銷商索取報價單。</div>
+        <summary>How is pricing calculated?</summary>
+        <div class="body">Both options have a one-time setup fee plus a monthly fee, including maintenance and N workflow changes. Rates depend on the number of workflows, expected execution volume, and SLA tier. [PRICING, CURRENCY, AND QUOTE CHANNEL TBD]</div>
       </details>
 
       <details class="faq">
-        <summary>我可以自己改 workflow 嗎？</summary>
-        <div class="body">可以。兩種模式都會給你完整的 n8n 存取權，你想學著改、想自己拉新 workflow 都行——WoowTech 這邊的角色是「當你不想／不會的時候都在」。想學怎麼改，直接看本站的 <a href="tutorial.html">n8n 入住指南 22 章教學</a>。</div>
+        <summary>Can I change a workflow myself?</summary>
+        <div class="body">Yes. Both options give you full n8n access, so you can learn to modify workflows or build new ones. WoowTech is available when you do not want to—or do not know how to—make a change. To learn, read the site’s  <a href="tutorial.html">22-chapter n8n Onboarding Guide</a>。</div>
       </details>
 
       <details class="faq">
-        <summary>模式 B 的 credentials pool 是什麼？跟我自己申請 Slack／OpenAI 差在哪？</summary>
-        <div class="body">你自己申請每一個 SaaS 帳號＝每一支月費你付、額度你頂。credentials pool 是 WoowTech 幫多客戶集中申請商業帳號、按實際用量分攤——小量用戶明顯便宜，帳單也單純（一張）。要獨立帳號的客戶也可以指定不進 pool。</div>
+        <summary>What is the Option B credentials pool, and how does it differ from my own Slack/OpenAI accounts?</summary>
+        <div class="body">With separate SaaS accounts, you pay each subscription and manage each quota. In the credentials pool, WoowTech obtains commercial accounts for several customers and allocates costs by actual usage. This can reduce costs for low-volume users and consolidate billing. You may opt out and use dedicated accounts.</div>
       </details>
 
       <details class="faq">
-        <summary>可以先跑模式 B，之後搬到模式 A 嗎？</summary>
-        <div class="body">可以。這是常見路徑——先用雲端試水一個月、驗證 workflow 對 KPI 有效，之後敏感的 workflow 匯出 JSON 搬到自家 HAOS add-on。WoowTech 協助資料搬遷、憑證重掛。</div>
+        <summary>Can I start with Option B and move to Option A later?</summary>
+        <div class="body">Yes. A common path is to trial the managed option for one month and verify that its workflows improve KPIs. Then export sensitive workflows as JSON to your HAOS add-on. WoowTech assists with data migration and reconnecting credentials.</div>
       </details>
 
       <details class="faq">
-        <summary>Woow 的 n8n 是社群版還是企業版？功能會不會少？</summary>
-        <div class="body">目前是 Community Edition（v2.32.7 之後跟隨社群升版），功能對中小企業一般用途完全夠——AI Agent、自訂節點、Sub-workflow、Error Workflow 全部有。企業版獨有的（LDAP／SAML SSO、Advanced RBAC、Version Control 整合）如有需求可另談混合部署。</div>
+        <summary>Does WoowTech use n8n Community or Enterprise Edition? Are features missing?</summary>
+        <div class="body">It currently uses Community Edition (v2.32.7, followed by community upgrades), which supports typical small and midsize business needs, including AI Agent, custom nodes, sub-workflows, and error workflows. Enterprise-only features such as LDAP/SAML SSO, Advanced RBAC, and version-control integration can be addressed through a separate hybrid deployment.</div>
       </details>
 
       <details class="faq">
-        <summary>公司完全沒有 IT 部門，也能導入嗎？</summary>
-        <div class="body">最適合。這正是這套方案的初衷——WoowTech 從溝通需求、寫 workflow、上線、維護全包。你只需要有一位「聯絡窗口」跟我們對接就好。</div>
+        <summary>Can a company without an IT department adopt it?</summary>
+        <div class="body">Yes. That is the purpose of this service. WoowTech covers requirements, workflow development, deployment, and maintenance. You need only one point of contact.</div>
       </details>
 
       <details class="faq">
-        <summary>Zapier 用得很習慣，值得換 n8n 嗎？</summary>
-        <div class="body">看兩件事：（1）Zapier 月費有沒有超過 100 美金？（2）有沒有需求它做不到（例如接自己內部系統、要迴圈跑幾百次）？中一項就值得聊。Zapier 現有的 Zap，n8n 幾乎都能重畫，通常還更彈性。</div>
+        <summary>We are comfortable with Zapier. Is n8n worth switching to?</summary>
+        <div class="body">Consider two questions: (1) Does Zapier cost more than USD 100 per month? (2) Do you need something it cannot do, such as connecting an internal system or looping hundreds of times? If either answer is yes, discuss the options. Almost every existing Zap can be rebuilt in n8n, often with more flexibility.</div>
       </details>
 
     </section>
 
-    <section id="cta" data-nav="預約諮詢">
-      <h2 data-icon="handshake">下一步</h2>
+    <section id="cta" data-nav="Book a consultation [CONTACT CHANNEL TBD]">
+      <h2 data-icon="handshake">Next step</h2>
       <div class="cta-band">
         <span class="script">let's automate it</span>
-        <h3>想聊聊公司裡哪些工作可以外包給 n8n？</h3>
-        <p>預約一場 30 分鐘的線上會議，帶著你公司裡「有人在做但不該有人做」的 3 件事來，WoowTech 現場評估要走模式 A 還是模式 B、大概多久上線、費用區間。</p>
-        <a class="btn-pill" href="#">聯絡 WoowTech 或您的經銷商</a>
+        <h3>Want to identify work your company can hand over to n8n?</h3>
+        <p>In a 30-minute online meeting, bring 3 tasks that someone performs but should not have to. WoowTech will assess Option A vs Option B, the approximate deployment time, and a pricing range. [BOOKING PROCESS AND PRICING TBD]</p>
+        <a class="btn-pill" href="#">Contact WoowTech or your reseller [CONTACT CHANNEL TBD]</a>
       </div>
     </section>
 
     <footer class="site-footer">
-      <p>《WoowTech n8n 自動化方案》銷售手冊由 <strong>WoowTech 渥屋科技</strong> 製作。</p>
-      <p class="footer-meta">The Smart Space Solution · 智慧空間解決方案 · © 2026 WOOW Technology Co., Ltd. · n8n 為 n8n GmbH 的商標，Community Edition 依 Sustainable Use License 授權，本站與 n8n GmbH 無隸屬關係。</p>
+      <p>The WoowTech n8n Automation Sales Handbook is produced by  <strong>WoowTech</strong> .</p>
+      <p class="footer-meta">The Smart Space Solution · © 2026 WOOW Technology Co., Ltd. · n8n is a trademark of n8n GmbH. Community Edition is licensed under the Sustainable Use License. This site is not affiliated with n8n GmbH.</p>
     </footer>
   </main>
 </div>
 
 <script>
 (function () {
-  // 手機版側欄收合
+  // Collapsible mobile sidebar
   var sidebar = document.getElementById('sidebar');
   var toggle = document.getElementById('navToggle');
   var mq = window.matchMedia('(max-width: 960px)');
@@ -765,7 +765,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
     a.addEventListener('click', function () { if (mq.matches) sidebar.classList.add('is-collapsed'); });
   });
 
-  // 章內錨點 scroll-spy
+  // In-page section scroll spy
   var links = Array.prototype.slice.call(sidebar.querySelectorAll('.toc-in-chapter a[href^="#"]'));
   var map = {};
   links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });

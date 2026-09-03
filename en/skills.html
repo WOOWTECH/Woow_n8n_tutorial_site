@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>n8n Skill／Community Nodes 手冊 · 精選節點與 AI Agent Skill 型錄 · WoowTech</title>
-  <meta name="description" content="裝一顆 n8n community node 或給 AI agent 一顆 skill，你的自動化立刻多會十件事：精選 10 顆熱門 community node（Puppeteer、ElevenLabs、MCP、Evolution API 等）、6 大熱門集合入口（含 n8n-mcp / n8n-workflow-builder MCP servers），附安裝速查、相容性、安全守則、SKILL.md 規格參考。資料為 2026-08-20 快照。" />
+  <title>n8n Skill/Community Nodes Handbook · Selected nodes and AI Agent Skill catalog · WoowTech</title>
+  <meta name="description" content="Install an n8n community node or give an AI agent a skill to extend your automation. Explore 10 notable community nodes, including Puppeteer, ElevenLabs, MCP, and Evolution API, and 6 popular collections, including the n8n-mcp and n8n-workflow-builder MCP servers. Includes installation reference, compatibility and safety guidance, and the SKILL.md specification. Data snapshot: 2026-08-20." />
   <meta name="author" content="WoowTech" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/skills.html" />
@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
   <style>
-/* n8n Skill／Community Nodes 手冊 — Woow_ha_tutorial_site 版型 × woowtech Brand Prompt Library v2 */
+/* n8n Skill/Community Nodes Handbook — Woow_ha_tutorial_site layout × WoowTech Brand Prompt Library v2 */
 :root {
   --ww-blue: #6183FC;
   --ww-blue-600: #4A6DE8;
@@ -184,7 +184,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .callout.warn::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B94D22' d='M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z'/%3E%3C/svg%3E"); }
 .callout strong { color: var(--ink-900); }
 
-/* 資料表格 */
+/* Data tables */
 .data-table {
   width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
   font-size: 14px; background: var(--surface);
@@ -216,7 +216,7 @@ pre.code-block {
 }
 pre.code-block code { background: none; padding: 0; color: inherit; }
 
-/* Feature card (集合型錄) */
+/* Feature card (collection catalog) */
 .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .feature-card {
   padding: 26px 24px; border: 1px solid var(--hairline); border-radius: var(--radius);
@@ -250,7 +250,7 @@ details.faq[open] summary::after { background-image: url("data:image/svg+xml,%3C
 details.faq[open] summary { border-bottom: 1px solid var(--hairline); }
 details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; }
 
-/* CTA / 按鈕 */
+/* CTA / buttons */
 .btn-pill {
   display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
   background: var(--ww-blue); color: #fff; padding: 13px 32px;
@@ -311,70 +311,70 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 <body>
 <div class="layout">
   <aside class="sidebar" id="sidebar">
-    <a class="brand" href="#top">n8n Skill 手冊</a>
-    <div class="brand-sub">WoowTech · Community Nodes + AI Skill 型錄</div>
+    <a class="brand" href="#top">n8n Skill Handbook</a>
+    <div class="brand-sub">WoowTech · Community Nodes + AI Skill Catalog</div>
     <!-- i18n:switch --><nav class="lang-switch" aria-label="Language"><a href="../skills.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="skills.html" lang="en" aria-current="page">EN</a></nav><!-- /i18n:switch -->
-    <a class="hub-link" href="index.html">◂ n8n 資源總覽</a>
-    <button class="nav-toggle" id="navToggle" type="button">本冊內容<span class="nav-toggle-caret"></span></button>
+    <a class="hub-link" href="index.html">◂ n8n Resource Hub</a>
+    <button class="nav-toggle" id="navToggle" type="button">In this handbook<span class="nav-toggle-caret"></span></button>
     <div class="toc-in-chapter">
-      <h2>本冊內容</h2>
-      <a href="#why">兩種擴充概念</a>
-      <a href="#install">怎麼裝</a>
-      <a href="#picks">精選十顆</a>
+      <h2>In this handbook</h2>
+      <a href="#why">Two extension models</a>
+      <a href="#install">How to install</a>
+      <a href="#picks">Ten picks</a>
       <a href="#mcp">MCP servers</a>
-      <a href="#collections">熱門集合</a>
-      <a href="#compat">相容性須知</a>
-      <a href="#safety">安全守則</a>
-      <a href="#spec">SKILL.md 規格</a>
-      <a href="#faq">常見問題</a>
-      <a href="#download">下載</a>
+      <a href="#collections">Popular collections</a>
+      <a href="#compat">Compatibility notes</a>
+      <a href="#safety">Safety rules</a>
+      <a href="#spec">SKILL.md spec</a>
+      <a href="#faq">FAQ</a>
+      <a href="#download">Download</a>
     </div>
   </aside>
 
   <main class="content" id="top">
     <div class="chapter-header">
       <span class="kicker-script">extend everything</span>
-      <div class="kicker">WoowTech n8n Skill 手冊</div>
-      <h1>裝一顆節點或給 AI 一顆 skill，n8n 立刻多會十件事</h1>
-      <p class="lead">n8n 開箱有 400+ 官方節點，全球社群補了另外 2,100+ 顆 community node、還有幾十顆 MCP server 讓 AI agent 直接寫 workflow。這本手冊挑出「家庭／中小企業 / 內部團隊會真的用到」的 10 顆，加上 6 大熱門集合入口、安裝速查、相容性、安全守則、SKILL.md 規格參考。</p>
-      <div class="callout"><strong>調查基準：</strong>本冊的 star 數、下載數與維護狀態為 2026-08-20 調查當日的 npm／GitHub 公開數據，會隨時間變動；安裝前建議點進原始 repo 再確認一次。</div>
+      <div class="kicker">WoowTech n8n Skill Handbook</div>
+      <h1>Install a node or give AI a skill to extend n8n</h1>
+      <p class="lead">n8n includes 400+ official nodes. Its global community adds another 2,100+ community nodes and dozens of MCP servers that let AI agents write workflows directly. This handbook selects 10 that homes, small and midsize businesses, and internal teams will actually use, plus 6 popular collections, installation reference, compatibility and safety guidance, and the SKILL.md specification.</p>
+      <div class="callout"><strong>How this list was compiled:</strong>Star counts, downloads, and maintenance status are public npm/GitHub data observed on 2026-08-20 and will change over time. Check the source repository again before installing.</div>
     </div>
 
-    <section id="why" data-nav="兩種擴充概念">
-      <h2 data-icon="why">n8n 的兩種擴充概念</h2>
-      <p>n8n 的擴充分兩條線，這本手冊兩條都收：</p>
+    <section id="why" data-nav="Two extension models">
+      <h2 data-icon="why">The two ways to extend n8n</h2>
+      <p>n8n has two extension models, both covered here:</p>
       <ul>
-        <li><strong>Community Node</strong>：畫布上多一顆節點。你在 workflow 裡拉出來用（例：Puppeteer 抓網頁、ElevenLabs 產 TTS）。npm 上的 <code>n8n-nodes-*</code> 套件全部屬於這一類，2026-08 已破 500 個 package、5,800+ 顆 skill 級單元。</li>
-        <li><strong>AI Agent Skill / MCP Server</strong>：給你的 AI（Claude／Cursor／Windsurf）多一項能力。掛上 <code>n8n-mcp</code> 之後，你講「幫我建一支 workflow」，AI 直接呼叫 n8n API 幫你做。這一類是「教 AI 怎麼跟 n8n 對話」，跟 workflow 本身沒關係。</li>
+        <li><strong>Community Node</strong>: adds a node to the canvas for use in a workflow, such as Puppeteer for web capture or ElevenLabs for TTS. Every npm package named  <code>n8n-nodes-*</code>  belongs to this category. By 2026-08 there were more than 500 packages and 5,800+ skill-level units.</li>
+        <li><strong>AI Agent Skill / MCP Server</strong>: gives your AI (Claude, Cursor, or Windsurf) another capability. Connect  <code>n8n-mcp</code>  and ask it to build a workflow; AI calls the n8n API directly. This model teaches AI how to communicate with n8n and is separate from the workflow itself.</li>
       </ul>
-      <p>兩種對「能自動化什麼」都有加成：Community Node 是幫「n8n 本人」多會一件事；MCP server 是幫「開 n8n 的你」少做一件事。</p>
+      <p>Both expand what you can automate. A community node gives n8n another capability; an MCP server removes a task from the person operating n8n.</p>
     </section>
 
-    <section id="install" data-nav="怎麼裝">
-      <h2 data-icon="steps">怎麼裝（3 分鐘版）</h2>
+    <section id="install" data-nav="How to install">
+      <h2 data-icon="steps">How to install (the 3-minute version)</h2>
 
-      <h3>裝 Community Node</h3>
+      <h3>Install a community node</h3>
       <ol class="steps">
         <li>
-          <h3>打開 n8n Settings → Community Nodes</h3>
-          <p>需要管理員權限。雲端版（<code>n8n.woowtech.io</code>）預設關閉自裝，請洽 WoowTech；本地 add-on 或自架 n8n 開起來就有。</p>
+          <h3>Open n8n Settings → Community Nodes</h3>
+          <p>Admin access is required. Self-installation is disabled by default in the managed service (<code>n8n.woowtech.io</code>); contact WoowTech. It is available on a local add-on or other self-hosted n8n instance.</p>
         </li>
         <li>
-          <h3>按 Install a Community Node，貼上 npm package name</h3>
-          <p>例：<code>n8n-nodes-mcp</code>、<code>n8n-nodes-puppeteer</code>、<code>@elevenlabs/n8n-nodes-elevenlabs</code>。勾同意「使用第三方套件的風險」，按 Install。</p>
+          <h3>Select Install a Community Node and paste the npm package name</h3>
+          <p>For example: <code>n8n-nodes-mcp</code>、<code>n8n-nodes-puppeteer</code>、<code>@elevenlabs/n8n-nodes-elevenlabs</code>. Accept the risks of third-party packages, then select Install.</p>
         </li>
         <li>
-          <h3>Reload n8n（或等它自動重啟）</h3>
-          <p>裝完在 workflow 編輯器的節點抽屜搜尋節點名稱，出現就成功。看不到？看 <em>Executions → Errors</em>，常見是套件相容性擋掉了。</p>
+          <h3>Reload n8n (or wait for it to restart automatically)</h3>
+          <p>After installation, search for the node in the editor’s nodes panel. If it appears, installation succeeded. If not, check  <em>Executions → Errors</em>; package incompatibility is a common cause.</p>
         </li>
         <li>
-          <h3>拉節點試跑一次</h3>
-          <p>官方 template 或該 repo 的 README 幾乎都附最小可跑範例，貼 credentials 進去試看看。</p>
+          <h3>Add the node and run it once</h3>
+          <p>The official template or repository README usually includes a minimal working example. Connect credentials and test it.</p>
         </li>
       </ol>
 
-      <h3>裝 MCP Server（給你的 AI 用）</h3>
-      <p>在 Claude Code／Cursor／Windsurf 的 <code>settings.json</code>／MCP config 加：</p>
+      <h3>Install an MCP server (for your AI)</h3>
+      <p>In Claude Code, Cursor, or Windsurf, add this to  <code>settings.json</code> or the MCP config:</p>
       <pre class="code-block"><code>{
   "mcpServers": {
     "n8n-mcp": {
@@ -382,267 +382,267 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       "args": ["-y", "n8n-mcp"],
       "env": {
         "N8N_URL": "https://n8n.woowtech.io",
-        "N8N_API_KEY": "&lt;你的 API key，在 n8n Settings → API 建立&gt;"
+        "N8N_API_KEY": "&lt;your API key, created under n8n Settings → API&gt;"
       }
     }
   }
 }</code></pre>
-      <p>存檔重啟 AI 客戶端，就會看到 <code>create_workflow</code>、<code>list_workflows</code> 等工具出現。<a href="prompts.html">提示詞庫</a>裡有 44 條可直接複製的 prompt。</p>
+      <p>Save and restart the AI client. Tools such as  <code>create_workflow</code>、<code>list_workflows</code>  will appear.<a href="prompts.html">Prompt Library</a>contains 44 copy-ready prompts.</p>
 
-      <div class="callout tip"><strong>提示：</strong>MCP server 通常不動 n8n 本身——它只是幫 AI 打 API。所以你可以在自架、Cloud、任何 n8n 實例上用，包括 <code>n8n.woowtech.io</code> 開帳號給你之後。</div>
+      <div class="callout tip"><strong>Tip:</strong>An MCP server usually does not change n8n itself; it lets AI call the API. You can use it with self-hosted, Cloud, or any n8n instance, including  <code>n8n.woowtech.io</code> after your account is created.</div>
     </section>
 
-    <section id="picks" data-nav="精選十顆">
-      <h2 data-icon="picks">精選十顆 Community Node（中小企業視角）</h2>
-      <p>從 <a href="https://github.com/restyler/awesome-n8n" rel="noopener">restyler/awesome-n8n</a> 依 npm 月下載量排的清單裡，替中小企業／內部團隊挑十顆最實用的。「最對口」往下排：</p>
+    <section id="picks" data-nav="Ten picks">
+      <h2 data-icon="picks">Ten community nodes worth knowing (from an SMB angle)</h2>
+      <p>From  <a href="https://github.com/restyler/awesome-n8n" rel="noopener">restyler/awesome-n8n</a> , a list sorted by monthly npm downloads, these are the ten most useful picks for small and midsize businesses and internal teams, with the closest fits first:</p>
       <table class="data-table">
         <thead>
-          <tr><th>Community Node</th><th>它幫 n8n 多會什麼</th><th>安裝 spec</th></tr>
+          <tr><th>Community Node</th><th>What it adds to n8n</th><th>Installation spec</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><a href="https://www.npmjs.com/package/n8n-nodes-mcp" rel="noopener">n8n-nodes-mcp</a></td>
-            <td>讓 workflow 呼叫任何 MCP server（Notion、Filesystem、GitHub…）。等於把 Claude 生態的工具全接進 n8n。<strong>2026 最熱門</strong>，月下載 765K。</td>
+            <td>Lets a workflow call any MCP server (Notion, Filesystem, GitHub, and more), bringing tools from the Claude ecosystem into n8n. <strong>Most popular in 2026</strong>, with 765K monthly downloads.</td>
             <td><code>n8n-nodes-mcp</code></td>
           </tr>
           <tr>
             <td><a href="https://www.npmjs.com/package/n8n-nodes-puppeteer" rel="noopener">n8n-nodes-puppeteer</a></td>
-            <td>Chromium 完整控制：點按鈕、填表單、抓網頁截圖、產 PDF、抓 JS render 過的內容。爬蟲／自動化測試／報表 PDF 都靠它。</td>
+            <td>Full Chromium control: select buttons, complete forms, capture screenshots, generate PDFs, and retrieve JavaScript-rendered content. Supports crawlers, automated tests, and report PDFs.</td>
             <td><code>n8n-nodes-puppeteer</code></td>
           </tr>
           <tr>
             <td><a href="https://www.npmjs.com/package/n8n-nodes-globals" rel="noopener">n8n-nodes-globals</a></td>
-            <td>建全域常數給所有 workflow 共用（例：公司 slug、Slack 主 channel、DB URL）。改一個地方全部 workflow 生效——多 workflow 環境的救星。</td>
+            <td>Creates global constants shared by all workflows, such as a company slug, primary Slack channel, or DB URL. Change one place to update every workflow in a multi-workflow environment.</td>
             <td><code>n8n-nodes-globals</code></td>
           </tr>
           <tr>
             <td><a href="https://www.npmjs.com/package/@elevenlabs/n8n-nodes-elevenlabs" rel="noopener">@elevenlabs/n8n-nodes-elevenlabs</a></td>
-            <td>ElevenLabs 官方 TTS：把文字產成人聲 mp3。用途：語音通知、YouTube／podcast 自動配音、IVR 提示音。</td>
+            <td>Official ElevenLabs TTS: turns text into a spoken mp3 for voice notifications, automated YouTube/podcast narration, and IVR prompts.</td>
             <td><code>@elevenlabs/n8n-nodes-elevenlabs</code></td>
           </tr>
           <tr>
             <td><a href="https://www.npmjs.com/package/n8n-nodes-text-manipulation" rel="noopener">n8n-nodes-text-manipulation</a></td>
-            <td>純字串處理：trim／replace／regex／encode／hash——工作流裡幾乎每支都會用到 1 顆。不用寫 Function node 的省事版。</td>
+            <td>String operations: trim, replace, regex, encode, and hash. Almost every workflow needs one of these; this avoids a Function node.</td>
             <td><code>n8n-nodes-text-manipulation</code></td>
           </tr>
           <tr>
             <td><a href="https://www.npmjs.com/package/n8n-nodes-datastore" rel="noopener">n8n-nodes-datastore</a></td>
-            <td>workflow 內建 in-memory KV store，跨 execution 保留狀態（例：去重、cache）。不用另外接 Redis。</td>
+            <td>An in-memory KV store inside a workflow that retains state across executions for deduplication or caching, without a separate Redis service.</td>
             <td><code>n8n-nodes-datastore</code></td>
           </tr>
           <tr>
             <td><a href="https://www.npmjs.com/package/@mendable/n8n-nodes-firecrawl" rel="noopener">@mendable/n8n-nodes-firecrawl</a></td>
-            <td>Firecrawl 官方節點：把整站或多頁抓下來成乾淨 Markdown，餵給 AI Agent 分析比自己爬穩定太多。競品／內容監測必備。</td>
+            <td>Official Firecrawl node: retrieves an entire site or multiple pages as clean Markdown for AI Agent analysis. More stable than a custom crawler for competitor or content monitoring.</td>
             <td><code>@mendable/n8n-nodes-firecrawl</code></td>
           </tr>
           <tr>
             <td><a href="https://www.npmjs.com/package/n8n-nodes-evolution-api" rel="noopener">n8n-nodes-evolution-api</a></td>
-            <td>WhatsApp 專門的 channel hub，接 Evolution API。做 WhatsApp Bot／通知／客服的中小電商幾乎必裝，月下載 6.6M 是社群第一名。</td>
+            <td>A WhatsApp channel hub that connects Evolution API. Useful for WhatsApp bots, notifications, and support in small e-commerce businesses; its 6.6M monthly downloads rank first in the community.</td>
             <td><code>n8n-nodes-evolution-api</code></td>
           </tr>
           <tr>
             <td><a href="https://www.npmjs.com/package/n8n-nodes-deepseek" rel="noopener">n8n-nodes-deepseek</a></td>
-            <td>DeepSeek 官方 AI 節點。中文能力好、比 GPT-4o 便宜一個級數，做內部工具或大量文本處理的省錢首選。</td>
+            <td>Official DeepSeek AI node. Strong Chinese-language performance and substantially cheaper than GPT-4o, making it an economical choice for internal tools or high-volume text processing.</td>
             <td><code>n8n-nodes-deepseek</code></td>
           </tr>
           <tr>
             <td><a href="https://www.npmjs.com/package/n8n-nodes-chatwoot" rel="noopener">n8n-nodes-chatwoot</a></td>
-            <td>Chatwoot（開源 Zendesk）整合：把 workflow 事件變成客服對話、把客服對話推進 workflow 分派。跟 Evolution API 搭做完整客服自動化。</td>
+            <td>Chatwoot (an open-source Zendesk alternative) integration: turn workflow events into support conversations and send conversations into workflows for routing. Pair it with Evolution API for complete support automation.</td>
             <td><code>n8n-nodes-chatwoot</code></td>
           </tr>
         </tbody>
       </table>
-      <p class="pnote">下載數為 <a href="https://github.com/restyler/awesome-n8n" rel="noopener">restyler/awesome-n8n</a> 2026-01-20 快照的月下載量，2026-08 應更高。</p>
+      <p class="pnote">Download counts are from  <a href="https://github.com/restyler/awesome-n8n" rel="noopener">restyler/awesome-n8n</a> monthly-download snapshots dated 2026-01-20 and may be higher by 2026-08.</p>
     </section>
 
     <section id="mcp" data-nav="MCP servers">
-      <h2 data-icon="mcp">n8n MCP Servers · 給你的 AI 一個 workflow builder</h2>
-      <p>MCP server 是「教你的 AI 怎麼跟 n8n 講話」的一段程式。掛好之後，你在 Claude／Cursor 講一句「幫我做一支 workflow」，AI 直接透過 n8n REST API 幫你 create／activate／debug。這一類目前最活的三顆：</p>
+      <h2 data-icon="mcp">n8n MCP servers · Give your AI a workflow builder</h2>
+      <p>An MCP server teaches your AI how to communicate with n8n. After connecting it, ask Claude or Cursor to build a workflow and AI uses the n8n REST API to create, activate, or debug it. These are the most active options:</p>
       <div class="feature-grid">
 
         <div class="feature-card">
           <h3><a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a></h3>
-          <div class="pnote">22.7k ★ · MIT · 極活躍（1,193 commits）</div>
-          <p>目前 star 最高的 n8n MCP，功能最完整：Core Tools 7 顆（node search／validation／template 探索／docs），Management Tools 16 顆（workflow CRUD、execution、folder、credential、audit、health）。覆蓋 <strong>2,541 個 n8n 節點</strong>（832 core + 1,709 community）99% property。</p>
+          <div class="pnote">22.7k ★ · MIT · Very active (1,193 commits)</div>
+          <p>The n8n MCP server with the most stars and broadest feature set: 7 Core Tools (node search, validation, template discovery, docs) and 16 Management Tools (workflow CRUD, execution, folder, credential, audit, health). It covers  <strong>2,541 n8n nodes</strong>（832 core + 1,709 community）99% property。</p>
           <pre class="code-block"><code>npx n8n-mcp</code></pre>
-          <p class="pnote">安裝也支援 Docker（<code>ghcr.io/czlonkowski/n8n-mcp</code>）、npm 安裝到本機、Railway 一鍵。<strong>2026 首選</strong>。</p>
+          <p class="pnote">Installation also supports Docker (<code>ghcr.io/czlonkowski/n8n-mcp</code>), local npm installation, and one-click Railway deployment. <strong>Leading choice for 2026</strong>。</p>
         </div>
 
         <div class="feature-card">
           <h3><a href="https://github.com/makafeli/n8n-workflow-builder" rel="noopener">makafeli/n8n-workflow-builder</a></h3>
-          <div class="pnote">540 ★ · MIT · 活躍（56 commits）</div>
-          <p>更輕量的選擇：15 顆 tool 分 5 類（Core Workflow、Lifecycle、Advanced、Execution、Organization）。sweet spot 是 <code>create_workflow_and_activate</code> 一步到位、<code>generate_audit</code> 一鍵安全稽核。給不需要 node search 的中階用戶。</p>
+          <div class="pnote">540 ★ · MIT · Active (56 commits)</div>
+          <p>A lighter option: 15 tools across 5 categories (Core Workflow, Lifecycle, Advanced, Execution, Organization). Its strengths are  <code>create_workflow_and_activate</code> in one step and <code>generate_audit</code> for one-step security audits. It suits intermediate users who do not need node search.</p>
           <pre class="code-block"><code>npx @makafeli/n8n-workflow-builder</code></pre>
-          <p class="pnote">TypeScript 撰寫、CI 完整、issue 回覆快。個人／小團隊起手推薦。</p>
+          <p class="pnote">Written in TypeScript, with complete CI and responsive issue handling. A good starting point for individuals and small teams.</p>
         </div>
 
         <div class="feature-card">
           <h3><a href="https://github.com/salacoste/mcp-n8n-workflow-builder" rel="noopener">salacoste/mcp-n8n-workflow-builder</a></h3>
-          <div class="pnote">229 ★ · MIT · 多實例支援</div>
-          <p>17 顆 tool（8 workflow + 4 execution + 5 tag + 6 credential），特色是 <strong>Multi-Instance Support</strong>：一個 MCP server 同時管 dev／staging／prod 三個 n8n，AI 自動路由。適合有多環境的中型團隊。</p>
+          <div class="pnote">229 ★ · MIT · Multi-instance support</div>
+          <p>17 tools (8 workflow + 4 execution + 5 tag + 6 credential), featuring  <strong>Multi-Instance Support</strong>: one MCP server manages dev, staging, and prod n8n instances with automatic AI routing. It suits midsize teams with several environments.</p>
           <pre class="code-block"><code>npm i -g @kernel.salacoste/n8n-workflow-builder</code></pre>
-          <p class="pnote">38+ 頁詳細文件、credential 環境隔離做得細——需要多環境部署走這顆。</p>
+          <p class="pnote">38+ pages of detailed documentation and careful credential isolation between environments make it suitable for multi-environment deployments.</p>
         </div>
 
         <div class="feature-card">
           <h3><a href="https://github.com/ifmelate/n8n-workflow-builder-mcp" rel="noopener">ifmelate/n8n-workflow-builder-mcp</a></h3>
-          <div class="pnote">≈200 ★ · 支援 VS Code／Cursor／Claude Code</div>
-          <p>強調 <strong>「agent mode」</strong>——AI 依你的自然語言 prompt 反覆迭代，自動 create → run → 觀察錯誤 → 修改。跟 IDE 內的 AI coding 體驗最一致。</p>
+          <div class="pnote">≈200 ★ · Supports VS Code, Cursor, and Claude Code</div>
+          <p>Emphasizes  <strong>「agent mode」</strong>: AI iterates from a natural-language prompt, automatically creating → running → observing errors → modifying. This is closest to AI coding inside an IDE.</p>
           <pre class="code-block"><code>npx n8n-workflow-builder-mcp</code></pre>
-          <p class="pnote">適合已經在 Cursor 或 VS Code 寫 code 的工程師。</p>
+          <p class="pnote">For engineers who already write code in Cursor or VS Code.</p>
         </div>
 
       </div>
-      <p class="pnote" style="margin-top:14px">備查：<a href="https://github.com/Jimmy974/n8n-workflow-builder" rel="noopener">Jimmy974/n8n-workflow-builder</a>、<a href="https://github.com/Daniboycg/n8n-workflow-builder-mcp-server" rel="noopener">daniel-carreon/n8n-workflow-builder-mcp-server</a>——同類 fork，功能大同小異；有偏好特定作者的可以看。</p>
+      <p class="pnote" style="margin-top:14px">Also listed: <a href="https://github.com/Jimmy974/n8n-workflow-builder" rel="noopener">Jimmy974/n8n-workflow-builder</a>、<a href="https://github.com/Daniboycg/n8n-workflow-builder-mcp-server" rel="noopener">daniel-carreon/n8n-workflow-builder-mcp-server</a>—similar forks with broadly comparable features for users who prefer a particular maintainer.</p>
     </section>
 
-    <section id="collections" data-nav="熱門集合">
-      <h2 data-icon="collections">六大熱門集合入口</h2>
-      <p>不想一顆一顆挑？從這六個集合入口逛：</p>
+    <section id="collections" data-nav="Popular collections">
+      <h2 data-icon="collections">Six popular collections to browse</h2>
+      <p>To browse rather than pick packages one at a time, start with these six collections:</p>
       <div class="feature-grid">
 
         <div class="feature-card">
           <h3><a href="https://github.com/restyler/awesome-n8n" rel="noopener">restyler/awesome-n8n</a></h3>
-          <div class="pnote">Community 精選清單 · 5,800+ 個 skill 條目 · 每月更新</div>
-          <p>依 npm 月下載量排序的 community node 大全，加上 tutorials／integrations 分類。想知道「這類需求有沒有現成 node」查這裡最快。</p>
-          <pre class="code-block"><code># 純索引，照連結裝各原始 npm 套件
+          <div class="pnote">Curated community list · 5,800+ skill entries · Updated monthly</div>
+          <p>A complete community-node list sorted by monthly npm downloads, plus tutorial and integration categories. This is the fastest way to see whether a ready-made node covers a requirement.</p>
+          <pre class="code-block"><code># Index only; follow the links to install each original npm package
 https://github.com/restyler/awesome-n8n</code></pre>
         </div>
 
         <div class="feature-card">
           <h3><a href="https://www.npmjs.com/search?q=keywords%3An8n-community-node-package" rel="noopener">npmjs.com（keywords）</a></h3>
-          <div class="pnote">官方索引 · 500+ 套件 · 帶下載趨勢</div>
-          <p>npmjs 上的 <code>keywords:n8n-community-node-package</code> 搜尋是最新最全的一級資訊源。可以按下載量、更新時間排。</p>
+          <div class="pnote">Official index · 500+ packages · Download trends</div>
+          <p>On npmjs, the  <code>keywords:n8n-community-node-package</code>  search is the newest, most complete primary source. Sort it by downloads or update time.</p>
           <pre class="code-block"><code>npmjs.com/search?q=keywords:n8n-community-node-package</code></pre>
         </div>
 
         <div class="feature-card">
           <h3><a href="https://n8n.io/integrations/" rel="noopener">n8n.io/integrations</a></h3>
-          <div class="pnote">官方整合目錄 · 700+ 節點 · 圖像化瀏覽</div>
-          <p>官方 + 認證的 verified community node，適合企業用戶——這一區的東西通常有基本審核與相容性保證。</p>
+          <div class="pnote">Official integration catalog · 700+ nodes · Visual browsing</div>
+          <p>Official and certified verified community nodes suit enterprise users; entries in this catalog generally have basic review and compatibility assurances.</p>
           <pre class="code-block"><code>n8n.io/integrations</code></pre>
-          <p class="pnote">認證的通常有 official 標籤，直接從這裡挑最保險。</p>
+          <p class="pnote">Certified entries usually have an official label, making this the safest place to choose.</p>
         </div>
 
         <div class="feature-card">
           <h3><a href="https://n8n.io/workflows/" rel="noopener">n8n.io/workflows</a></h3>
-          <div class="pnote">官方 template gallery · 3,000+ workflow · 直接 import</div>
-          <p>不是節點集合，是「別人做好的 workflow」集合。搜關鍵字（例：Slack notification、AI Agent）就有現成 JSON，複製過來改幾個欄位就能用。詳見 <a href="ch4_templates.html">第 4 章</a>。</p>
+          <div class="pnote">Official template gallery · 3,000+ workflows · Direct import</div>
+          <p>This is not a node collection; it contains workflows built by other people. Search for a keyword such as Slack notification or AI Agent to find ready-made JSON, then copy it and change a few fields. See  <a href="ch4_templates.html">Chapter 4</a>。</p>
           <pre class="code-block"><code>n8n.io/workflows</code></pre>
         </div>
 
         <div class="feature-card">
           <h3><a href="https://community.n8n.io/" rel="noopener">community.n8n.io</a></h3>
-          <div class="pnote">官方論壇 · Share section · 高活躍</div>
-          <p>論壇的 <em>Share</em> 版是社群互相分享 workflow／node 的地方，比 npm 上多一層「作者現身回問題」。踩雷時到這裡搜錯誤訊息幾乎都有解。</p>
+          <div class="pnote">Official forum · Share section · Highly active</div>
+          <p>The forum’s  <em>Share</em>  section is where the community shares workflows and nodes. Unlike npm, maintainers can answer directly. Search an error message here when something fails.</p>
           <pre class="code-block"><code>community.n8n.io</code></pre>
         </div>
 
         <div class="feature-card">
           <h3><a href="https://github.com/topics/n8n-nodes" rel="noopener">github.com/topics/n8n-nodes</a></h3>
-          <div class="pnote">GitHub topic 索引 · 1,000+ repo · 依 star 排序</div>
-          <p>GitHub 上打了 <code>n8n-nodes</code> topic 的 repo。適合想直接看原始碼、追作者的社群玩家。</p>
+          <div class="pnote">GitHub topic index · 1,000+ repositories · Sort by stars</div>
+          <p>Repositories with the  <code>n8n-nodes</code>  topic on GitHub suit community users who want to inspect source code or follow maintainers.</p>
           <pre class="code-block"><code>github.com/topics/n8n-nodes</code></pre>
         </div>
 
       </div>
     </section>
 
-    <section id="compat" data-nav="相容性須知">
-      <h2 data-icon="integration">相容性須知</h2>
-      <p>Community Node／MCP server 在你的環境跑不跑得起來，常見卡在三件事：</p>
+    <section id="compat" data-nav="Compatibility notes">
+      <h2 data-icon="integration">Compatibility notes</h2>
+      <p>Whether a community node or MCP server runs in your environment usually depends on three things:</p>
       <ul>
-        <li><strong>n8n 版本</strong>：node 通常 pin 某個 n8n minor 版本區間。WoowTech <code>n8n.woowtech.io</code> 目前是 <code>v2.32.7 Community Edition</code>，安裝前看 node README 的 <code>peerDependencies</code>。</li>
-        <li><strong>Node.js 版本</strong>：node 用了新語法（例：optional chaining、top-level await）而你的 n8n 跑在較舊 Node.js 就會爆。HAOS add-on 版預設 Node 20，通常沒事。</li>
-        <li><strong>額外服務依賴</strong>：例如 Puppeteer 需要 Chromium binary，n8n Docker image 沒帶——要自己加 Dockerfile 或用 <code>n8n-nodes-puppeteer</code> 的獨立 image。</li>
+        <li><strong>n8n version</strong>: a node often pins a range of n8n minor versions. WoowTech’s  <code>n8n.woowtech.io</code>  currently runs  <code>v2.32.7 Community Edition</code>. Before installation, check  <code>peerDependencies</code>。</li>
+        <li><strong>Node.js version</strong>: a node using newer syntax such as optional chaining or top-level await will fail when n8n runs on an older Node.js. The HAOS add-on defaults to Node 20 and is usually compatible.</li>
+        <li><strong>Additional service dependencies</strong>: Puppeteer, for example, needs a Chromium binary not included in the n8n Docker image. Add a Dockerfile or use the standalone image for  <code>n8n-nodes-puppeteer</code> .</li>
       </ul>
-      <p>MCP server 相容性簡單：只要你的 AI 客戶端（Claude Code／Cursor／Windsurf）支援 MCP 就能用，跟 n8n 版本沒直接關係（它是打 n8n API）。</p>
-      <div class="callout"><strong>觀念：</strong>挑第一準則不是 star 數，是「這顆的作者活不活」——最近 3 個月有沒有 commit、issue 有沒有回覆。</div>
+      <p>MCP server compatibility is simple: if your AI client (Claude Code, Cursor, or Windsurf) supports MCP, it works. It has no direct dependency on the n8n version because it calls the n8n API.</p>
+      <div class="callout"><strong>Concept:</strong>Your first criterion should not be star count. Check whether the maintainer is active: commits in the past 3 months and responses to issues.</div>
     </section>
 
-    <section id="safety" data-nav="安全守則">
-      <h2 data-icon="safety">安全守則</h2>
-      <div class="callout warn"><strong>注意：</strong>Community Node 是<strong>可以執行任意程式碼</strong>的 npm 套件，MCP server 是<strong>能呼叫你的 n8n API</strong>的 process。裝之前想清楚。</div>
+    <section id="safety" data-nav="Safety rules">
+      <h2 data-icon="safety">Safety rules</h2>
+      <div class="callout warn"><strong>Warning:</strong>A community node is an npm package that <strong>can execute arbitrary code</strong>; an MCP server is a process that <strong>can call your n8n API</strong>. Understand the implications before installing either.</div>
       <ul>
-        <li><strong>先讀 README，再 install</strong>：不是每顆都會標寫得清楚要哪些 credential、會發哪些請求。看不懂就叫 Claude 幫你讀一遍。</li>
-        <li><strong>Production 環境釘版本</strong>：<code>package.json</code> 用 <code>n8n-nodes-xxx: 1.2.3</code> 而不是 <code>^1.2.3</code>，避免上游改壞你無感升級。</li>
-        <li><strong>MCP server 用 scoped API key</strong>：n8n API key 建議建一支專給 MCP 用，權限限制到「特定 workflow tag」或 read-only。<strong>不要用 admin key</strong>。</li>
-        <li><strong>看貢獻者</strong>：只有 1 個 contributor 的 node 要有心理準備——他停更了就沒有下一版。生產環境用有維護組織的（官方、企業）比較安全。</li>
-        <li><strong>裝完做 audit</strong>：MCP server 都有 <code>generate_audit</code> 工具，跑一次看有沒有新裝的節點洩漏什麼。</li>
+        <li><strong>Read the README before installing</strong>: not every package clearly documents the credentials it needs or the requests it sends. Ask Claude to review it if necessary.</li>
+        <li><strong>Pin versions in production</strong>：<code>package.json</code> Use  <code>n8n-nodes-xxx: 1.2.3</code>  rather than  <code>^1.2.3</code> to prevent an unnoticed upgrade from introducing an upstream regression.</li>
+        <li><strong>Use a scoped API key for an MCP server</strong>: create a dedicated n8n API key for MCP and limit access to a specific workflow tag or read-only operations.<strong>Do not use an admin key</strong>。</li>
+        <li><strong>Review contributors</strong>: a node with only 1 contributor may stop receiving updates if that person leaves. Packages maintained by an official or commercial organization are safer for production.</li>
+        <li><strong>Run an audit after installation</strong>: MCP servers provide a  <code>generate_audit</code>  tool. Run it once to detect possible leaks from newly installed nodes.</li>
       </ul>
     </section>
 
-    <section id="spec" data-nav="SKILL.md 規格">
-      <h2 data-icon="spec">SKILL.md 規格速查（AI Agent Skill 用）</h2>
-      <p>如果你要寫自己的 AI Agent Skill（給 Claude／Cursor 用），Anthropic 的 SKILL.md 規格是目前業界事實標準。最小骨架：</p>
+    <section id="spec" data-nav="SKILL.md spec">
+      <h2 data-icon="spec">SKILL.md spec at a glance (for AI agent skills)</h2>
+      <p>If you want to write an AI Agent Skill for Claude or Cursor, Anthropic’s SKILL.md format is the current de facto industry standard. The smallest structure is:</p>
       <pre class="code-block"><code>n8n-workflow-review/
-└── SKILL.md          ← 唯一必要檔案
+└── SKILL.md          ← the only required file
 
-# SKILL.md 內容
+# SKILL.md contents
 ---
 name: n8n-workflow-review
-description: 使用者傳 n8n workflow JSON 時，做結構檢查——
-  找 dangling connection、缺 credential、明顯效能地雷。
-  也在使用者問「這支 workflow 有問題嗎」「幫我 review」時觸發。
+description: When a user provides n8n workflow JSON, check its structure—
+  find dangling connections, missing credentials, and clear performance problems.
+  Also trigger when the user asks “Does this workflow have a problem?” or “Review this.”
 ---
 
 # n8n Workflow Review
 
-（給 agent 看的做法說明，寫得像教新同事）</code></pre>
+(Instructions for the agent, written as if onboarding a colleague)</code></pre>
       <table class="data-table">
         <thead>
-          <tr><th>欄位</th><th>必填</th><th>說明</th></tr>
+          <tr><th>Field</th><th>Required</th><th>Description</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>name</code></td><td>是</td><td>小寫英數與連字號，1–64 字元。</td></tr>
-          <tr><td><code>description</code></td><td>是</td><td>做什麼＋何時用。<strong>AI 靠這行決定要不要載入</strong>，把使用者會講的話寫進去。</td></tr>
-          <tr><td><code>license</code> / <code>compatibility</code> / <code>allowed-tools</code></td><td>否</td><td>授權、相容性標注、工具白名單等選填欄位。</td></tr>
+          <tr><td><code>name</code></td><td>Yes</td><td>Lowercase alphanumeric characters and hyphens, 1–64 characters.</td></tr>
+          <tr><td><code>description</code></td><td>Yes</td><td>What it does + when to use it. <strong>AI uses this line to decide whether to load the skill</strong>, so include phrases a user would say.</td></tr>
+          <tr><td><code>license</code> / <code>compatibility</code> / <code>allowed-tools</code></td><td>No</td><td>Optional fields for license, compatibility notes, allowed tools, and more.</td></tr>
         </tbody>
       </table>
-      <p>慣例：SKILL.md 保持精簡，附件放 <code>references/</code>、<code>scripts/</code>、<code>assets/</code>，用到才讀，避免吃爆 AI 的 context。</p>
-      <div class="callout tip"><strong>提示：</strong>寫給 n8n 用的 skill 通常會描述「什麼 workflow pattern → 哪個 MCP tool」的映射；不寫成 skill 也可以，寫在 <a href="prompts.html">提示詞庫</a>裡當範例是最輕量的做法。</div>
+      <p>Keep SKILL.md concise. Put supporting files under  <code>references/</code>、<code>scripts/</code>、<code>assets/</code> and read them only when needed to avoid filling the AI context.</p>
+      <div class="callout tip"><strong>Tip:</strong>An n8n skill usually maps a workflow pattern to an MCP tool. For a lighter approach, put the example in the  <a href="prompts.html">Prompt Library</a>instead of making it a skill.</div>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
       <details class="faq">
-        <summary>裝完 Community Node 沒出現在節點抽屜？</summary>
-        <div class="body">最常見兩個原因：（1）沒 reload n8n（或 add-on 沒重啟）；（2）版本不相容——看 <em>Settings → Community Nodes</em> 有沒有紅色錯誤訊息。實在不出來，去該 node 的 GitHub issue 搜同樣症狀，通常有解。</div>
+        <summary>Why does an installed community node not appear in the nodes panel?</summary>
+        <div class="body">The two most common causes are (1) n8n was not reloaded or the add-on was not restarted, and (2) an incompatible version. Check  <em>Settings → Community Nodes</em> for a red error message. If it still does not appear, search the node’s GitHub issues for the same symptom.</div>
       </details>
       <details class="faq">
-        <summary>Community Node 會不會拖累 n8n 效能？</summary>
-        <div class="body">每顆節點都會佔 memory（class 常駐），裝 50+ 顆會讓 n8n 啟動變慢 5-10 秒。原則：常用的留著、試玩過不用的就 uninstall。做 audit 的時候一併檢視。</div>
+        <summary>Do community nodes affect n8n performance?</summary>
+        <div class="body">Every node consumes memory because its class remains loaded. Installing 50+ nodes makes n8n start 5–10 seconds more slowly. Keep frequent-use nodes and uninstall experiments you no longer need. Review them during audits.</div>
       </details>
       <details class="faq">
-        <summary>MCP server 需要一直開著嗎？會不會很吃資源？</summary>
-        <div class="body">MCP server 是 stdio 通信的短命 process——你的 AI 客戶端啟動時它才跑，關掉就停。CPU／記憶體用量幾乎為零，掛著沒差。</div>
+        <summary>Must an MCP server run continuously? Does it use many resources?</summary>
+        <div class="body">An MCP server is a short-lived process that communicates over stdio. It runs when your AI client starts and stops when the client closes. CPU and memory use are nearly zero.</div>
       </details>
       <details class="faq">
-        <summary>WoowTech 的 <code>n8n.woowtech.io</code> 可以自己裝 community node 嗎？</summary>
-        <div class="body">預設不能——雲端多用戶環境，加 node 會影響所有客戶。有需求請開 ticket，WoowTech 評估後統一裝（通常會依社群評價 + 安全審核決定）。要完整自主權請走 HAOS add-on 模式（見 <a href="sales.html">銷售手冊</a>）。</div>
+        <summary>Can WoowTech’s  <code>n8n.woowtech.io</code>  users install community nodes themselves?</summary>
+        <div class="body">Not by default. In a multi-user managed environment, adding a node affects every customer. Open a ticket; WoowTech will review the community reputation and security, then install it centrally if approved. For complete control, use the self-hosted option (see the  <a href="sales.html">Sales Handbook</a>）。</div>
       </details>
       <details class="faq">
-        <summary>可以只用 npm 套件的 skill／node 名字打 star 追蹤，不裝嗎？</summary>
-        <div class="body">可以。npm 有 favorites、GitHub 有 star、awesome-n8n 有 issue 訂閱——先「收藏、看趨勢」，需要用了再裝，是最省心的策略。</div>
+        <summary>Can I star an npm skill/node package and track it without installing it?</summary>
+        <div class="body">Yes. npm has favorites, GitHub has stars, and awesome-n8n has issue subscriptions. Save it and watch the trend, then install only when needed.</div>
       </details>
       <details class="faq">
-        <summary>寫了新的 community node 或 skill 想上架？</summary>
-        <div class="body">Community Node：npm publish 加上 <code>keywords: ["n8n-community-node-package"]</code>，n8n 官方會自動收錄。AI Agent Skill：push 到 GitHub，投稿到 <a href="https://github.com/topics/claude-skill" rel="noopener">topics/claude-skill</a>；夠成熟的話 PR 到 <a href="https://github.com/restyler/awesome-n8n" rel="noopener">awesome-n8n</a> 或對應 skill 索引。</div>
+        <summary>How do I publish a new community node or skill?</summary>
+        <div class="body">For a community node, publish to npm with  <code>keywords: ["n8n-community-node-package"]</code> and n8n will index it automatically. For an AI Agent Skill, push it to GitHub and submit it to  <a href="https://github.com/topics/claude-skill" rel="noopener">topics/claude-skill</a>. When mature, open a PR to  <a href="https://github.com/restyler/awesome-n8n" rel="noopener">awesome-n8n</a> or the relevant skill index.</div>
       </details>
     </section>
 
-    <section id="download" data-nav="下載">
-      <h2 data-icon="download">把這本帶走</h2>
-      <p>整本是自包含單檔 HTML，下載後離線可開。集合資訊會過期，重要決定前回 <a href="index.html">資源總覽</a>看線上版。</p>
+    <section id="download" data-nav="Download">
+      <h2 data-icon="download">Take this handbook with you</h2>
+      <p>This handbook is a self-contained single HTML file that works offline. Collection data ages, so before an important decision return to the  <a href="index.html">Resource Hub</a>for the online version.</p>
       <p>
-        <a class="btn-pill" href="skills.html" download="n8n-skill-手冊.html">下載本冊 HTML</a>
-        <a class="btn-ghost" href="index.html">回資源總覽</a>
+        <a class="btn-pill" href="skills.html" download="n8n-skill-handbook.html">Download this handbook as HTML</a>
+        <a class="btn-ghost" href="index.html">Back to Resource Hub</a>
       </p>
     </section>
 
     <footer class="site-footer">
-      <p>《n8n Skill／Community Nodes 手冊》由 <strong>WoowTech 渥屋科技</strong> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> 授權釋出。star 數與下載量為 2026-08-20 快照。</p>
-      <p class="footer-meta">The Smart Space Solution · 智慧空間解決方案 · <a href="index.html">n8n 資源總覽</a> · Community node 依各自作者授權；n8n 本身依 Sustainable Use License，本站與 n8n GmbH 無隸屬關係。</p>
+      <p>The n8n Skill/Community Nodes Handbook is produced by  <strong>WoowTech</strong>  and released under  <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> . Star counts and download totals are a snapshot from 2026-08-20.</p>
+      <p class="footer-meta">The Smart Space Solution · <a href="index.html">n8n Resource Hub</a> · Community nodes retain their authors’ respective licenses. n8n is licensed under the Sustainable Use License. This site is not affiliated with n8n GmbH.</p>
     </footer>
   </main>
 </div>

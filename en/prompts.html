@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>n8n API／MCP 提示詞庫 · 42 條可複製的 workflow 建置提示詞 · WoowTech</title>
-  <meta name="description" content="給 Claude／AI agent 用的 n8n workflow 建置提示詞：42+ 條分 8 類，每一條都會觸發 n8n MCP server 工具（n8n-mcp、n8n-workflow-builder）或直接呼叫 n8n REST API（POST /workflows、PATCH /workflows/:id、POST /workflows/:id/activate）。附複製按鈕、clipboard fallback。" />
+  <title>n8n API/MCP Prompt Library · 44 copy-ready workflow-building prompts · WoowTech</title>
+  <meta name="description" content="n8n workflow-building prompts for Claude and other AI agents: 44 prompts in 8 categories. Each invokes an n8n MCP server tool (n8n-mcp or n8n-workflow-builder) or calls the n8n REST API directly (POST /workflows, PATCH /workflows/:id, or POST /workflows/:id/activate). Includes copy buttons and a clipboard fallback." />
   <meta name="author" content="WoowTech" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/prompts.html" />
@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
   <style>
-/* n8n API/MCP 提示詞庫 — Woow_ha_tutorial_site 版型 × woowtech Brand Prompt Library v2 */
+/* n8n API/MCP Prompt Library — Woow_ha_tutorial_site layout × WoowTech Brand Prompt Library v2 */
 :root {
   --ww-blue: #6183FC;
   --ww-blue-600: #4A6DE8;
@@ -185,7 +185,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .callout.warn::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B94D22' d='M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z'/%3E%3C/svg%3E"); }
 .callout strong { color: var(--ink-900); }
 
-/* 資料表格 */
+/* Data tables */
 .data-table {
   width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
   font-size: 14px; background: var(--surface);
@@ -225,7 +225,7 @@ details.faq[open] summary::after { background-image: url("data:image/svg+xml,%3C
 details.faq[open] summary { border-bottom: 1px solid var(--hairline); }
 details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; }
 
-/* 程式碼區塊 */
+/* Code blocks */
 pre.code-block {
   background: var(--surface-alt); color: var(--ink-900);
   padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--hairline);
@@ -239,7 +239,7 @@ code {
 }
 pre.code-block code { background: none; padding: 0; color: inherit; }
 
-/* 提示詞卡 */
+/* Prompt cards */
 .prompt-card {
   position: relative; background: var(--surface);
   border: 1px solid var(--hairline); border-radius: var(--radius-sm);
@@ -265,7 +265,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 .prompt-card .copy.ok { background: rgba(140, 211, 127, 0.2); color: #3d7a34; border-color: rgba(140, 211, 127, 0.5); }
 @media (max-width: 720px) { .prompt-card { padding-right: 18px; padding-top: 46px; } }
 
-/* CTA / 按鈕 */
+/* CTA / buttons */
 .btn-pill {
   display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
   background: var(--ww-blue); color: #fff; padding: 13px 32px;
@@ -325,418 +325,418 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 <body>
 <div class="layout">
   <aside class="sidebar" id="sidebar">
-    <a class="brand" href="#top">n8n API／MCP 提示詞庫</a>
-    <div class="brand-sub">WoowTech · 給 Claude／agent 的 42 條範例</div>
+    <a class="brand" href="#top">n8n API/MCP Prompt Library</a>
+    <div class="brand-sub">WoowTech · 44 examples for Claude and other agents</div>
     <!-- i18n:switch --><nav class="lang-switch" aria-label="Language"><a href="../prompts.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="prompts.html" lang="en" aria-current="page">EN</a></nav><!-- /i18n:switch -->
-    <a class="hub-link" href="index.html">◂ n8n 資源總覽</a>
-    <button class="nav-toggle" id="navToggle" type="button">本冊內容<span class="nav-toggle-caret"></span></button>
+    <a class="hub-link" href="index.html">◂ n8n Resource Hub</a>
+    <button class="nav-toggle" id="navToggle" type="button">In this handbook<span class="nav-toggle-caret"></span></button>
     <div class="toc-in-chapter">
-      <h2>本冊內容</h2>
-      <a href="#why">這本是什麼</a>
-      <a href="#howto">怎麼用</a>
-      <a href="#cat-create">workflow 生成</a>
-      <a href="#cat-trigger">Trigger 設定</a>
-      <a href="#cat-transform">資料轉換</a>
-      <a href="#cat-integration">SaaS 整合</a>
-      <a href="#cat-agent">AI Agent 節點</a>
-      <a href="#cat-error">錯誤處理與監控</a>
-      <a href="#cat-debug">Workflow 除錯</a>
-      <a href="#cat-ops">維運操作</a>
-      <a href="#tips">寫法小抄</a>
-      <a href="#faq">常見問題</a>
-      <a href="#download">下載</a>
+      <h2>In this handbook</h2>
+      <a href="#why">What this is</a>
+      <a href="#howto">How to use it</a>
+      <a href="#cat-create">Workflow generation</a>
+      <a href="#cat-trigger">Trigger setup</a>
+      <a href="#cat-transform">Data transformation</a>
+      <a href="#cat-integration">SaaS integrations</a>
+      <a href="#cat-agent">AI Agent nodes</a>
+      <a href="#cat-error">Error handling and monitoring</a>
+      <a href="#cat-debug">Workflow debugging</a>
+      <a href="#cat-ops">Operations</a>
+      <a href="#tips">Cheat sheet</a>
+      <a href="#faq">FAQ</a>
+      <a href="#download">Download</a>
     </div>
   </aside>
 
   <main class="content" id="top">
     <div class="chapter-header">
       <span class="kicker-script">just tell claude</span>
-      <div class="kicker">WoowTech 提示詞庫</div>
-      <h1>用一句話讓 AI 幫你建 n8n workflow</h1>
-      <p class="lead">42+ 條可複製的提示詞，寫給 Claude／Cursor／Windsurf 等 AI agent 用。搭配 n8n MCP server（例：<code>czlonkowski/n8n-mcp</code>）或 n8n REST API，AI 會自動呼叫 <code>POST /workflows</code>、<code>PATCH /workflows/:id</code>、<code>POST /workflows/:id/activate</code> 幫你把 workflow 建起來、驗證、啟用。每條卡片右上角「複製」直接貼到你的 AI 對話。</p>
+      <div class="kicker">WoowTech Prompt Library</div>
+      <h1>Have AI build an n8n workflow from one request</h1>
+      <p class="lead">44 copy-ready prompts for AI agents such as Claude, Cursor, and Windsurf. With an n8n MCP server such as <code>czlonkowski/n8n-mcp</code> or the n8n REST API, AI can invoke  <code>POST /workflows</code>、<code>PATCH /workflows/:id</code>、<code>POST /workflows/:id/activate</code> to build, validate, and activate workflows. Select “Copy” in the upper-right corner of any card and paste it into your AI conversation.</p>
     </div>
 
-    <section id="why" data-nav="這本是什麼">
-      <h2 data-icon="why">這本是什麼</h2>
-      <p>手拉 n8n 節點很快，但如果你已經是「用 AI 寫 code」的工程師／PM，其實可以更快——讓 AI 直接幫你把 workflow JSON 產出來、貼進 n8n。這本收錄 42 條真實工作場景的提示詞，每一條都寫得剛好讓 AI 可以觸發 n8n MCP server 或呼叫 n8n REST API。</p>
-      <p>兩種介接方式：</p>
+    <section id="why" data-nav="What this is">
+      <h2 data-icon="why">What this is</h2>
+      <p>Dragging n8n nodes is quick, but engineers and PMs who already write code with AI can work faster: let AI produce workflow JSON and put it into n8n. This handbook contains 44 prompts for real work scenarios, each detailed enough to invoke an n8n MCP server or call the n8n REST API.</p>
+      <p>There are two integration methods:</p>
       <ul>
-        <li><strong>n8n MCP server</strong>（推薦）：讓 Claude Code／Cursor 掛上 <code>n8n-mcp</code> 或 <code>n8n-workflow-builder</code>，你講一句話，AI 直接呼叫 <code>create_workflow</code>、<code>activate_workflow</code> 等工具。</li>
-        <li><strong>直接呼叫 REST API</strong>：AI 產 curl 或 SDK 呼叫，走 <code>X-N8N-API-KEY</code> header 認證，命中 <code>/api/v1/workflows</code> 等端點。</li>
+        <li><strong>n8n MCP server</strong> (recommended): connect Claude Code or Cursor to  <code>n8n-mcp</code>  or  <code>n8n-workflow-builder</code>. Describe the task and AI invokes  <code>create_workflow</code>、<code>activate_workflow</code>  and related tools.</li>
+        <li><strong>Call the REST API directly</strong>: AI generates a curl or SDK call, authenticates with the  <code>X-N8N-API-KEY</code>  header, and accesses endpoints such as  <code>/api/v1/workflows</code> .</li>
       </ul>
-      <div class="callout"><strong>觀念：</strong>提示詞不是咒語。它的價值是示範「哪些細節要講」——目標、觸發時機、輸入輸出格式、錯誤處理策略。照抄能動，改成你的場景更好用。</div>
+      <div class="callout"><strong>Concept:</strong>Prompts are not magic. Their value is showing which details to provide: the goal, trigger, input and output formats, and error-handling strategy. Copy them as written or adapt them to your scenario.</div>
     </section>
 
-    <section id="howto" data-nav="怎麼用">
-      <h2 data-icon="steps">怎麼用這些提示詞（3 分鐘準備版）</h2>
+    <section id="howto" data-nav="How to use it">
+      <h2 data-icon="steps">How to use these prompts (3-minute setup)</h2>
       <ol class="steps">
         <li>
-          <h3>裝一顆 n8n MCP server（推薦）</h3>
-          <p>在 Claude Code／Cursor 的 MCP 設定裡加：<code>npx n8n-mcp</code>（<a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a>，22.7k★）或 <code>npx @makafeli/n8n-workflow-builder</code>（<a href="https://github.com/makafeli/n8n-workflow-builder" rel="noopener">makafeli/n8n-workflow-builder</a>，540★）。啟動後你就會看到 <code>create_workflow</code>／<code>activate_workflow</code> 等工具出現。</p>
+          <h3>Install an n8n MCP server (recommended)</h3>
+          <p>Add this to the MCP settings in Claude Code or Cursor: <code>npx n8n-mcp</code>（<a href="https://github.com/czlonkowski/n8n-mcp" rel="noopener">czlonkowski/n8n-mcp</a>, 22.7k★) or  <code>npx @makafeli/n8n-workflow-builder</code>（<a href="https://github.com/makafeli/n8n-workflow-builder" rel="noopener">makafeli/n8n-workflow-builder</a>, 540★). After startup, you will see tools such as  <code>create_workflow</code>／<code>activate_workflow</code> .</p>
         </li>
         <li>
-          <h3>設 n8n API 環境變數</h3>
-          <p>MCP server 需要兩個變數：<code>N8N_URL</code>（例：<code>https://n8n.woowtech.io</code>）跟 <code>N8N_API_KEY</code>（在 n8n 的 <em>Settings → API</em> 建立）。</p>
+          <h3>Set the n8n API environment variables</h3>
+          <p>The MCP server needs two variables: <code>N8N_URL</code> (for example, <code>https://n8n.woowtech.io</code>) and  <code>N8N_API_KEY</code> (create it under n8n  <em>Settings → API</em> ).</p>
         </li>
         <li>
-          <h3>挑一條提示詞、按「複製」</h3>
-          <p>貼進 Claude／Cursor 對話框，把角括號感的欄位（Slack channel、Airtable base、Sheet 名字）換成你的。</p>
+          <h3>Choose a prompt and select “Copy”</h3>
+          <p>Paste it into Claude or Cursor. Replace the placeholder-like fields—Slack channel, Airtable base, and sheet name—with your own.</p>
         </li>
         <li>
-          <h3>讓 AI 先報告、再動手</h3>
-          <p>會建 workflow 的請求，保留提示詞裡「先給我 JSON 結構我看過，再 create」這句。避免 AI 用你的實際 credentials 亂跑。</p>
+          <h3>Have AI report before it acts</h3>
+          <p>For requests that build workflows, keep the instruction “show me the JSON structure before creating it.” This prevents AI from running unpredictably with real credentials.</p>
         </li>
       </ol>
-      <div class="callout tip"><strong>提示：</strong>沒有 MCP server 也能用——把提示詞直接貼到 Claude 或 ChatGPT，請它產 n8n workflow JSON，你手動貼進 n8n（在編輯器按 Ctrl+A 全選畫布→貼上就會覆蓋）。<a href="ch5_import_workflow.html">第 5 章</a>有 import JSON 的完整流程。</div>
+      <div class="callout tip"><strong>Tip:</strong>You can work without an MCP server. Paste a prompt into Claude or ChatGPT, ask for n8n workflow JSON, then paste it into n8n manually (in the editor, select the whole canvas with Ctrl+A and paste to replace it).<a href="ch5_import_workflow.html">Chapter 5</a>has the complete JSON import process.</div>
     </section>
 
-    <section id="cat-create" data-nav="workflow 生成">
-      <h2 data-icon="create">A · workflow 生成（Create / Update / Delete）</h2>
-      <p>最直接的一類：一句話產一支 workflow。AI 會呼叫 <code>POST /api/v1/workflows</code> 建卡、選擇是否 activate。</p>
+    <section id="cat-create" data-nav="Workflow generation">
+      <h2 data-icon="create">A · Workflow generation (create / update / delete)</h2>
+      <p>The most direct category creates a workflow from one request. AI calls  <code>POST /api/v1/workflows</code> to create it and decide whether to activate it.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">在 n8n 建一支叫「訂單通知」的 workflow：Webhook 觸發（POST /order-in）→ Set 節點抽出 order_id/total/email 三欄 → Google Sheets Append 到 sheet id <code>1abcdef</code> 的「orders」分頁 → 用 Slack 傳訊息到 #sales channel「新訂單 {{order_id}}，${{total}}」。先給我 workflow JSON 我確認，再呼叫 create_workflow。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">In n8n, create a workflow named “Order notifications”: Webhook trigger (POST /order-in) → Set extracts order_id/total/email → Google Sheets Append to sheet ID  <code>1abcdef</code> , tab “orders” → Slack sends “New order {{order_id}}, ${{total}}” to #sales. Show me the workflow JSON for approval before calling create_workflow. Respond in English.</p>
         <span class="call">→ create_workflow / POST /api/v1/workflows</span>
-        <p class="pnote">示範：先報告 JSON 再 create，最基本的安全習慣。</p>
+        <p class="pnote">Example: reviewing JSON before creation is a basic safety practice.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">列出目前 n8n 裡所有的 workflow，按 updatedAt 排序，最近改過的排最前面。輸出格式：id、name、active 狀態、上次更新時間、標籤。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">List all workflows currently in n8n, sorted by updatedAt with the most recently changed first. Output: id, name, active status, last update time, and tags. Respond in English.</p>
         <span class="call">→ list_workflows / GET /api/v1/workflows</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">從 n8n 拿 workflow id <code>xyz789</code> 的完整定義，用 diff 格式跟我下面貼的 JSON 對比，告訴我我改了哪些欄位、加了哪些節點。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Get the complete definition of workflow ID  <code>xyz789</code>  from n8n. Compare it with the JSON below in diff format and identify changed fields and added nodes. Respond in English.</p>
         <span class="call">→ get_workflow / GET /api/v1/workflows/:id</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">把 workflow id <code>abc123</code> 裡的 Slack channel 從 #sales 改成 #sales-taiwan，其他不動。先給我變更前後差異，我確認再 patch。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">In workflow ID  <code>abc123</code> , change the Slack channel from #sales to #sales-taiwan and change nothing else. Show me the before/after diff and wait for approval before patching. Respond in English.</p>
         <span class="call">→ update_workflow / PATCH /api/v1/workflows/:id</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">Duplicate workflow id <code>abc123</code> 成新的一支，名字加後綴 <code>-staging</code>，複製後把所有 Slack channel 換成 #staging-alerts、把 Google Sheet id 換成 <code>1STAGING</code>，並保持 inactive。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Duplicate workflow id <code>abc123</code>  into a new workflow with the suffix  <code>-staging</code>. In the copy, change every Slack channel to #staging-alerts and the Google Sheet ID to  <code>1STAGING</code>. Keep it inactive. Respond in English.</p>
         <span class="call">→ get_workflow → create_workflow</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">啟用 workflow id <code>abc123</code>，啟用後幫我做 3 次 test execution 確認流程正常；如果有錯回報是哪個節點失敗，我再決定是否 deactivate。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Activate workflow ID  <code>abc123</code>, then run 3 test executions to confirm it works. If an error occurs, report the failed node so I can decide whether to deactivate it. Respond in English.</p>
         <span class="call">→ activate_workflow → run_workflow → list_executions</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">找到所有名稱包含「test」或「staging」的 workflow，列出來給我看，我確認之後全部 deactivate。真正 delete 我另外下指令。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Find all workflows with “test” or “staging” in the name and list them. After I approve the list, deactivate them all. I will issue a separate instruction for deletion. Respond in English.</p>
         <span class="call">→ list_workflows → deactivate_workflow (bulk)</span>
-        <p class="pnote">安全：不主動 delete，先 deactivate。</p>
+        <p class="pnote">Safety: deactivate first; do not delete proactively.</p>
       </div>
 
     </section>
 
-    <section id="cat-trigger" data-nav="Trigger 設定">
-      <h2 data-icon="trigger">B · Trigger 設定（Webhook／Cron／Watcher）</h2>
-      <p>Trigger 是 workflow 的入口。這一類提示詞示範怎麼把不同觸發時機講清楚。</p>
+    <section id="cat-trigger" data-nav="Trigger setup">
+      <h2 data-icon="trigger">B · Trigger setup (webhook / cron / watcher)</h2>
+      <p>A trigger is the entry point to a workflow. These prompts show how to specify different trigger types.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建一支 workflow：Webhook Trigger 監聽 <code>POST /line-webhook</code>、response mode 設 <code>lastNode</code>、authentication 用 header <code>X-Line-Signature</code> HMAC 驗簽（secret 用 credentials id <code>line-secret</code>）。收到後往下接一顆 Function node 抽出 events[0] 就好。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a workflow: Webhook Trigger listens for  <code>POST /line-webhook</code>, response mode is  <code>lastNode</code>, and authentication verifies an HMAC using header  <code>X-Line-Signature</code>  (the secret uses credential ID  <code>line-secret</code>). Then add a Function node that extracts events[0]. Respond in English.</p>
         <span class="call">→ create_workflow（Webhook node）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建一支 Schedule Trigger workflow：每個工作日（週一到週五）早上 8:00（Asia/Taipei）跑一次；跳過台灣國定假日（用 sub-workflow <code>holiday-check</code> 判斷）。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a Schedule Trigger workflow that runs at 8:00 every weekday (Monday–Friday) in your timezone. Skip public holidays by calling sub-workflow  <code>holiday-check</code> . Note: replace the timezone and holiday calendar with those for your location. Respond in English.</p>
         <span class="call">→ create_workflow（Schedule + Execute Workflow）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">用 Gmail Trigger 監聽 label 為 <code>invoice</code> 的新信，每 5 分鐘輪詢一次；下游接一顆 IF 判斷附件為 PDF 才繼續。credential 用 <code>gmail-corp</code>。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Use Gmail Trigger to poll every 5 minutes for new messages with label  <code>invoice</code> . Add an IF downstream that continues only when an attachment is a PDF. Use credential  <code>gmail-corp</code>。 Respond in English.</p>
         <span class="call">→ create_workflow（Gmail Trigger）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">Google Drive Trigger 監聽資料夾 id <code>1FOLDER</code>，觸發時機 <code>fileCreated</code>，每 10 分鐘檢查一次。抓到新檔就往下接抽文字 → 存到 Airtable base id <code>appBASE</code> 的 <code>Docs</code> table。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Google Drive Trigger watches folder ID  <code>1FOLDER</code>, with event  <code>fileCreated</code>, checking every 10 minutes. When a new file appears, extract its text → save it to Airtable base ID  <code>appBASE</code> , table  <code>Docs</code> table。 Respond in English.</p>
         <span class="call">→ create_workflow（Drive Trigger + Airtable）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建一組 <strong>兩支互相銜接</strong>的 workflow：（A）Cron 每 15 分鐘查 Notion database id <code>DB1</code> 找出 status=Ready 的頁；（B）用 Execute Workflow node 呼叫另一支 workflow 處理每一頁，並把處理結果寫回 Notion。分開建，避免單支太複雜。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create  <strong>two connected</strong> workflows: (A) every 15 minutes, Cron queries Notion database ID  <code>DB1</code>  for pages with status=Ready; (B) Execute Workflow calls another workflow to process each page and writes the result back to Notion. Keep them separate to avoid one overly complex workflow. Respond in English.</p>
         <span class="call">→ create_workflow ×2</span>
       </div>
 
     </section>
 
-    <section id="cat-transform" data-nav="資料轉換">
-      <h2 data-icon="transform">C · 資料轉換（Set／Function／Code node）</h2>
-      <p>資料整形是 workflow 裡出現最頻繁的節點——這類提示詞讓 AI 幫你決定用 Set 還是 Code。</p>
+    <section id="cat-transform" data-nav="Data transformation">
+      <h2 data-icon="transform">C · Data transformation (Set / Function / Code node)</h2>
+      <p>Data shaping is one of the most frequent tasks in a workflow. These prompts let AI choose between Set and Code.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">在現有 workflow id <code>abc123</code> 的 Webhook 節點下游插一顆 Set 節點（Edit Fields），把 body.customer.email 轉小寫、body.total 轉數字、body.created_at 轉 ISO 8601 UTC；其他欄位丟掉。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">In existing workflow ID  <code>abc123</code> , insert a Set node (Edit Fields) after Webhook. Lowercase body.customer.email, convert body.total to a number, and convert body.created_at to ISO 8601 UTC. Discard other fields. Respond in English.</p>
         <span class="call">→ update_workflow（Set node）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">插一顆 Code node（JavaScript），把上一個節點回傳的 items（含巢狀 orders 陣列）攤平成一列一 order 的格式：每個 item 保留原本的 customer_id，但 orders 展開成獨立 item，欄位對 orders[i] 的內容。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Insert a Code node (JavaScript). Flatten the previous node’s items, including the nested orders array, to one row per order. Keep the original customer_id in every item, expand each order into a separate item, and map its fields from orders[i]. Respond in English.</p>
         <span class="call">→ update_workflow（Code node）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">在 workflow 裡加一顆 Item Lists 節點：把 API 回來的 200 筆 items 依 category 欄位分成三堆（A/B/C），每堆各接一顆下游 Slack 節點發到對應 channel。用 Split In Batches 每批 20 筆，避免 rate limit。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Add an Item Lists node to the workflow. Group the API’s 200 items into A/B/C by category and connect each group to a downstream Slack node for its channel. Use Split In Batches with 20 items per batch to avoid rate limits. Respond in English.</p>
         <span class="call">→ update_workflow（Item Lists + Split In Batches）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">寫一個 Code node 做 dedupe：以 email 欄位為 key，同一 batch 裡有重複只保留最新 created_at 的那筆。給我 JavaScript code、加上詳細註解，Python 版另外附一份。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Write a Code node that deduplicates by email. For duplicates in one batch, keep only the item with the latest created_at. Provide JavaScript with detailed comments and a separate Python version. Respond in English.</p>
         <span class="call">→ update_workflow（Code node）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">用 Set node 把上游三個節點的 item（node A、B、C）合成一個新 item：欄位命名 <code>a_*</code>／<code>b_*</code>／<code>c_*</code> 前綴避免衝突，缺欄位補 <code>null</code> 而不是丟掉。用 Merge node combine + append mode。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Use Set to combine items from three upstream nodes (A, B, and C) into one new item. Prefix field names with  <code>a_*</code>／<code>b_*</code>／<code>c_*</code>  to avoid collisions. Fill missing fields with  <code>null</code>  instead of dropping them. Use Merge in combine + append mode. Respond in English.</p>
         <span class="call">→ update_workflow（Set + Merge）</span>
       </div>
 
     </section>
 
-    <section id="cat-integration" data-nav="SaaS 整合">
-      <h2 data-icon="integration">D · SaaS 整合（Slack／Gmail／Notion／Airtable／Google Sheets）</h2>
-      <p>最常見的落地場景。credential id 部分請換成你自己的。</p>
+    <section id="cat-integration" data-nav="SaaS integrations">
+      <h2 data-icon="integration">D · SaaS integrations (Slack / Gmail / Notion / Airtable / Google Sheets)</h2>
+      <p>These are common production scenarios. Replace each credential ID with your own.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建一支 workflow：Slack Trigger 監聽 #customer-support 的 <code>message</code> 事件；若訊息含關鍵字 <code>refund</code> 或 <code>退款</code>，用 Notion node 在 database id <code>refunds</code> 建一頁，properties 帶用戶 id、訊息內容、時間；並在原 Slack thread 回覆「已建卡，追蹤中」。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a workflow: Slack Trigger listens for  <code>message</code>  events in #customer-support. If a message contains keyword  <code>refund</code>  or  <code>refund request</code>, use Notion to create a page in database ID  <code>refunds</code> , with user ID, message content, and time in properties. Reply in the original Slack thread: “Ticket created and being tracked.” Respond in English.</p>
         <span class="call">→ create_workflow（Slack Trigger + Notion）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建 Gmail 收信 → Airtable 建卡 workflow：Gmail Trigger label=<code>leads</code>；用 AI Agent 抽出 name/company/phone/interest 四欄；寫到 Airtable base=<code>appLEADS</code>、table=<code>Leads</code>；建卡後 24 小時內未回覆自動寄提醒（用 Wait node + Gmail send）。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a Gmail receipt → Airtable record workflow: Gmail Trigger label=<code>leads</code>; use AI Agent to extract name/company/phone/interest; write to Airtable base=<code>appLEADS</code>、table=<code>Leads</code>; if nobody replies within 24 hours after record creation, send an automated reminder using Wait + Gmail send. Respond in English.</p>
         <span class="call">→ create_workflow（Gmail + AI + Airtable + Wait）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">寫一支 Google Sheets 讀寫 workflow：Cron 每天 8:00 讀 sheet <code>1ORDERS</code> 的 A2:F 範圍 → 過濾出昨天的訂單 → 統計每個地區的總營收 → 寫到同 sheet 的 <code>daily-summary</code> 分頁（append mode，一天一列）。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a Google Sheets read/write workflow: every day at 8:00, Cron reads sheet  <code>1ORDERS</code>  range A2:F → filter yesterday’s orders → total revenue by region → write to tab  <code>daily-summary</code>  in the same sheet (append mode, one row per day). Respond in English.</p>
         <span class="call">→ create_workflow（Sheets Read + Function + Sheets Append）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建 Slack Approval workflow：Webhook 觸發後在 Slack #approvals 傳 interactive message（含 Approve/Reject 按鈕），Wait node 等最多 24 小時；使用者按 Approve 走上路（呼叫內部 API 發款）、Reject 走下路（Slack 回覆申請人）、超時走第三路（升級主管）。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a Slack Approval workflow. After a webhook trigger, send an interactive message with Approve/Reject buttons to #approvals. Wait for up to 24 hours. Approve takes the upper branch and calls the internal payout API; Reject takes the lower branch and replies to the requester in Slack; timeout takes a third branch and escalates to a manager. Respond in English.</p>
         <span class="call">→ create_workflow（Slack Interactive + Wait + IF）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">HTTP Request 節點打自訂 API：POST <code>https://api.internal.com/v1/tickets</code>，headers 含 <code>Authorization: Bearer</code>（用 credential <code>internal-api-key</code>）、Content-Type: application/json；body 從上一個節點的 items 對應欄位。加 3 次 retry，指數 backoff，429 或 5xx 才重試。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">HTTP Request calls a custom API: POST  <code>https://api.internal.com/v1/tickets</code>, with headers including  <code>Authorization: Bearer</code> (using credential  <code>internal-api-key</code>) and Content-Type: application/json. Map the body from the previous node’s item fields. Add 3 retries with exponential backoff, only for 429 or 5xx. Respond in English.</p>
         <span class="call">→ update_workflow（HTTP Request + retry）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">列出目前 n8n 裡所有 credentials（僅 id、name、type，別列 data），我要盤點哪些沒用到可以刪掉。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">List all current n8n credentials with id, name, and type only; do not include data. I want to identify unused credentials that can be deleted. Respond in English.</p>
         <span class="call">→ list_credentials / GET /api/v1/credentials</span>
       </div>
 
     </section>
 
-    <section id="cat-agent" data-nav="AI Agent 節點">
-      <h2 data-icon="agent">E · AI Agent 節點（LangChain / Chat Model / Memory / Tool）</h2>
-      <p>n8n v1 之後推出的 LangChain 系列節點——AI Agent 讓 workflow 有一顆「會判斷的節點」。</p>
+    <section id="cat-agent" data-nav="AI Agent nodes">
+      <h2 data-icon="agent">E · AI Agent nodes (LangChain / Chat Model / Memory / Tool)</h2>
+      <p>The LangChain node family introduced after n8n v1 gives workflows an AI Agent node that can make judgments.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建一支客服分派 workflow：Line Webhook 收訊息 → AI Agent（Chat Model：Anthropic Claude 3.5 Sonnet；prompt 內含 4 個分類定義：退換貨/技術問題/一般諮詢/其他）→ 用 Structured Output 回傳 <code>{category, confidence, reasoning}</code> → Switch 節點依 category 分流。confidence &lt; 0.7 走「其他」。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a customer-support routing workflow: LINE Webhook receives a message → AI Agent (Chat Model: Anthropic Claude 3.5 Sonnet; prompt defines 4 categories: returns/technical issues/general inquiries/other) → Structured Output returns  <code>{category, confidence, reasoning}</code>  → Switch branches by category. If confidence is below  &lt; 0.7, use “other.” Respond in English.</p>
         <span class="call">→ create_workflow（Line + AI Agent + Switch）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">在 AI Agent 節點旁掛三顆 Tool：（1）HTTP Request 到內部訂單 API 查訂單狀態；（2）Notion Read 查 FAQ 資料庫；（3）Google Sheets Read 查退貨政策。system prompt 教它「先看 FAQ、再看訂單 API、最後才引用政策；回覆結尾附引用來源」。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Connect three tools to AI Agent: (1) HTTP Request queries an internal order API for status; (2) Notion Read queries the FAQ database; (3) Google Sheets Read queries the returns policy. Instruct it in the system prompt to check the FAQ first, the order API second, and cite the policy only last; end every response with sources. Respond in English.</p>
         <span class="call">→ update_workflow（AI Agent + tools）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建 AI Agent + Memory workflow：Chat Trigger + AI Agent + Buffer Window Memory（size=10）+ OpenAI Chat Model。sessionId 從 Chat Trigger 的 sessionId 欄位帶入，保持同一 user 的對話上下文。附一顆 Structured Output Parser，讓回應永遠是 <code>{reply, next_action, tags[]}</code>。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create an AI Agent + Memory workflow: Chat Trigger + AI Agent + Buffer Window Memory (size=10) + OpenAI Chat Model. Pass sessionId from Chat Trigger’s sessionId field to retain conversation context for one user. Add Structured Output Parser so every response is  <code>{reply, next_action, tags[]}</code>。 Respond in English.</p>
         <span class="call">→ create_workflow（LangChain Chat）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建一支 PDF 摘要 workflow：Google Drive Watcher（PDF 出現）→ Extract from File 抽文字 → AI Agent（Claude Sonnet，prompt：三段式摘要 + 標籤 + 情緒）→ Airtable Upsert 到 Feedback 表。並發限制設 5，避免打爆 API。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a PDF-summary workflow: Google Drive Watcher (PDF appears) → Extract from File → AI Agent (Claude Sonnet; prompt: three-part summary + tags + sentiment) → Airtable Upsert into Feedback. Limit concurrency to 5 to protect the API. Respond in English.</p>
         <span class="call">→ create_workflow（Drive + Extract + AI + Airtable）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">把現有 workflow id <code>abc123</code> 裡的 OpenAI GPT-4o 模型改成 Anthropic Claude 3.5 Sonnet，保留原 prompt 跟 temperature 設定。credential 換成 <code>anthropic-prod</code>。改完先 test 一次跑起來沒錯再存。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">In existing workflow ID <code>abc123</code> , replace OpenAI GPT-4o with Anthropic Claude 3.5 Sonnet. Preserve the prompt and temperature, and change the credential to  <code>anthropic-prod</code>. Test once and save only if the run succeeds. Respond in English.</p>
         <span class="call">→ update_workflow → run_workflow</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建一支 Multi-Agent workflow：Chat Trigger → AI Agent「Router」判斷是問技術還是問業務 → 分流到兩顆專門的 AI Agent（Tech Support / Sales Consultant），各自掛不同 tools 跟 memory。回覆時 Router 標明是誰回的。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a Multi-Agent workflow: Chat Trigger → AI Agent “Router” identifies technical vs sales questions → branch to two specialist AI Agents (Tech Support / Sales Consultant), each with different tools and memory. Router identifies which agent produced the response. Respond in English.</p>
         <span class="call">→ create_workflow（3× AI Agent）</span>
       </div>
 
     </section>
 
-    <section id="cat-error" data-nav="錯誤處理與監控">
-      <h2 data-icon="error">F · 錯誤處理與監控（Error Workflow / Retry / Alerting）</h2>
-      <p>Production workflow 沒有「不會壞」，只有「壞了怎麼救」。</p>
+    <section id="cat-error" data-nav="Error handling and monitoring">
+      <h2 data-icon="error">F · Error handling and monitoring (Error Workflow / Retry / Alerting)</h2>
+      <p>Production workflows do fail. What matters is how you recover.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建一支「全站錯誤接住」的 Error Workflow：Error Trigger → Set 節點整理出 workflow 名稱／failed node／error message／timestamp → Slack 傳到 #n8n-alerts（用 code block 附錯誤細節）→ 若同一支 workflow 24hr 內失敗超過 3 次，再多一則 tag @on-call。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a global Error Workflow: Error Trigger → Set extracts workflow name/failed node/error message/timestamp → Slack sends to #n8n-alerts with details in a code block → if the same workflow fails more than 3 times within 24hr, send another message tagging @on-call. Respond in English.</p>
         <span class="call">→ create_workflow（Error Trigger）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">把 workflow id <code>abc123</code> 的 settings 加上 <code>errorWorkflow: &lt;上一題的 error workflow id&gt;</code>，然後幫所有 name 含 <code>-prod</code> 的 workflow 都做同樣的設定。列一份清單給我確認之後再套。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">In workflow ID  <code>abc123</code>  settings, add  <code>errorWorkflow: &lt;error workflow ID from the previous prompt&gt;</code>. Apply the same setting to every workflow whose name contains  <code>-prod</code> . List them for approval before applying it. Respond in English.</p>
         <span class="call">→ list_workflows → update_workflow (batch)</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">在 HTTP Request 節點加 retry：max attempts 5、initial wait 2 秒、backoff exponential ×2、只在 status 429/500/502/503/504 retry；其他 status 直接失敗。加 <code>continueOnFail: true</code> 讓下游能拿到錯誤物件另外處理。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Add retries to HTTP Request: max attempts 5, initial wait 2 seconds, exponential backoff ×2, only for status 429/500/502/503/504; fail immediately for other statuses. Add  <code>continueOnFail: true</code>  so downstream nodes can handle the error object separately. Respond in English.</p>
         <span class="call">→ update_workflow（HTTP retry policy）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">寫一支「每日健康巡檢」workflow：Cron 每天 07:00 跑 → list_workflows 抓所有 active workflow → 對每一支 list_executions（last 24hr、status=error）→ 有 error 的整理成 Slack 訊息（表格）→ 傳到 #n8n-daily-health。零錯誤時也發一則「今日一切正常 ✅」。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a “Daily health check” workflow: Cron runs every day at 07:00 → list_workflows gets all active workflows → list_executions for each (last 24hr, status=error) → format errors as a Slack table → send to #n8n-daily-health. When there are no errors, send “Everything is healthy today ✅.” Respond in English.</p>
         <span class="call">→ create_workflow（Cron + list_executions + Slack）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建 workflow：Cron 每小時跑，用 n8n API 抓過去 1 小時的 executions，計算失敗率；&gt;5% 立即通知；&gt;20% 呼叫 <code>deactivate_workflow</code> 把出錯最多的那支自動下線，並通知我來處理。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a workflow: Cron runs hourly, retrieves executions from the previous 1 hour through the n8n API, and calculates the failure rate. At more than &gt;5%, notify immediately. At more than &gt;20%, call  <code>deactivate_workflow</code> to take the workflow with the most failures offline and notify me. Respond in English.</p>
         <span class="call">→ list_executions → deactivate_workflow</span>
       </div>
 
     </section>
 
-    <section id="cat-debug" data-nav="Workflow 除錯">
-      <h2 data-icon="debug">G · Workflow 除錯（讀 log、看 execution、修改）</h2>
-      <p>當 workflow 半夜掛了，這一類提示詞讓 AI 幫你找出誰在哭。</p>
+    <section id="cat-debug" data-nav="Workflow debugging">
+      <h2 data-icon="debug">G · Workflow debugging (read logs, inspect executions, make changes)</h2>
+      <p>When a workflow fails overnight, these prompts help AI find the failing component.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">Workflow id <code>abc123</code> 昨晚在 execution id <code>exec_9876</code> 失敗了。抓那次 execution 的完整 log，告訴我：（1）哪個 node 失敗、（2）失敗當下上游傳給它的 input JSON 是什麼、（3）error message 是什麼、（4）你猜測的原因跟三個可能的修法。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Workflow id <code>abc123</code>  failed last night in execution ID  <code>exec_9876</code> . Retrieve the full execution log and report: (1) failed node, (2) input JSON it received, (3) error message, and (4) likely cause and three possible fixes. Respond in English.</p>
         <span class="call">→ get_execution / GET /api/v1/executions/:id</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">列出 workflow id <code>abc123</code> 過去 7 天所有失敗的 executions，按時間排序；把失敗訊息按類型分組（credential 失效／timeout／validation 錯誤／其他），統計出哪一類最多、平均多久失敗一次。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">List workflow ID <code>abc123</code>  failures from the previous 7 days, sorted by time. Group failure messages by expired credential/timeout/validation error/other. Identify the largest group and the average interval between failures. Respond in English.</p>
         <span class="call">→ list_executions（filtered by workflow + status）</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">Workflow id <code>abc123</code> 現在跑起來很慢，平均一次 execution 花 45 秒。撈最近 20 次執行的 node timing，找出瓶頸節點；建議改法（加 cache？換 API endpoint？拆 sub-workflow？）。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Workflow id <code>abc123</code>  is slow, averaging 45 seconds per execution. Retrieve node timings from the most recent 20 executions, identify the bottleneck, and recommend a fix such as caching, changing the API endpoint, or extracting a sub-workflow. Respond in English.</p>
         <span class="call">→ list_executions + get_execution</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">用 <code>run_workflow</code> 對 workflow id <code>abc123</code> 跑一次 test execution，input data 用下面這段 JSON：<code>{"customer_id": "test_001", "amount": 100}</code>。跑完把每個 node 的 input／output 都列給我看，我要確認資料流沒問題。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Use <code>run_workflow</code>  for workflow ID  <code>abc123</code>  with this input JSON: <code>{"customer_id": "test_001", "amount": 100}</code>. After it runs, list the input and output of every node so I can verify the data flow. Respond in English.</p>
         <span class="call">→ run_workflow / POST /api/v1/workflows/:id/run</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">Workflow id <code>abc123</code> 的 Google Sheets 節點回報「credential expired」。（1）查這個 workflow 用的是哪個 credential id；（2）用 list_credentials 幫我確認狀態；（3）給我步驟怎麼在 n8n UI 重新授權；（4）授權好之後幫我 run 一次驗證。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Workflow id <code>abc123</code>  Google Sheets node reports “credential expired.” (1) Find its credential ID. (2) Confirm status with list_credentials. (3) Give me the n8n UI steps to reconnect it. (4) After authorization, run it once to verify. Respond in English.</p>
         <span class="call">→ list_credentials + run_workflow</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">我下面貼一段 workflow JSON，你先「validate」它——找出：（1）語法錯誤；（2）dangling connection；（3）少 credential 引用；（4）明顯的效能地雷（同一個 API 迴圈打 200 次不批次）。修好後給我完整 JSON。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Validate the workflow JSON below. Find (1) syntax errors, (2) dangling connections, (3) missing credential references, and (4) clear performance problems such as calling one API 200 times without batching. Return the complete corrected JSON. Respond in English.</p>
         <span class="call">→ validate_workflow（MCP tool）</span>
       </div>
 
     </section>
 
-    <section id="cat-ops" data-nav="維運操作">
-      <h2 data-icon="steps">H · 維運操作（Tags／Audit／備份／匯出）</h2>
-      <p>Ops 面：管好 workflow 命名、稽核、備份策略。</p>
+    <section id="cat-ops" data-nav="Operations">
+      <h2 data-icon="steps">H · Operations (tags / audit / backup / export)</h2>
+      <p>Operations covers workflow naming, audits, and backup strategy.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">列出所有沒掛 tag 的 workflow，幫我建議它們該屬於哪些 tag（依名稱、觸發器、下游 SaaS 判斷），並把 tag 分派表給我。我確認之後你再呼叫 update_workflow 幫我掛上去。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">List every workflow without a tag. Recommend tags based on name, trigger, and downstream SaaS, and provide an assignment table. Wait for approval before calling update_workflow to add them. Respond in English.</p>
         <span class="call">→ list_workflows → update_workflow (tags)</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">跑一次 n8n Security Audit（<code>POST /api/v1/audit</code>），把結果分類為 Critical/High/Medium/Low；針對每個 Critical 項目給我修法。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Run an n8n Security Audit (<code>POST /api/v1/audit</code>). Classify results as Critical/High/Medium/Low and provide a fix for every Critical item. Respond in English.</p>
         <span class="call">→ generate_audit</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">把所有 active workflow 一支一支 <code>get_workflow</code> 拿完整 JSON，全部打包成一個 zip 給我當備份。檔名格式 <code>{workflow_id}_{name_slug}.json</code>；再產一份 index.md 列出所有備份項目。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">For each active workflow, call  <code>get_workflow</code> to retrieve complete JSON and package everything in a backup zip. File-name format:  <code>{workflow_id}_{name_slug}.json</code>. Also generate index.md listing every backup item. Respond in English.</p>
         <span class="call">→ list_workflows → get_workflow (loop)</span>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">我要把 dev 環境（<code>n8n-dev.woowtech.io</code>）的 workflow id <code>dev_abc</code> 複製到 prod（<code>n8n.woowtech.io</code>）。步驟：從 dev 取出 JSON → 掃描 credential id → 對應到 prod 的 credential（依 name 匹配）→ 在 prod create_workflow 但先不 activate。</p>
-        <span class="call">→ 多環境 MCP（multi-instance）</span>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">I want to copy workflow ID <code>n8n-dev.woowtech.io</code> from dev ( <code>dev_abc</code> ) to prod (<code>n8n.woowtech.io</code>). Retrieve JSON from dev → scan credential IDs → map to prod credentials by name → create_workflow in prod without activating it. Respond in English.</p>
+        <span class="call">→ multi-environment MCP (multi-instance)</span>
       </div>
 
     </section>
 
-    <section id="tips" data-nav="寫法小抄">
-      <h2 data-icon="steps">提示詞寫法小抄</h2>
-      <p>回頭看那 42 條，其實有五招在來回用：</p>
+    <section id="tips" data-nav="Cheat sheet">
+      <h2 data-icon="steps">Prompt-writing cheat sheet</h2>
+      <p>Across these 44 prompts, five techniques recur:</p>
       <table class="data-table">
         <thead>
-          <tr><th>這樣講</th><th>不要這樣講</th><th>為什麼</th></tr>
+          <tr><th>Say this</th><th>Not this</th><th>Why</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>寫目標＋節點大概順序：「Webhook → Set → Sheet → Slack」</td>
-            <td>只寫「做一支通知 workflow」</td>
-            <td>目標＋節點順序讓 AI 產出的 JSON 更貼近你要的形狀，少來回改</td>
+            <td>State the goal + approximate node order: “Webhook → Set → Sheet → Slack”</td>
+            <td>Only “Build a notification workflow”</td>
+            <td>A goal and node order produce JSON closer to the intended shape, reducing revisions</td>
           </tr>
           <tr>
-            <td>把 id 都寫死：sheet id、Notion database id、channel、credential 名</td>
-            <td>「用我常用的那張表」</td>
-            <td>AI 沒 memory，該具體就具體，模糊的一定產亂</td>
+            <td>Specify IDs: sheet ID, Notion database ID, channel, credential name</td>
+            <td>“Use my usual sheet”</td>
+            <td>AI has no memory here. Be specific; ambiguity produces unreliable results</td>
           </tr>
           <tr>
-            <td>先報告再動手：「給我 JSON 我看過再 create」</td>
-            <td>「直接建起來啟用」</td>
-            <td>會動 credentials 的請求，一句話換一道保險</td>
+            <td>Report before acting: “Show me the JSON before creating it”</td>
+            <td>“Build and activate it immediately”</td>
+            <td>One sentence adds a safeguard to requests involving credentials</td>
           </tr>
           <tr>
-            <td>error handling 一起講：retry 幾次、什麼 status 才 retry、失敗通知誰</td>
-            <td>只講 happy path</td>
-            <td>沒交代錯誤策略，AI 通常 skip 掉——上 prod 才發現沒有 error handling</td>
+            <td>Include error handling: retry count, statuses to retry, and failure recipient</td>
+            <td>Describe only the happy path</td>
+            <td>Without an error strategy, AI usually skips it; you discover the omission only in production</td>
           </tr>
           <tr>
-            <td>先跑 test：「先 test_execution 我看過再啟用」</td>
-            <td>建完直接 activate</td>
-            <td>test execution 免費也快，卡在生產環境的錯 90% 都能靠 test 抓到</td>
+            <td>Test first: “Run test_execution and let me review it before activation”</td>
+            <td>Activate immediately after creation</td>
+            <td>A test execution is free and quick; it catches 90% of errors that would otherwise reach production</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
       <details class="faq">
-        <summary>提示詞要一字不差照抄嗎？</summary>
-        <div class="body">不用。這些是示範「哪些細節要講」的範例：目標、觸發、資料流、錯誤策略、先報告再動手。用你自己的話講，把 id／channel／sheet name 換成你的就好。</div>
+        <summary>Must I copy each prompt word for word?</summary>
+        <div class="body">No. These examples show which details to provide: goal, trigger, data flow, error strategy, and report-before-action. Use your own words and replace the ID, channel, and sheet name.</div>
       </details>
       <details class="faq">
-        <summary>不裝 MCP server 可以用嗎？</summary>
-        <div class="body">可以。直接把提示詞貼給 Claude 或 ChatGPT，請它產 n8n workflow JSON，你手動 import 到 n8n（Ctrl+A 選全部畫布 → 貼上）。<a href="ch5_import_workflow.html">第 5 章</a>有完整流程。缺點：AI 沒辦法真的呼叫 API 驗證，只能猜。</div>
+        <summary>Can I use these without installing an MCP server?</summary>
+        <div class="body">Yes. Paste a prompt into Claude or ChatGPT, ask it to generate n8n workflow JSON, and import it manually (Ctrl+A selects the whole canvas, then paste).<a href="ch5_import_workflow.html">Chapter 5</a>has the complete process. The limitation is that AI cannot actually call the API to validate its work and must infer.</div>
       </details>
       <details class="faq">
-        <summary>MCP server 要用哪一顆？czlonkowski/n8n-mcp 還是 makafeli/n8n-workflow-builder？</summary>
-        <div class="body">兩顆都成熟：<code>czlonkowski/n8n-mcp</code>（22.7k★）功能最完整，含 node search／validation／template 探索，適合深度使用；<code>makafeli/n8n-workflow-builder</code>（540★）15 顆 tool 就夠，安裝更簡單。初次用建議先裝 makafeli 那顆。<a href="skills.html">Skill 手冊</a>有更詳細比較。</div>
+        <summary>Which MCP server should I use: czlonkowski/n8n-mcp or makafeli/n8n-workflow-builder?</summary>
+        <div class="body">Both are mature: <code>czlonkowski/n8n-mcp</code> (22.7k★) has the broadest feature set, including node search, validation, and template discovery; <code>makafeli/n8n-workflow-builder</code> (540★) provides 15 tools and simpler installation. Start with makafeli if you are new to MCP.<a href="skills.html">Skill Handbook</a>has a more detailed comparison.</div>
       </details>
       <details class="faq">
-        <summary>AI 會不會亂改 production workflow？</summary>
-        <div class="body">會，如果你沒加保險。三招最有效：（1）提示詞裡永遠加「先給我 JSON／diff 我看過再動」；（2）給 MCP server 用的 API key 只給該 workspace 的權限，別給 admin；（3）prod 環境的 MCP 連線只用 read-only key，寫入操作走 CI／PR。</div>
+        <summary>Will AI make uncontrolled changes to production workflows?</summary>
+        <div class="body">It can without safeguards. Use three: (1) always add “show me the JSON/diff before acting”; (2) limit the MCP server API key to its workspace, not admin; (3) use a read-only key for the production MCP connection and send write operations through CI/PR.</div>
       </details>
       <details class="faq">
-        <summary>提示詞會不會很花 token？</summary>
-        <div class="body">MCP server 會把 n8n 完整 nodes list 塞進 context（<code>czlonkowski/n8n-mcp</code> 說支援 2,541 個 node），第一次對話會吃比較多 token。之後就穩定。建議挑推理較強的模型（Claude Sonnet／GPT-4o）——workflow 是 code，AI 判斷力越好產出越正確。</div>
+        <summary>Do these prompts use many tokens?</summary>
+        <div class="body">The MCP server may put the complete n8n node list into context (<code>czlonkowski/n8n-mcp</code>  supports 2,541 nodes), so the first conversation uses more tokens. Usage stabilizes afterward. Choose a strong reasoning model such as Claude Sonnet or GPT-4o: workflows are code, and better judgment produces more accurate output.</div>
       </details>
       <details class="faq">
-        <summary>MCP 呼叫 n8n API 需要什麼權限？</summary>
-        <div class="body">在 n8n 的 <em>Settings → n8n API</em> 建立 API key（Community 版就有），key 對應到建立者的權限範圍。用 <code>X-N8N-API-KEY</code> header 傳給 <code>/api/v1/*</code> 端點。要 workspace-level 隔離請洽 WoowTech 幫你切多 workspace（企業版功能）。</div>
+        <summary>What access does MCP need to call the n8n API?</summary>
+        <div class="body">Under n8n  <em>Settings → n8n API</em> , create an API key (available in Community Edition). The key has its creator’s access scope. Send it in the  <code>X-N8N-API-KEY</code>  header to  <code>/api/v1/*</code>  endpoints. For workspace-level isolation, ask WoowTech to configure multiple workspaces (an Enterprise feature).</div>
       </details>
     </section>
 
-    <section id="download" data-nav="下載">
-      <h2 data-icon="download">把這本帶走</h2>
-      <p>整本是自包含單檔 HTML，圖示全部內嵌，下載後離線可開、可直接轉寄給團隊。</p>
+    <section id="download" data-nav="Download">
+      <h2 data-icon="download">Take this handbook with you</h2>
+      <p>The handbook is a self-contained single HTML file with embedded icons. Download it to open offline or forward to your team.</p>
       <p>
-        <a class="btn-pill" href="prompts.html" download="n8n-api-mcp-prompts.html">下載本冊 HTML</a>
-        <a class="btn-ghost" href="index.html">回資源總覽</a>
+        <a class="btn-pill" href="prompts.html" download="n8n-api-mcp-prompts.html">Download this handbook as HTML</a>
+        <a class="btn-ghost" href="index.html">Back to Resource Hub</a>
       </p>
     </section>
 
     <footer class="site-footer">
-      <p>《n8n API／MCP 提示詞庫》由 <strong>WoowTech 渥屋科技</strong> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> 授權釋出。</p>
-      <p class="footer-meta">The Smart Space Solution · 智慧空間解決方案 · <a href="index.html">n8n 資源總覽</a> · MCP server 資料為 2026-08-20 GitHub 快照，會隨時間變動。</p>
+      <p>The n8n API/MCP Prompt Library is produced by  <strong>WoowTech</strong>  and released under  <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> .</p>
+      <p class="footer-meta">The Smart Space Solution · <a href="index.html">n8n Resource Hub</a> · MCP server data is a GitHub snapshot from 2026-08-20 and will change over time.</p>
     </footer>
   </main>
 </div>
@@ -773,7 +773,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
   onScroll();
 })();
 
-// 複製按鈕
+// Copy buttons
 (function () {
   function fallbackCopy(text, done) {
     var ta = document.createElement('textarea');
@@ -787,8 +787,8 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
     btn.addEventListener('click', function () {
       var text = card.querySelector('.ptext').innerText;
       var done = function () {
-        btn.textContent = '已複製'; btn.classList.add('ok');
-        setTimeout(function () { btn.textContent = '複製'; btn.classList.remove('ok'); }, 1600);
+        btn.textContent = 'Copied'; btn.classList.add('ok');
+        setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1600);
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });

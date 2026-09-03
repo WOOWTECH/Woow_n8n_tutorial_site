@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Appendix C · 底層架構好奇者向 · Woow n8n 入住指南</title>
-  <meta name="description" content="n8n 底層架構深入：Community／Cloud／Enterprise 三種版本差別、self-host 部署方式、queue mode、資料庫（SQLite vs Postgres）、backup 策略。" />
+  <title>Appendix C · How it works underneath, for the curious · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="A deeper look at n8n architecture: Community / Cloud / Enterprise differences, self-hosted deployment, queue mode, SQLite vs Postgres, and backup strategy." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/appendix_internals.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Appendix C · 底層架構好奇者向 · Woow n8n 入住指南" />
-  <meta property="og:description" content="n8n 底層架構深入：Community／Cloud／Enterprise 三種版本差別、self-host 部署方式、queue mode、資料庫（SQLite vs Postgres）、backup 策略。" />
+  <meta property="og:title" content="Appendix C · How it works underneath, for the curious · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="A deeper look at n8n architecture: Community / Cloud / Enterprise differences, self-hosted deployment, queue mode, SQLite vs Postgres, and backup strategy." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/appendix_internals.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/appx_c/01_settings_index.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Appendix C · 底層架構好奇者向 · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="n8n 底層架構深入：Community／Cloud／Enterprise 三種版本差別、self-host 部署方式、queue mode、資料庫（SQLite vs Postgres）、backup 策略。" />
+  <meta name="twitter:title" content="Appendix C · How it works underneath, for the curious · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="A deeper look at n8n architecture: Community / Cloud / Enterprise differences, self-hosted deployment, queue mode, SQLite vs Postgres, and backup strategy." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/appx_c/01_settings_index.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../appendix_internals.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="appendix_internals.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
@@ -86,9 +86,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html" class="active">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html" class="active">C · Architecture</a>
     </div>
   </aside>
 
@@ -419,13 +419,13 @@ EXECUTIONS_MODE=queue
 QUEUE_BULL_REDIS_HOST=redis.internal
 QUEUE_BULL_REDIS_PORT=6379
 DB_TYPE=postgresdb
-# ... 其他 DB 設定
+# ... other DB settings
 
-# worker（另一個 container / process）
+# worker (a separate container / process)
 EXECUTIONS_MODE=queue
 QUEUE_BULL_REDIS_HOST=redis.internal
-# ... 同樣的 DB 與 Redis 設定
-# 啟動指令：n8n worker</code></pre>
+# ... the same DB and Redis settings
+# start command: n8n worker</code></pre>
 
       <div class="callout warn"><strong>Warning:</strong> Queue mode is the road you take for <em>serious production</em> — Redis adds one more moving part and operational complexity goes up a level. For a single team (<20 people) Regular mode is usually enough. Before you switch it on, confirm one thing: is main really getting stuck often? Only then change it. Turning on Queue mode too early is a common anti-pattern.</div>
     </section>
@@ -660,7 +660,7 @@ QUEUE_BULL_REDIS_HOST=redis.internal
     <div class="pager">
       <a class="prev" href="appendix_errors.html">
         <span class="label">← Appendix B</span>
-        <span class="title">附錄 B · 常見錯誤排錯</span>
+        <span class="title">Appendix B · Error troubleshooting</span>
       </a>
       <a class="next" href="tutorial.html">
         <span class="label">Contents →</span>
@@ -669,8 +669,8 @@ QUEUE_BULL_REDIS_HOST=redis.internal
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

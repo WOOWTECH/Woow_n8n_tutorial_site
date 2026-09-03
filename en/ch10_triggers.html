@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 10 · 三種觸發：Manual / Schedule / Event · Woow n8n 入住指南</title>
-  <meta name="description" content="n8n Trigger 節點三大類：Manual（手動測試）／Schedule（Cron）／Event（Webhook、SaaS 事件），各自適合場景與設定。" />
+  <title>Chapter 10 · Three triggers: Manual / Schedule / Event · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="The three main n8n trigger families: Manual (testing), Schedule (cron), and Event (webhook or SaaS event), with suitable uses and settings." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch10_triggers.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 10 · 三種觸發：Manual / Schedule / Event · Woow n8n 入住指南" />
-  <meta property="og:description" content="n8n Trigger 節點三大類：Manual（手動測試）／Schedule（Cron）／Event（Webhook、SaaS 事件），各自適合場景與設定。" />
+  <meta property="og:title" content="Chapter 10 · Three triggers: Manual / Schedule / Event · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="The three main n8n trigger families: Manual (testing), Schedule (cron), and Event (webhook or SaaS event), with suitable uses and settings." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch10_triggers.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch10/01_trigger_workflow.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 10 · 三種觸發：Manual / Schedule / Event · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="n8n Trigger 節點三大類：Manual（手動測試）／Schedule（Cron）／Event（Webhook、SaaS 事件），各自適合場景與設定。" />
+  <meta name="twitter:title" content="Chapter 10 · Three triggers: Manual / Schedule / Event · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="The three main n8n trigger families: Manual (testing), Schedule (cron), and Event (webhook or SaaS event), with suitable uses and settings." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch10/01_trigger_workflow.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch10_triggers.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch10_triggers.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html" class="active">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html" class="active">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
@@ -84,9 +84,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html">C · Architecture</a>
     </div>
   </aside>
 
@@ -218,7 +218,7 @@
       <p><strong>Run at 8:00 every morning</strong>: set Trigger Interval to <code>Days</code>, Days Between Triggers to <code>1</code>, Trigger at Hour to <code>8</code>, Trigger at Minute to <code>0</code>.</p>
       <p><strong>Run at 9:30 Monday to Friday</strong>: set Trigger Interval to <code>Weeks</code>, Weeks Between Triggers to <code>1</code>, tick Mon/Tue/Wed/Thu/Fri under Trigger on Weekdays, Trigger at Hour <code>9</code>, Trigger at Minute <code>30</code>. Or go straight to <code>Custom (Cron)</code> and enter <code>0 30 9 * * 1-5</code> (six fields: second minute hour day month weekday), one line and you are done.</p>
 
-      <div class="callout warn"><strong>Warning (number of cron fields):</strong> The Custom Cron in n8n's Schedule Trigger takes <strong>six fields</strong>, with an extra "second" at the front — not the five fields of a traditional Linux crontab. The order is: <code>秒 分 時 日 月 週</code>. A <code>0 8 * * *</code> (five fields) copied from somewhere else means something different once you paste it into n8n, and may error out outright. Remember to add the seconds field: "every day at 8:00" should be written <code>0 0 8 * * *</code>.</div>
+      <div class="callout warn"><strong>Warning (number of cron fields):</strong> The Custom Cron in n8n's Schedule Trigger takes <strong>six fields</strong>, with an extra "second" at the front — not the five fields of a traditional Linux crontab. The order is: <code>second minute hour day month weekday</code>. A <code>0 8 * * *</code> (five fields) copied from somewhere else means something different once you paste it into n8n, and may error out outright. Remember to add the seconds field: "every day at 8:00" should be written <code>0 0 8 * * *</code>.</div>
 
       <div class="callout danger"><strong>Danger (the timezone trap):</strong> Schedule Trigger reads the clock from <strong>the workflow's timezone setting</strong>, which defaults to UTC. Taiwan is UTC+8, so if you set "8:00" without changing the timezone, it actually runs at <em>4:00 pm Taipei time</em>. This is the number-one thing n8n beginners trip over. The next section covers how to change the setting.</div>
     </section>
@@ -357,7 +357,7 @@
       <h3>Pattern 1: Schedule + Manual (the most common)</h3>
       <p>The daily report goes out automatically at 8:00, but you suddenly want to send it again right now — add a Manual Trigger beside the Schedule Trigger, and pressing Execute Workflow runs it immediately. On the canvas it looks like this:</p>
       <pre class="code-block"><code>[Schedule Trigger]  ─┐
-                       ├──▶ [下游節點 A] ─▶ [下游節點 B]
+                       ├──▶ [Downstream node A] ─▶ [Downstream node B]
 [Manual Trigger]    ─┘</code></pre>
 
       <h3>Pattern 2: Webhook + Schedule (a safety net)</h3>
@@ -487,7 +487,7 @@
 
       <details class="faq">
         <summary>Is Schedule Trigger the same thing as the Cron in a scheduling system?</summary>
-        <div class="body">The syntax is close, but <strong>the number of fields differs</strong>. A traditional Linux crontab has five fields (minute hour day month weekday); the <code>Custom (Cron)</code> in n8n's Schedule Trigger has <strong>six fields</strong>: <code>秒 分 時 日 月 週</code> — an extra "second" at the front. Common examples (remember the seconds field): <code>0 0 8 * * *</code> (8:00 every day), <code>0 0 8 * * 1-5</code> (8:00 Monday to Friday), <code>0 */15 * * * *</code> (every 15 minutes), <code>0 0 9 1 * *</code> (9:00 on the 1st of every month). When you copy a five-field expression from <code>crontab.guru</code>, remember to <em>add a <code>0</code> at the front</em>, or the meaning shifts completely or it errors out.</div>
+        <div class="body">The syntax is close, but <strong>the number of fields differs</strong>. A traditional Linux crontab has five fields (minute hour day month weekday); the <code>Custom (Cron)</code> in n8n's Schedule Trigger has <strong>six fields</strong>: <code>second minute hour day month weekday</code> — an extra "second" at the front. Common examples (remember the seconds field): <code>0 0 8 * * *</code> (8:00 every day), <code>0 0 8 * * 1-5</code> (8:00 Monday to Friday), <code>0 */15 * * * *</code> (every 15 minutes), <code>0 0 9 1 * *</code> (9:00 on the 1st of every month). When you copy a five-field expression from <code>crontab.guru</code>, remember to <em>add a <code>0</code> at the front</em>, or the meaning shifts completely or it errors out.</div>
       </details>
 
       <details class="faq">
@@ -504,17 +504,17 @@
     <div class="pager">
       <a class="prev" href="ch9_item_data_flow.html">
         <span class="label">← Previous</span>
-        <span class="title">09 · 資料怎麼流</span>
+        <span class="title">09 · How data flows</span>
       </a>
       <a class="next" href="ch11_saas_integrations.html">
         <span class="label">Next →</span>
-        <span class="title">11 · 熱門 SaaS</span>
+        <span class="title">11 · Popular SaaS</span>
       </a>
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

@@ -1,0 +1,15 @@
+{
+  "file": "prompts.html",
+  "entries": [
+    {
+      "unit": "#cat-integration",
+      "zh": "<code>退款</code>",
+      "en": "<code>refund request</code>"
+    },
+    {
+      "unit": "#cat-error",
+      "zh": "<code>errorWorkflow: &lt;上一題的 error workflow id&gt;</code>",
+      "en": "<code>errorWorkflow: &lt;error workflow ID from the previous prompt&gt;</code>"
+    }
+  ]
+}

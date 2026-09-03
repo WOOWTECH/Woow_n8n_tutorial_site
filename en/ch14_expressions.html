@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 14 · Expression 入門：`{{ $json.field }}` 從這裡開始 · Woow n8n 入住指南</title>
-  <meta name="description" content="n8n Expression 語法入門：`{{ $json.field }}` 取當前 item、`$node['name']` 取指定節點、日期函式、字串拼接與常見錯誤。" />
+  <title>Chapter 14 · Expressions: it all starts with {{ $json.field }} · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="An introduction to n8n expressions: {{ $json.field }} for the current item, $node['name'] for a named node, date functions, string concatenation, and common errors." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch14_expressions.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 14 · Expression 入門：`{{ $json.field }}` 從這裡開始 · Woow n8n 入住指南" />
-  <meta property="og:description" content="n8n Expression 語法入門：`{{ $json.field }}` 取當前 item、`$node['name']` 取指定節點、日期函式、字串拼接與常見錯誤。" />
+  <meta property="og:title" content="Chapter 14 · Expressions: it all starts with {{ $json.field }} · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="An introduction to n8n expressions: {{ $json.field }} for the current item, $node['name'] for a named node, date functions, string concatenation, and common errors." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch14_expressions.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch14/01_expression_canvas.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 14 · Expression 入門：`{{ $json.field }}` 從這裡開始 · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="n8n Expression 語法入門：`{{ $json.field }}` 取當前 item、`$node['name']` 取指定節點、日期函式、字串拼接與常見錯誤。" />
+  <meta name="twitter:title" content="Chapter 14 · Expressions: it all starts with {{ $json.field }} · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="An introduction to n8n expressions: {{ $json.field }} for the current item, $node['name'] for a named node, date functions, string concatenation, and common errors." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch14/01_expression_canvas.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch14_expressions.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch14_expressions.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html" class="active">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html" class="active">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
@@ -84,9 +84,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html">C · Architecture</a>
     </div>
   </aside>
 
@@ -125,7 +125,7 @@
         </tbody>
       </table>
       <p>How to switch: at the <strong>field label above the field (or on the field itself)</strong> you will see an <strong>Expression</strong> / <strong>Fixed</strong> toggle (newer UI shows a small <strong>fx</strong> icon plus an Expression tab). <strong>Left = Fixed mode, right = Expression mode</strong>. Once you switch to Expression mode the field background turns into a gridded code style and a preview block appears underneath — that is the visual marker for Expression mode, and the gridded background means you have entered the world of code.</p>
-      <p>A field can also mix static text with an expression. Say the field holds <code>新訂單 {{ $json.orderId }}</code>: the static prefix is sent as it is, and only the <code>{{ }}</code> section gets replaced. This is the most intuitive way to build a template string.</p>
+      <p>A field can also mix static text with an expression. Say the field holds <code>New order {{ $json.orderId }}</code>: the static prefix is sent as it is, and only the <code>{{ }}</code> section gets replaced. This is the most intuitive way to build a template string.</p>
       <div class="callout tip"><strong>Tip:</strong> expressions use a subset of JavaScript plus n8n's own variables. Any JS syntax you already know (<code>+</code>, <code>.toUpperCase()</code>, the ternary operator <code>a ? b : c</code>) works. What you should not do is run heavy logic or call an API in there — that is the job of the <a href="ch20_code_node.html">Code node (Chapter 20)</a>.</div>
     </section>
 
@@ -246,8 +246,8 @@
             <td>When you have to build the string inside the <code>{{ }}</code> — for example to wrap the whole thing in <code>toUpperCase()</code>.</td>
           </tr>
           <tr>
-            <td>Template literal (backtick):<br><code>{{ `Hi ${$json.name}, 訂單 ${$json.orderId}` }}</code></td>
-            <td>Evaluates to <code>Hi Elmo, 訂單 1042</code>.</td>
+            <td>Template literal (backtick):<br><code>{{ `Hi ${$json.name}, order ${$json.orderId}` }}</code></td>
+            <td>Evaluates to <code>Hi Elmo, order 1042</code>.</td>
             <td>Cleanest when one <code>{{ }}</code> has to interpolate several variables with punctuation between them.</td>
           </tr>
         </tbody>
@@ -262,7 +262,7 @@
           <tr><td><code>.toLowerCase()</code></td><td>Lower-cases everything.</td><td><code>{{ $json.email.toLowerCase() }}</code></td></tr>
           <tr><td><code>.trim()</code></td><td>Strips leading and trailing whitespace.</td><td>Use it to clean up the <code>"  Elmo  "</code> you got from Google Form.</td></tr>
           <tr><td><code>.slice(0, 100)</code></td><td>Takes the first 100 characters.</td><td>Keeps a Slack message preview from blowing up: <code>{{ $json.body.slice(0, 100) }}</code></td></tr>
-          <tr><td><code>.replace('舊', '新')</code></td><td>Replaces text.</td><td><code>{{ $json.phone.replace(/-/g, '') }}</code> (removes every <code>-</code>)</td></tr>
+          <tr><td><code>.replace('old', 'new')</code></td><td>Replaces text.</td><td><code>{{ $json.phone.replace(/-/g, '') }}</code> (removes every <code>-</code>)</td></tr>
           <tr><td><code>.split(',')</code></td><td>Splits into an array.</td><td>Turns <code>a,b,c</code> into <code>['a','b','c']</code>.</td></tr>
         </tbody>
       </table>
@@ -283,7 +283,7 @@
         <tbody>
           <tr>
             <td>Slack message template: new order notification</td>
-            <td><code>{{ `新訂單 #${$json.orderId}｜客戶 ${$json.customer}｜金額 $${$json.amount}` }}</code></td>
+            <td><code>{{ `New order #${$json.orderId} | Customer ${$json.customer} | Amount $${$json.amount}` }}</code></td>
             <td>Built in one template literal, with the separator characters typed straight in.</td>
           </tr>
           <tr>
@@ -293,8 +293,8 @@
           </tr>
           <tr>
             <td>Dynamic date in a Gmail subject</td>
-            <td><code>{{ '銷售日報 - ' + $now.toFormat('yyyy-MM-dd') }}</code></td>
-            <td>Fixed text plus Luxon formatting; at run time it becomes <code>銷售日報 - 2026-08-16</code>.</td>
+            <td><code>{{ 'Daily sales report - ' + $now.toFormat('yyyy-MM-dd') }}</code></td>
+            <td>Fixed text plus Luxon formatting; at run time it becomes <code>Daily sales report - 2026-08-16</code>.</td>
           </tr>
           <tr>
             <td>IF node condition: amount greater than 1000</td>
@@ -471,7 +471,7 @@
         <div class="body">Once the expression editor is open, a small categorized list slides out on the right (some versions call it <em>helper</em> or <em>variables</em>) listing every available variable that starts with <code>$</code> (<code>$json</code>, <code>$now</code>, <code>$workflow</code>...) plus the common Luxon methods. Click one of the names and you get its description and a short example. If you cannot find it, go straight to the official docs at <code>docs.n8n.io/code/builtin/</code>, which carry the full list. For Luxon's date methods, see <code>moment.github.io/luxon/</code>.</div>
       </details>
       <details class="faq">
-        <summary>How is <code>$json.field</code> different from <code>$('上一節點').item.json.field</code>?</summary>
+        <summary>How is <code>$json.field</code> different from <code>$('Previous Node').item.json.field</code>?</summary>
         <div class="body">For the node directly upstream (the one wired to yours) what they give you is <strong>almost identical</strong> — both are the item for the current iteration. The difference is explicitness and stability: <code>$json</code> says "whatever the upstream is, this is the data I just received"; <code>$('NodeName')</code> says "go and take it from that node". When the workflow has branches, or a Merge or Set node dropped in the middle, <code>$('NodeName')</code> lets you skip the intermediate stops and take the original data, so a field rewritten along the way cannot trip you up. Start with <code>$json</code> as a beginner; once workflows get complex you will reach for <code>$('NodeName')</code> naturally.</div>
       </details>
       <details class="faq">
@@ -496,8 +496,8 @@
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 18 · Set / Edit Fields：資料整形不寫程式 · Woow n8n 入住指南</title>
-  <meta name="description" content="n8n Set 節點（v1 後稱 Edit Fields）完整教學：加欄位、改欄位名稱、重排、扁平化、範例：把 API 回來的 payload 整成 Sheet 一列。" />
+  <title>Chapter 18 · Set / Edit Fields: shape data without writing code · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="A complete guide to the n8n Set node (called Edit Fields since v1): add, rename, reorder, and flatten fields, including shaping an API payload into one sheet row." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch18_set_function.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 18 · Set / Edit Fields：資料整形不寫程式 · Woow n8n 入住指南" />
-  <meta property="og:description" content="n8n Set 節點（v1 後稱 Edit Fields）完整教學：加欄位、改欄位名稱、重排、扁平化、範例：把 API 回來的 payload 整成 Sheet 一列。" />
+  <meta property="og:title" content="Chapter 18 · Set / Edit Fields: shape data without writing code · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="A complete guide to the n8n Set node (called Edit Fields since v1): add, rename, reorder, and flatten fields, including shaping an API payload into one sheet row." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch18_set_function.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch18/01_form_runner.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 18 · Set / Edit Fields：資料整形不寫程式 · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="n8n Set 節點（v1 後稱 Edit Fields）完整教學：加欄位、改欄位名稱、重排、扁平化、範例：把 API 回來的 payload 整成 Sheet 一列。" />
+  <meta name="twitter:title" content="Chapter 18 · Set / Edit Fields: shape data without writing code · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="A complete guide to the n8n Set node (called Edit Fields since v1): add, rename, reorder, and flatten fields, including shaping an API payload into one sheet row." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch18/01_form_runner.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch18_set_function.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch18_set_function.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html" class="active">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html" class="active">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
@@ -85,9 +85,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html">C · Architecture</a>
     </div>
   </aside>
 
@@ -103,8 +103,8 @@
       <h2 data-icon="why">Why you need a data-shaping step</h2>
       <p><a href="ch9_item_data_flow.html">Chapter 9</a> taught you that items are the basic unit that flows through n8n, and that every item is a blob of JSON. Wiring up SaaS nodes in <a href="ch11_saas_integrations.html">Chapter 11</a>, you have almost certainly hit this:</p>
       <ul>
-        <li>The HTTP Request node hands back: <code>{ firstName: "小明", lastName: "王", email: "a@b.com", age: 28, avatar_url: "...", ... }</code></li>
-        <li>But the next node, Google Sheets, only needs three fields: <code>{ 姓名: "王小明", 信箱: "a@b.com", 年齡: 28 }</code></li>
+        <li>The HTTP Request node hands back: <code>{ firstName: "Xiaoming", lastName: "Wang", email: "a@b.com", age: 28, avatar_url: "...", ... }</code></li>
+        <li>But the next node, Google Sheets, only needs three fields: <code>{ Name: "Wang Xiaoming", Email: "a@b.com", Age: 28 }</code></li>
       </ul>
       <p>You do not want to hand-assemble ten lines of expression inside the Sheets node, and you do not want to open a Code node and write JavaScript every time either. <strong>What you want is a waypoint that cleans the upstream JSON up into the shape the downstream node wants</strong> — and that is the Set node. It calls no API, triggers nothing, does nothing to the outside world; it purely gives the JSON a new shape and passes it on.</p>
       <div class="callout"><strong>Concept:</strong> The Set node is the dressing table of a workflow — upstream data comes in, gets combed, made up and changed into fresh clothes, then goes on downstream. Everything it does is limited to changing the JSON structure, so it never causes a side effect.</div>
@@ -160,12 +160,12 @@
       <h2 data-icon="steps">Hands-on: combine firstName and lastName into full_name</h2>
       <p>This is the most typical thing a Set node is used for. Say the upstream node produces:</p>
       <pre class="code-block"><code>{
-  "firstName": "小明",
-  "lastName": "王",
+  "firstName": "Xiaoming",
+  "lastName": "Wang",
   "email": "xiaoming@example.com",
   "age": 28
 }</code></pre>
-      <p>You want one more field after that called <code>full_name</code>, with the value <code>王小明</code> (Taiwanese names put the surname first). Follow along:</p>
+      <p>You want one more field after that called <code>full_name</code>, with the value <code>Wang Xiaoming</code> (Taiwanese names put the surname first). Follow along:</p>
       <ol class="steps">
         <li>
           <h3>Add an Edit Fields node</h3>
@@ -193,7 +193,7 @@
         </li>
         <li>
           <h3>Run Execute Node and look at the result</h3>
-          <p>Press <strong>Execute Node</strong> at the top right of the node. The Output panel should produce: <code>{ firstName: "小明", lastName: "王", email: "...", age: 28, full_name: "王小明" }</code> — every original field is still there, plus a full_name. Job done.</p>
+          <p>Press <strong>Execute Node</strong> at the top right of the node. The Output panel should produce: <code>{ firstName: "Xiaoming", lastName: "Wang", email: "...", age: 28, full_name: "Wang Xiaoming" }</code> — every original field is still there, plus a full_name. Job done.</p>
         </li>
       </ol>
       <div class="callout tip"><strong>Tip:</strong> The Expression field has a small blue light bulb; open it and every field available upstream is listed. You do not have to memorize paths — click a field name in that list and n8n inserts the right <code>{{ $json.xxx }}</code> for you.</div>
@@ -210,17 +210,17 @@
           <tr>
             <td><strong>Add a new field</strong> (a timestamp, a status flag)</td>
             <td>Add Field, put the new field name in Name, produce the value with an expression</td>
-            <td><code>{{ $now }}</code> for the current time; <code>已處理</code> as a plain string</td>
+            <td><code>{{ $now }}</code> for the current time; <code>Processed</code> as a plain string</td>
           </tr>
           <tr>
             <td><strong>Rename a field</strong></td>
-            <td>Add Field with the new name, pull the old value with <code>{{ $json.舊欄位 }}</code>; then turn Include Other Input Fields <em>off</em>, or list every field you want to keep</td>
+            <td>Add Field with the new name, pull the old value with <code>{{ $json.oldField }}</code>; then turn Include Other Input Fields <em>off</em>, or list every field you want to keep</td>
             <td>Name = <code>customer_email</code>, Value = <code>{{ $json.email }}</code></td>
           </tr>
           <tr>
             <td><strong>Fill in a default</strong> (when the field is missing)</td>
             <td>Use a ternary operator in Value to test whether there is a value</td>
-            <td><code>{{ $json.phone || '未提供' }}</code></td>
+            <td><code>{{ $json.phone || 'not provided' }}</code></td>
           </tr>
           <tr>
             <td><strong>Convert a type</strong> (string to number and the like)</td>
@@ -229,8 +229,8 @@
           </tr>
           <tr>
             <td><strong>Fill a value conditionally</strong> (what goes in depends on the upstream value)</td>
-            <td>Use a ternary operator (<code>條件 ? A : B</code>)</td>
-            <td><code>{{ $json.amount &gt; 1000 ? 'VIP' : '一般' }}</code></td>
+            <td>Use a ternary operator (<code>condition ? A : B</code>)</td>
+            <td><code>{{ $json.amount &gt; 1000 ? 'VIP' : 'Standard' }}</code></td>
           </tr>
         </tbody>
       </table>
@@ -264,7 +264,7 @@
         <li><strong>A big clean-out</strong> — you only want three fields to go downstream → <em>turn it off</em>, then list those three fields under Fields to Set.</li>
         <li><strong>Security</strong> — the upstream API response holds sensitive fields (token, password_hash) you do not want carried downstream → <em>turn it off</em> and let through only the safe ones.</li>
       </ul>
-      <div class="callout warn"><strong>Warning:</strong> If you turn this toggle off but forget to add <code>email</code> under Fields to Set, your downstream nodes will never get an email — this is the "my field disappeared" bug beginners hit most. When a field is missing from the output panel, check this toggle first. One more common misreading: the toggle only keeps the fields of the current input item; to reference the payload of a node <em>several steps earlier</em>, you still need <code>{{ $('節點名').item.json.xxx }}</code> (see the last FAQ entry).</div>
+      <div class="callout warn"><strong>Warning:</strong> If you turn this toggle off but forget to add <code>email</code> under Fields to Set, your downstream nodes will never get an email — this is the "my field disappeared" bug beginners hit most. When a field is missing from the output panel, check this toggle first. One more common misreading: the toggle only keeps the fields of the current input item; to reference the payload of a node <em>several steps earlier</em>, you still need <code>{{ $('Node Name').item.json.xxx }}</code> (see the last FAQ entry).</div>
       <p>In the old interface this toggle was called <strong>Keep Only Set Fields</strong>, and the logic was exactly reversed: ticked = keep only what you set. From v1 it is <strong>Include Other Input Fields</strong> (ticked = keep the others), which reads far more naturally. Note that the official n8n docs page still says Keep Only Set Fields to this day, so the docs not matching the wording you see in the UI is entirely normal; go by the UI.</p>
     </section>
 
@@ -274,15 +274,15 @@
       <p><strong>The situation</strong>: the upstream node emits flat JSON, you have to send it to an API, and that API wants a nested payload. Say upstream gives you:</p>
       <pre class="code-block"><code>{
   "id": "ORD-1234",
-  "firstName": "小明",
-  "lastName": "王",
+  "firstName": "Xiaoming",
+  "lastName": "Wang",
   "amount": 1500
 }</code></pre>
       <p>But the format the downstream API wants is:</p>
       <pre class="code-block"><code>{
   "orderId": "ORD-1234",
   "customer": {
-    "name": "王小明",
+    "name": "Wang Xiaoming",
     "vip": true
   }
 }</code></pre>
@@ -323,7 +323,7 @@
       <pre class="code-block"><code>{
   "data": {
     "user": {
-      "name": "王小明",
+      "name": "Wang Xiaoming",
       "email": "xiaoming@example.com"
     },
     "order": {
@@ -335,7 +335,7 @@
     }
   }
 }</code></pre>
-      <p><strong>The sheet's header</strong>: <code>訂單編號 | 姓名 | 信箱 | 金額 | 時間 | VIP</code></p>
+      <p><strong>The sheet's header</strong>: <code>Order ID | Name | Email | Amount | Timestamp | VIP</code></p>
       <p>Put a Set node in the middle to do the reshaping:</p>
       <ol class="steps">
         <li>
@@ -354,18 +354,18 @@
               <tr><th>Name</th><th>Type</th><th>Value (expression)</th></tr>
             </thead>
             <tbody>
-              <tr><td><code>訂單編號</code></td><td>String</td><td><code>{{ $json.data.order.id }}</code></td></tr>
-              <tr><td><code>姓名</code></td><td>String</td><td><code>{{ $json.data.user.name }}</code></td></tr>
-              <tr><td><code>信箱</code></td><td>String</td><td><code>{{ $json.data.user.email }}</code></td></tr>
-              <tr><td><code>金額</code></td><td>Number</td><td><code>{{ $json.data.order.amount }}</code></td></tr>
-              <tr><td><code>時間</code></td><td>String</td><td><code>{{ $json.data.meta.ts }}</code></td></tr>
-              <tr><td><code>VIP</code></td><td>String</td><td><code>{{ $json.data.order.amount &gt; 1000 ? 'VIP' : '一般' }}</code></td></tr>
+              <tr><td><code>Order ID</code></td><td>String</td><td><code>{{ $json.data.order.id }}</code></td></tr>
+              <tr><td><code>Name</code></td><td>String</td><td><code>{{ $json.data.user.name }}</code></td></tr>
+              <tr><td><code>Email</code></td><td>String</td><td><code>{{ $json.data.user.email }}</code></td></tr>
+              <tr><td><code>Amount</code></td><td>Number</td><td><code>{{ $json.data.order.amount }}</code></td></tr>
+              <tr><td><code>Timestamp</code></td><td>String</td><td><code>{{ $json.data.meta.ts }}</code></td></tr>
+              <tr><td><code>VIP</code></td><td>String</td><td><code>{{ $json.data.order.amount &gt; 1000 ? 'VIP' : 'Standard' }}</code></td></tr>
             </tbody>
           </table>
         </li>
         <li>
           <h3>Run Execute Node and check the flat structure</h3>
-          <p>The Output should be 6 purely flat fields: <code>{ 訂單編號: "ORD-9527", 姓名: "王小明", 信箱: "...", 金額: 2800, 時間: "...", VIP: "VIP" }</code>.</p>
+          <p>The Output should be 6 purely flat fields: <code>{ "Order ID": "ORD-9527", "Name": "Wang Xiaoming", "Email": "...", "Amount": 2800, "Timestamp": "...", "VIP": "VIP" }</code>.</p>
         </li>
         <li>
           <h3>Wire up a Google Sheets Append node</h3>
@@ -421,7 +421,7 @@
         <li>Name = <code>customer.name</code>, Value = <code>{{ $json.firstName }}</code></li>
         <li>Name = <code>customer.email</code>, Value = <code>{{ $json.email }}</code></li>
       </ul>
-      <p>The output is <code>{ customer: { name: "小明", email: "..." } }</code>. That saves you switching to JSON mode.</p>
+      <p>The output is <code>{ customer: { name: "Xiaoming", email: "..." } }</code>. That saves you switching to JSON mode.</p>
 
       <h3>2. Covering many items in one pass</h3>
       <p>Like every other node, the Set node runs once for each item automatically. So you do not write a loop — send 10 items in from upstream and Set produces 10 reshaped outputs. On each pass <code>$json</code> points at the item being processed right then.</p>
@@ -432,7 +432,7 @@
       <h3>4. A Set node at the start of a workflow makes a fake-data generator</h3>
       <p>No real trigger yet, but you want to test the logic of the nodes after it? Drop in a Manual Trigger plus a Set node, set the Set node's Mode to JSON, paste a block of fake JSON and turn Include Other Input Fields off — now pressing Execute Workflow sends one fake item down the workflow. A lifesaver for debugging.</p>
 
-      <div class="callout tip"><strong>Tip:</strong> If you want to delete a field, Manual Mapping has no explicit delete action. What you do instead: tick Include Other Input Fields, Add Field with the same name, leave Value empty and pick any Type you like — the field becomes empty. To really remove a field, key and all, you need a Code node and <code>delete item.json.欄位名</code>.</p>
+      <div class="callout tip"><strong>Tip:</strong> If you want to delete a field, Manual Mapping has no explicit delete action. What you do instead: tick Include Other Input Fields, Add Field with the same name, leave Value empty and pick any Type you like — the field becomes empty. To really remove a field, key and all, you need a Code node and <code>delete item.json.fieldName</code>.</p>
       </div>
     </section>
 
@@ -460,8 +460,8 @@
           </tr>
           <tr>
             <td><strong>The field name has a space or Chinese in it and the expression cannot find it</strong></td>
-            <td>JavaScript dot notation (<code>$json.欄 名</code>) does not support spaces</td>
-            <td>Use the bracket form: <code>{{ $json['欄 名'] }}</code>, <code>{{ $json['姓 名'] }}</code>. Brackets take any character</td>
+            <td>JavaScript dot notation (<code>$json.field name</code>) does not support spaces</td>
+            <td>Use the bracket form: <code>{{ $json['field name'] }}</code>, <code>{{ $json['full name'] }}</code>. Brackets take any character</td>
           </tr>
           <tr>
             <td><strong>You clearly typed a number in Value, but the output is the string <code>"123"</code></strong></td>
@@ -522,19 +522,19 @@
 
       <details class="faq">
         <summary>With Include Other Input Fields ticked, what happens if a field I set collides with an existing field name?</summary>
-        <div class="body">The value you set <strong>overwrites</strong> the original. Say the input has <code>email: "a@b.com"</code> and you add a Field in the Set node with Name = <code>email</code> and Value = <code>「已隱藏」</code> — the output's email is then "hidden". This is a handy way to change a value in place, for example masking a sensitive field or normalizing a column's value (<code>{{ $json.email.toLowerCase() }}</code>). On a collision <strong>the value you set always wins</strong>; there is no error and no warning, it simply overwrites.</div>
+        <div class="body">The value you set <strong>overwrites</strong> the original. Say the input has <code>email: "a@b.com"</code> and you add a Field in the Set node with Name = <code>email</code> and Value = <code>"hidden"</code> — the output's email is then "hidden". This is a handy way to change a value in place, for example masking a sensitive field or normalizing a column's value (<code>{{ $json.email.toLowerCase() }}</code>). On a collision <strong>the value you set always wins</strong>; there is no error and no warning, it simply overwrites.</div>
       </details>
 
       <details class="faq">
         <summary>Can a Set node reference data from another node instead of the previous one?</summary>
-        <div class="body">Yes, and it is one of n8n's real strengths. Use <code>{{ $('節點名稱').item.json.欄位 }}</code> in the Value field to pull data from <em>any earlier node</em>, not just the previous one. Say a workflow opens with a Webhook node named <code>Webhook</code>, three nodes run after it, and the last Set node wants both the webhook's original payload and the result computed one step earlier — Value can be <code>{{ $('Webhook').item.json.customer_id }} - {{ $json.result }}</code>. This comes up a lot in complex workflows, and it is far cleaner than using Set at every step to keep fields around. <a href="ch14_expressions.html">Chapter 14</a> on expressions has full examples, and the sub-workflows in <a href="ch19_subworkflow.html">Chapter 19</a> use a similar technique.</div>
+        <div class="body">Yes, and it is one of n8n's real strengths. Use <code>{{ $('Node Name').item.json.field }}</code> in the Value field to pull data from <em>any earlier node</em>, not just the previous one. Say a workflow opens with a Webhook node named <code>Webhook</code>, three nodes run after it, and the last Set node wants both the webhook's original payload and the result computed one step earlier — Value can be <code>{{ $('Webhook').item.json.customer_id }} - {{ $json.result }}</code>. This comes up a lot in complex workflows, and it is far cleaner than using Set at every step to keep fields around. <a href="ch14_expressions.html">Chapter 14</a> on expressions has full examples, and the sub-workflows in <a href="ch19_subworkflow.html">Chapter 19</a> use a similar technique.</div>
       </details>
     </section>
 
     <div class="pager">
       <a class="prev" href="ch17_error_handling.html">
         <span class="label">← Previous</span>
-        <span class="title">17 · 錯誤處理</span>
+        <span class="title">17 · Error handling</span>
       </a>
       <a class="next" href="ch19_subworkflow.html">
         <span class="label">Next →</span>
@@ -543,8 +543,8 @@
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

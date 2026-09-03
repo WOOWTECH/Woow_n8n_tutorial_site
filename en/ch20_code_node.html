@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 20 · Code node：在 workflow 裡寫幾行 JavaScript · Woow n8n 入住指南</title>
-  <meta name="description" content="n8n Code node 入門：JavaScript / Python 模式、$input.all() / 回傳格式、四個常用 pattern（過濾、映射、聚合、拆開）、複製即用範例。" />
+  <title>Chapter 20 · Code node: a few lines of JavaScript inside a workflow · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="An introduction to the n8n Code node: JavaScript / Python modes, $input.all() / return formats, and four common patterns—filter, map, aggregate, and split." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch20_code_node.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 20 · Code node：在 workflow 裡寫幾行 JavaScript · Woow n8n 入住指南" />
-  <meta property="og:description" content="n8n Code node 入門：JavaScript / Python 模式、$input.all() / 回傳格式、四個常用 pattern（過濾、映射、聚合、拆開）、複製即用範例。" />
+  <meta property="og:title" content="Chapter 20 · Code node: a few lines of JavaScript inside a workflow · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="An introduction to the n8n Code node: JavaScript / Python modes, $input.all() / return formats, and four common patterns—filter, map, aggregate, and split." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch20_code_node.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch20/01_ha_agent.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 20 · Code node：在 workflow 裡寫幾行 JavaScript · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="n8n Code node 入門：JavaScript / Python 模式、$input.all() / 回傳格式、四個常用 pattern（過濾、映射、聚合、拆開）、複製即用範例。" />
+  <meta name="twitter:title" content="Chapter 20 · Code node: a few lines of JavaScript inside a workflow · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="An introduction to the n8n Code node: JavaScript / Python modes, $input.all() / return formats, and four common patterns—filter, map, aggregate, and split." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch20/01_ha_agent.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch20_code_node.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch20_code_node.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html" class="active">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
@@ -85,9 +85,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html">C · Architecture</a>
     </div>
   </aside>
 
@@ -226,7 +226,7 @@
     <section id="pattern_filter" data-nav="Pattern 1 · filter">
       <h2 data-icon="steps">Pattern 1: filter</h2>
       <p>Pick the items that match a condition out of a pile of them. <strong>All Items mode</strong>.</p>
-      <pre class="code-block"><code>// 只留下金額大於 1000 的訂單
+      <pre class="code-block"><code>// Keep only orders over 1000
 return $input.all().filter(item =&gt; item.json.amount &gt; 1000);</code></pre>
       <p>In plain words:</p>
       <ul>
@@ -236,7 +236,7 @@ return $input.all().filter(item =&gt; item.json.amount &gt; 1000);</code></pre>
         <li><code>return ...</code>: hands the result to the downstream node.</li>
       </ul>
       <p>Copy this, swap <code>amount &gt; 1000</code> for the condition you want (<code>item.json.status === 'paid'</code> and <code>item.json.tags.includes('VIP')</code> both work), and that is it. Chain several conditions with <code>&amp;&amp;</code> (and) and <code>||</code> (or):</p>
-      <pre class="code-block"><code>// 金額大於 1000 且客戶等級是 gold
+      <pre class="code-block"><code>// Amount over 1000 and tier is gold
 return $input.all().filter(item =&gt;
   item.json.amount &gt; 1000 &amp;&amp; item.json.tier === 'gold'
 );</code></pre>
@@ -246,7 +246,7 @@ return $input.all().filter(item =&gt;
     <section id="pattern_map" data-nav="Pattern 2 · map">
       <h2 data-icon="steps">Pattern 2: map (transform each item)</h2>
       <p>Transform every item: add a field, change a field, calculate a new value. <strong>All Items mode</strong>.</p>
-      <pre class="code-block"><code>// 把 firstName + lastName 合成 fullName，只保留 fullName 跟 age
+      <pre class="code-block"><code>// Combine firstName and lastName into fullName; keep only fullName and age
 return $input.all().map(item =&gt; ({
   json: {
     fullName: item.json.firstName + ' ' + item.json.lastName,
@@ -260,10 +260,10 @@ return $input.all().map(item =&gt; ({
         <li><code>fullName: ...</code>, <code>age: ...</code>: the fields you want in the output. Write whichever fields you want to add.</li>
       </ul>
       <p>If you only want to add a field to the original item rather than rebuild it, use the spread syntax <code>...item.json</code> to keep every original field and then add the new ones:</p>
-      <pre class="code-block"><code>// 保留原本所有欄位，再多加 taxAmount 跟 total
+      <pre class="code-block"><code>// Keep every original field, then add taxAmount and total
 return $input.all().map(item =&gt; ({
   json: {
-    ...item.json,                      // 展開原本欄位
+    ...item.json,                      // spread the original fields
     taxAmount: item.json.amount * 0.05,
     total: item.json.amount * 1.05
   }
@@ -274,7 +274,7 @@ return $input.all().map(item =&gt; ({
     <section id="pattern_aggregate" data-nav="Pattern 3 · aggregate">
       <h2 data-icon="steps">Pattern 3: aggregate</h2>
       <p>Shrink a pile of items down to one total. <strong>All Items mode</strong>.</p>
-      <pre class="code-block"><code>// 把所有訂單金額加總，算出總營收跟筆數
+      <pre class="code-block"><code>// Sum every order amount, then work out revenue and item count
 const total = $input.all().reduce((sum, item) =&gt; sum + item.json.amount, 0);
 const count = $input.all().length;
 
@@ -292,14 +292,14 @@ return [{
         <li><code>return [{ json: {...} }]</code>: note that it <strong>still has to be wrapped in an array</strong>, even when you return only one item — <code>[{ json: {} }]</code>. Forget the outer <code>[]</code> and it blows up.</li>
       </ul>
       <p>To group by something (totalling per customer, say), pair <code>reduce</code> with an object accumulator:</p>
-      <pre class="code-block"><code>// 按客戶名字加總金額
+      <pre class="code-block"><code>// Total the amounts per customer name
 const groups = $input.all().reduce((acc, item) =&gt; {
   const key = item.json.customer;
   acc[key] = (acc[key] || 0) + item.json.amount;
   return acc;
 }, {});
 
-// 轉成 items 陣列吐出去
+// turn it back into an items array and return it
 return Object.entries(groups).map(([customer, total]) =&gt; ({
   json: { customer, total }
 }));</code></pre>
@@ -309,7 +309,7 @@ return Object.entries(groups).map(([customer, total]) =&gt; ({
     <section id="pattern_http" data-nav="Pattern 4 · call an API">
       <h2 data-icon="steps">Pattern 4: call an external API from the Code node (rare)</h2>
       <p>Inside a Code node you can <code>await</code> a call to an external API directly, but <strong>the <a href="ch12_http_request.html">HTTP Request node</a> is usually easier to maintain</strong> — it has a UI for headers, auth and retry. If you really do need the call inside Code:</p>
-      <pre class="code-block"><code>// 呼叫外部 API，把回應塞成一筆 item
+      <pre class="code-block"><code>// Call an external API and return the response as one item
 const response = await this.helpers.httpRequest({
   method: 'GET',
   url: 'https://api.example.com/x',
@@ -459,7 +459,7 @@ return [{ json: response }];</code></pre>
       </details>
       <details class="faq">
         <summary>Can two Code nodes share a variable?</summary>
-        <div class="body"><strong>No.</strong> Every Code node is <strong>its own sandbox</strong>: a <code>const x = 5</code> declared in one Code node is invisible in the next. To pass data between nodes, take n8n's regular route — put the data in the output's <code>json</code>, and read it in the next node with <code>$('前一個 Code').item.json.x</code>. For a constant shared across the whole workflow, store it in a <strong>Set node</strong> or use <strong>workflow variables</strong> (<code>$vars</code> is Enterprise only).</div>
+        <div class="body"><strong>No.</strong> Every Code node is <strong>its own sandbox</strong>: a <code>const x = 5</code> declared in one Code node is invisible in the next. To pass data between nodes, take n8n's regular route — put the data in the output's <code>json</code>, and read it in the next node with <code>$('Previous Code').item.json.x</code>. For a constant shared across the whole workflow, store it in a <strong>Set node</strong> or use <strong>workflow variables</strong> (<code>$vars</code> is Enterprise only).</div>
       </details>
       <details class="faq">
         <summary>Can a Code node <code>await</code> a call to another workflow?</summary>
@@ -491,8 +491,8 @@ return [{ json: response }];</code></pre>
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

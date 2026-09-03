@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 9 · Item 是什麼？資料怎麼在節點間流動 · Woow n8n 入住指南</title>
-  <meta name="description" content="n8n 的 item 資料模型：JSON 結構、每個節點的 items 陣列、$json / $binary、資料流視覺化的方式。" />
+  <title>Chapter 9 · What an item is, and how data moves between nodes · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="The n8n item data model: JSON structure, each node’s items array, $json / $binary, and how to visualize data flow." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch9_item_data_flow.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 9 · Item 是什麼？資料怎麼在節點間流動 · Woow n8n 入住指南" />
-  <meta property="og:description" content="n8n 的 item 資料模型：JSON 結構、每個節點的 items 陣列、$json / $binary、資料流視覺化的方式。" />
+  <meta property="og:title" content="Chapter 9 · What an item is, and how data moves between nodes · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="The n8n item data model: JSON structure, each node’s items array, $json / $binary, and how to visualize data flow." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch9_item_data_flow.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch9/01_data_flow_canvas.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 9 · Item 是什麼？資料怎麼在節點間流動 · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="n8n 的 item 資料模型：JSON 結構、每個節點的 items 陣列、$json / $binary、資料流視覺化的方式。" />
+  <meta name="twitter:title" content="Chapter 9 · What an item is, and how data moves between nodes · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="The n8n item data model: JSON structure, each node’s items array, $json / $binary, and how to visualize data flow." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch9/01_data_flow_canvas.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch9_item_data_flow.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch9_item_data_flow.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html" class="active">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html" class="active">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
@@ -84,9 +84,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html">C · Architecture</a>
     </div>
   </aside>
 
@@ -171,11 +171,11 @@
         <tbody>
           <tr><td><code>{{ $json }}</code></td><td>The whole JSON of the current item.</td><td>When you want to see the whole thing, or pass the whole thing downstream.</td></tr>
           <tr><td><code>{{ $json.field }}</code></td><td>One field of the current item.</td><td>The most common one. For example <code>{{ $json.summary }}</code>, <code>{{ $json.email }}</code>.</td></tr>
-          <tr><td><code>{{ $json['field with space'] }}</code></td><td>Field names with a space, or with Chinese characters, need bracket notation.</td><td>When the API returns fields named <code>User Name</code>, <code>訂單編號</code>.</td></tr>
+          <tr><td><code>{{ $json['field with space'] }}</code></td><td>Field names with a space, or with Chinese characters, need bracket notation.</td><td>When the API returns fields named <code>User Name</code>, <code>Order ID</code>.</td></tr>
           <tr><td><code>{{ $('Google Sheets').item.json.field }}</code></td><td>Read data from <strong>a named upstream node</strong> (not just the previous one).</td><td>Reaching past the nodes in between for data from two or three stops back.</td></tr>
         </tbody>
       </table>
-      <p><code>$('節點名稱')</code> means "find that upstream node's output by its name". The node name is <strong>the one you see on the canvas</strong> (double-click a node to rename it). The advantage of writing it this way is that even with a pile of Set / IF nodes in between, you can still reach straight back for the original data.</p>
+      <p><code>$('Node Name')</code> means "find that upstream node's output by its name". The node name is <strong>the one you see on the canvas</strong> (double-click a node to rename it). The advantage of writing it this way is that even with a pile of Set / IF nodes in between, you can still reach straight back for the original data.</p>
       <div class="callout"><strong>Concept:</strong> you <strong>do not have to memorize the syntax</strong> when writing expressions. Click a field into Expression mode and an input panel slides out on the right; its left half lists the data from every upstream node (in Table / JSON / Schema views), and whichever field you click, it inserts the correct expression for you. <a href="ch14_expressions.html">Chapter 14</a> takes that panel apart in full.</div>
     </section>
 
@@ -333,17 +333,17 @@
     <div class="pager">
       <a class="prev" href="ch8_first_workflow.html">
         <span class="label">← Previous</span>
-        <span class="title">08 · 第一個 workflow</span>
+        <span class="title">08 · Your first workflow</span>
       </a>
       <a class="next" href="ch10_triggers.html">
         <span class="label">Next →</span>
-        <span class="title">10 · 三種觸發</span>
+        <span class="title">10 · Three triggers</span>
       </a>
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

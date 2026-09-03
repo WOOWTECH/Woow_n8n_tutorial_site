@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 12 · HTTP Request 節點：碰所有沒官方整合的 API · Woow n8n 入住指南</title>
-  <meta name="description" content="n8n HTTP Request 節點完整教學：GET/POST/PUT/DELETE、headers、body、auth、分頁、常見錯誤處理。" />
+  <title>Chapter 12 · The HTTP Request node: reach every API without an official integration · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="A complete guide to the n8n HTTP Request node: GET/POST/PUT/DELETE, headers, body, authentication, pagination, and common error handling." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch12_http_request.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 12 · HTTP Request 節點：碰所有沒官方整合的 API · Woow n8n 入住指南" />
-  <meta property="og:description" content="n8n HTTP Request 節點完整教學：GET/POST/PUT/DELETE、headers、body、auth、分頁、常見錯誤處理。" />
+  <meta property="og:title" content="Chapter 12 · The HTTP Request node: reach every API without an official integration · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="A complete guide to the n8n HTTP Request node: GET/POST/PUT/DELETE, headers, body, authentication, pagination, and common error handling." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch12_http_request.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch12/01_http_workflow.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 12 · HTTP Request 節點：碰所有沒官方整合的 API · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="n8n HTTP Request 節點完整教學：GET/POST/PUT/DELETE、headers、body、auth、分頁、常見錯誤處理。" />
+  <meta name="twitter:title" content="Chapter 12 · The HTTP Request node: reach every API without an official integration · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="A complete guide to the n8n HTTP Request node: GET/POST/PUT/DELETE, headers, body, authentication, pagination, and common error handling." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch12/01_http_workflow.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch12_http_request.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch12_http_request.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html" class="active">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html" class="active">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
@@ -85,9 +85,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html">C · Architecture</a>
     </div>
   </aside>
 
@@ -155,7 +155,7 @@
       <div class="callout tip"><strong>Tip:</strong> In API docs, one of those five verbs printed in front of an endpoint (for example <code>POST /users</code>) is telling you which method that endpoint takes. Doc tables usually have three columns: <strong>Method + path + description</strong>.</div>
       <p><strong>Headers</strong> carry information along with the call. The two you meet most:</p>
       <ul>
-        <li><code>Authorization: Bearer &lt;你的 token&gt;</code> — proves who you are</li>
+        <li><code>Authorization: Bearer &lt;your-token&gt;</code> — proves who you are</li>
         <li><code>Content-Type: application/json</code> — tells the other side "I am sending JSON"</li>
       </ul>
       <p><strong>Body</strong> is only filled in for <code>POST</code>, <code>PUT</code> and <code>PATCH</code> — it is the data you are sending over, usually a lump of JSON. GET and DELETE carry no body (a few APIs are exceptions, but not many).</p>
@@ -216,7 +216,7 @@
         </li>
         <li>
           <h3>The next node can read fields with <code>{{ $json.login }}</code></h3>
-          <p>Wire a Slack or Set node after this HTTP Request and type <code>使用者 {{ $json.login }} 有 {{ $json.public_repos }} 個 repo</code> into the message field; at run time it is replaced with the real values. That is an expression, and <a href="ch14_expressions.html">Chapter 14</a> is devoted to it.</p>
+          <p>Wire a Slack or Set node after this HTTP Request and type <code>User {{ $json.login }} has {{ $json.public_repos }} repos</code> into the message field; at run time it is replaced with the real values. That is an expression, and <a href="ch14_expressions.html">Chapter 14</a> is devoted to it.</p>
         </li>
       </ol>
       <div class="callout tip"><strong>Tip:</strong> GitHub, Bitbucket, CoinGecko and OpenWeatherMap all have public GET endpoints that need no auth, which makes them good practice targets. Use them to get the rhythm of "call the API → receive JSON → use it downstream" before you take on the ones that need auth.</div>
@@ -269,7 +269,7 @@
 
     <section id="post" data-nav="POST JSON">
       <h2 data-icon="steps">Hands-on: POST JSON to an API</h2>
-      <p>GET fetches, POST sends. In practice you reach for POST whenever you want n8n to create a record in another SaaS. Say a messaging API's endpoint is <code>POST /messages</code> and the body has to be <code>{"text": "訊息內容", "to": "user@example.com"}</code> — here are the steps:</p>
+      <p>GET fetches, POST sends. In practice you reach for POST whenever you want n8n to create a record in another SaaS. Say a messaging API's endpoint is <code>POST /messages</code> and the body has to be <code>{"text": "message body", "to": "user@example.com"}</code> — here are the steps:</p>
       <ol class="steps">
         <li>
           <h3>Change Method to <code>POST</code></h3>
@@ -281,7 +281,7 @@
         </li>
         <li>
           <h3>Set up Authentication</h3>
-          <p>Pick whatever they require — usually <code>Generic Credential Type</code> → <code>Header Auth</code>, holding one <code>Authorization: Bearer &lt;你的 token&gt;</code> pair.</p>
+          <p>Pick whatever they require — usually <code>Generic Credential Type</code> → <code>Header Auth</code>, holding one <code>Authorization: Bearer &lt;your-token&gt;</code> pair.</p>
         </li>
         <li>
           <h3>Turn on Send Body</h3>
@@ -298,7 +298,7 @@
   "text": "{{ $json.message }}",
   "to": "user@example.com"
 }</code></pre>
-          <p>The <code>{{ $json.message }}</code> in there is an expression; it reads the <code>message</code> field from the previous node. Hard-coding is fine too — just type <code>"你好"</code>.</p>
+          <p>The <code>{{ $json.message }}</code> in there is an expression; it reads the <code>message</code> field from the previous node. Hard-coding is fine too — just type <code>"hello"</code>.</p>
         </li>
         <li>
           <h3>Execute step and read the response</h3>
@@ -400,7 +400,7 @@
           <p>Search the credential type list for <code>header</code> and pick <strong>Header Auth</strong> (older interfaces show it as <code>HTTP Header Auth</code> — same thing). It is the most general one: Bearer tokens and X-API-Key both go through it.</p>
         </li>
         <li>
-          <h3>Put <code>Authorization</code> in Name and <code>Bearer &lt;你的 token&gt;</code> in Value</h3>
+          <h3>Put <code>Authorization</code> in Name and <code>Bearer &lt;your-token&gt;</code> in Value</h3>
           <p>Name is the header field's name, Value is its value. Save the pair and give the credential a name you will recognize, such as <code>MyCompany CRM Bearer</code>.</p>
         </li>
         <li>
@@ -559,7 +559,7 @@
     <div class="pager">
       <a class="prev" href="ch11_saas_integrations.html">
         <span class="label">← Previous</span>
-        <span class="title">11 · 熱門 SaaS</span>
+        <span class="title">11 · Popular SaaS</span>
       </a>
       <a class="next" href="ch13_credentials.html">
         <span class="label">Next →</span>
@@ -568,8 +568,8 @@
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 8 · 第一個 workflow：早上把 Google 行事曆推 Slack · Woow n8n 入住指南</title>
-  <meta name="description" content="手把手做第一個 n8n workflow：Schedule Trigger + Google Calendar 讀事件 + Slack 傳訊息，跑一次成功。" />
+  <title>Chapter 8 · Your first workflow: push Google Calendar to Slack at 8:00 every morning · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="Build your first n8n workflow step by step: Schedule Trigger + Google Calendar events + Slack message, then run it successfully." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch8_first_workflow.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 8 · 第一個 workflow：早上把 Google 行事曆推 Slack · Woow n8n 入住指南" />
-  <meta property="og:description" content="手把手做第一個 n8n workflow：Schedule Trigger + Google Calendar 讀事件 + Slack 傳訊息，跑一次成功。" />
+  <meta property="og:title" content="Chapter 8 · Your first workflow: push Google Calendar to Slack at 8:00 every morning · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="Build your first n8n workflow step by step: Schedule Trigger + Google Calendar events + Slack message, then run it successfully." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch8_first_workflow.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch8/01_canvas_start.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 8 · 第一個 workflow：早上把 Google 行事曆推 Slack · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="手把手做第一個 n8n workflow：Schedule Trigger + Google Calendar 讀事件 + Slack 傳訊息，跑一次成功。" />
+  <meta name="twitter:title" content="Chapter 8 · Your first workflow: push Google Calendar to Slack at 8:00 every morning · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="Build your first n8n workflow step by step: Schedule Trigger + Google Calendar events + Slack message, then run it successfully." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch8/01_canvas_start.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch8_first_workflow.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch8_first_workflow.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html" class="active">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html" class="active">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
@@ -83,9 +83,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html">C · Architecture</a>
     </div>
   </aside>
 
@@ -144,7 +144,7 @@
 
       <h3>Drawn as a flow, it looks like this</h3>
       <p>In the plainest possible form:</p>
-      <pre class="code-block"><code>[⏰ 每天 08:00]  →  [📅 讀今天行事曆]  →  [💬 傳給 Slack]
+      <pre class="code-block"><code>[⏰ Every day at 08:00]  →  [📅 Read today's calendar]  →  [💬 Send to Slack]
    Schedule           Google Calendar           Slack
    Trigger            Event · Get Many         Message · Send Message</code></pre>
       <p>Three nodes, two connections. That is all. Next you build it step by step.</p>
@@ -164,9 +164,9 @@
           </figure>
         </li>
         <li>
-          <h3>Name the workflow: <code>每日行事曆推送</code></h3>
-          <p>At the top of the screen there is a default name, <em>My workflow</em>. Click it to change it. Pick a name you can find again later, for example <code>每日行事曆推送</code>. Next to it is <strong>Save</strong> (or <kbd>Ctrl</kbd>+<kbd>S</kbd>) — save once now, so a browser crash halfway through does not cost you everything.</p>
-          <div class="callout tip"><strong>Tip:</strong> Try to name workflows as "verb + object + timing": <code>每日行事曆推送</code>, <code>每小時抓 RSS</code>, <code>Slack 收單自動建 Notion</code>. Once you have a lot of them, the name alone tells you what each one does.</div>
+          <h3>Name the workflow: <code>Daily calendar digest</code></h3>
+          <p>At the top of the screen there is a default name, <em>My workflow</em>. Click it to change it. Pick a name you can find again later, for example <code>Daily calendar digest</code>. Next to it is <strong>Save</strong> (or <kbd>Ctrl</kbd>+<kbd>S</kbd>) — save once now, so a browser crash halfway through does not cost you everything.</p>
+          <div class="callout tip"><strong>Tip:</strong> Try to name workflows as "verb + object + timing": <code>Daily calendar digest</code>, <code>Hourly RSS fetch</code>, <code>Slack order to Notion</code>. Once you have a lot of them, the name alone tells you what each one does.</div>
         </li>
         <li>
           <h3>Click Add first step and pick Schedule Trigger</h3>
@@ -225,12 +225,12 @@
             <li><strong>Channel</strong>: a resource locator. Switch to <em>From list</em> and pick from the dropdown, or <em>By name</em> and type <code>#daily-me</code>, or <em>By ID</em> and paste <code>C0XXXXXXX</code>. Test against a channel only you can see, or DM yourself (change <em>Send Message To</em> to <em>User</em> and pick yourself). <strong>Do not start with <code>#general</code></strong> — your test messages would go to the whole company.</li>
             <li><strong>Message Text</strong> (some older versions say <em>Text</em>): switch to Expression mode (the small <em>fx</em> to the right of the field) and paste the block below (assuming you followed the tip in the previous step and added an <em>Aggregate</em> node with Fields to Aggregate set to <code>summary</code>):</li>
           </ul>
-          <pre class="code-block"><code>早安！今天有 {{ $json.summary.length }} 個行程：
-{{ $json.summary.join('、') }}</code></pre>
+          <pre class="code-block"><code>Good morning! You have {{ $json.summary.length }} events today:
+{{ $json.summary.join(', ') }}</code></pre>
           <p>That reads as "after Aggregate, <code>summary</code> is already an array, so take its length and join it directly".</p>
           <p>The alternative <strong>without Aggregate</strong> (the Slack node looks at the whole batch of upstream items itself):</p>
-          <pre class="code-block"><code>早安！今天有 {{ $input.all().length }} 個行程：
-{{ $input.all().map(i =&gt; i.json.summary).join('、') }}</code></pre>
+          <pre class="code-block"><code>Good morning! You have {{ $input.all().length }} events today:
+{{ $input.all().map(i =&gt; i.json.summary).join(', ') }}</code></pre>
           <p>The difference: <code>$json.xxx</code> only sees "the current item", while <code>$input.all()</code> gets you every upstream item. <strong>Never write <code>$json.items.map(...)</code></strong> — the Google Calendar node's output has no <code>items</code> field at all. That is the shape of the raw Google API response, and n8n has already flattened it.</p>
           <p>Click <strong>Execute step</strong> for a manual test, then switch to Slack — the message should be waiting there.</p>
         </li>
@@ -255,17 +255,17 @@
         <tbody>
           <tr>
             <td>Bare minimum</td>
-            <td><code>今天 {{ $json.summary.length }} 個行程</code></td>
+            <td><code>{{ $json.summary.length }} events today</code></td>
             <td>You only want the number, not the detail; good on heavy meeting days, so Slack does not get swamped</td>
           </tr>
           <tr>
             <td>Bulleted</td>
-            <td><code>今天行程：\n{{ $json.summary.map((s, i) =&gt; '• ' + s + ' @ ' + $json.start[i].dateTime).join('\n') }}</code></td>
+            <td><code>Today's schedule:\n{{ $json.summary.map((s, i) =&gt; '• ' + s + ' @ ' + $json.start[i].dateTime).join('\n') }}</code></td>
             <td>You want to see exactly when each one is; the everyday workhorse</td>
           </tr>
           <tr>
             <td>Markdown</td>
-            <td><code>*今天行程* :calendar:\n&gt; {{ $json.summary.map((s, i) =&gt; s + ' (' + $json.start[i].dateTime + ')').join('\n&gt; ') }}</code></td>
+            <td><code>*Today's schedule* :calendar:\n&gt; {{ $json.summary.map((s, i) =&gt; s + ' (' + $json.start[i].dateTime + ')').join('\n&gt; ') }}</code></td>
             <td>Formal enough to quote and pass on; it looks more presentable when you share it with colleagues</td>
           </tr>
         </tbody>
@@ -273,9 +273,9 @@
 
       <p>The syntax Slack supports, in short:</p>
       <ul>
-        <li><code>*粗體*</code>, <code>_斜體_</code>, <code>~刪除線~</code></li>
-        <li><code>`行內 code`</code>, <code>```code block```</code></li>
-        <li><code>&gt; 引用</code> (put a <code>&gt;</code> at the start of each line)</li>
+        <li><code>*bold*</code>, <code>_italic_</code>, <code>~strikethrough~</code></li>
+        <li><code>`inline code`</code>, <code>```code block```</code></li>
+        <li><code>&gt; quote</code> (put a <code>&gt;</code> at the start of each line)</li>
         <li>emoji use shortcodes such as <code>:calendar:</code>, <code>:coffee:</code>, <code>:tada:</code> (Slack renders them as images automatically)</li>
         <li>a line break is <code>\n</code> (inside an expression that really is the two characters, backslash and n)</li>
       </ul>
@@ -386,9 +386,9 @@
       <h2 data-icon="done">The pattern this workflow teaches you</h2>
       <p>Strip out the detail and this chapter taught exactly one thing: <strong>Trigger → Action → Action</strong>. Every workflow you meet from here on, however complicated it looks, has the same bones:</p>
 
-      <pre class="code-block"><code>[什麼時候跑]  →  [拿什麼資料]  →  [做什麼事]
+      <pre class="code-block"><code>[When it runs]  →  [What data to fetch]  →  [What to do]
    Trigger          Action 1              Action 2
-                    (可以 0 到很多顆)     (通常最少 1 顆)</code></pre>
+                    (zero to many)     (usually at least one)</code></pre>
 
       <p>The later chapters only expand the middle:</p>
       <ul>
@@ -430,7 +430,7 @@
         </li>
         <li>
           <h3>The message went out but the event title shows <code>undefined</code></h3>
-          <p>The Google Calendar API sometimes returns events with no <code>summary</code> field (an empty all-day event, say, or certain calendar privacy settings). Fix: change the expression to <code>{{ $input.all().map(i =&gt; i.json.summary || '（無標題事件）').join('、') }}</code>, where <code>||</code> supplies a fallback string so you never get undefined. (With Aggregate in place, write <code>{{ $json.summary.map(s =&gt; s || '（無標題事件）').join('、') }}</code>.)</p>
+          <p>The Google Calendar API sometimes returns events with no <code>summary</code> field (an empty all-day event, say, or certain calendar privacy settings). Fix: change the expression to <code>{{ $input.all().map(i =&gt; i.json.summary || '(untitled event)').join(', ') }}</code>, where <code>||</code> supplies a fallback string so you never get undefined. (With Aggregate in place, write <code>{{ $json.summary.map(s =&gt; s || '(untitled event)').join(', ') }}</code>.)</p>
         </li>
       </ol>
 
@@ -500,17 +500,17 @@
     <div class="pager">
       <a class="prev" href="ch7_node_types.html">
         <span class="label">← Previous</span>
-        <span class="title">07 · 三種節點</span>
+        <span class="title">07 · Four node families</span>
       </a>
       <a class="next" href="ch9_item_data_flow.html">
         <span class="label">Next →</span>
-        <span class="title">09 · 資料怎麼流</span>
+        <span class="title">09 · How data flows</span>
       </a>
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

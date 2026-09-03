@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 15 · IF / Switch：條件分支 · Woow n8n 入住指南</title>
-  <meta name="description" content="n8n 條件分支節點：IF（二分）／Switch（多分）、比較運算子、多條件組合、每個分支接不同下游。" />
+  <title>Chapter 15 · IF / Switch: conditional branching · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="Conditional branching in n8n: IF for two branches, Switch for many, comparison operators, combined conditions, and different downstream paths." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch15_if_switch.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 15 · IF / Switch：條件分支 · Woow n8n 入住指南" />
-  <meta property="og:description" content="n8n 條件分支節點：IF（二分）／Switch（多分）、比較運算子、多條件組合、每個分支接不同下游。" />
+  <meta property="og:title" content="Chapter 15 · IF / Switch: conditional branching · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="Conditional branching in n8n: IF for two branches, Switch for many, comparison operators, combined conditions, and different downstream paths." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch15_if_switch.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch15/01_if_workflow.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 15 · IF / Switch：條件分支 · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="n8n 條件分支節點：IF（二分）／Switch（多分）、比較運算子、多條件組合、每個分支接不同下游。" />
+  <meta name="twitter:title" content="Chapter 15 · IF / Switch: conditional branching · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="Conditional branching in n8n: IF for two branches, Switch for many, comparison operators, combined conditions, and different downstream paths." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch15/01_if_workflow.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch15_if_switch.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch15_if_switch.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html" class="active">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html" class="active">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
@@ -83,9 +83,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html">C · Architecture</a>
     </div>
   </aside>
 
@@ -152,7 +152,7 @@
 
     <section id="steps" data-nav="Your first IF">
       <h2 data-icon="steps">Hands-on: add your first IF node</h2>
-      <p>Take a concrete case: <strong>an order over 1,000 goes down the "notify the manager" path, everything else goes to the "daily log" path</strong>. Assume your upstream node (a Webhook, Google Sheets, Airtable) already hands the order down as JSON like <code>{ "amount": 1500, "customer": "台北文具行" }</code>.</p>
+      <p>Take a concrete case: <strong>an order over 1,000 goes down the "notify the manager" path, everything else goes to the "daily log" path</strong>. Assume your upstream node (a Webhook, Google Sheets, Airtable) already hands the order down as JSON like <code>{ "amount": 1500, "customer": "Taipei Stationery Store" }</code>.</p>
 
       <ol class="steps">
         <li>
@@ -283,7 +283,7 @@
         <li>Rule 1: Value 1 <code>{{ $json.tier }}</code>, Operator <code>String equals</code>, Value 2 <code>silver</code> → output 1 goes to "send a discount voucher"</li>
         <li>Rule 2: Value 1 <code>{{ $json.tier }}</code>, Operator <code>String equals</code>, Value 2 <code>bronze</code> → output 2 goes to "send the standard welcome email"</li>
       </ul>
-      <p>Below the rules sits a <strong>Fallback Output</strong> dropdown with three official options: <code>None</code> (the default: an unmatched item is dropped), <code>Extra Output</td>（多開一條 output 專收未對到的 item，最常用）、<code>Output 0</code> (an unmatched item leaves through the same output as the first rule). When you want an "unclassified" path downstream, pick <code>Extra Output</code>.</p>
+      <p>Below the rules sits a <strong>Fallback Output</strong> dropdown with three official options: <code>None</code> (the default: an unmatched item is dropped), <code>Extra Output</td> (an extra output that catches unmatched items — the common choice), <code>Output 0</code> (an unmatched item leaves through the same output as the first rule). When you want an "unclassified" path downstream, pick <code>Extra Output</code>.</p>
       <p>There is also a <strong>Send data to all matching outputs</strong> toggle (off by default): with it off, an item goes down only the <em>first</em> rule it matches; with it on, an item that matches two rules is sent down both — turn it on carefully, because items then get duplicated across branches.</p>
 
       <h3>Mode 2: Expression (advanced)</h3>
@@ -464,7 +464,7 @@
 
       <details class="faq">
         <summary>Can an IF condition read data from two nodes back?</summary>
-        <div class="body">Yes. Use <code>{{ $node['節點名稱'].json.欄位 }}</code> — the cross-node syntax <a href="ch14_expressions.html">Chapter 14</a> taught you. For example: <code>{{ $node['Webhook'].json.body.customer_id }}</code>. Reading another node inside a condition is common (the current node holds the result of a customer lookup, but you want to decide on the original payload the webhook was triggered with). Note that node names are case-sensitive, and spaces inside them have to be kept.</div>
+        <div class="body">Yes. Use <code>{{ $node['Node Name'].json.field }}</code> — the cross-node syntax <a href="ch14_expressions.html">Chapter 14</a> taught you. For example: <code>{{ $node['Webhook'].json.body.customer_id }}</code>. Reading another node inside a condition is common (the current node holds the result of a customer lookup, but you want to decide on the original payload the webhook was triggered with). Note that node names are case-sensitive, and spaces inside them have to be kept.</div>
       </details>
 
       <details class="faq">
@@ -476,17 +476,17 @@
     <div class="pager">
       <a class="prev" href="ch14_expressions.html">
         <span class="label">← Previous</span>
-        <span class="title">14 · Expression</span>
+        <span class="title">14 · Expressions</span>
       </a>
       <a class="next" href="ch16_merge_split.html">
         <span class="label">Next →</span>
-        <span class="title">16 · Merge / Split</span>
+        <span class="title">16 · Merge / split</span>
       </a>
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

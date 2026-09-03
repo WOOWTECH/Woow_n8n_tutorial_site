@@ -1,0 +1,20 @@
+{
+  "file": "skills.html",
+  "entries": [
+    {
+      "unit": "#install",
+      "zh": "<pre class=\"code-block\"><code>{\n  \"mcpServers\": {\n    \"n8n-mcp\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"n8n-mcp\"],\n      \"env\": {\n        \"N8N_URL\": \"https://n8n.woowtech.io\",\n        \"N8N_API_KEY\": \"&lt;你的 API key，在 n8n Settings → API 建立&gt;\"\n      }\n    }\n  }\n}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>{\n  \"mcpServers\": {\n    \"n8n-mcp\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"n8n-mcp\"],\n      \"env\": {\n        \"N8N_URL\": \"https://n8n.woowtech.io\",\n        \"N8N_API_KEY\": \"&lt;your API key, created under n8n Settings → API&gt;\"\n      }\n    }\n  }\n}</code></pre>"
+    },
+    {
+      "unit": "#collections",
+      "zh": "<pre class=\"code-block\"><code># 純索引，照連結裝各原始 npm 套件\nhttps://github.com/restyler/awesome-n8n</code></pre>",
+      "en": "<pre class=\"code-block\"><code># Index only; follow the links to install each original npm package\nhttps://github.com/restyler/awesome-n8n</code></pre>"
+    },
+    {
+      "unit": "#spec",
+      "zh": "<pre class=\"code-block\"><code>n8n-workflow-review/\n└── SKILL.md          ← 唯一必要檔案\n\n# SKILL.md 內容\n---\nname: n8n-workflow-review\ndescription: 使用者傳 n8n workflow JSON 時，做結構檢查——\n  找 dangling connection、缺 credential、明顯效能地雷。\n  也在使用者問「這支 workflow 有問題嗎」「幫我 review」時觸發。\n---\n\n# n8n Workflow Review\n\n（給 agent 看的做法說明，寫得像教新同事）</code></pre>",
+      "en": "<pre class=\"code-block\"><code>n8n-workflow-review/\n└── SKILL.md          ← the only required file\n\n# SKILL.md contents\n---\nname: n8n-workflow-review\ndescription: When a user provides n8n workflow JSON, check its structure—\n  find dangling connections, missing credentials, and clear performance problems.\n  Also trigger when the user asks “Does this workflow have a problem?” or “Review this.”\n---\n\n# n8n Workflow Review\n\n(Instructions for the agent, written as if onboarding a colleague)</code></pre>"
+    }
+  ]
+}

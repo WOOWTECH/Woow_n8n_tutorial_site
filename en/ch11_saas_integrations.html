@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 11 · 熱門 SaaS 整合：Slack、Gmail、Google 表格與 Drive · Woow n8n 入住指南</title>
-  <meta name="description" content="n8n 常用 SaaS 節點速查：Slack 傳訊息、Gmail 寄信、Google Sheets 讀寫、Google Drive 上傳，各家 OAuth 設定重點。" />
+  <title>Chapter 11 · Popular SaaS integrations: Slack, Gmail, Google Sheets and Drive · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="A quick reference for common n8n SaaS nodes: Slack messages, Gmail mail, Google Sheets reads and writes, Google Drive uploads, and key OAuth settings." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch11_saas_integrations.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 11 · 熱門 SaaS 整合：Slack、Gmail、Google 表格與 Drive · Woow n8n 入住指南" />
-  <meta property="og:description" content="n8n 常用 SaaS 節點速查：Slack 傳訊息、Gmail 寄信、Google Sheets 讀寫、Google Drive 上傳，各家 OAuth 設定重點。" />
+  <meta property="og:title" content="Chapter 11 · Popular SaaS integrations: Slack, Gmail, Google Sheets and Drive · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="A quick reference for common n8n SaaS nodes: Slack messages, Gmail mail, Google Sheets reads and writes, Google Drive uploads, and key OAuth settings." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch11_saas_integrations.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch11/01_saas_workflow.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 11 · 熱門 SaaS 整合：Slack、Gmail、Google 表格與 Drive · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="n8n 常用 SaaS 節點速查：Slack 傳訊息、Gmail 寄信、Google Sheets 讀寫、Google Drive 上傳，各家 OAuth 設定重點。" />
+  <meta name="twitter:title" content="Chapter 11 · Popular SaaS integrations: Slack, Gmail, Google Sheets and Drive · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="A quick reference for common n8n SaaS nodes: Slack messages, Gmail mail, Google Sheets reads and writes, Google Drive uploads, and key OAuth settings." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch11/01_saas_workflow.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch11_saas_integrations.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch11_saas_integrations.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html" class="active">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html" class="active">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html">Webhook</a></li>
@@ -83,9 +83,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html">C · Architecture</a>
     </div>
   </aside>
 
@@ -190,10 +190,10 @@
           <tr><th>What you type</th><th>How it renders</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>*重要*</code></td><td><strong>Bold</strong> (Slack uses one asterisk, not two)</td></tr>
-          <tr><td><code>_斜體_</code></td><td><em>Italic</em></td></tr>
-          <tr><td><code>~刪除線~</code></td><td>Strikethrough</td></tr>
-          <tr><td><code>`程式碼`</code></td><td>Inline code style</td></tr>
+          <tr><td><code>*important*</code></td><td><strong>Bold</strong> (Slack uses one asterisk, not two)</td></tr>
+          <tr><td><code>_italic_</code></td><td><em>Italic</em></td></tr>
+          <tr><td><code>~strikethrough~</code></td><td>Strikethrough</td></tr>
+          <tr><td><code>`code`</code></td><td>Inline code style</td></tr>
           <tr><td><code>&lt;@U01ABC2DEF&gt;</code></td><td>@-mention a user (by user ID, not by email)</td></tr>
           <tr><td><code>&lt;#C01XYZ&gt;</code></td><td>Link to a channel</td></tr>
           <tr><td><code>&lt;!channel&gt;</code></td><td>Notify the whole channel (it buzzes everyone's phone, so use it sparingly)</td></tr>
@@ -233,7 +233,7 @@
         <li><strong>Plain text or HTML</strong>: switch with the Email Type dropdown. With HTML you can paste a complete HTML document and design a styled email</li>
         <li><strong>To / CC / BCC / Reply-To</strong>: all four recipient fields take several addresses (comma-separated)</li>
         <li><strong>Attachments</strong>: the Binary Data toggle, with the property name matching the file the node before it produced</li>
-        <li><strong>A Subject built from an expression</strong>: the subject line can be assembled dynamically, for example <code>訂單 #{{ $json.order_id }} 已成立</code> (expression syntax is in <a href="ch14_expressions.html">Chapter 14</a>)</li>
+        <li><strong>A Subject built from an expression</strong>: the subject line can be assembled dynamically, for example <code>Order #{{ $json.order_id }} confirmed</code> (expression syntax is in <a href="ch14_expressions.html">Chapter 14</a>)</li>
       </ul>
 
       <h3>Fetching mail: all of Google's search syntax works here</h3>
@@ -245,7 +245,7 @@
         <tbody>
           <tr><td><code>is:unread</code></td><td>Unread only</td></tr>
           <tr><td><code>from:boss@company.com</code></td><td>Only what your boss sent</td></tr>
-          <tr><td><code>subject:報價</code></td><td>Subject contains "quote"</td></tr>
+          <tr><td><code>subject:quote</code></td><td>Subject contains "quote"</td></tr>
           <tr><td><code>has:attachment</code></td><td>Has an attachment</td></tr>
           <tr><td><code>newer_than:1d</code></td><td>Mail from the last day</td></tr>
           <tr><td><code>from:@customer.com is:unread</code></td><td>Combined: unread mail from a customer domain</td></tr>
@@ -316,7 +316,7 @@
       </ol>
 
       <h3>Update: find a row and change it</h3>
-      <p>The Update operation has one field that decides everything, <strong>Column to Match On</strong>, where you choose which column acts as the key for finding the row. For example: a customer status sheet keyed on Email, with upstream sending <code>{ email: "a@b.com", status: "已付款" }</code>. The Sheets node looks for the row whose Email column is <code>a@b.com</code> and sets its status column to "paid".</p>
+      <p>The Update operation has one field that decides everything, <strong>Column to Match On</strong>, where you choose which column acts as the key for finding the row. For example: a customer status sheet keyed on Email, with upstream sending <code>{ email: "a@b.com", status: "paid" }</code>. The Sheets node looks for the row whose Email column is <code>a@b.com</code> and sets its status column to "paid".</p>
 
       <div class="callout warn"><strong>Warning:</strong> Three classic Sheets-node traps: <strong>(1)</strong> a column name with <em>a leading or trailing space</em> will not be found (to Sheets, "Email " and "Email" are two different columns); <strong>(2)</strong> auto-map can treat the header row as a data row; <strong>(3)</strong> date and time formats drift — set the whole column to "Plain text" on the Sheets side first, and the ISO strings you write will not be converted into the local timezone.</div>
     </section>
@@ -394,7 +394,7 @@
         </li>
         <li>
           <h3>Google Drive Download: fetch the file the customer uploaded</h3>
-          <p>If the form has a file-upload question, that row in the Sheet holds a share link to a Drive file. Add a <strong>Google Drive → File → Download</strong> node and use an expression to pull the file ID out of the URL from the previous step: <code>{{ $json["附件"].split("id=")[1] }}</code>. When this step finishes it emits binary, which the rest of the workflow can use as an attachment.</p>
+          <p>If the form has a file-upload question, that row in the Sheet holds a share link to a Drive file. Add a <strong>Google Drive → File → Download</strong> node and use an expression to pull the file ID out of the URL from the previous step: <code>{{ $json["Attachment"].split("id=")[1] }}</code>. When this step finishes it emits binary, which the rest of the workflow can use as an attachment.</p>
         </li>
         <li>
           <h3>Gmail Send: email the person who filled in the form</h3>
@@ -402,7 +402,7 @@
         </li>
         <li>
           <h3>Slack Message Send: tell the sales channel</h3>
-          <p>Add a <strong>Slack → Message → Send</strong> node. Pick <code>#new-forms</code> as the Channel (or its channel ID), and build the Text with an expression: <code>*有新表單來了！*\n姓名：{{ $('Google Sheets Trigger').item.json["姓名"] }}\nEmail：{{ $('Google Sheets Trigger').item.json["Email"] }}\n主旨：{{ $('Google Sheets Trigger').item.json["諮詢主旨"] }}\n已自動寄出感謝信 :white_check_mark:</code>.</p>
+          <p>Add a <strong>Slack → Message → Send</strong> node. Pick <code>#new-forms</code> as the Channel (or its channel ID), and build the Text with an expression: <code>*New form submission!*\nName: {{ $('Google Sheets Trigger').item.json["Name"] }}\nEmail: {{ $('Google Sheets Trigger').item.json["Email"] }}\nSubject: {{ $('Google Sheets Trigger').item.json["Subject"] }}\nThank-you email sent automatically :white_check_mark:</code>.</p>
         </li>
         <li>
           <h3>Save, then Execute Workflow to test it once</h3>
@@ -421,9 +421,9 @@
       <h2 data-icon="advanced">Using several accounts on the same node</h2>
       <p>On n8n's <strong>Credentials</strong> page (in the left-hand menu) you can create several credentials of the same kind. For example:</p>
       <ul>
-        <li><code>Slack 個人 workspace</code></li>
-        <li><code>Slack 公司 workspace</code></li>
-        <li><code>Slack 客戶 A workspace</code></li>
+        <li><code>Slack personal workspace</code></li>
+        <li><code>Slack company workspace</code></li>
+        <li><code>Slack customer A workspace</code></li>
       </ul>
       <p>The <strong>Credential</strong> dropdown on each Slack node then lets you pick which one it uses. One workflow can even hold two Slack nodes on different workspaces — internal notices going to the company workspace, customer replies going to the customer's workspace, say. Gmail, Sheets and Drive work the same way.</p>
       <p>Managing credentials in full — how to name them, how to share them, how to revoke them — is covered in <a href="ch13_credentials.html">Chapter 13</a>.</p>
@@ -500,7 +500,7 @@
 
       <details class="faq">
         <summary>I have two Slack workspaces, a personal one and the company one. What do I do?</summary>
-        <div class="body">Create two Slack credentials on the Credentials page and name them clearly (for example <code>Slack - 個人</code> and <code>Slack - 公司</code>). Each Slack node then lets you pick which one it uses. One workflow can even hold several Slack nodes on different workspaces — very handy indeed, notifying the customer's Slack and your internal Slack in one go.</div>
+        <div class="body">Create two Slack credentials on the Credentials page and name them clearly (for example <code>Slack - Personal</code> and <code>Slack - Company</code>). Each Slack node then lets you pick which one it uses. One workflow can even hold several Slack nodes on different workspaces — very handy indeed, notifying the customer's Slack and your internal Slack in one go.</div>
       </details>
 
       <details class="faq">
@@ -537,7 +537,7 @@
     <div class="pager">
       <a class="prev" href="ch10_triggers.html">
         <span class="label">← Previous</span>
-        <span class="title">10 · 三種觸發</span>
+        <span class="title">10 · Three triggers</span>
       </a>
       <a class="next" href="ch12_http_request.html">
         <span class="label">Next →</span>
@@ -546,8 +546,8 @@
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>

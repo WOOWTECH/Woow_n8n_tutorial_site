@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 22 · Webhook：讓外部系統打進 n8n · Woow n8n 入住指南</title>
-  <meta name="description" content="n8n Webhook 節點完整教學：Test URL vs Production URL、HTTP 方法、auth、Response 模式、範例：Line Bot / 表單 / HA 自動化打進來。" />
+  <title>Chapter 22 · Webhook: let outside systems call into n8n · Woow n8n Onboarding Guide</title>
+  <meta name="description" content="A complete guide to the n8n Webhook node: Test URL vs Production URL, HTTP methods, authentication, response modes, and LINE bot / form / HA automation examples." />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/en/ch22_webhook.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Woow n8n 入住指南" />
+  <meta property="og:site_name" content="Woow n8n Onboarding Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 22 · Webhook：讓外部系統打進 n8n · Woow n8n 入住指南" />
-  <meta property="og:description" content="n8n Webhook 節點完整教學：Test URL vs Production URL、HTTP 方法、auth、Response 模式、範例：Line Bot / 表單 / HA 自動化打進來。" />
+  <meta property="og:title" content="Chapter 22 · Webhook: let outside systems call into n8n · Woow n8n Onboarding Guide" />
+  <meta property="og:description" content="A complete guide to the n8n Webhook node: Test URL vs Production URL, HTTP methods, authentication, response modes, and LINE bot / form / HA automation examples." />
   <meta property="og:url" content="https://n8n-guide.woowtech.io/en/ch22_webhook.html" />
   <meta property="og:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch22/01_webhook_workflow.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 22 · Webhook：讓外部系統打進 n8n · Woow n8n 入住指南" />
-  <meta name="twitter:description" content="n8n Webhook 節點完整教學：Test URL vs Production URL、HTTP 方法、auth、Response 模式、範例：Line Bot / 表單 / HA 自動化打進來。" />
+  <meta name="twitter:title" content="Chapter 22 · Webhook: let outside systems call into n8n · Woow n8n Onboarding Guide" />
+  <meta name="twitter:description" content="A complete guide to the n8n Webhook node: Test URL vs Production URL, HTTP methods, authentication, response modes, and LINE bot / form / HA automation examples." />
   <meta name="twitter:image" content="https://n8n-guide.woowtech.io/assets/screenshots/ch22/01_webhook_workflow.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -32,38 +32,38 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <a class="brand" href="tutorial.html">n8n 入住指南</a>
-    <div class="brand-sub">把重複工作外包給流程自動化</div>
+    <a class="brand" href="tutorial.html">n8n Onboarding Guide</a>
+    <div class="brand-sub">Hand your repetitive work over to automation</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch22_webhook.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch22_webhook.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">起步認識</li>
-      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">什麼是 n8n</a></li>
-      <li data-i18n="pending"><a href="ch2_login.html">打開 Woow n8n</a></li>
-      <li data-i18n="pending"><a href="ch3_workspace_tour.html">工作區導覽</a></li>
-      <li class="part-label">從別人做好的起步</li>
-      <li data-i18n="pending"><a href="ch4_templates.html">從 Templates 開始</a></li>
-      <li data-i18n="pending"><a href="ch5_import_workflow.html">匯入 workflow JSON</a></li>
-      <li data-i18n="pending"><a href="ch6_modify_workflow.html">改別人的 workflow</a></li>
-      <li class="part-label">動手做第一個</li>
-      <li data-i18n="pending"><a href="ch7_node_types.html">三種節點</a></li>
-      <li data-i18n="pending"><a href="ch8_first_workflow.html">第一個 workflow</a></li>
-      <li data-i18n="pending"><a href="ch9_item_data_flow.html">資料怎麼流</a></li>
-      <li data-i18n="pending"><a href="ch10_triggers.html">三種觸發時機</a></li>
-      <li class="part-label">常用整合</li>
-      <li data-i18n="pending"><a href="ch11_saas_integrations.html">熱門 SaaS 整合</a></li>
-      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request 節點</a></li>
-      <li data-i18n="pending"><a href="ch13_credentials.html">Credentials 管理</a></li>
-      <li data-i18n="pending"><a href="ch14_expressions.html">Expression 入門</a></li>
-      <li class="part-label">流程控制</li>
-      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch 分支</a></li>
-      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / Split</a></li>
-      <li data-i18n="pending"><a href="ch17_error_handling.html">錯誤處理</a></li>
-      <li class="part-label">資料整形與重用</li>
-      <li data-i18n="pending"><a href="ch18_set_function.html">資料整形</a></li>
+      <li class="part-label">Getting oriented</li>
+      <li data-i18n="pending"><a href="ch1_what_is_n8n.html">What n8n is</a></li>
+      <li data-i18n="pending"><a href="ch2_login.html">Open Woow n8n</a></li>
+      <li data-i18n="pending"><a href="ch3_workspace_tour.html">Workspace tour</a></li>
+      <li class="part-label">Start from someone else's work</li>
+      <li data-i18n="pending"><a href="ch4_templates.html">Start with Templates</a></li>
+      <li data-i18n="pending"><a href="ch5_import_workflow.html">Import workflow JSON</a></li>
+      <li data-i18n="pending"><a href="ch6_modify_workflow.html">Edit someone else's workflow</a></li>
+      <li class="part-label">Build your first one</li>
+      <li data-i18n="pending"><a href="ch7_node_types.html">Four node families</a></li>
+      <li data-i18n="pending"><a href="ch8_first_workflow.html">Your first workflow</a></li>
+      <li data-i18n="pending"><a href="ch9_item_data_flow.html">How data flows</a></li>
+      <li data-i18n="pending"><a href="ch10_triggers.html">Three trigger types</a></li>
+      <li class="part-label">Everyday integrations</li>
+      <li data-i18n="pending"><a href="ch11_saas_integrations.html">Popular SaaS integrations</a></li>
+      <li data-i18n="pending"><a href="ch12_http_request.html">HTTP Request node</a></li>
+      <li data-i18n="pending"><a href="ch13_credentials.html">Manage credentials</a></li>
+      <li data-i18n="pending"><a href="ch14_expressions.html">Expression basics</a></li>
+      <li class="part-label">Flow control</li>
+      <li data-i18n="pending"><a href="ch15_if_switch.html">IF / Switch branches</a></li>
+      <li data-i18n="pending"><a href="ch16_merge_split.html">Merge / split</a></li>
+      <li data-i18n="pending"><a href="ch17_error_handling.html">Error handling</a></li>
+      <li class="part-label">Reshaping and reusing data</li>
+      <li data-i18n="pending"><a href="ch18_set_function.html">Shape data</a></li>
       <li data-i18n="pending"><a href="ch19_subworkflow.html">Sub-workflow</a></li>
-      <li class="part-label">拔高進階</li>
+      <li class="part-label">Going further</li>
       <li data-i18n="pending"><a href="ch20_code_node.html">Code node</a></li>
       <li data-i18n="pending"><a href="ch21_ai_agent.html">AI Agent</a></li>
       <li data-i18n="pending"><a href="ch22_webhook.html" class="active">Webhook</a></li>
@@ -85,9 +85,9 @@
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
-      <a href="appendix_settings_ref.html">A · 設定速查</a>
-      <a href="appendix_errors.html">B · 常見錯誤排錯</a>
-      <a href="appendix_internals.html">C · 底層架構</a>
+      <a href="appendix_settings_ref.html">A · Settings reference</a>
+      <a href="appendix_errors.html">B · Error troubleshooting</a>
+      <a href="appendix_internals.html">C · Architecture</a>
     </div>
   </aside>
 
@@ -191,7 +191,7 @@ Production URL: https://n8n.woowtech.io/webhook/form-contact</code></pre>
           <p>Press <strong>Listen for test event</strong> at the top right of the Webhook node — the node goes into waiting mode (it ends by itself after the first event, and in practice it stops after about two minutes if no event arrives). Open a terminal and use <code>curl</code> to send fake data to the Test URL:</p>
           <pre class="code-block"><code>curl -X POST https://n8n.woowtech.io/webhook-test/form-contact \
   -H "Content-Type: application/json" \
-  -d '{"name":"王小明","email":"ming@example.com","message":"想詢問報價"}'</code></pre>
+  -d '{"name":"Wang Xiaoming","email":"ming@example.com","message":"I would like a quote"}'</code></pre>
           <p>Back on the n8n canvas, the Webhook node turns green and the output panel on the right shows the JSON you just sent. <strong>Once you see the data arrive, this step is done</strong>.</p>
         </li>
         <li>
@@ -221,7 +221,7 @@ received_at   →  {{ $now.toISO() }}</code></pre>
           <p>Back in the terminal, call the Production URL instead (replace <code>/webhook-test/</code> with <code>/webhook/</code>):</p>
           <pre class="code-block"><code>curl -X POST https://n8n.woowtech.io/webhook/form-contact \
   -H "Content-Type: application/json" \
-  -d '{"name":"李小華","email":"hua@example.com","message":"正式送出"}'</code></pre>
+  -d '{"name":"Li Xiaohua","email":"hua@example.com","message":"Live submission"}'</code></pre>
           <p>Another row appears in the Sheet — this URL is now ready to hand to an outside frontend engineer or a customer. For the history, go to the <em>Executions</em> tab in the sidebar.</p>
         </li>
       </ol>
@@ -427,9 +427,9 @@ received_at   →  {{ $now.toISO() }}</code></pre>
         <li>
           <h3>Add the LINE bot as a friend on your phone and send it a message</h3>
           <p>Scan the QR code shown in the LINE Console with your phone to add the Official Account as a friend, and send it a "hello". Back on the n8n canvas, the Webhook node turns green and the output shows LINE's payload. Find the path to the message text; it is usually:</p>
-          <pre class="code-block"><code>{{ $json.body.events[0].message.text }}      →  使用者輸入的文字
-{{ $json.body.events[0].replyToken }}        →  回覆這則要用的 token
-{{ $json.body.events[0].source.userId }}     →  使用者 ID</code></pre>
+          <pre class="code-block"><code>{{ $json.body.events[0].message.text }}      →  the text the user typed
+{{ $json.body.events[0].replyToken }}        →  the token you reply with
+{{ $json.body.events[0].source.userId }}     →  the user's ID</code></pre>
         </li>
         <li>
           <h3>Add an AI Agent node to produce the reply</h3>
@@ -437,7 +437,7 @@ received_at   →  {{ $now.toISO() }}</code></pre>
         </li>
         <li>
           <h3>Add an HTTP Request node to call the LINE Reply API</h3>
-          <p>Add <strong>HTTP Request</strong>: Method = POST, URL = <code>https://api.line.me/v2/bot/message/reply</code>, Authentication set to Header Auth, carrying <code>Authorization: Bearer &lt;你的 Channel Access Token&gt;</code>. Use JSON for the body:</p>
+          <p>Add <strong>HTTP Request</strong>: Method = POST, URL = <code>https://api.line.me/v2/bot/message/reply</code>, Authentication set to Header Auth, carrying <code>Authorization: Bearer &lt;your-channel-access-token&gt;</code>. Use JSON for the body:</p>
           <pre class="code-block"><code>{
   "replyToken": "{{ $('Webhook').item.json.body.events[0].replyToken }}",
   "messages": [
@@ -557,13 +557,13 @@ received_at   →  {{ $now.toISO() }}</code></pre>
       </a>
       <a class="next" href="appendix_settings_ref.html">
         <span class="label">Appendix A →</span>
-        <span class="title">附錄 A · 設定速查</span>
+        <span class="title">Appendix A · Settings reference</span>
       </a>
     </div>
 
     <footer class="site-footer">
-      <p>Woow n8n 入住指南 is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Woow n8n Onboarding Guide is produced by <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are taken from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation. This site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_n8n_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer>
   </main>
 </div>
