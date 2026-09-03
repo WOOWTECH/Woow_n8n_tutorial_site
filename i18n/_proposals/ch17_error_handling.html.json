@@ -1,0 +1,10 @@
+{
+  "file": "ch17_error_handling.html",
+  "entries": [
+    {
+      "unit": "#steps",
+      "zh": "<pre class=\"code-block\"><code>⚠️ Workflow 錯誤通知\nWorkflow: {{ $json.workflow.name }}\n掛在節點: {{ $json.execution.lastNodeExecuted }}\n錯誤訊息: {{ $json.execution.error.message }}\n時間: {{ $json.execution.startedAt }}\n點這裡看: {{ $json.execution.url }}</code></pre>",
+      "en": "<pre class=\"code-block\"><code>⚠️ Workflow failure\nWorkflow: {{ $json.workflow.name }}\nFailed at node: {{ $json.execution.lastNodeExecuted }}\nError message: {{ $json.execution.error.message }}\nTime: {{ $json.execution.startedAt }}\nOpen it here: {{ $json.execution.url }}</code></pre>"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "file": "ch16_merge_split.html",
+  "entries": [
+    {
+      "unit": "#split_batches",
+      "zh": "<pre class=\"code-block\"><code>Google Sheets (500 items)\n  ↓\nLoop Over Items (Batch Size = 5)\n  ├─ loop → Airtable Create → Wait 1 second ──┐\n  │                                            │\n  │←──────────── 回接 Loop Over Items 節點 ────┘\n  │\n  └─ done → Slack \"500 筆處理完了\"</code></pre>",
+      "en": "<pre class=\"code-block\"><code>Google Sheets (500 items)\n  ↓\nLoop Over Items (Batch Size = 5)\n  ├─ loop → Airtable Create → Wait 1 second ──┐\n  │                                            │\n  │←─────── back to the Loop Over Items node ──┘\n  │\n  └─ done → Slack \"500 records processed\"</code></pre>"
+    },
+    {
+      "unit": "#example_sheet_slack",
+      "zh": "<pre class=\"code-block\"><code>{{ $json.name }} 的月結單提醒，到期日 {{ $json.due_date }}，請盡快處理。</code></pre>",
+      "en": "<pre class=\"code-block\"><code>Statement reminder for {{ $json.name }}. Due {{ $json.due_date }} — please take care of it.</code></pre>"
+    },
+    {
+      "unit": "#example_api_split",
+      "zh": "<code>歡迎 {{ $json.name }}（{{ $json.email }}）</code>",
+      "en": "<code>Welcome {{ $json.name }} ({{ $json.email }})</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>{{ $json.names.filter(n =&gt; n.startsWith('王')) }}</code>",
+      "en": "<code>{{ $json.names.filter(n =&gt; n.startsWith('W')) }}</code>"
+    }
+  ]
+}

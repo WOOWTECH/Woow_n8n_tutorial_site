@@ -70,18 +70,18 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼需要整形</a>
-      <a href="#concept">Set 節點在做什麼</a>
-      <a href="#modes">兩種模式</a>
-      <a href="#steps">加一個 full_name 欄位</a>
-      <a href="#tips">常見用途速查</a>
-      <a href="#warning">Include Other Input Fields 這 toggle</a>
-      <a href="#advanced">JSON 模式</a>
-      <a href="#records">實例：API 回應整成 Sheet 一列</a>
+      <a href="#why">Why this matters</a>
+      <a href="#concept">What Set does</a>
+      <a href="#modes">Two modes</a>
+      <a href="#steps">Add full_name</a>
+      <a href="#tips">Common uses</a>
+      <a href="#warning">The Include toggle</a>
+      <a href="#advanced">JSON mode</a>
+      <a href="#records">Example · sheet row</a>
       <a href="#compare">Set vs Function vs Code</a>
-      <a href="#pro_tips">進階小技巧</a>
-      <a href="#troubleshoot">常見卡關</a>
-      <a href="#faq">常見問題</a>
+      <a href="#pro_tips">Advanced tricks</a>
+      <a href="#troubleshoot">Common pitfalls</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -95,190 +95,190 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch18_set_function.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 18</div>
-      <h1>Set / Edit Fields：資料整形不寫程式</h1>
-      <p class="lead">上一個節點吐一大包 JSON，可是下一個節點只需要其中幾個欄位、或者要合併、要改名、要加預設值——這種「換一下形狀」的事，不用寫程式。<strong>Set 節點</strong>（新版介面叫 <strong>Edit Fields</strong>）就是專門做這件事的視覺化工具。這章把它玩透，你的 workflow 會少寫一大堆 Code。</p>
+      <h1>Set / Edit Fields: shape data without writing code</h1>
+      <p class="lead">The previous node hands you a big blob of JSON, but the next node only needs a few of its fields — or wants them combined, renamed, or given a default. Changing the shape like that takes no code at all. The <strong>Set node</strong> (called <strong>Edit Fields</strong> in the newer interface) is the visual tool built for exactly this job. Learn it properly and your workflows will need far less Code.</p>
     </div>
 
-    <section id="why" data-nav="為什麼需要整形">
-      <h2 data-icon="why">為什麼需要「資料整形」這一步</h2>
-      <p>你在 <a href="ch9_item_data_flow.html">第 9 章</a>學過 items 是 n8n 的基本流動單位，每個 item 都是一包 JSON。在 <a href="ch11_saas_integrations.html">第 11 章</a>串 SaaS 節點時，你八成已經碰到這個場景：</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why you need a data-shaping step</h2>
+      <p><a href="ch9_item_data_flow.html">Chapter 9</a> taught you that items are the basic unit that flows through n8n, and that every item is a blob of JSON. Wiring up SaaS nodes in <a href="ch11_saas_integrations.html">Chapter 11</a>, you have almost certainly hit this:</p>
       <ul>
-        <li>HTTP Request 節點吐回來：<code>{ firstName: "小明", lastName: "王", email: "a@b.com", age: 28, avatar_url: "...", ... }</code></li>
-        <li>可是下一個 Google Sheets 節點只要三個欄位：<code>{ 姓名: "王小明", 信箱: "a@b.com", 年齡: 28 }</code></li>
+        <li>The HTTP Request node hands back: <code>{ firstName: "小明", lastName: "王", email: "a@b.com", age: 28, avatar_url: "...", ... }</code></li>
+        <li>But the next node, Google Sheets, only needs three fields: <code>{ 姓名: "王小明", 信箱: "a@b.com", 年齡: 28 }</code></li>
       </ul>
-      <p>你不會想在 Sheets 節點裡寫十行 expression 硬拼，也不想動不動就開 Code 節點寫 JavaScript。<strong>你要的是一個「中間站」，把上游的 JSON 洗成下游想要的樣子</strong>——這就是 Set 節點。它不打 API、不觸發、不對外做任何事，純粹就是「把 JSON 換一個形狀」再吐出去。</p>
-      <div class="callout"><strong>觀念：</strong>Set 節點的定位是 workflow 裡的「梳妝台」——上游資料進來，梳一梳、化個妝、換個衣服，再送到下游。全部工作僅限於改 JSON 結構，不會產生副作用。</div>
+      <p>You do not want to hand-assemble ten lines of expression inside the Sheets node, and you do not want to open a Code node and write JavaScript every time either. <strong>What you want is a waypoint that washes the upstream JSON into the shape the downstream node expects</strong> — and that is the Set node. It calls no API, triggers nothing, does nothing to the outside world; it purely gives the JSON a new shape and passes it on.</p>
+      <div class="callout"><strong>Concept:</strong> The Set node is the dressing table of a workflow — upstream data comes in, gets combed, made up and changed into fresh clothes, then goes on downstream. Everything it does is limited to changing the JSON structure, so it never causes a side effect.</div>
     </section>
 
-    <section id="concept" data-nav="Set 節點在做什麼">
-      <h2 data-icon="concept">Set 節點到底在做什麼</h2>
-      <p>把 Set 節點想成一台加工機。它的流程就三步：</p>
+    <section id="concept" data-nav="What Set does">
+      <h2 data-icon="concept">What the Set node actually does</h2>
+      <p>Think of the Set node as a small processing machine. It works in three steps:</p>
       <ol class="steps">
         <li>
-          <h3>讀 input items</h3>
-          <p>它會拿到上一個節點吐出來的所有 items（一包或多包 JSON）。跟其他節點一樣，n8n 會自動幫你對每一筆 item 執行一次。</p>
+          <h3>Read the input items</h3>
+          <p>It receives every item the previous node produced (one blob of JSON, or many). As with any other node, n8n runs it once for each item automatically.</p>
         </li>
         <li>
-          <h3>依照你的設定重新組裝 JSON</h3>
-          <p>你在 Set 節點裡設「要留哪些欄位、要加哪些欄位、要改哪些欄位」，它照你的規則重新組出新的 JSON。</p>
+          <h3>Reassemble the JSON from your settings</h3>
+          <p>In the Set node you say which fields to keep, which to add and which to change, and it builds a new JSON from your rules.</p>
         </li>
         <li>
-          <h3>吐 output items</h3>
-          <p>整形好的 items 送給下一個節點。原本的 input 不受影響——Set 節點是「產出新版本」，不是「就地改 input」。</p>
+          <h3>Emit the output items</h3>
+          <p>The reshaped items go to the next node. The original input is untouched — the Set node produces a new version, it does not edit the input in place.</p>
         </li>
       </ol>
-      <p>就這樣。沒 API call、沒 webhook、沒 side effect。它是 n8n 裡最快、最安全的節點之一，執行時間通常在毫秒等級。</p>
-      <div class="callout tip"><strong>提示：</strong>「Set」是 n8n 舊介面用的名字（含意：<em>set the value of a field</em>），新版介面把它改名叫 <strong>Edit Fields (Set)</strong>——意圖更白話。兩個是同一個節點，功能完全一樣，找節點時搜「set」或「edit fields」都找得到。</p>
+      <p>That is all it does. No API call, no webhook, no side effect. It is one of the fastest and safest nodes in n8n, and it usually runs in milliseconds.</p>
+      <div class="callout tip"><strong>Tip:</strong> "Set" is the name the old n8n interface used (the sense being <em>set the value of a field</em>); the newer interface renamed it <strong>Edit Fields (Set)</strong>, which says what it does in plainer words. They are the same node with exactly the same behavior — searching for "set" or "edit fields" finds it either way.</p>
       </div>
     </section>
 
-    <section id="modes" data-nav="兩種模式">
-      <h2 data-icon="modes">兩個工作模式：Manual Mapping vs JSON</h2>
-      <p>Set 節點打開後，最上面有個 <strong>Mode</strong> 下拉，只有兩個選項：</p>
+    <section id="modes" data-nav="Two modes">
+      <h2 data-icon="modes">Two working modes: Manual Mapping vs JSON</h2>
+      <p>Open the Set node and there is a <strong>Mode</strong> dropdown at the top with just two options:</p>
       <table class="data-table">
         <thead>
-          <tr><th>模式</th><th>怎麼設</th><th>什麼時候用</th></tr>
+          <tr><th>Mode</th><th>How to set it</th><th>When to use it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Manual Mapping</strong>（預設）</td>
-            <td>一欄一欄按 Add Field 加：<em>Name</em>（新欄位叫什麼）+ <em>Type</em>（String / Number / Boolean / Array / Object）+ <em>Value</em>（用 expression 或固定值）</td>
-            <td>90% 的情況。加幾個欄位、改幾個欄位名、給幾個預設值——手動介面看得最清楚</td>
+            <td><strong>Manual Mapping</strong> (the default)</td>
+            <td>Add one field at a time with Add Field: <em>Name</em> (what the new field is called) + <em>Type</em> (String / Number / Boolean / Array / Object) + <em>Value</em> (an expression or a fixed value)</td>
+            <td>90% of cases. Adding a few fields, renaming a few, filling in a few defaults — the manual interface shows you the most</td>
           </tr>
           <tr>
             <td><strong>JSON</strong></td>
-            <td>直接貼一整段 JSON template，裡面用 <code>{{ }}</code> 插 expression 動態填值</td>
-            <td>要重新規劃 JSON 結構（例：把扁平資料變成巢狀）、或者你已經有一段 JSON 範本要照抄</td>
+            <td>Paste a whole JSON template and fill values in dynamically with <code>{{ }}</code> expressions inside it</td>
+            <td>You have to restructure the JSON (turning flat data into nested data, say), or you already have a JSON template to copy</td>
           </tr>
         </tbody>
       </table>
-      <p>兩個模式做的事情本質是一樣的——「產出一段新的 JSON」。差別只在你用視覺化介面設，還是自己貼 JSON 文字。新手一律從 Manual Mapping 開始，遇到需要巢狀結構時才切 JSON。</p>
-      <div class="callout warn"><strong>注意：</strong>兩個模式不能混用。切模式時你已經設好的內容不會自動轉換——切過去以後要重新設。所以一開始就想清楚要用哪個模式，比較不會白工。</div>
+      <p>Both modes do the same thing underneath — produce a new piece of JSON. The only difference is whether you set it up in a visual interface or paste the JSON text yourself. If you are new, always start with Manual Mapping and only switch to JSON when you need a nested structure.</p>
+      <div class="callout warn"><strong>Warning:</strong> The two modes cannot be mixed. Switching modes does not convert what you already set up — you have to set it again on the other side. Decide which mode you want at the start and you will not waste the work.</div>
     </section>
 
-    <section id="steps" data-nav="加一個 full_name 欄位">
-      <h2 data-icon="steps">動手做：把 firstName + lastName 合成 full_name</h2>
-      <p>這是最典型的 Set 節點用途。假設上游節點吐出：</p>
+    <section id="steps" data-nav="Add full_name">
+      <h2 data-icon="steps">Hands-on: combine firstName and lastName into full_name</h2>
+      <p>This is the most typical thing a Set node is used for. Say the upstream node produces:</p>
       <pre class="code-block"><code>{
   "firstName": "小明",
   "lastName": "王",
   "email": "xiaoming@example.com",
   "age": 28
 }</code></pre>
-      <p>你想在後面多一個欄位叫 <code>full_name</code>，值是 <code>王小明</code>（台灣人姓在前）。跟著做：</p>
+      <p>You want one more field after that called <code>full_name</code>, with the value <code>王小明</code> (Taiwanese names put the surname first). Follow along:</p>
       <ol class="steps">
         <li>
-          <h3>加一個 Edit Fields 節點</h3>
-          <p>在畫布上按 <kbd>+</kbd> 加節點，搜 <code>edit fields</code> 或 <code>set</code>，選 <strong>Edit Fields (Set)</strong>。把它接在會吐出上面那包 JSON 的節點後面。</p>
+          <h3>Add an Edit Fields node</h3>
+          <p>On the canvas press <kbd>+</kbd> to add a node, search for <code>edit fields</code> or <code>set</code>, and pick <strong>Edit Fields (Set)</strong>. Wire it after the node that produces the JSON above.</p>
         </li>
         <li>
-          <h3>Mode 保持 Manual Mapping</h3>
-          <p>預設就是 Manual Mapping，不用動。</p>
+          <h3>Leave Mode on Manual Mapping</h3>
+          <p>Manual Mapping is the default, so there is nothing to change.</p>
         </li>
         <li>
-          <h3>Fields to Set 按 Add Field</h3>
-          <p>下方會出現一組空白的欄位設定卡。Type 選 <strong>String</strong>（因為 full_name 是字串）。</p>
+          <h3>Click Add Field under Fields to Set</h3>
+          <p>A blank field card appears below. Set Type to <strong>String</strong>, because full_name is a string.</p>
         </li>
         <li>
-          <h3>Name 填 <code>full_name</code></h3>
-          <p>這是新欄位的名字，會出現在下游看到的 JSON 裡。</p>
+          <h3>Put <code>full_name</code> in Name</h3>
+          <p>This is the new field's name, and it is what shows up in the JSON downstream nodes see.</p>
         </li>
         <li>
-          <h3>Value 填 expression <code>{{ $json.lastName }}{{ $json.firstName }}</code></h3>
-          <p>Value 欄位右上角有個 <strong>Expression</strong> 切換鈕，切到 Expression 模式後貼上這串。Expression 語法看 <a href="ch14_expressions.html">第 14 章</a>——<code>$json</code> 就是「當前這一筆 item 的 JSON」。</p>
+          <h3>Put the expression <code>{{ $json.lastName }}{{ $json.firstName }}</code> in Value</h3>
+          <p>There is an <strong>Expression</strong> toggle at the top right of the Value field; switch to Expression mode and paste that in. For expression syntax see <a href="ch14_expressions.html">Chapter 14</a> — <code>$json</code> means the JSON of the item being processed right now.</p>
         </li>
         <li>
-          <h3>Include Other Input Fields 打勾</h3>
-          <p>節點下面有一個很重要的 toggle：<strong>Include Other Input Fields</strong>（v1 UI 實際字樣，官方 docs 頁還寫舊字 <em>Keep Only Set Fields</em>，邏輯是反的）。打勾＝保留原本的所有欄位、再加上你設的 full_name。不打勾＝只留你設的欄位（其他丟掉）。這裡打勾。</p>
+          <h3>Tick Include Other Input Fields</h3>
+          <p>There is an important toggle further down the node: <strong>Include Other Input Fields</strong> (the wording the v1 UI actually uses; the official docs page still says the old <em>Keep Only Set Fields</em>, whose logic is the other way round). Ticked = keep every original field and add the full_name you set. Unticked = keep only the fields you set and throw the rest away. Tick it here.</p>
         </li>
         <li>
-          <h3>Execute Node 看結果</h3>
-          <p>按節點右上的 <strong>Execute Node</strong>。Output 面板應該吐出：<code>{ firstName: "小明", lastName: "王", email: "...", age: 28, full_name: "王小明" }</code>——原本的欄位全在，多了一個 full_name。任務達成。</p>
+          <h3>Run Execute Node and look at the result</h3>
+          <p>Press <strong>Execute Node</strong> at the top right of the node. The Output panel should produce: <code>{ firstName: "小明", lastName: "王", email: "...", age: 28, full_name: "王小明" }</code> — every original field is still there, plus a full_name. Job done.</p>
         </li>
       </ol>
-      <div class="callout tip"><strong>提示：</strong>Expression 欄位有藍色小燈泡，點開會列出上游所有可用欄位。不用背路徑，直接在燈泡列表裡點欄位名，n8n 會自動幫你插入正確的 <code>{{ $json.xxx }}</code>。</div>
+      <div class="callout tip"><strong>Tip:</strong> The Expression field has a small blue light bulb; open it and every field available upstream is listed. You do not have to memorize paths — click a field name in that list and n8n inserts the right <code>{{ $json.xxx }}</code> for you.</div>
     </section>
 
-    <section id="tips" data-nav="常見用途速查">
-      <h2 data-icon="tips">五種最常見的 Set 用法速查</h2>
-      <p>把這五招學會，Set 節點的日常應用九成都涵蓋了。</p>
+    <section id="tips" data-nav="Common uses">
+      <h2 data-icon="tips">The five most common Set uses, at a glance</h2>
+      <p>Learn these five and you have covered nine tenths of everyday Set node work.</p>
       <table class="data-table">
         <thead>
-          <tr><th>要做什麼</th><th>設定方式</th><th>Value 範例</th></tr>
+          <tr><th>What you want to do</th><th>How to set it</th><th>Example value</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>加一個新欄位</strong>（時間戳、狀態標記）</td>
-            <td>Add Field，Name 填新欄位名，Value 用 expression 產值</td>
-            <td><code>{{ $now }}</code> 產當前時間；<code>已處理</code> 純字串</td>
+            <td><strong>Add a new field</strong> (a timestamp, a status flag)</td>
+            <td>Add Field, put the new field name in Name, produce the value with an expression</td>
+            <td><code>{{ $now }}</code> for the current time; <code>已處理</code> as a plain string</td>
           </tr>
           <tr>
-            <td><strong>改欄位名</strong>（rename）</td>
-            <td>Add Field 新名字、Value 用 <code>{{ $json.舊欄位 }}</code> 引舊值；再把 Include Other Input Fields <em>關掉</em> 或明列所有要留的欄位</td>
+            <td><strong>Rename a field</strong> (rename)</td>
+            <td>Add Field with the new name, pull the old value with <code>{{ $json.舊欄位 }}</code>; then turn Include Other Input Fields <em>off</em>, or list every field you want to keep</td>
             <td>Name = <code>customer_email</code>, Value = <code>{{ $json.email }}</code></td>
           </tr>
           <tr>
-            <td><strong>給預設值</strong>（欄位缺就填）</td>
-            <td>Value 用三元運算子判斷有沒有值</td>
+            <td><strong>Fill in a default</strong> (when the field is missing)</td>
+            <td>Use a ternary operator in Value to test whether there is a value</td>
             <td><code>{{ $json.phone || '未提供' }}</code></td>
           </tr>
           <tr>
-            <td><strong>型別轉換</strong>（字串轉數字之類）</td>
-            <td>用 JavaScript 內建函式包一下</td>
-            <td><code>{{ Number($json.amount) }}</code>、<code>{{ String($json.id) }}</code>、<code>{{ Boolean($json.is_vip) }}</code></td>
+            <td><strong>Convert a type</strong> (string to number and the like)</td>
+            <td>Wrap it in a built-in JavaScript function</td>
+            <td><code>{{ Number($json.amount) }}</code>, <code>{{ String($json.id) }}</code>, <code>{{ Boolean($json.is_vip) }}</code></td>
           </tr>
           <tr>
-            <td><strong>條件填值</strong>（依上游值決定填什麼）</td>
-            <td>用三元運算子（<code>條件 ? A : B</code>）</td>
+            <td><strong>Fill a value conditionally</strong> (what goes in depends on the upstream value)</td>
+            <td>Use a ternary operator (<code>條件 ? A : B</code>)</td>
             <td><code>{{ $json.amount &gt; 1000 ? 'VIP' : '一般' }}</code></td>
           </tr>
         </tbody>
       </table>
-      <p>這五招都是 Manual Mapping 模式做得到的——不用開 Code 節點，不用寫函式。expression 裡能用的 JavaScript 內建函式（<code>Number</code>、<code>String</code>、<code>Boolean</code>、<code>Math.round</code>、<code>Date</code>、字串的 <code>.toUpperCase()</code>、<code>.trim()</code>、<code>.split()</code> 等）大多都能直接寫。</p>
-      <div class="callout tip"><strong>提示：</strong>Value 欄位除了打 expression，還可以拖曳——把左邊 input 面板的欄位直接拖到 Value 輸入框裡，n8n 會自動幫你貼上 <code>{{ $json.xxx }}</code>。新手用這招最省事。</div>
+      <p>All five are within reach of Manual Mapping mode — no Code node, no functions to write. Most of the built-in JavaScript functions available in an expression (<code>Number</code>, <code>String</code>, <code>Boolean</code>, <code>Math.round</code>, <code>Date</code>, and string methods such as <code>.toUpperCase()</code>, <code>.trim()</code> and <code>.split()</code>) can be written directly.</p>
+      <div class="callout tip"><strong>Tip:</strong> Besides typing an expression, you can drag into the Value field — drag a field from the input panel on the left straight into the Value box and n8n pastes in the right <code>{{ $json.xxx }}</code> for you. That is the least effort when you are new.</div>
     </section>
 
-    <section id="warning" data-nav="Include Other Input Fields 這 toggle">
-      <h2 data-icon="warning">Include Other Input Fields：新手最常踩雷的 toggle</h2>
-      <p>這個 toggle 是 Set 節點最容易搞混的地方，值得單獨拎出來講。</p>
+    <section id="warning" data-nav="The Include toggle">
+      <h2 data-icon="warning">Include Other Input Fields: the toggle beginners trip over</h2>
+      <p>This toggle is the easiest part of the Set node to get confused about, so it is worth a section of its own.</p>
       <table class="data-table">
         <thead>
-          <tr><th>Toggle 狀態</th><th>行為</th><th>Output 會有什麼</th></tr>
+          <tr><th>Toggle state</th><th>Behavior</th><th>What ends up in the output</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Include Other Input Fields 打勾</strong></td>
-            <td>保留 input 原本所有欄位，你設的 fields 會覆蓋（同名）或加上（新名）</td>
-            <td>原本 5 個欄位 + 你新加的 2 個 = 7 個欄位</td>
+            <td><strong>Include Other Input Fields ticked</strong></td>
+            <td>Keeps every field the input had; the fields you set overwrite (same name) or are added (new name)</td>
+            <td>The original 5 fields + the 2 you added = 7 fields</td>
           </tr>
           <tr>
-            <td><strong>Include Other Input Fields 關掉</strong></td>
-            <td>只留你在 Fields to Set 裡明列的欄位，其他全丟掉</td>
-            <td>你設 2 個欄位 = 只有 2 個欄位</td>
+            <td><strong>Include Other Input Fields off</strong></td>
+            <td>Keeps only the fields you listed under Fields to Set and throws the rest away</td>
+            <td>You set 2 fields = only 2 fields</td>
           </tr>
         </tbody>
       </table>
-      <p><strong>什麼時候用什麼？</strong></p>
+      <p><strong>Which one when?</strong></p>
       <ul>
-        <li><strong>加欄位、改欄位</strong>但想保留其他 → <em>打勾</em>。這是最常見的用法。</li>
-        <li><strong>大清洗</strong>——只想留三個欄位丟給下游 → <em>關掉</em>，然後在 Fields to Set 明列你要的三個欄位。</li>
-        <li><strong>安全考量</strong>——上游 API 回應裡有敏感欄位（token、password_hash），不想帶到下游 → <em>關掉</em>，只挑安全的欄位放行。</li>
+        <li><strong>Adding or changing fields</strong> while keeping the rest → <em>tick it</em>. This is the common case.</li>
+        <li><strong>A big clean-out</strong> — you only want three fields to go downstream → <em>turn it off</em>, then list those three fields under Fields to Set.</li>
+        <li><strong>Security</strong> — the upstream API response holds sensitive fields (token, password_hash) you do not want carried downstream → <em>turn it off</em> and let through only the safe ones.</li>
       </ul>
-      <div class="callout warn"><strong>注意：</strong>如果你關掉這個 toggle 但忘了在 Fields to Set 裡加 <code>email</code>，那你的下游節點就永遠拿不到 email——這是新手最常見的「欄位不見」bug。輸出面板看到欄位少了，第一個先檢查這個 toggle。另外一個常見誤解：這個 toggle 只保留「當前 input item」的欄位；如果你想引用<em>更早前</em>幾個節點的 payload，還是要用 <code>{{ $('節點名').item.json.xxx }}</code>（見 FAQ 最後一題）。</div>
-      <p>舊版介面這個 toggle 叫 <strong>Keep Only Set Fields</strong>（保留邏輯剛好相反：打勾＝只留 set 的），v1 之後改叫 <strong>Include Other Input Fields</strong>（打勾＝保留其他），語意直覺很多。注意 n8n 官方 docs 頁到今天仍寫舊字 Keep Only Set Fields，跟你在 UI 看到的字對不起來很正常；以 UI 字樣為準。</p>
+      <div class="callout warn"><strong>Warning:</strong> If you turn this toggle off but forget to add <code>email</code> under Fields to Set, your downstream nodes will never get an email — this is the "my field disappeared" bug beginners hit most. When a field is missing from the output panel, check this toggle first. One more common misreading: the toggle only keeps the fields of the current input item; to reference the payload of a node <em>several steps earlier</em>, you still need <code>{{ $('節點名').item.json.xxx }}</code> (see the last FAQ entry).</div>
+      <p>In the old interface this toggle was called <strong>Keep Only Set Fields</strong>, and the logic was exactly reversed: ticked = keep only what you set. From v1 it is <strong>Include Other Input Fields</strong> (ticked = keep the others), which reads far more naturally. Note that the official n8n docs page still says Keep Only Set Fields to this day, so it not matching the wording you see in the UI is entirely normal; go by the UI.</p>
     </section>
 
-    <section id="advanced" data-nav="JSON 模式">
-      <h2 data-icon="advanced">JSON 模式：重新規劃結構的利器</h2>
-      <p>當你要做的不只是加幾個欄位，而是要<strong>把整個 JSON 結構重新設計</strong>——例如把扁平的欄位收成巢狀物件，Manual Mapping 就顯得笨重。這時 JSON 模式登場。</p>
-      <p><strong>情境</strong>：上游吐扁平 JSON，你要送到某個 API，那 API 要求的 payload 是巢狀結構。假設上游是：</p>
+    <section id="advanced" data-nav="JSON mode">
+      <h2 data-icon="advanced">JSON mode: the tool for restructuring</h2>
+      <p>When the job is not just adding a few fields but <strong>redesigning the whole JSON structure</strong> — gathering flat fields into a nested object, for instance — Manual Mapping starts to feel clumsy. That is where JSON mode comes in.</p>
+      <p><strong>The situation</strong>: the upstream node emits flat JSON, you have to send it to an API, and that API wants a nested payload. Say upstream gives you:</p>
       <pre class="code-block"><code>{
   "id": "ORD-1234",
   "firstName": "小明",
   "lastName": "王",
   "amount": 1500
 }</code></pre>
-      <p>但下游 API 要求的格式是：</p>
+      <p>But the format the downstream API wants is:</p>
       <pre class="code-block"><code>{
   "orderId": "ORD-1234",
   "customer": {
@@ -286,15 +286,15 @@
     "vip": true
   }
 }</code></pre>
-      <p>Manual Mapping 要處理巢狀比較彆扭；改用 JSON 模式一貼就搞定：</p>
+      <p>Handling nesting in Manual Mapping is awkward; in JSON mode one paste settles it:</p>
       <ol class="steps">
         <li>
-          <h3>Mode 切到 JSON</h3>
-          <p>節點最上方 Mode 下拉選 <strong>JSON</strong>。Fields to Set 消失，出現一個大文字框。</p>
+          <h3>Switch Mode to JSON</h3>
+          <p>In the Mode dropdown at the top of the node pick <strong>JSON</strong>. Fields to Set disappears and a large text box takes its place.</p>
         </li>
         <li>
-          <h3>貼 JSON template</h3>
-          <p>把下面這段整段貼進文字框：</p>
+          <h3>Paste the JSON template</h3>
+          <p>Paste this whole block into the text box:</p>
           <pre class="code-block"><code>{
   "orderId": "{{ $json.id }}",
   "customer": {
@@ -302,24 +302,24 @@
     "vip": {{ $json.amount &gt; 1000 }}
   }
 }</code></pre>
-          <p>字串類的值要用引號包（<code>"{{ ... }}"</code>），布林／數字類不用引號（<code>{{ $json.amount &gt; 1000 }}</code> 直接是 <code>true</code> 或 <code>false</code>）。</p>
+          <p>String values have to be wrapped in quotes (<code>"{{ ... }}"</code>), boolean and numeric ones do not (<code>{{ $json.amount &gt; 1000 }}</code> is straight <code>true</code> or <code>false</code>).</p>
         </li>
         <li>
-          <h3>Include Other Input Fields 決定要不要保留原欄位</h3>
-          <p>JSON 模式一樣有這個 toggle。多數情況下你貼 JSON 就是要重新規劃結構，所以會 <em>關掉</em>——只留 JSON template 裡定義的欄位。</p>
+          <h3>Use Include Other Input Fields to decide whether to keep the original fields</h3>
+          <p>JSON mode has the same toggle. Most of the time you paste JSON precisely because you are restructuring, so you <em>turn it off</em> — keeping only the fields the JSON template defines.</p>
         </li>
         <li>
-          <h3>Execute Node 檢查結構對不對</h3>
-          <p>Output 面板會吐出你貼的 JSON 結構，expression 都已經被填成實際值。這時就可以接下游的 HTTP Request 節點打 API。</p>
+          <h3>Run Execute Node and check the structure is right</h3>
+          <p>The Output panel shows the JSON structure you pasted, with every expression already filled in with real values. Now you can wire up the downstream HTTP Request node and call the API.</p>
         </li>
       </ol>
-      <div class="callout"><strong>觀念：</strong>JSON 模式的核心價值是「一眼看得出最終結構長什麼樣」。當結構複雜（多層巢狀、陣列），Manual Mapping 一條一條加會迷路；JSON 模式把最終樣貌直接展示在你面前，改也快、看也清楚。</div>
+      <div class="callout"><strong>Concept:</strong> What JSON mode is worth comes down to seeing the final structure at a glance. When the structure is complex (several levels of nesting, arrays), adding one line at a time in Manual Mapping gets you lost; JSON mode puts the finished shape in front of you, which is both quicker to edit and clearer to read.</div>
     </section>
 
-    <section id="records" data-nav="實例：API 回應整成 Sheet 一列">
-      <h2 data-icon="records">實例：把 API 回來的巢狀 JSON 整成 Sheet 一列</h2>
-      <p>把上一節 Set 節點的功力串起來，做一個實際會用到的短流程。情境：你用 HTTP Request 打了某個訂單 API，回來的 JSON 是巢狀結構，但你要把它 append 進 Google Sheets 的訂單追蹤表（一列 4 欄）。</p>
-      <p><strong>上游 HTTP Request 節點的回應</strong>：</p>
+    <section id="records" data-nav="Example · sheet row">
+      <h2 data-icon="records">Worked example: turn a nested API response into one sheet row</h2>
+      <p>String the Set node skills from the previous sections together into a short flow you would really use. The situation: you called an order API with HTTP Request, the JSON that comes back is nested, and you have to append it to an order-tracking sheet in Google Sheets (one row, 4 columns).</p>
+      <p><strong>What the upstream HTTP Request node returns</strong>:</p>
       <pre class="code-block"><code>{
   "data": {
     "user": {
@@ -335,23 +335,23 @@
     }
   }
 }</code></pre>
-      <p><strong>Sheets 的 header</strong>：<code>訂單編號 | 姓名 | 信箱 | 金額 | 時間 | VIP</code></p>
-      <p>中間放一個 Set 節點做整形：</p>
+      <p><strong>The sheet's header</strong>: <code>訂單編號 | 姓名 | 信箱 | 金額 | 時間 | VIP</code></p>
+      <p>Put a Set node in the middle to do the reshaping:</p>
       <ol class="steps">
         <li>
-          <h3>Set 節點 Mode 選 Manual Mapping</h3>
-          <p>因為要對應 Sheets 的固定欄位，一欄一欄設最清楚。</p>
+          <h3>Set the node's Mode to Manual Mapping</h3>
+          <p>You are mapping onto the sheet's fixed columns, so setting one field at a time is the clearest way.</p>
         </li>
         <li>
-          <h3>Include Other Input Fields 關掉</h3>
-          <p>原本的巢狀結構帶到 Sheets 沒意義，關掉 toggle 只留下面設的六個欄位。</p>
+          <h3>Turn Include Other Input Fields off</h3>
+          <p>Carrying the original nested structure into Sheets is pointless, so turn the toggle off and keep only the six fields set below.</p>
         </li>
         <li>
-          <h3>Add Field 六次，依序設好</h3>
-          <p>逐欄對照 Sheets 的 header：</p>
+          <h3>Click Add Field six times and fill them in, in order</h3>
+          <p>Match them column by column against the sheet's header:</p>
           <table class="data-table">
             <thead>
-              <tr><th>Name</th><th>Type</th><th>Value（Expression）</th></tr>
+              <tr><th>Name</th><th>Type</th><th>Value (expression)</th></tr>
             </thead>
             <tbody>
               <tr><td><code>訂單編號</code></td><td>String</td><td><code>{{ $json.data.order.id }}</code></td></tr>
@@ -364,170 +364,170 @@
           </table>
         </li>
         <li>
-          <h3>Execute Node 檢查扁平結構</h3>
-          <p>Output 應該是純扁平的 6 個欄位：<code>{ 訂單編號: "ORD-9527", 姓名: "王小明", 信箱: "...", 金額: 2800, 時間: "...", VIP: "VIP" }</code>。</p>
+          <h3>Run Execute Node and check the flat structure</h3>
+          <p>The Output should be 6 purely flat fields: <code>{ 訂單編號: "ORD-9527", 姓名: "王小明", 信箱: "...", 金額: 2800, 時間: "...", VIP: "VIP" }</code>.</p>
         </li>
         <li>
-          <h3>接 Google Sheets Append 節點</h3>
-          <p>Sheets 節點 Data Mode 選 <strong>Map Each Column Below</strong>，因為欄位名字已經完全對齊 Sheets header，可以直接拖左邊面板的欄位到 Sheets 節點對應的輸入框——不用再打一次 expression。</p>
+          <h3>Wire up a Google Sheets Append node</h3>
+          <p>Set the Sheets node's Data Mode to <strong>Map Each Column Below</strong>. Because the field names already line up exactly with the sheet's header, you can drag the fields from the left panel straight into the matching boxes on the Sheets node — no need to type the expressions again.</p>
         </li>
       </ol>
-      <p>這就是 Set 節點的典型工作模式：<strong>「把上游丟過來的亂七八糟 JSON，梳成下游好吃的樣子」</strong>。Sheets、Slack、Notion、Airtable 這些節點都很挑欄位格式，中間放一個 Set 讓資料整齊，下游節點就好設得多。</p>
+      <p>That is the Set node's typical working pattern: <strong>comb the messy JSON the upstream node threw at you into something the downstream node can digest</strong>. Sheets, Slack, Notion and Airtable are all fussy about field formats; put a Set in the middle to tidy the data and the downstream node becomes much easier to configure.</p>
       <figure class="shot">
-        <img src="../assets/screenshots/ch18/01_form_runner.png" alt="Universal Form Runner 4 節點 workflow 展示 Set/Edit Fields 用法" />
-        <figcaption><strong>圖 18-1</strong>實戰範例：Universal Form Runner 只有 4 個節點，中間用 Set / Edit Fields 把表單資料整形成下游需要的欄位格式。</figcaption>
+        <img src="../assets/screenshots/ch18/01_form_runner.png" alt="The four-node Universal Form Runner workflow, showing how Set/Edit Fields is used" />
+        <figcaption><strong>Figure 18-1</strong>A worked example: Universal Form Runner has only 4 nodes, and the Set / Edit Fields node in the middle reshapes the form data into the field format the downstream nodes need.</figcaption>
       </figure>
-      <div class="callout tip"><strong>提示：</strong>養成習慣——複雜 workflow 每兩三個節點就放一個 Set 節點做中繼站。可讀性大幅提高、除錯也快。看到後面某個節點壞掉，第一步就是打開最近的 Set 節點看它吐出來的 JSON 對不對。</div>
+      <div class="callout tip"><strong>Tip:</strong> Make it a habit — in a complex workflow, drop in a Set node as a waypoint every two or three nodes. Readability goes up a lot and debugging gets faster. When a node further along breaks, the first step is to open the nearest Set node and check whether the JSON it emits is right.</div>
     </section>
 
     <section id="compare" data-nav="Set vs Function vs Code">
-      <h2 data-icon="compare">Set 節點 vs Function vs Code：什麼時候用哪個</h2>
-      <p>n8n 裡有三個節點都能「整形資料」，但用途不同。你可能在舊教學看過 <strong>Function</strong> 節點，這裡一次講清楚：</p>
+      <h2 data-icon="compare">Set vs Function vs Code: which one to use when</h2>
+      <p>Three nodes in n8n can reshape data, but they are for different jobs. You may have run into the <strong>Function</strong> node in older tutorials, so here it is, sorted out once:</p>
       <table class="data-table">
         <thead>
-          <tr><th>節點</th><th>寫程式嗎</th><th>能力</th><th>什麼時候用</th></tr>
+          <tr><th>Node</th><th>Any code</th><th>What it can do</th><th>When to use it</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Set (Edit Fields)</strong></td>
-            <td>不用</td>
-            <td>加／改／刪欄位、簡單 expression、型別轉換</td>
-            <td>90% 的資料整形。優先選這個，能不寫程式就不寫</td>
+            <td>No</td>
+            <td>Add / change / drop fields, simple expressions, type conversion</td>
+            <td>90% of data shaping. Reach for this first — if you can avoid writing code, avoid it</td>
           </tr>
           <tr>
-            <td><strong>Function</strong>（已於 v0.198.0 合併進 Code）</td>
-            <td>要寫 JavaScript</td>
-            <td>能 loop、能呼叫少數 helper、比 Set 靈活但受限</td>
-            <td>不要用了。v0.198.0（2022 年年中）起被 Code 節點取代；新拉節點面板已找不到，只有 import 舊 workflow 才看得到</td>
+            <td><strong>Function</strong> (merged into Code in v0.198.0)</td>
+            <td>You write JavaScript</td>
+            <td>Can loop, can call a few helpers; more flexible than Set but still limited</td>
+            <td>Do not use it any more. The Code node replaced it from v0.198.0 (mid-2022); it is gone from the nodes panel and you only see it when you import an old workflow</td>
           </tr>
           <tr>
-            <td><strong>Code</strong>（新版）</td>
-            <td>要寫 JavaScript 或 Python</td>
-            <td>完整程式邏輯——loop、if / else、call npm module、複雜計算</td>
-            <td>Set 做不到的複雜邏輯。詳細在 <a href="ch20_code_node.html">第 20 章</a></td>
+            <td><strong>Code</strong> (the current one)</td>
+            <td>You write JavaScript or Python</td>
+            <td>Full program logic — loops, if / else, calling an npm module, complex calculations</td>
+            <td>Logic too complex for Set. The details are in <a href="ch20_code_node.html">Chapter 20</a></td>
           </tr>
         </tbody>
       </table>
-      <p><strong>怎麼選？</strong>先問自己：「這件事 Set 能做嗎？」能就用 Set，不能才升級 Code。Set 節點視覺化、看得懂、不易寫錯、執行快；Code 節點強大但要寫程式、要處理錯誤、非工程師接手比較痛苦。</p>
-      <div class="callout warn"><strong>注意：</strong>Function 節點在 <strong>v0.198.0（2022 年 6 月釋出）</strong>已經被 Code 節點取代，官方文件明確寫「Code node replaces Function and Function Item nodes」。舊 workflow 裡的 Function 節點目前還能跑（向後相容），但新拉節點面板搜「function」拉不到——只能拉到 Code。有新需求一律用 Code，不要想辦法把 Function 找回來用。</div>
+      <p><strong>How do you choose?</strong> Ask yourself first: "can Set do this?" If it can, use Set; only move up to Code when it cannot. The Set node is visual, easy to read, hard to get wrong and quick to run; the Code node can do more, but you have to write code, handle the errors, and a non-engineer who inherits it will have a harder time.</p>
+      <div class="callout warn"><strong>Warning:</strong> The Function node was replaced by the Code node in <strong>v0.198.0 (released June 2022)</strong>, and the official documentation says plainly "Code node replaces Function and Function Item nodes". Function nodes in old workflows still run (backward compatibility), but searching "function" in the nodes panel will not turn one up any more — only Code. Use Code for anything new; do not go looking for a way to bring Function back.</div>
     </section>
 
-    <section id="pro_tips" data-nav="進階小技巧">
-      <h2 data-icon="tips">幾個 Set 節點的進階小技巧</h2>
+    <section id="pro_tips" data-nav="Advanced tricks">
+      <h2 data-icon="tips">A few advanced Set node tricks</h2>
 
-      <h3>1. 用 dot notation 加巢狀欄位（Manual Mapping 模式）</h3>
-      <p>Manual Mapping 模式其實也能產出巢狀結構，訣竅是 Name 欄位用「點」串路徑：</p>
+      <h3>1. Add nested fields with dot notation (Manual Mapping mode)</h3>
+      <p>Manual Mapping mode can produce a nested structure too; the trick is to build a path in the Name field with dots:</p>
       <ul>
         <li>Name = <code>customer.name</code>, Value = <code>{{ $json.firstName }}</code></li>
         <li>Name = <code>customer.email</code>, Value = <code>{{ $json.email }}</code></li>
       </ul>
-      <p>Output 會是：<code>{ customer: { name: "小明", email: "..." } }</code>。省得切 JSON 模式。</p>
+      <p>The output is <code>{ customer: { name: "小明", email: "..." } }</code>. That saves you switching to JSON mode.</p>
 
-      <h3>2. 一次覆蓋多筆 items</h3>
-      <p>Set 節點跟其他節點一樣，會自動對每一筆 item 執行一次。所以你不用寫 loop——上游丟 10 筆進來，Set 就會產出 10 筆整形後的 output。<code>$json</code> 在每一輪自動指向「當前這一筆 item」。</p>
+      <h3>2. Covering many items in one pass</h3>
+      <p>Like every other node, the Set node runs once for each item automatically. So you do not write a loop — send 10 items in from upstream and Set produces 10 reshaped outputs. On each pass <code>$json</code> points at the item being processed right then.</p>
 
-      <h3>3. 用 Continue On Fail 讓錯誤 item 不擋整條流</h3>
-      <p>Set 節點右上角 <strong>Settings</strong> 齒輪裡有 <strong>Continue On Fail</strong>。某一筆 item 的 expression 執行失敗（例：某欄位不存在導致 <code>undefined.foo</code>）時，如果沒開這個，整條 workflow 直接紅字停下。開了以後那筆 item 會標成 error 但流繼續跑，你可以在 output 看哪幾筆壞掉、其他繼續往下游走。</p>
+      <h3>3. Use Continue On Fail so a broken item does not block the whole flow</h3>
+      <p>The <strong>Settings</strong> gear at the top right of the Set node holds <strong>Continue On Fail</strong>. When an expression fails on one item (a field that does not exist producing <code>undefined.foo</code>, say) and this is off, the whole workflow stops in red. With it on, that item is marked as an error but the flow keeps running: you can see in the output which items broke while the rest carry on downstream.</p>
 
-      <h3>4. Set 節點也可以放在流程開頭當「假資料產生器」</h3>
-      <p>還沒有真實 trigger、想先測後面幾個節點的邏輯？拉一個 Manual Trigger + Set 節點，Set 節點 Mode 選 JSON、貼一段假資料 JSON、Include Other Input Fields 關掉——這樣按 Execute Workflow 就會有一筆假資料流下去。debug 神器。</p>
+      <h3>4. A Set node at the start of a flow makes a fake-data generator</h3>
+      <p>No real trigger yet, but you want to test the logic of the nodes after it? Drop in a Manual Trigger plus a Set node, set the Set node's Mode to JSON, paste a block of fake JSON and turn Include Other Input Fields off — now pressing Execute Workflow sends one fake item down the flow. A lifesaver for debugging.</p>
 
-      <div class="callout tip"><strong>提示：</strong>如果你想「刪掉某個欄位」，Manual Mapping 沒有明確的 delete 動作。作法：Include Other Input Fields 打勾、Add Field 一個同名的欄位、Value 留空、Type 選什麼都行——欄位會變成空值。真的要移除欄位（key 都不留）就得用 Code 節點寫 <code>delete item.json.欄位名</code>。</p>
+      <div class="callout tip"><strong>Tip:</strong> If you want to delete a field, Manual Mapping has no explicit delete action. What you do instead: tick Include Other Input Fields, Add Field with the same name, leave Value empty and pick any Type you like — the field becomes empty. To really remove a field, key and all, you need a Code node and <code>delete item.json.欄位名</code>.</p>
       </div>
     </section>
 
-    <section id="troubleshoot" data-nav="常見卡關">
-      <h2 data-icon="troubleshoot">常見卡關與怎麼救</h2>
+    <section id="troubleshoot" data-nav="Common pitfalls">
+      <h2 data-icon="troubleshoot">Common pitfalls and fixes</h2>
       <table class="data-table">
         <thead>
-          <tr><th>症狀</th><th>原因</th><th>怎麼救</th></tr>
+          <tr><th>Symptom</th><th>Cause</th><th>How to fix it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Set 完欄位不見了</strong>（原本有 email，下游拿不到）</td>
-            <td>Include Other Input Fields 沒打勾（或舊版 Keep Only Set Fields 開了），你也沒在 Fields to Set 明列 email</td>
-            <td>打開 Include Other Input Fields toggle，或把要留的欄位都手動 Add Field 一遍</td>
+            <td><strong>Fields vanish after Set</strong> (email was there, the downstream node cannot get it)</td>
+            <td>Include Other Input Fields is not ticked (or the old Keep Only Set Fields is on), and you did not list email under Fields to Set either</td>
+            <td>Turn the Include Other Input Fields toggle on, or Add Field every field you want to keep, by hand</td>
           </tr>
           <tr>
-            <td><strong>Expression 拿到 <code>undefined</code></strong></td>
-            <td>欄位路徑打錯——例如上游其實是 <code>$json.name</code>，你寫成 <code>$json.data.user.name</code></td>
-            <td>先按 Execute Node 上游節點，看 output 面板實際 JSON 長什麼樣，照抄路徑；或者在左邊 input 面板點欄位名讓 n8n 自動填</td>
+            <td><strong>An expression returns <code>undefined</code></strong></td>
+            <td>The field path is wrong — upstream is really <code>$json.name</code> and you wrote <code>$json.data.user.name</code></td>
+            <td>Run Execute Node on the upstream node first, look at what the JSON in the output panel actually is and copy the path from it; or click the field name in the input panel on the left and let n8n fill it in</td>
           </tr>
           <tr>
-            <td><strong>加了欄位但下游節點沒吃到</strong></td>
-            <td>下游節點的 expression 還在引舊欄位名（例：你把 <code>email</code> 改叫 <code>customer_email</code>，但下游還在打 <code>$json.email</code>）</td>
-            <td>rename 欄位後，記得同步更新<em>所有</em>下游節點的 expression。改名字是有連鎖影響的</td>
+            <td><strong>You added a field but the downstream node does not get it</strong></td>
+            <td>The downstream node's expression still refers to the old field name (you renamed <code>email</code> to <code>customer_email</code>, but downstream still calls <code>$json.email</code>)</td>
+            <td>After renaming a field, remember to update the expressions in <em>every</em> downstream node to match. A rename has knock-on effects</td>
           </tr>
           <tr>
-            <td><strong>欄位名字有空格或中文，expression 找不到</strong></td>
-            <td>JavaScript dot notation（<code>$json.欄 名</code>）不支援空格</td>
-            <td>用中括號寫法：<code>{{ $json['欄 名'] }}</code>、<code>{{ $json['姓 名'] }}</code>。中括號可以吃任何字元</td>
+            <td><strong>The field name has a space or Chinese in it and the expression cannot find it</strong></td>
+            <td>JavaScript dot notation (<code>$json.欄 名</code>) does not support spaces</td>
+            <td>Use the bracket form: <code>{{ $json['欄 名'] }}</code>, <code>{{ $json['姓 名'] }}</code>. Brackets take any character</td>
           </tr>
           <tr>
-            <td><strong>Value 明明打數字，Output 卻是字串 <code>"123"</code></strong></td>
-            <td>Fields to Set 的 Type 設成 String，或 JSON 模式裡值用引號包了</td>
-            <td>Manual Mapping：Type 改 Number；JSON 模式：值不要用引號 <code>"amount": {{ $json.amount }}</code>；或加型別轉換 <code>{{ Number($json.amount) }}</code></td>
+            <td><strong>You clearly typed a number in Value, but the output is the string <code>"123"</code></strong></td>
+            <td>The Type under Fields to Set is String, or the value is wrapped in quotes in JSON mode</td>
+            <td>Manual Mapping: change Type to Number. JSON mode: leave the quotes off, <code>"amount": {{ $json.amount }}</code>. Or add a type conversion, <code>{{ Number($json.amount) }}</code></td>
           </tr>
           <tr>
-            <td><strong>切換模式後所有欄位不見</strong></td>
-            <td>Manual Mapping 跟 JSON 模式的設定不共用。切模式＝清空</td>
-            <td><kbd>Ctrl</kbd>+<kbd>Z</kbd> 復原切回原模式；或決定好模式後再開始設欄位</td>
+            <td><strong>All the fields disappear after switching modes</strong></td>
+            <td>Manual Mapping and JSON mode do not share settings. Switching modes clears them</td>
+            <td><kbd>Ctrl</kbd>+<kbd>Z</kbd> to undo back to the original mode; or decide on the mode before you start setting fields</td>
           </tr>
           <tr>
-            <td><strong>JSON 模式跳紅字 <code>Invalid JSON</code></strong></td>
-            <td>字串欄位忘記用引號包、或多逗號少逗號</td>
-            <td>把 JSON 貼到 JSON validator（jsonlint.com）檢查；expression <code>{{ }}</code> 也要放在合法 JSON 位置，字串類要用引號 <code>"{{ ... }}"</code></td>
+            <td><strong>JSON mode shows <code>Invalid JSON</code> in red</strong></td>
+            <td>A string field is missing its quotes, or there is one comma too many or too few</td>
+            <td>Paste the JSON into a JSON validator (jsonlint.com) to check it; a <code>{{ }}</code> expression also has to sit in a legal JSON position, and string ones need quotes, <code>"{{ ... }}"</code></td>
           </tr>
           <tr>
-            <td><strong>Manual Mapping 加了一堆欄位介面卡</strong></td>
-            <td>Set 節點欄位太多（>50 個）時介面渲染會慢</td>
-            <td>改用 JSON 模式：50 個欄位在 JSON 文字框裡是很小的一坨，比 50 張視覺化卡片流暢</td>
+            <td><strong>The interface gets sluggish once Manual Mapping has a pile of fields</strong></td>
+            <td>Rendering slows down when the Set node has too many fields (more than 50)</td>
+            <td>Switch to JSON mode: 50 fields is a small clump of text in the JSON box, and far smoother than 50 visual cards</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
 
       <details class="faq">
-        <summary>Set 節點會影響 execution time 嗎？</summary>
-        <div class="body">幾乎不會。Set 節點完全在 n8n 本機記憶體處理，沒 API call、沒 I/O，一筆 item 的處理時間通常在 1 毫秒以下。就算你在一條 workflow 裡放五個 Set 節點做多次整形，總延遲也可以忽略。真正拖慢 workflow 的是 HTTP Request、SaaS 節點這類「要出去打別人 API」的節點，不是 Set。</div>
+        <summary>Does the Set node affect execution time?</summary>
+        <div class="body">Hardly at all. The Set node works entirely in n8n's local memory — no API call, no I/O — and one item usually takes under 1 millisecond. Even five Set nodes reshaping data along one workflow add up to a delay you can ignore. What actually slows a workflow down are the nodes that go out and call someone else's API, such as HTTP Request and the SaaS nodes, not Set.</div>
       </details>
 
       <details class="faq">
-        <summary>一個 Set 節點能設幾個欄位？有沒有上限？</summary>
-        <div class="body">技術上沒有硬上限。但實務建議單一 Set 節點<strong>不要超過 30 個欄位</strong>——太多的話介面會卡、可讀性也差。真的欄位很多（例：資料同步要對映 50 個欄位），有兩個選擇：<strong>(1)</strong> 拆成兩個 Set 節點串在一起，每個負責一部分；<strong>(2)</strong> 改用 JSON 模式，50 個 key 在文字框裡很緊湊。</div>
+        <summary>How many fields can one Set node set? Is there a limit?</summary>
+        <div class="body">There is no hard limit technically. In practice, keep a single Set node <strong>under 30 fields</strong> — beyond that the interface gets sluggish and it reads badly. When you really do have many fields (a data sync that maps 50 of them, say), you have two options: <strong>(1)</strong> split it into two Set nodes in a row, each handling part of the work; <strong>(2)</strong> switch to JSON mode, where 50 keys are compact in the text box.</div>
       </details>
 
       <details class="faq">
-        <summary>Set 節點跟 Code 節點差在哪？我什麼時候該升級？</summary>
-        <div class="body">差別是「能做的事」跟「用起來的門檻」的取捨。<strong>Set</strong>：不寫程式、視覺化、能做加改欄位／型別轉換／簡單條件；<strong>Code</strong>：要寫 JavaScript／Python、能寫 loop / if 邏輯／呼叫 npm module／處理陣列展開合併。<strong>升級 Code 的訊號</strong>：(1) 你發現一個 Value 欄位裡 expression 寫超過 5 行；(2) 你需要對陣列做 map / filter / reduce；(3) 你需要「跨 items 互相參照」的邏輯（例：把 10 筆 items 合成一筆）。這些情況 Set 做不到就換 Code，詳見 <a href="ch20_code_node.html">第 20 章</a>。</div>
+        <summary>How do the Set node and the Code node differ, and when should I move up?</summary>
+        <div class="body">The trade-off is between what each can do and how much it asks of you. <strong>Set</strong>: no code, visual, handles adding and changing fields / type conversion / simple conditions. <strong>Code</strong>: you write JavaScript / Python, and you get loops and if logic / calls to an npm module / splitting and merging arrays. <strong>Signs it is time for Code</strong>: (1) you find an expression in one Value field running past 5 lines; (2) you need map / filter / reduce over an array; (3) you need logic that references items against each other (folding 10 items into one, say). When Set cannot do those, switch to Code — see <a href="ch20_code_node.html">Chapter 20</a>.</div>
       </details>
 
       <details class="faq">
-        <summary>新版介面為什麼把 Set 改名叫 Edit Fields？</summary>
-        <div class="body">因為「Set」對非工程師來說不夠直覺——programmer 才會把「設定某個值」叫 set；一般人看到「Set」會想成「一組」或搞不清楚是動詞還是名詞。改叫 <strong>Edit Fields (Set)</strong> 意圖直白得多：「編輯欄位」（括號還留 Set 讓老用戶認得）。這是 n8n 大約在 v1 前後（2023 上下）的介面翻修一環；Function 節點合併到 Code 是更早的 v0.198.0（2022 年 6 月）就發生的另一件事，兩者不是同一波。舊 workflow 裡的 Set 節點自動視為 Edit Fields (Set)，功能完全一樣，不用擔心相容性。</div>
+        <summary>Why did the newer interface rename Set to Edit Fields?</summary>
+        <div class="body">Because "Set" is not intuitive enough for non-engineers — only a programmer calls giving something a value a set; everyone else reads "Set" as "a group of things", or cannot tell whether it is a verb or a noun. <strong>Edit Fields (Set)</strong> states the intent far more plainly: edit the fields (with Set kept in brackets so long-time users still recognize it). This was one part of n8n's interface overhaul around v1 (2023 or thereabouts); folding the Function node into Code was a separate, earlier change in v0.198.0 (June 2022), not the same wave. A Set node in an old workflow is automatically treated as Edit Fields (Set), with exactly the same behavior, so compatibility is nothing to worry about.</div>
       </details>
 
       <details class="faq">
-        <summary>Set 節點能不能對「陣列」欄位做整形？例如把 <code>tags: ["a","b","c"]</code> 變成 <code>tags: "a, b, c"</code>？</summary>
-        <div class="body">可以。用 expression 呼叫 JavaScript 陣列方法就行：Name = <code>tags</code>、Type = <code>String</code>、Value = <code>{{ $json.tags.join(', ') }}</code>。反過來想把字串切成陣列：<code>{{ $json.csv.split(',') }}</code>、Type 選 Array。單一 item 內的陣列處理 Set 都能做；但如果是「把整個 items 陣列展開或合併」（例：一筆 item 展開成三筆、或三筆合併成一筆），那要用 <a href="ch16_merge_split.html">第 16 章</a>的 Split In Batches / Merge 節點，或直接寫 Code。</div>
+        <summary>Can the Set node reshape an "array" field? Turning <code>tags: ["a","b","c"]</code> into <code>tags: "a, b, c"</code>, for instance?</summary>
+        <div class="body">Yes. Call a JavaScript array method from an expression: Name = <code>tags</code>, Type = <code>String</code>, Value = <code>{{ $json.tags.join(', ') }}</code>. The other way round, to split a string into an array: <code>{{ $json.csv.split(',') }}</code>, with Type set to Array. Set can do any array work inside a single item; but flattening or merging the whole items array (one item becoming three, or three becoming one) needs the Split In Batches / Merge nodes from <a href="ch16_merge_split.html">Chapter 16</a>, or Code written directly.</div>
       </details>
 
       <details class="faq">
-        <summary>Set 節點裡的 <code>$now</code> 是什麼時區？寫進 Sheets 會不會跑掉？</summary>
-        <div class="body"><code>$now</code> 是 n8n Luxon DateTime 物件，預設用 n8n instance 的時區（如果你的 n8n 部署在 Asia/Taipei 就是台北時間）。直接寫進 Sheets 有時 Sheets 會自作聰明轉時區。<strong>建議做法</strong>：Value 用 <code>{{ $now.toFormat('yyyy-MM-dd HH:mm:ss') }}</code> 直接產字串，Type 選 String，Sheets 那邊那欄先設「純文字」格式——這樣什麼時區、什麼格式都是你自己控制，最穩。</div>
+        <summary>What timezone is <code>$now</code> in inside a Set node? Will it drift once it is written to Sheets?</summary>
+        <div class="body"><code>$now</code> is an n8n Luxon DateTime object and defaults to the n8n instance's timezone (if your n8n is deployed in Asia/Taipei, that is Taipei time). Written straight into Sheets, Sheets sometimes decides to be clever and shift the timezone. <strong>The recommended approach</strong>: produce a string directly with <code>{{ $now.toFormat('yyyy-MM-dd HH:mm:ss') }}</code> in Value, set Type to String, and format that column in Sheets as plain text first — then the timezone and the format are both under your control, which is the most reliable.</div>
       </details>
 
       <details class="faq">
-        <summary>Include Other Input Fields 打勾時，如果我 set 的欄位名跟原欄位撞名，會發生什麼事？</summary>
-        <div class="body">你 set 的值會<strong>覆蓋</strong>原本的。例：input 有 <code>email: "a@b.com"</code>，你在 Set 節點加一個 Field，Name = <code>email</code>、Value = <code>「已隱藏」</code>——output 的 email 就是「已隱藏」。這是很方便的「就地改值」用法，例如把敏感欄位遮蔽、或把某欄的值標準化（<code>{{ $json.email.toLowerCase() }}</code>）。撞名時 <strong>set 值永遠贏</strong>，不會出錯也不會警告，直接覆蓋。</div>
+        <summary>With Include Other Input Fields ticked, what happens if a field I set collides with an existing field name?</summary>
+        <div class="body">The value you set <strong>overwrites</strong> the original. Say the input has <code>email: "a@b.com"</code> and you add a Field in the Set node with Name = <code>email</code> and Value = <code>「已隱藏」</code> — the output's email is then "hidden". This is a handy way to change a value in place, for example masking a sensitive field or normalizing a column's value (<code>{{ $json.email.toLowerCase() }}</code>). On a collision <strong>the value you set always wins</strong>; there is no error and no warning, it simply overwrites.</div>
       </details>
 
       <details class="faq">
-        <summary>能不能在 Set 節點裡引用「另一個節點」的資料，而不是上一個節點？</summary>
-        <div class="body">可以，這是 n8n 很強的功能。Value 欄位用 <code>{{ $('節點名稱').item.json.欄位 }}</code> 就能拉<em>任何前面節點</em>的資料，不只上一個。例：workflow 開頭有一個 Webhook 節點名叫 <code>Webhook</code>，中間跑了三個節點，最後一個 Set 節點想同時拉 Webhook 的原始 payload 和上一步的計算結果——Value 可以寫 <code>{{ $('Webhook').item.json.customer_id }} - {{ $json.result }}</code>。這在複雜 workflow 裡是常用手法，比每一步都用 Set「保留欄位」乾淨得多。細節在 <a href="ch14_expressions.html">第 14 章</a>expression 篇有完整範例，<a href="ch19_subworkflow.html">第 19 章</a>的 subworkflow 也會用到類似技巧。</div>
+        <summary>Can a Set node reference data from another node instead of the previous one?</summary>
+        <div class="body">Yes, and it is one of n8n's real strengths. Use <code>{{ $('節點名稱').item.json.欄位 }}</code> in the Value field to pull data from <em>any earlier node</em>, not just the previous one. Say a workflow opens with a Webhook node named <code>Webhook</code>, three nodes run after it, and the last Set node wants both the webhook's original payload and the result computed one step earlier — Value can be <code>{{ $('Webhook').item.json.customer_id }} - {{ $json.result }}</code>. This comes up a lot in complex workflows, and it is far cleaner than using Set at every step to keep fields around. <a href="ch14_expressions.html">Chapter 14</a> on expressions has full examples, and the sub-workflows in <a href="ch19_subworkflow.html">Chapter 19</a> use a similar technique.</div>
       </details>
     </section>
 

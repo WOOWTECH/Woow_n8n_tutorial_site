@@ -70,17 +70,17 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要學 Expression</a>
-      <a href="#concept">Expression 是動態填空</a>
-      <a href="#top5">最常用 5 個寫法</a>
-      <a href="#drag">拖拉建 Expression</a>
-      <a href="#datetime">日期時間</a>
-      <a href="#strings">字串拼接</a>
-      <a href="#use_cases">常見 Expression 場景</a>
-      <a href="#debug">紅色 error 怎麼看</a>
-      <a href="#advanced_vars">$node vs $json vs $input</a>
-      <a href="#troubleshoot">常見卡關</a>
-      <a href="#faq">常見問題</a>
+      <a href="#why">Why this matters</a>
+      <a href="#concept">Dynamic fill-in</a>
+      <a href="#top5">Five core forms</a>
+      <a href="#drag">Drag to build</a>
+      <a href="#datetime">Dates and times</a>
+      <a href="#strings">Joining strings</a>
+      <a href="#use_cases">Common cases</a>
+      <a href="#debug">Reading red errors</a>
+      <a href="#advanced_vars">$json, $node, $input</a>
+      <a href="#troubleshoot">Common pitfalls</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -94,393 +94,393 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch14_expressions.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 14</div>
-      <h1>Expression 入門：<code>{{ $json.field }}</code> 從這裡開始</h1>
-      <p class="lead">節點欄位（Slack 的 Text、Google Sheet 的 Row Values、Gmail 的 Subject）常常要「把上一個節點抓到的資料填進去」。這件事在 n8n 靠 <strong>Expression</strong> 完成——一段用 <code>{{ }}</code> 包起來的小 code，執行前 n8n 會把它算成真正的值。這章把最常用的五種寫法、拖拉建 Expression 的姿勢、日期時間跟字串處理、還有紅色 error 怎麼看，一次講完。</p>
+      <h1>Expressions: it all starts with <code>{{ $json.field }}</code></h1>
+      <p class="lead">Node fields (Text on Slack, Row Values on Google Sheet, Subject on Gmail) constantly need to "drop in the data the previous node fetched". In n8n you do that with an <strong>Expression</strong> — a small piece of code wrapped in <code>{{ }}</code> that n8n evaluates into a real value before the node runs. This chapter covers the five forms you will use most, how to build an expression by dragging, dates, times and string handling, and how to read a red error, all in one pass.</p>
     </div>
 
-    <section id="why" data-nav="為什麼要學 Expression">
-      <h2 data-icon="why">為什麼要學 Expression</h2>
-      <p><a href="ch9_item_data_flow.html">第 9 章</a>已經告訴你，n8n 節點跟節點之間傳的是一「列」一「列」的 item。但知道 item 長怎樣還不夠——真正下游節點要用的時候，你得<strong>把上游的欄位填進下游節點的某個欄位</strong>，這中間的橋樑就是 Expression。</p>
-      <p>舉幾個很日常的例子，沒 Expression 就寫不出來：</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why you need expressions</h2>
+      <p><a href="ch9_item_data_flow.html">Chapter 9</a> already told you that what travels between n8n nodes is items, one "row" at a time. But knowing what an item looks like is not enough — when a downstream node actually needs the data, you have to <strong>put an upstream field into a field on the downstream node</strong>, and the bridge for that is the expression.</p>
+      <p>Here are a few everyday examples you cannot build without one:</p>
       <ul>
-        <li>Google Form 有人填了訂單 → Slack 發訊息「新訂單 #<strong>1042</strong>，客戶 <strong>陳小明</strong>，金額 <strong>$3,500</strong>」。粗體那三個要從上游抓，不能寫死。</li>
-        <li>每天早上 08:00 → Gmail 寄「<strong>2026-08-16</strong> 銷售日報」，日期要今天不是昨天。</li>
-        <li>IF 節點條件：「金額 &gt; 1000 才通知主管」，那個 1000 前面要拉到當前 item 的 amount 欄位比較。</li>
-        <li>Google Sheet 新增列，姓名欄要填上一個節點的 <code>name</code>，Email 欄要填 <code>email</code>。</li>
+        <li>Someone submits an order through Google Form → Slack posts "New order #<strong>1042</strong>, customer <strong>Chen Xiaoming</strong>, amount <strong>$3,500</strong>". Those three bold values come from upstream; you cannot hard-code them.</li>
+        <li>Every day at 08:00 → Gmail sends the "<strong>2026-08-16</strong> daily sales report", and the date has to be today, not yesterday.</li>
+        <li>An IF node condition: "notify the manager only when the amount is &gt; 1000". The value in front of that 1000 has to be pulled from the current item's amount field for the comparison.</li>
+        <li>Adding a row to Google Sheet, where the name column takes the previous node's <code>name</code> and the Email column takes <code>email</code>.</li>
       </ul>
-      <p>沒 Expression，你只能對每個客戶各做一個 workflow——那 n8n 就退化成一個很貴的 cron job 而已。<strong>Expression 是把「一條 workflow 通用到無限筆資料」的關鍵</strong>，也是 n8n 最能幫你省時間的功能，沒有之一。</p>
-      <div class="callout"><strong>本章目標：</strong>讀完你會知道 Expression 是什麼、怎麼開啟一個欄位的 Expression 模式、五個最常用的寫法、日期跟字串怎麼處理、拖拉怎麼免打 code、紅色 error 怎麼 debug。這章跟<a href="ch9_item_data_flow.html">第 9 章</a>綁在一起——item 是「資料在哪」，Expression 是「怎麼把它填到欄位裡」。</div>
+      <p>Without expressions you could only build one workflow per customer — which reduces n8n to a very expensive cron job. <strong>Expressions are what make one workflow serve an unlimited number of records</strong>, and no other n8n feature saves you more time.</p>
+      <div class="callout"><strong>Chapter goal:</strong> by the end you will know what an expression is, how to switch a field into Expression mode, the five forms you will use most, how to handle dates and strings, how dragging saves you from typing code, and how to debug a red error. This chapter is tied to <a href="ch9_item_data_flow.html">Chapter 9</a> — an item is "where the data is", and an expression is "how you get it into a field".</div>
     </section>
 
-    <section id="concept" data-nav="Expression 是動態填空">
-      <h2 data-icon="concept">Expression 就是「動態填空」</h2>
-      <p>先把觀念抓穩：n8n 每個節點裡的欄位（例：Slack 節點的 <code>Text</code> 欄）都有兩種填法。</p>
+    <section id="concept" data-nav="Dynamic fill-in">
+      <h2 data-icon="concept">An expression is a dynamic fill-in-the-blank</h2>
+      <p>Get the idea straight first: every field inside an n8n node (say the <code>Text</code> field on the Slack node) can be filled in two ways.</p>
       <table class="data-table">
         <thead>
-          <tr><th>填法</th><th>你寫的東西</th><th>執行時發生什麼</th><th>例子</th></tr>
+          <tr><th>What to enter</th><th>What you write</th><th>What happens at run time</th><th>Example</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>Fixed（靜態）</strong></td><td>直接打字，n8n 原封不動送出去。</td><td>每次跑都是一樣的文字。</td><td>欄位打 <code>hello world</code> → Slack 就永遠傳 <code>hello world</code>。</td></tr>
-          <tr><td><strong>Expression（動態）</strong></td><td>用 <code>{{ }}</code> 包起來，裡面寫一小段 JavaScript。</td><td>n8n 執行到這個節點時，先算 <code>{{ }}</code> 裡的結果，再把值填回去。</td><td>欄位打 <code>{{ $json.name }}</code>，執行時若當前 item 的 <code>name</code> 是 <code>Elmo</code> → Slack 傳的變成 <code>Elmo</code>。</td></tr>
+          <tr><td><strong>Fixed (static)</strong></td><td>You type directly and n8n sends it through untouched.</td><td>The same text on every run.</td><td>Type <code>hello world</code> in the field → Slack always sends <code>hello world</code>.</td></tr>
+          <tr><td><strong>Expression (dynamic)</strong></td><td>Wrap it in <code>{{ }}</code> and write a short piece of JavaScript inside.</td><td>When n8n reaches this node it evaluates what is inside <code>{{ }}</code> first, then writes the value back.</td><td>Type <code>{{ $json.name }}</code> in the field; at run time, if the current item's <code>name</code> is <code>Elmo</code> → Slack sends <code>Elmo</code>.</td></tr>
         </tbody>
       </table>
-      <p>切換方式：對著欄位<strong>上方的欄位標籤（或欄位本體）</strong>會看到一個 <strong>Expression</strong>／<strong>Fixed</strong> 的 toggle（新版 UI 顯示為 <strong>fx</strong> 小圖示與 Expression tab）。<strong>左邊 = Fixed 模式、右邊 = Expression 模式</strong>。切到 Expression 模式後，欄位背景會變成有格線的 code 欄樣式、還會多出下面的 preview 區塊——這是 Expression 模式的視覺標記，看到格線背景就是進到 code 世界了。</p>
-      <p>一個欄位還可以「靜態跟 Expression 混著寫」，例：欄位打 <code>新訂單 {{ $json.orderId }}</code>，靜態文字「新訂單 」照樣送，只有 <code>{{ }}</code> 那段會被替換掉。這是模板拼接最直覺的用法。</p>
-      <div class="callout tip"><strong>提示：</strong>Expression 用的是 JavaScript 子集加 n8n 自訂變數。你會的 JS 語法（<code>+</code>、<code>.toUpperCase()</code>、三元運算子 <code>a ? b : c</code>）都能寫。但不建議在裡面跑重邏輯或呼叫 API——那是 <a href="ch20_code_node.html">Code node（第 20 章）</a>的工作。</div>
+      <p>How to switch: at the <strong>field label above the field (or on the field itself)</strong> you will see an <strong>Expression</strong> / <strong>Fixed</strong> toggle (newer UI shows a small <strong>fx</strong> icon plus an Expression tab). <strong>Left = Fixed mode, right = Expression mode</strong>. Once you switch to Expression mode the field background turns into a gridded code style and a preview block appears underneath — that is the visual marker for Expression mode, and the gridded background means you have entered the world of code.</p>
+      <p>A field can also mix static text with an expression. Say the field holds <code>新訂單 {{ $json.orderId }}</code>: the static prefix is sent as it is, and only the <code>{{ }}</code> section gets replaced. This is the most intuitive way to build a template string.</p>
+      <div class="callout tip"><strong>Tip:</strong> expressions use a subset of JavaScript plus n8n's own variables. Any JS syntax you already know (<code>+</code>, <code>.toUpperCase()</code>, the ternary operator <code>a ? b : c</code>) works. What you should not do is run heavy logic or call an API in there — that is the job of the <a href="ch20_code_node.html">Code node (Chapter 20)</a>.</div>
     </section>
 
-    <section id="top5" data-nav="最常用 5 個寫法">
-      <h2 data-icon="tabs">最常用的五個 Expression 寫法</h2>
-      <p>八成場合都逃不出這五個。先把這五個看熟，之後其他變化都是組合技。</p>
+    <section id="top5" data-nav="Five core forms">
+      <h2 data-icon="tabs">The five expressions you will use most</h2>
+      <p>Eight cases out of ten come down to these five. Learn them well and everything else is a combination of them.</p>
       <table class="data-table">
         <thead>
-          <tr><th>#</th><th>寫法</th><th>意思</th><th>什麼時候用</th></tr>
+          <tr><th>#</th><th>How to write it</th><th>What it means</th><th>When to use it</th></tr>
         </thead>
         <tbody>
           <tr>
             <td>1</td>
             <td><code>{{ $json.field }}</code></td>
-            <td>當前 item 的某個欄位。</td>
-            <td>90% 的情況——Slack 訊息內容抓當前訂單編號、Gmail 主旨抓客戶姓名、Sheet 新增列填 email。</td>
+            <td>A field on the current item.</td>
+            <td>90% of cases — pulling the current order number into a Slack message, the customer name into a Gmail subject, the email into a new Sheet row.</td>
           </tr>
           <tr>
             <td>2</td>
             <td><code>{{ $('Google Sheets').item.json.field }}</code></td>
-            <td>抓上游「指定節點」的資料，不管中間隔了幾站。</td>
-            <td>經過 IF、Set、Merge 之後還想回頭抓原始的表單資料。</td>
+            <td>Takes data from a specific upstream node, however many stops sit in between.</td>
+            <td>You have been through IF, Set and Merge and still want the original form data.</td>
           </tr>
           <tr>
             <td>3</td>
             <td><code>{{ $now }}</code></td>
-            <td>現在的時間（Luxon DateTime 物件，含 workflow 時區）。等價於 <code>DateTime.now()</code>。</td>
-            <td>Gmail 主旨加日期、Sheet 新增列填時間戳、跟其他日期做加減。</td>
+            <td>The current time (a Luxon DateTime object, in the workflow timezone). Equivalent to <code>DateTime.now()</code>.</td>
+            <td>Adding a date to a Gmail subject, writing a timestamp into a new Sheet row, doing arithmetic against another date.</td>
           </tr>
           <tr>
             <td>4</td>
             <td><code>{{ $json.items.length }}</code></td>
-            <td>某個陣列的長度。</td>
-            <td>Slack 通知「共 <code>{{ $json.orders.length }}</code> 筆訂單」、IF 節點判斷「有沒有超過 10 筆」。</td>
+            <td>The length of an array.</td>
+            <td>A Slack notification saying there are <code>{{ $json.orders.length }}</code> orders in total, or an IF node checking whether there are more than 10.</td>
           </tr>
           <tr>
             <td>5</td>
             <td><code>{{ $json.name.toUpperCase() }}</code></td>
-            <td>對字串呼叫方法（JavaScript String 全套方法都能用）。</td>
-            <td>統一大小寫、截字串、trim 空白、replace 文字。</td>
+            <td>Calling a method on a string (the whole JavaScript String set is available).</td>
+            <td>Normalizing case, cutting a string short, trimming whitespace, replacing text.</td>
           </tr>
         </tbody>
       </table>
-      <p>裡面 <code>$json</code>、<code>$now</code>、<code>$()</code> 這些是 n8n 幫你注入的<strong>內建變數</strong>。它們不是 JavaScript 原生的，是 n8n 自己準備好、你直接用就好。詳細清單在<a href="ch20_code_node.html">第 20 章</a>會展開，這章先熟這幾個。</p>
-      <div class="callout warn"><strong>注意：</strong><code>$('Google Sheets').item.json.field</code> 是<strong>新版寫法</strong>（0.190+ 版後主推），同樣的功能舊版寫作 <code>$node['Google Sheets'].json.field</code>。兩種都還能跑（n8n 保留舊寫法向後相容）。要留意兩者的<strong>對齊語意</strong>：<code>$('Node').item</code> 明確走 <strong>pairedItem</strong> 對齊當前 iteration；<code>$node['Node'].json</code> 也是抓當前 run 的對應 item，但寫法上少了 <code>.item</code> 那層，行為等價。實務看到別人的 workflow 兩種混用是正常的。</div>
+      <p><code>$json</code>, <code>$now</code> and <code>$()</code> here are <strong>built-in variables</strong> that n8n injects for you. They are not native JavaScript; n8n prepares them and you simply use them. <a href="ch20_code_node.html">Chapter 20</a> spells out the full list — for this chapter, get comfortable with these few.</p>
+      <div class="callout warn"><strong>Warning:</strong> <code>$('Google Sheets').item.json.field</code> is the <strong>newer form</strong> (the one promoted since 0.190+); the older form for the same thing is <code>$node['Google Sheets'].json.field</code>. Both still run, because n8n keeps the old form for backward compatibility. Watch the <strong>alignment semantics</strong> of the two: <code>$('Node').item</code> explicitly goes through <strong>pairedItem</strong> to align with the current iteration; <code>$node['Node'].json</code> also takes the matching item from the current run, but the form is missing the <code>.item</code> layer — the behavior is equivalent. Seeing both mixed in someone else's workflow is normal.</div>
     </section>
 
-    <section id="drag" data-nav="拖拉建 Expression">
-      <h2 data-icon="steps">拖拉建 Expression（最推薦，不用背語法）</h2>
-      <p>老實說，寫 Expression <strong>幾乎不需要自己打 code</strong>——n8n 的 Expression 編輯器有個很好用的「拖拉」機制，欄位名字你都不用記，滑鼠拉一下就變好了。這是所有 n8n 初學者最該學的一招。</p>
+    <section id="drag" data-nav="Drag to build">
+      <h2 data-icon="steps">Build expressions by dragging (recommended — no syntax to memorize)</h2>
+      <p>Honestly, writing an expression <strong>almost never means typing code yourself</strong> — the n8n expression editor has a very good drag mechanism, so you do not have to remember any field name; one pull with the mouse and it is written. This is the one trick every n8n beginner should learn first.</p>
       <ol class="steps">
         <li>
-          <h3>先讓上游節點跑一次</h3>
-          <p>對上游那個節點按 <strong>Execute step</strong>（節點下方的小 play 按鈕），讓它產出 output。沒 output 的話 Expression 編輯器不知道有哪些欄位可以拉，會顯示空白 schema。</p>
+          <h3>Run the upstream node once first</h3>
+          <p>Click <strong>Execute step</strong> on that upstream node (the small play button underneath it) so it produces output. Without output, the expression editor does not know which fields you can drag and shows an empty schema.</p>
         </li>
         <li>
-          <h3>打開你要寫 Expression 的下游節點</h3>
-          <p>雙擊節點打開設定面板。找到你要動的那個欄位（例：Slack 節點的 <code>Text</code>）。</p>
+          <h3>Open the downstream node you want the expression in</h3>
+          <p>Double-click the node to open its settings panel. Find the field you want to change (say <code>Text</code> on the Slack node).</p>
         </li>
         <li>
-          <h3>把欄位切到 Expression 模式</h3>
-          <p>欄位上方會有 <strong>Fixed / Expression</strong> 的 tab（或 <strong>fx</strong> 小圖示），點 Expression 那一邊。欄位背景會變成有格線的 code 樣式，代表切成功了。</p>
+          <h3>Switch the field into Expression mode</h3>
+          <p>Above the field there is a <strong>Fixed / Expression</strong> tab (or a small <strong>fx</strong> icon); click the Expression side. The field background turns into a gridded code style, which means the switch worked.</p>
         </li>
         <li>
-          <h3>從左邊 INPUT 面板把欄位拖進去</h3>
-          <p>Expression 編輯器打開後，畫面左邊會滑出「INPUT」panel，列出上游節點所有欄位（可以切 Table / JSON / Schema 三種檢視）。<strong>直接把某個欄位拖到 Expression 欄裡</strong>，n8n 會自動幫你生出正確的寫法，例：拖 <code>name</code> 就變成 <code>{{ $json.name }}</code>。</p>
+          <h3>Drag a field in from the INPUT panel on the left</h3>
+          <p>Once the expression editor opens, an "INPUT" panel slides out on the left listing every field from the upstream node (you can switch between the Table / JSON / Schema views). <strong>Drag a field straight into the expression box</strong> and n8n writes the correct form for you: drag <code>name</code> and you get <code>{{ $json.name }}</code>.</p>
         </li>
         <li>
-          <h3>看下面的 Result 預覽</h3>
-          <p>Expression 欄下方會有一列 <strong>Result:</strong>，即時顯示這個 Expression 算出來的值。看到你預期的值就對了；顯示紅字或空的就代表 Expression 有問題。</p>
+          <h3>Check the Result preview underneath</h3>
+          <p>Below the expression box there is a <strong>Result:</strong> line showing, live, the value this expression evaluates to. Seeing the value you expected means you are done; red text or an empty result means the expression has a problem.</p>
         </li>
         <li>
-          <h3>需要混文字就直接打</h3>
-          <p>拖出來的 Expression 前後可以加靜態文字。例：Expression 欄目前是 <code>{{ $json.name }}</code>，你在前面補 <code>Hi </code> → 變成 <code>Hi {{ $json.name }}</code>，preview 立刻更新成 <code>Hi Elmo</code>。</p>
+          <h3>Type static text straight in when you need it</h3>
+          <p>You can add static text before or after the expression you dragged in. Say the expression box currently holds <code>{{ $json.name }}</code> and you add <code>Hi </code> in front → it becomes <code>Hi {{ $json.name }}</code>, and the preview updates immediately to <code>Hi Elmo</code>.</p>
         </li>
       </ol>
-      <div class="callout tip"><strong>提示：</strong>不熟哪個欄位叫什麼名字？把 INPUT 面板切到 <strong>Schema</strong> 檢視——只列欄位名跟型別、不塞值，一眼看清楚整個結構。<a href="ch9_item_data_flow.html">第 9 章</a>強調 Schema 檢視很重要就是這個原因。</div>
+      <div class="callout tip"><strong>Tip:</strong> not sure what a field is called? Switch the INPUT panel to the <strong>Schema</strong> view — it lists field names and types only, with no values, so the whole structure is clear at a glance. That is exactly why <a href="ch9_item_data_flow.html">Chapter 9</a> makes a point of the Schema view.</div>
     </section>
 
-    <section id="datetime" data-nav="日期時間">
-      <h2 data-icon="what">日期時間：Luxon 上場</h2>
-      <p>n8n 的 Expression 用 <strong>Luxon</strong> 這個 JS 日期函式庫來處理時間（不是原生 <code>Date</code>，也不是 Moment）。Luxon 的好處是它支援時區、支援日曆算數，語法比原生 Date 簡潔太多。</p>
+    <section id="datetime" data-nav="Dates and times">
+      <h2 data-icon="what">Dates and times: enter Luxon</h2>
+      <p>n8n expressions handle time with <strong>Luxon</strong>, a JS date library (not the native <code>Date</code>, and not Moment). Luxon's advantages are timezone support and calendar arithmetic, with far tidier syntax than the native Date.</p>
       <table class="data-table">
         <thead>
-          <tr><th>寫法</th><th>結果</th><th>什麼時候用</th></tr>
+          <tr><th>How to write it</th><th>Result</th><th>When to use it</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>{{ $now }}</code></td><td>現在，Luxon DateTime 物件（含時區）。</td><td>時間戳、Gmail 主旨、記錄「這筆是什麼時候處理的」。</td></tr>
-          <tr><td><code>{{ $today }}</code></td><td>今天的日期，時間為 00:00（依 workflow timezone 決定，行為近似 <code>$now.startOf('day')</code>）。</td><td>只要日期不要時間、篩「今天新增」的資料。</td></tr>
-          <tr><td><code>{{ $now.plus({ days: 3 }) }}</code></td><td>三天後的同一時刻。</td><td>設到期日、算「三天內未回覆就通知」。</td></tr>
-          <tr><td><code>{{ $now.minus({ hours: 1 }) }}</code></td><td>一小時前。</td><td>API query 「近一小時新資料」。</td></tr>
-          <tr><td><code>{{ $now.startOf('day') }}</code></td><td>今天 00:00:00。</td><td>抓「今天全部」的起點時間。</td></tr>
-          <tr><td><code>{{ $now.toFormat('yyyy-MM-dd') }}</code></td><td>字串 <code>2026-08-16</code>。</td><td>塞進 Gmail 主旨、檔案名稱、Sheet 欄位。</td></tr>
-          <tr><td><code>{{ $now.toFormat('yyyy-MM-dd HH:mm') }}</code></td><td>字串 <code>2026-08-16 14:30</code>。</td><td>要包含小時分鐘的時間戳。</td></tr>
-          <tr><td><code>{{ DateTime.fromISO($json.created_at) }}</code></td><td>把 API 回來的 ISO 字串轉成 Luxon 物件。</td><td>要對 API 給的日期做加減或格式化。</td></tr>
+          <tr><td><code>{{ $now }}</code></td><td>Now, as a Luxon DateTime object (with timezone).</td><td>Timestamps, Gmail subjects, recording "when this record was processed".</td></tr>
+          <tr><td><code>{{ $today }}</code></td><td>Today's date with the time at 00:00 (decided by the workflow timezone; behaves much like <code>$now.startOf('day')</code>).</td><td>When you want the date without the time, or to filter for records added today.</td></tr>
+          <tr><td><code>{{ $now.plus({ days: 3 }) }}</code></td><td>The same moment three days later.</td><td>Setting a due date, or working out "notify if there is no reply within three days".</td></tr>
+          <tr><td><code>{{ $now.minus({ hours: 1 }) }}</code></td><td>One hour ago.</td><td>An API query for "new data in the last hour".</td></tr>
+          <tr><td><code>{{ $now.startOf('day') }}</code></td><td>Today at 00:00:00.</td><td>The start time when you want "everything from today".</td></tr>
+          <tr><td><code>{{ $now.toFormat('yyyy-MM-dd') }}</code></td><td>The string <code>2026-08-16</code>.</td><td>Dropping into a Gmail subject, a file name, or a Sheet column.</td></tr>
+          <tr><td><code>{{ $now.toFormat('yyyy-MM-dd HH:mm') }}</code></td><td>The string <code>2026-08-16 14:30</code>.</td><td>A timestamp that has to include hours and minutes.</td></tr>
+          <tr><td><code>{{ DateTime.fromISO($json.created_at) }}</code></td><td>Turns an ISO string returned by an API into a Luxon object.</td><td>When you need to do arithmetic on, or format, a date an API gave you.</td></tr>
         </tbody>
       </table>
-      <p>Luxon 的日曆單位（<code>days</code>、<code>hours</code>、<code>months</code>、<code>weeks</code>、<code>years</code>）都能用，複數 s 別漏。<code>toFormat</code> 的 pattern 也是 Luxon 專屬——<code>yyyy</code> 四位年、<code>MM</code> 兩位月、<code>dd</code> 兩位日、<code>HH</code> 24 小時制、<code>mm</code> 分。</p>
-      <div class="callout warn"><strong>注意：</strong>時區跑掉是最常見的日期坑。n8n 預設用<strong>系統時區</strong>（self-host 看 container 時區、Cloud 看你 workspace 設定）。要精準到台北時間，去 workflow 右上角 <strong>Settings → Timezone</strong> 設 <code>Asia/Taipei</code>，之後 <code>$now</code>、<code>$today</code> 就是台北時間。跨時區資料再另外用 <code>.setZone('Asia/Taipei')</code> 明確指定。</div>
+      <p>Every Luxon calendar unit works (<code>days</code>, <code>hours</code>, <code>months</code>, <code>weeks</code>, <code>years</code>) — do not drop the plural s. The <code>toFormat</code> pattern is Luxon-specific too: <code>yyyy</code> is a four-digit year, <code>MM</code> a two-digit month, <code>dd</code> a two-digit day, <code>HH</code> the 24-hour clock, <code>mm</code> minutes.</p>
+      <div class="callout warn"><strong>Warning:</strong> a drifting timezone is the most common date trap. By default n8n uses the <strong>system timezone</strong> (self-hosted takes the container's timezone, Cloud takes your workspace setting). To be exact about Taipei time, open <strong>Settings → Timezone</strong> in the top right of the workflow and set <code>Asia/Taipei</code>; after that <code>$now</code> and <code>$today</code> are Taipei time. For data that crosses timezones, state it explicitly with <code>.setZone('Asia/Taipei')</code>.</div>
     </section>
 
-    <section id="strings" data-nav="字串拼接">
-      <h2 data-icon="what">字串拼接：三種寫法選一種</h2>
-      <p>Slack 訊息、Gmail 主旨、Sheet 欄位都是字串——把上游欄位塞進一段話，n8n 提供三種寫法，你選最順的就好，能達成同樣的事情。</p>
+    <section id="strings" data-nav="Joining strings">
+      <h2 data-icon="what">Joining strings: pick one of three styles</h2>
+      <p>Slack messages, Gmail subjects and Sheet columns are all strings — to drop an upstream field into a sentence, n8n gives you three styles. Pick whichever reads best to you; they all achieve the same thing.</p>
       <table class="data-table">
         <thead>
-          <tr><th>寫法</th><th>結果</th><th>什麼時候用</th></tr>
+          <tr><th>How to write it</th><th>Result</th><th>When to use it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>欄位混寫：<br><code>Hi {{ $json.name }}</code></td>
-            <td>算出 <code>Hi Elmo</code>。</td>
-            <td><strong>最推薦。</strong>只要 <code>{{ }}</code> 外面是靜態文字，直接混寫最短。</td>
+            <td>Mixed into the field:<br><code>Hi {{ $json.name }}</code></td>
+            <td>Evaluates to <code>Hi Elmo</code>.</td>
+            <td><strong>The one to prefer.</strong> As long as what sits outside the <code>{{ }}</code> is static text, mixing directly is the shortest.</td>
           </tr>
           <tr>
-            <td>加號拼：<br><code>{{ 'Hi ' + $json.name }}</code></td>
-            <td>算出 <code>Hi Elmo</code>。</td>
-            <td>要在 <code>{{ }}</code> 裡面組字串（例：整個放進一個 <code>toUpperCase()</code>）時。</td>
+            <td>Plus sign:<br><code>{{ 'Hi ' + $json.name }}</code></td>
+            <td>Evaluates to <code>Hi Elmo</code>.</td>
+            <td>When you have to build the string inside the <code>{{ }}</code> — for example to wrap the whole thing in <code>toUpperCase()</code>.</td>
           </tr>
           <tr>
-            <td>Template literal（backtick）：<br><code>{{ `Hi ${$json.name}, 訂單 ${$json.orderId}` }}</code></td>
-            <td>算出 <code>Hi Elmo, 訂單 1042</code>。</td>
-            <td>要在一個 <code>{{ }}</code> 內插多個變數且中間有中英文標點時最乾淨。</td>
+            <td>Template literal (backtick):<br><code>{{ `Hi ${$json.name}, 訂單 ${$json.orderId}` }}</code></td>
+            <td>Evaluates to <code>Hi Elmo, 訂單 1042</code>.</td>
+            <td>Cleanest when one <code>{{ }}</code> has to interpolate several variables with punctuation between them.</td>
           </tr>
         </tbody>
       </table>
-      <p>字串處理常用方法（都是 JavaScript String 標準方法）：</p>
+      <p>Common string methods (all standard JavaScript String methods):</p>
       <table class="data-table">
         <thead>
-          <tr><th>寫法</th><th>做什麼</th><th>例子</th></tr>
+          <tr><th>How to write it</th><th>What it does</th><th>Example</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>.toUpperCase()</code></td><td>全大寫。</td><td><code>{{ $json.code.toUpperCase() }}</code> → <code>ABC123</code></td></tr>
-          <tr><td><code>.toLowerCase()</code></td><td>全小寫。</td><td><code>{{ $json.email.toLowerCase() }}</code></td></tr>
-          <tr><td><code>.trim()</code></td><td>去頭尾空白。</td><td>從 Google Form 拿到 <code>"  Elmo  "</code> 用它清乾淨。</td></tr>
-          <tr><td><code>.slice(0, 100)</code></td><td>截前 100 字。</td><td>Slack 訊息預覽避免爆掉：<code>{{ $json.body.slice(0, 100) }}</code></td></tr>
-          <tr><td><code>.replace('舊', '新')</code></td><td>取代。</td><td><code>{{ $json.phone.replace(/-/g, '') }}</code>（去掉所有 <code>-</code>）</td></tr>
-          <tr><td><code>.split(',')</code></td><td>切成陣列。</td><td>把 <code>a,b,c</code> 變成 <code>['a','b','c']</code>。</td></tr>
+          <tr><td><code>.toUpperCase()</code></td><td>Upper-cases everything.</td><td><code>{{ $json.code.toUpperCase() }}</code> → <code>ABC123</code></td></tr>
+          <tr><td><code>.toLowerCase()</code></td><td>Lower-cases everything.</td><td><code>{{ $json.email.toLowerCase() }}</code></td></tr>
+          <tr><td><code>.trim()</code></td><td>Strips leading and trailing whitespace.</td><td>Use it to clean up the <code>"  Elmo  "</code> you got from Google Form.</td></tr>
+          <tr><td><code>.slice(0, 100)</code></td><td>Takes the first 100 characters.</td><td>Keeps a Slack message preview from blowing up: <code>{{ $json.body.slice(0, 100) }}</code></td></tr>
+          <tr><td><code>.replace('舊', '新')</code></td><td>Replaces text.</td><td><code>{{ $json.phone.replace(/-/g, '') }}</code> (removes every <code>-</code>)</td></tr>
+          <tr><td><code>.split(',')</code></td><td>Splits into an array.</td><td>Turns <code>a,b,c</code> into <code>['a','b','c']</code>.</td></tr>
         </tbody>
       </table>
-      <div class="callout tip"><strong>提示：</strong>不確定當前 item 的欄位是不是 undefined？用 <strong>optional chaining</strong>：<code>{{ $json.name?.toUpperCase() }}</code>。加個 <code>?</code>，<code>name</code> 不存在就回 <code>undefined</code> 不噴錯，比 <code>if</code> 判斷精簡很多。</div>
+      <div class="callout tip"><strong>Tip:</strong> not sure whether a field on the current item is undefined? Use <strong>optional chaining</strong>: <code>{{ $json.name?.toUpperCase() }}</code>. Add a <code>?</code> and, when <code>name</code> does not exist, you get <code>undefined</code> back instead of an error — far tidier than an <code>if</code> check.</div>
     </section>
 
-    <section id="use_cases" data-nav="常見 Expression 場景">
-      <h2 data-icon="tabs">常見場景直接抄</h2>
-      <p>把你會遇到的常見 use case 跟對應寫法列成一張表——把 workflow 打開，欄位切 Expression 模式，直接照抄就能跑。</p>
+    <section id="use_cases" data-nav="Common cases">
+      <h2 data-icon="tabs">Common cases you can copy</h2>
+      <p>Here are the common use cases you will meet and the expression for each — open the workflow, switch the field to Expression mode, and copy them as-is.</p>
       <figure class="shot">
-        <img src="../assets/screenshots/ch14/01_expression_canvas.png" alt="AI 對接 Odoo 任務流 v2 workflow 內含 Expression 引用" />
-        <figcaption><strong>圖 14-1</strong>「AI × Odoo 任務流 v2」實例：六個節點裡多處欄位用 Expression 引用上游 AI 節點的輸出，讓一條 workflow 動態處理無限筆任務。</figcaption>
+        <img src="../assets/screenshots/ch14/01_expression_canvas.png" alt="The AI to Odoo task flow v2 workflow, with expression references inside" />
+        <figcaption><strong>Figure 14-1</strong>The "AI × Odoo task flow v2" example: across six nodes, several fields use expressions to reference the upstream AI node's output, so one workflow handles an unlimited number of tasks dynamically.</figcaption>
       </figure>
       <table class="data-table">
         <thead>
-          <tr><th>場景</th><th>Expression 寫法</th><th>解釋</th></tr>
+          <tr><th>Scenario</th><th>Expression</th><th>What it means</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>Slack 訊息模板：新訂單通知</td>
+            <td>Slack message template: new order notification</td>
             <td><code>{{ `新訂單 #${$json.orderId}｜客戶 ${$json.customer}｜金額 $${$json.amount}` }}</code></td>
-            <td>用 template literal 一次組完，中文分隔符照打。</td>
+            <td>Built in one template literal, with the separator characters typed straight in.</td>
           </tr>
           <tr>
-            <td>Google Sheet 新列，姓名欄</td>
+            <td>New Google Sheet row, name column</td>
             <td><code>{{ $('Webhook').item.json.name }}</code></td>
-            <td>指定回頭抓 Webhook 那個節點的 <code>name</code>，就算中間插 Set 也不會斷。</td>
+            <td>Explicitly reaches back for <code>name</code> on the Webhook node, so it does not break even if a Set node is dropped in between.</td>
           </tr>
           <tr>
-            <td>Gmail 主旨動態日期</td>
+            <td>Dynamic date in a Gmail subject</td>
             <td><code>{{ '銷售日報 - ' + $now.toFormat('yyyy-MM-dd') }}</code></td>
-            <td>Fixed 文字加 Luxon 格式化，跑起來變 <code>銷售日報 - 2026-08-16</code>。</td>
+            <td>Fixed text plus Luxon formatting; at run time it becomes <code>銷售日報 - 2026-08-16</code>.</td>
           </tr>
           <tr>
-            <td>IF 節點條件：金額大於 1000</td>
-            <td>左邊值 <code>{{ $json.amount }}</code>，operator 選 <code>&gt;</code>，右邊值 <code>1000</code></td>
-            <td>IF 節點<strong>不吃 raw boolean</strong>——operator 一定要用它 UI 選；左右兩格才是 Expression 欄。要組合條件請用<strong>多個 condition + AND/OR</strong>，或前面接一個 Set 節點先算好 boolean 再用 IF 判斷。</td>
+            <td>IF node condition: amount greater than 1000</td>
+            <td>Left value <code>{{ $json.amount }}</code>, operator <code>&gt;</code>, right value <code>1000</code></td>
+            <td>The IF node <strong>does not take a raw boolean</strong> — the operator has to be picked in its UI, and only the left and right boxes are expression fields. To combine conditions use <strong>several conditions plus AND/OR</strong>, or put a Set node in front to work the boolean out first and let IF test that.</td>
           </tr>
           <tr>
-            <td>HTTP Request URL 動態</td>
+            <td>Dynamic HTTP Request URL</td>
             <td><code>https://api.example.com/orders/{{ $json.orderId }}</code></td>
-            <td>URL 也支援 Expression 混寫，把 orderId 塞進 path。</td>
+            <td>URLs support mixed expressions too, so orderId goes straight into the path.</td>
           </tr>
           <tr>
-            <td>Airtable 上傳，把 tags 陣列轉字串</td>
+            <td>Airtable upload: turn the tags array into a string</td>
             <td><code>{{ $json.tags.join(', ') }}</code></td>
-            <td>Airtable 有些欄位只吃字串，用 <code>join</code> 把陣列變逗號分隔。</td>
+            <td>Some Airtable fields only accept strings, so <code>join</code> turns the array into a comma-separated list.</td>
           </tr>
           <tr>
-            <td>檔案命名帶時間戳</td>
+            <td>File name with a timestamp</td>
             <td><code>{{ 'report_' + $now.toFormat('yyyyMMdd_HHmm') + '.pdf' }}</code></td>
-            <td>結果 <code>report_20260816_1430.pdf</code>，避免同名覆蓋。</td>
+            <td>Gives <code>report_20260816_1430.pdf</code>, so nothing is overwritten by a same-named file.</td>
           </tr>
           <tr>
-            <td>三元運算子：有值用值、沒值用預設</td>
+            <td>Ternary operator: use the value if there is one, otherwise a default</td>
             <td><code>{{ $json.nickname ? $json.nickname : $json.name }}</code></td>
-            <td>暱稱優先，沒暱稱回退到本名。也可寫更短的 <code>{{ $json.nickname || $json.name }}</code>。</td>
+            <td>Nickname first, falling back to the real name when there is none. There is a shorter form: <code>{{ $json.nickname || $json.name }}</code>.</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="debug" data-nav="紅色 error 怎麼看">
-      <h2 data-icon="troubleshoot">紅色 error 怎麼看</h2>
-      <p>Expression 欄位噴紅字或欄位邊框變紅，不用慌——n8n 已經在 Expression 面板下方直接告訴你原因，看懂它給的訊息就能修。以下四種是最常見的紅字類型跟解法。</p>
+    <section id="debug" data-nav="Reading red errors">
+      <h2 data-icon="troubleshoot">How to read a red error</h2>
+      <p>Red text in an expression field, or a red border around it, is nothing to panic about — n8n tells you the reason right below the expression panel, and once you can read that message you can fix it. These four are the most common kinds of red text and their fixes.</p>
       <ol class="steps">
         <li>
-          <h3>Result 顯示 <code>undefined</code></h3>
-          <p>最常見。原因通常是<strong>欄位名打錯</strong>——例：真實欄位叫 <code>name</code>，你打 <code>$json.namee</code> 多一個 e。修法：切 INPUT 面板到 <strong>Schema</strong> 檢視，確認真實欄位名怎麼寫（大小寫、有沒有空格、是不是 <code>data.name</code> 這種巢狀）。用拖拉的就不會打錯。</p>
+          <h3>The Result shows <code>undefined</code></h3>
+          <p>The most common one. Usually a <strong>misspelled field name</strong> — the real field is <code>name</code> and you typed <code>$json.namee</code> with an extra e. The fix: switch the INPUT panel to the <strong>Schema</strong> view and confirm how the field is really written (case, spaces, whether it is nested like <code>data.name</code>). Dragging never misspells.</p>
         </li>
         <li>
-          <h3>Result 顯示 <code>[Cannot read property 'X' of undefined]</code></h3>
-          <p>你要抓的東西<strong>它的父層根本沒東西</strong>。例：<code>$json.customer.email</code>，但 <code>customer</code> 這個欄位不存在，n8n 讀不到 <code>email</code> 就噴這個。解法：（a）用 optional chaining <code>$json.customer?.email</code> 避開；（b）先修上游節點，確認它真的有回傳 <code>customer</code>。</p>
+          <h3>The Result shows <code>[Cannot read property 'X' of undefined]</code></h3>
+          <p><strong>The parent of the thing you are reaching for is empty</strong>. Take <code>$json.customer.email</code>: the <code>customer</code> field does not exist, so n8n cannot read <code>email</code> and throws this. Two fixes: (a) sidestep it with optional chaining, <code>$json.customer?.email</code>; (b) fix the upstream node first and confirm it really returns <code>customer</code>.</p>
         </li>
         <li>
-          <h3>Result 顯示 <code>[Referenced node doesn't exist]</code></h3>
-          <p>你用 <code>$('Google Sheets')</code> 或 <code>$node['Google Sheets']</code>，但畫布上根本沒有叫「Google Sheets」的節點——通常是節點名稱被改過（雙擊節點會改名），或大小寫、空格對不上。修法：回畫布看那個節點<strong>實際</strong>叫什麼名字（連空格都要精確），複製過來替換。</p>
+          <h3>The Result shows <code>[Referenced node doesn't exist]</code></h3>
+          <p>You wrote <code>$('Google Sheets')</code> or <code>$node['Google Sheets']</code>, but there is no node called "Google Sheets" on the canvas — usually the node was renamed (double-click a node to rename it), or the case or the spacing does not match. The fix: go back to the canvas and see what the node is <strong>actually</strong> called (spaces included), then copy that name across.</p>
         </li>
         <li>
-          <h3>Result 顯示 schema 而非實際值</h3>
-          <p>Preview 只顯示欄位結構、沒實際值？代表<strong>該上游節點還沒跑過</strong>——n8n 不知道實際會抓到什麼。解法：對上游節點按一次 <strong>Execute step</strong>，讓它產出真的 output，回來 Result 就會有實際值了。</p>
+          <h3>The Result shows a schema instead of real values</h3>
+          <p>The preview shows the field structure but no real values? That means <strong>the upstream node has not run yet</strong> — n8n does not know what it will actually fetch. The fix: click <strong>Execute step</strong> once on the upstream node so it produces real output, and Result will have real values when you come back.</p>
         </li>
       </ol>
-      <div class="callout"><strong>觀念：</strong>Expression 面板下方的 <strong>Result:</strong> 是你最重要的 debug 工具。改 Expression 的過程<strong>眼睛不要離開 Result</strong>——每打一個字就看 Result 有沒有變成你要的值。這樣有錯馬上發現，不用等整個 workflow 跑完才知道爆炸。</div>
+      <div class="callout"><strong>Concept:</strong> the <strong>Result:</strong> line under the expression panel is your most important debugging tool. While you edit an expression, <strong>keep your eyes on Result</strong> — check after every character whether it has become the value you want. That way you catch a mistake immediately instead of waiting for the whole workflow to finish to learn that it blew up.</div>
     </section>
 
-    <section id="advanced_vars" data-nav="$node vs $json vs $input">
-      <h2 data-icon="advanced">進階：<code>$json</code>、<code>$node</code>、<code>$input</code> 到底差在哪</h2>
-      <p>看到別人的 workflow 三種寫法混用會混亂，但邏輯很簡單——它們的差別是「拿的是誰的資料」跟「拿的是一個 item 還是全部」。</p>
+    <section id="advanced_vars" data-nav="$json, $node, $input">
+      <h2 data-icon="advanced">Advanced: how <code>$json</code>, <code>$node</code> and <code>$input</code> differ</h2>
+      <p>Seeing all three mixed in someone else's workflow is confusing, but the logic is simple — they differ on whose data you are taking, and on whether you take one item or all of them.</p>
       <table class="data-table">
         <thead>
-          <tr><th>變數</th><th>指的是</th><th>什麼時候用</th></tr>
+          <tr><th>Variable</th><th>What it refers to</th><th>When to use it</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><code>$json</code></td>
-            <td><strong>當前這一輪 iteration</strong> 的那個 item 的 <code>json</code> 部分。</td>
-            <td>90% 場合。節點被連跑 N 次，每次 <code>$json</code> 指不同 item。</td>
+            <td><strong>The current iteration's</strong> item, specifically its <code>json</code> part.</td>
+            <td>90% of cases. The node runs N times in a row, and each time <code>$json</code> points at a different item.</td>
           </tr>
           <tr>
             <td><code>$binary</code></td>
-            <td>當前 item 的 binary 部分（有附件才有）。</td>
-            <td>處理檔案時：<code>$binary.attachment_0.fileName</code>。</td>
+            <td>The binary part of the current item (only there when it has an attachment).</td>
+            <td>When you handle files: <code>$binary.attachment_0.fileName</code>.</td>
           </tr>
           <tr>
             <td><code>$input.item</code></td>
-            <td>當前 item 完整物件（包含 <code>json</code> 跟 <code>binary</code>）。</td>
-            <td>Code node 或需要一次取 <code>json</code> 跟 <code>binary</code> 時。</td>
+            <td>The whole current item object (both <code>json</code> and <code>binary</code>).</td>
+            <td>In a Code node, or when you need <code>json</code> and <code>binary</code> at once.</td>
           </tr>
           <tr>
             <td><code>$input.all()</code></td>
-            <td>當前節點吃到的<strong>全部 items 陣列</strong>（每個元素含 <code>.json</code> 跟 <code>.binary</code>）。</td>
-            <td>要對整批做 aggregation（<code>$input.all().length</code>、<code>$input.all().map(i =&gt; i.json.amount).reduce(...)</code>），在 Expression 跟 Code node（<a href="ch20_code_node.html">第 20 章</a>）都能用。</td>
+            <td><strong>The array of all items</strong> this node received (each element carries <code>.json</code> and <code>.binary</code>).</td>
+            <td>Aggregating over the whole batch (<code>$input.all().length</code>, <code>$input.all().map(i =&gt; i.json.amount).reduce(...)</code>); available both in expressions and in the Code node (<a href="ch20_code_node.html">Chapter 20</a>).</td>
           </tr>
           <tr>
             <td><code>$input.first()</code> / <code>$input.last()</code></td>
-            <td>當前節點吃到的<strong>第一個 / 最後一個 item</strong>。</td>
-            <td>取批次頭尾做 summary（例：報表節點只需要開始時間 <code>$input.first().json.startedAt</code>）。</td>
+            <td><strong>The first / last item</strong> this node received.</td>
+            <td>Taking the head or the tail of a batch for a summary (a report node that only needs the start time, <code>$input.first().json.startedAt</code>).</td>
           </tr>
           <tr>
             <td><code>$('NodeName')</code></td>
-            <td>上游任一節點（不限直接上游）的 output。</td>
-            <td>抓兩三站前的原始資料。新寫法。</td>
+            <td>The output of any upstream node, not only the one directly connected.</td>
+            <td>Taking the original data from two or three stops back. The newer form.</td>
           </tr>
           <tr>
             <td><code>$node['NodeName']</code></td>
-            <td>同上，舊寫法。</td>
-            <td>看舊 workflow 或 template 會遇到，功能一樣。</td>
+            <td>The same, in the older form.</td>
+            <td>You will meet it in older workflows and templates; it does the same job.</td>
           </tr>
           <tr>
             <td><code>$now</code> / <code>$today</code></td>
-            <td>現在時間 / 今天 00:00（Luxon DateTime，含 workflow timezone）。</td>
-            <td>日期時間相關全部用它。也可寫 <code>DateTime.now()</code> 拿到同型別物件。</td>
+            <td>The current time / today at 00:00 (a Luxon DateTime, in the workflow timezone).</td>
+            <td>Use it for everything to do with dates and times. <code>DateTime.now()</code> gives you an object of the same type.</td>
           </tr>
           <tr>
             <td><code>$itemIndex</code></td>
-            <td>當前 iteration 這個 item 在<strong>本節點輸入陣列裡的索引</strong>（從 0 開始）。</td>
-            <td>第一筆做開場、每 10 筆加分隔、要在訊息裡帶「第 N 筆」時：<code>{{ $itemIndex + 1 }}</code>。</td>
+            <td>This iteration's item and <strong>its index in this node's input array</strong> (starting at 0).</td>
+            <td>An opening line for the first record, a separator every 10 records, or putting "record N" into a message: <code>{{ $itemIndex + 1 }}</code>.</td>
           </tr>
           <tr>
             <td><code>$workflow</code></td>
-            <td>當前 workflow 的資料（<code>.id</code>、<code>.name</code>、<code>.active</code>）。</td>
-            <td>錯誤通知裡放 workflow 名字方便追蹤。</td>
+            <td>Data about the current workflow (<code>.id</code>, <code>.name</code>, <code>.active</code>).</td>
+            <td>Putting the workflow name into a failure notification so it is easy to trace.</td>
           </tr>
           <tr>
             <td><code>$execution</code></td>
-            <td>當前這次執行的資料（<code>.id</code>、<code>.mode</code>、<code>.resumeUrl</code>）。</td>
-            <td>錯誤訊息裡加 execution id 好回查；Wait 節點恢復也靠 <code>.resumeUrl</code>。</td>
+            <td>Data about this particular run (<code>.id</code>, <code>.mode</code>, <code>.resumeUrl</code>).</td>
+            <td>Adding the execution id to an error message makes it easy to look up later; the Wait node also resumes through <code>.resumeUrl</code>.</td>
           </tr>
           <tr>
             <td><code>$vars</code> / <code>$env</code></td>
-            <td>Workflow / Environment 變數（Cloud 全版；self-host Enterprise 才有 <code>$vars</code>；<code>$env</code> 需開 <code>N8N_BLOCK_ENV_ACCESS_IN_NODE=false</code>）。</td>
-            <td>把 API endpoint、閾值集中管理，不用每個 workflow 改寫。</td>
+            <td>Workflow / environment variables (every Cloud edition; on self-hosted, <code>$vars</code> needs Enterprise, and <code>$env</code> needs <code>N8N_BLOCK_ENV_ACCESS_IN_NODE=false</code>).</td>
+            <td>Keeping API endpoints and thresholds in one place instead of rewriting every workflow.</td>
           </tr>
         </tbody>
       </table>
-      <p><code>$('NodeName').first()</code>、<code>$('NodeName').last()</code>、<code>$('NodeName').all()</code> 是三個常用的取法：first/last 拿頭尾一個 item、all 拿整份陣列。<code>$('NodeName').item</code> 是取「跟當前 iteration 對應的那個 item」（靠 pairedItem 對齊，<a href="ch9_item_data_flow.html">第 9 章</a>講過）。</p>
+      <p><code>$('NodeName').first()</code>, <code>$('NodeName').last()</code> and <code>$('NodeName').all()</code> are the three common accessors: first/last take one item from the head or the tail, all takes the whole array. <code>$('NodeName').item</code> takes "the item matching the current iteration" (aligned through pairedItem, as <a href="ch9_item_data_flow.html">Chapter 9</a> explained).</p>
     </section>
 
-    <section id="troubleshoot" data-nav="常見卡關">
-      <h2 data-icon="troubleshoot">常見卡關</h2>
+    <section id="troubleshoot" data-nav="Common pitfalls">
+      <h2 data-icon="troubleshoot">Common pitfalls</h2>
       <ol class="steps">
         <li>
-          <h3>Expression 沒被解讀，Slack 傳出去的訊息就是 <code>{{ $json.name }}</code> 這串文字</h3>
-          <p>你忘了打開欄位的 <strong>fx</strong> toggle。Fixed 模式下 <code>{{ }}</code> 只是普通文字，不會被算成值。回節點打開那個欄位，右上角切成 Expression 模式（背景會變深色）再重存一次。</p>
+          <h3>The expression is not evaluated and Slack sends the literal text <code>{{ $json.name }}</code></h3>
+          <p>You forgot to flip the field's <strong>fx</strong> toggle. In Fixed mode <code>{{ }}</code> is ordinary text and is never evaluated. Go back to the node, open that field, switch it to Expression mode in the top right (the background turns dark), and save it again.</p>
         </li>
         <li>
-          <h3>Result 顯示 <code>undefined</code></h3>
-          <p>三個可能：（a）<strong>欄位名打錯</strong>——切 Schema 檢視對一下真實欄位名，用拖拉最保險；（b）<strong>上游節點回傳的欄位就是沒有那個</strong>——去上游節點的 output 面板看實際 JSON；（c）<strong>大小寫不對</strong>——<code>Name</code> 跟 <code>name</code> 是兩個東西。</p>
+          <h3>The Result shows <code>undefined</code></h3>
+          <p>Three possibilities: (a) <strong>the field name is misspelled</strong> — switch to the Schema view and check the real name against it; dragging is the safest; (b) <strong>the upstream node simply does not return that field</strong> — look at the actual JSON in its output panel; (c) <strong>the case is wrong</strong> — <code>Name</code> and <code>name</code> are two different things.</p>
         </li>
         <li>
-          <h3>拿不到上游節點：<code>Referenced node doesn't exist</code></h3>
-          <p>節點名字打錯了。<code>$('Google Sheets')</code> 裡面的名字要跟畫布上顯示的<strong>完全一樣</strong>——連空格、大小寫、括號都要對。最保險是回畫布把節點名 copy 過來貼上，別自己打。</p>
+          <h3>You cannot reach the upstream node: <code>Referenced node doesn't exist</code></h3>
+          <p>The node name is wrong. The name inside <code>$('Google Sheets')</code> has to be <strong>exactly</strong> what the canvas shows — spaces, case and brackets included. The safest move is to copy the node name from the canvas and paste it in rather than typing it yourself.</p>
         </li>
         <li>
-          <h3>日期跑掉時區</h3>
-          <p><code>$now.toFormat('yyyy-MM-dd HH:mm')</code> 顯示 UTC 時間不是台北時間？去 workflow 右上角 <strong>Settings → Timezone</strong> 設 <code>Asia/Taipei</code>，之後 <code>$now</code>、<code>$today</code> 都會以台北時間為準。已經是 UTC 的資料要轉，用 <code>.setZone('Asia/Taipei')</code> 明確指定。</p>
+          <h3>The date is in the wrong timezone</h3>
+          <p><code>$now.toFormat('yyyy-MM-dd HH:mm')</code> showing UTC instead of Taipei time? Open <strong>Settings → Timezone</strong> in the top right of the workflow and set <code>Asia/Taipei</code>; after that <code>$now</code> and <code>$today</code> both follow Taipei time. To convert data that is already in UTC, state it explicitly with <code>.setZone('Asia/Taipei')</code>.</p>
         </li>
         <li>
-          <h3>Preview 是舊值，跟實際跑出來不一樣</h3>
-          <p>Expression preview 用的是上游節點<strong>上一次跑的</strong> output——如果你改了上游的參數還沒重跑，preview 就是舊值。對上游按 <strong>Execute step</strong> 讓它產生新 output，再回來看 preview。</p>
+          <h3>The preview shows an old value that does not match the actual run</h3>
+          <p>The expression preview uses the output from the upstream node's <strong>last run</strong> — if you changed an upstream parameter and have not re-run it, the preview is the old value. Click <strong>Execute step</strong> upstream to produce fresh output, then come back and look at the preview.</p>
         </li>
         <li>
-          <h3>Expression 拿陣列的 <code>.length</code> 卻回 <code>undefined</code></h3>
-          <p>那個欄位不是陣列。切 Schema 檢視確認它的型別——如果 API 回傳的是「<strong>看起來像 array 但其實是 string</strong>」（例：<code>"[1,2,3]"</code>），要先 <code>JSON.parse($json.list)</code> 轉成真陣列才能 <code>.length</code>。</p>
+          <h3>An expression asks an array for <code>.length</code> and gets <code>undefined</code></h3>
+          <p>That field is not an array. Switch to the Schema view and confirm its type — if the API returned something that <strong>looks like an array but is really a string</strong> (for example <code>"[1,2,3]"</code>), you have to turn it into a real array with <code>JSON.parse($json.list)</code> before <code>.length</code> works.</p>
         </li>
       </ol>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
       <details class="faq">
-        <summary>Expression 有完整的語法規範嗎？</summary>
-        <div class="body">有。Expression 執行時走的是 <strong>JavaScript 子集 + n8n 內建變數 + Luxon 日期函式庫</strong>。JS 部分幾乎全套<strong>單一運算式</strong>（加減乘除、字串方法、陣列方法、三元運算子、optional chaining、template literal）都能用；但不能宣告 <code>function</code>／<code>const</code>／<code>let</code>、不能 <code>await</code>、不能 <code>require</code> 外部套件、也不能寫 <code>if / for</code> 陳述句。日期時間走 Luxon（不是 Moment、不是原生 Date），可用 <code>$now</code>、<code>$today</code>、或全域 <code>DateTime</code> 建立物件（例：<code>DateTime.now()</code>、<code>DateTime.fromISO(...)</code>）。詳細參考官方文件 <code>docs.n8n.io/code/expressions/</code> 跟 <code>docs.n8n.io/code/builtin/</code>。</div>
+        <summary>Is there a full syntax spec for expressions?</summary>
+        <div class="body">Yes. At run time an expression is a <strong>subset of JavaScript + n8n's built-in variables + the Luxon date library</strong>. Almost the entire <strong>single-expression</strong> part of JS works (arithmetic, string methods, array methods, the ternary operator, optional chaining, template literals); but you cannot declare <code>function</code> / <code>const</code> / <code>let</code>, cannot <code>await</code>, cannot <code>require</code> an external package, and cannot write <code>if / for</code> statements. Dates and times go through Luxon (not Moment, not the native Date): use <code>$now</code>, <code>$today</code>, or the global <code>DateTime</code> to build an object (for example <code>DateTime.now()</code> or <code>DateTime.fromISO(...)</code>). For the details see the official docs at <code>docs.n8n.io/code/expressions/</code> and <code>docs.n8n.io/code/builtin/</code>.</div>
       </details>
       <details class="faq">
-        <summary>可以在 Expression 裡寫 for loop、if 嗎？</summary>
-        <div class="body">簡單三元 <code>a ? b : c</code> 沒問題，短 <code>||</code> 判斷（<code>$json.x || 'default'</code>）也行。但真的要跑 for loop、多層 if、複雜資料轉換，<strong>不建議塞 Expression</strong>——會變得超難讀跟 debug。這時候換 <a href="ch20_code_node.html">Code node（第 20 章）</a>，用完整 JavaScript 或 Python 寫，還有 syntax highlight。Expression 適合「一行內能講完」的動態值，Code node 適合「有邏輯要跑」的處理。</div>
+        <summary>Can I write a for loop or an if inside an expression?</summary>
+        <div class="body">A simple ternary, <code>a ? b : c</code>, is fine, and so is a short <code>||</code> check (<code>$json.x || 'default'</code>). But when you genuinely need a for loop, nested ifs or a complex data transformation, <strong>do not force it into an expression</strong> — it becomes very hard to read and to debug. Move to the <a href="ch20_code_node.html">Code node (Chapter 20)</a> instead, write full JavaScript or Python, and get syntax highlighting with it. Expressions suit a dynamic value you can state in one line; the Code node suits work that has logic to run.</div>
       </details>
       <details class="faq">
-        <summary>Expression 執行會慢嗎？</summary>
-        <div class="body">通常不會。Expression 是純字串/日期/陣列運算，n8n 直接在 memory 算，一個 item 就是 μs 級。真正慢的是<strong>外部 API 呼叫</strong>——就算你 Expression 沒動什麼，只要 Slack、Google Sheet 這種節點在等 API 回覆，就會慢。所以「workflow 慢」的答案通常是<a href="ch11_saas_integrations.html">第 11 章</a>那些整合節點在等外部服務，不是 Expression。</div>
+        <summary>Are expressions slow to run?</summary>
+        <div class="body">Usually not. An expression is plain string, date and array work that n8n computes in memory, on the order of microseconds per item. What is genuinely slow is <strong>the external API call</strong> — even when your expression does almost nothing, a node like Slack or Google Sheet waiting for an API reply is slow. So the answer to "the workflow is slow" is usually the integration nodes from <a href="ch11_saas_integrations.html">Chapter 11</a> waiting on an outside service, not the expression.</div>
       </details>
       <details class="faq">
-        <summary>怎麼查有哪些內建函數／變數可以用？</summary>
-        <div class="body">Expression 編輯器打開後，右邊會滑出一個小分類清單（有些版本叫 <em>helper</em> 或 <em>variables</em>），列出所有可用的 <code>$</code> 開頭變數（<code>$json</code>、<code>$now</code>、<code>$workflow</code>...）跟 Luxon 常用方法。點某個名字還會顯示它的說明跟一段範例。找不到的話直接查官方文件 <code>docs.n8n.io/code/builtin/</code>，那邊有完整清單。Luxon 的日期方法查 <code>moment.github.io/luxon/</code>。</div>
+        <summary>How do I look up which built-in functions and variables are available?</summary>
+        <div class="body">Once the expression editor is open, a small categorized list slides out on the right (some versions call it <em>helper</em> or <em>variables</em>) listing every available variable that starts with <code>$</code> (<code>$json</code>, <code>$now</code>, <code>$workflow</code>...) plus the common Luxon methods. Click one of the names and you get its description and a short example. If you cannot find it, go straight to the official docs at <code>docs.n8n.io/code/builtin/</code>, which carry the full list. For Luxon's date methods, see <code>moment.github.io/luxon/</code>.</div>
       </details>
       <details class="faq">
-        <summary><code>$json.field</code> 跟 <code>$('上一節點').item.json.field</code> 差在哪？</summary>
-        <div class="body">在直接上游（相連的那個節點）它們拿到的<strong>幾乎一樣</strong>——都是當前 iteration 的那個 item。差別在「明確性跟穩定性」：<code>$json</code> 是「不管上游是誰，就是我剛吃到的資料」；<code>$('NodeName')</code> 是「指定去那個節點抓」。當 workflow 有分支、Merge、Set 節點插在中間，<code>$('NodeName')</code> 讓你直接跳過中間站抓最原始的資料，不會被中間節點改掉的欄位坑到。新手先用 <code>$json</code>，workflow 複雜之後自然會用 <code>$('NodeName')</code>。</div>
+        <summary>How is <code>$json.field</code> different from <code>$('上一節點').item.json.field</code>?</summary>
+        <div class="body">For the node directly upstream (the one wired to yours) what they give you is <strong>almost identical</strong> — both are the item for the current iteration. The difference is explicitness and stability: <code>$json</code> says "whatever the upstream is, this is the data I just received"; <code>$('NodeName')</code> says "go and take it from that node". When the workflow has branches, or a Merge or Set node dropped in the middle, <code>$('NodeName')</code> lets you skip the intermediate stops and take the original data, so a field rewritten along the way cannot trip you up. Start with <code>$json</code> as a beginner; once workflows get complex you will reach for <code>$('NodeName')</code> naturally.</div>
       </details>
       <details class="faq">
-        <summary>要把 Expression 存成常數重複用可以嗎？</summary>
-        <div class="body">Expression 本身沒有「宣告變數」的概念（不能 <code>const x = ...</code>）。想重複用同一個算式有兩種做法：（a）用 <strong>Set 節點</strong>先把它算出來存成一個欄位，下游全部節點都用 <code>$('Set').item.json.myVar</code> 抓；（b）用 <strong>workflow-level Variables</strong>（Cloud 有、self-host Enterprise 有），在 Settings 定義後全 workflow 用 <code>$vars.myVar</code> 讀。實務上 (a) Set 節點的做法對新手最直接。</div>
+        <summary>Can I save an expression as a constant and reuse it?</summary>
+        <div class="body">Expressions themselves have no concept of declaring a variable (you cannot write <code>const x = ...</code>). There are two ways to reuse the same calculation: (a) use a <strong>Set node</strong> to work it out first and store it in a field, then have every downstream node take it with <code>$('Set').item.json.myVar</code>; (b) use <strong>workflow-level Variables</strong> (available on Cloud, and on self-hosted Enterprise), defined in Settings and then read anywhere in the workflow with <code>$vars.myVar</code>. In practice (a), the Set node, is the most direct route for a beginner.</div>
       </details>
       <details class="faq">
-        <summary>看到別人 workflow 寫 <code>$node['Foo'].json.bar</code>，我可以改成 <code>$('Foo').item.json.bar</code> 嗎？</summary>
-        <div class="body">可以，兩種寫法功能<strong>完全等價</strong>——n8n 為了向後相容保留舊寫法 <code>$node[]</code>，同時推新寫法 <code>$('NodeName')</code>。新專案建議用新的（短、也是官方文件主推），舊 workflow 不用特別改。混用不會壞，只是看起來風格不一。<a href="ch6_modify_workflow.html">第 6 章</a>教改 template 時就常會遇到舊寫法，看得懂就好。</div>
+        <summary>Someone's workflow writes <code>$node['Foo'].json.bar</code> — can I change it to <code>$('Foo').item.json.bar</code>?</summary>
+        <div class="body">You can: the two forms are <strong>exactly equivalent</strong> — n8n keeps the old <code>$node[]</code> form for backward compatibility while promoting the newer <code>$('NodeName')</code>. Use the new one in new projects (it is shorter, and it is what the official docs lead with); there is no need to rewrite old workflows. Mixing them will not break anything, it just looks inconsistent in style. <a href="ch6_modify_workflow.html">Chapter 6</a>, where you learn to edit templates, is where you will run into the old form most often — being able to read it is enough.</div>
       </details>
     </section>
 

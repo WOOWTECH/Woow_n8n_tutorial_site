@@ -70,17 +70,17 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要學這個</a>
-      <a href="#concept">三種錯誤處理</a>
-      <a href="#what">Error workflow 是什麼</a>
-      <a href="#steps">建 Error workflow</a>
-      <a href="#assign">每條 workflow 綁定</a>
-      <a href="#advanced">節點層 Retry</a>
-      <a href="#modes">Wait 節點</a>
-      <a href="#records">Executions 紀錄與 debug</a>
-      <a href="#compare">常見錯誤情境對照</a>
-      <a href="#troubleshoot">常見卡關</a>
-      <a href="#faq">常見問題</a>
+      <a href="#why">Why this matters</a>
+      <a href="#concept">Three layers</a>
+      <a href="#what">What it is</a>
+      <a href="#steps">Build one</a>
+      <a href="#assign">Bind every workflow</a>
+      <a href="#advanced">Node-level retry</a>
+      <a href="#modes">Wait node</a>
+      <a href="#records">Executions and debug</a>
+      <a href="#compare">Failure scenarios</a>
+      <a href="#troubleshoot">Common pitfalls</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -94,499 +94,499 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch17_error_handling.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 17</div>
-      <h1>錯誤處理：Error workflow / Retry / Wait</h1>
-      <p class="lead">上線後的 workflow 半夜掛了，<strong>不會有人自動告訴你</strong>——除非你事先鋪好接住錯誤的網。這章教三件事：讓整條 workflow 掛的時候 Slack 通知你（<strong>Error workflow</strong>）、讓單一節點暫時失敗時自動重試（<strong>Retry on fail</strong>）、以及故意等一下避開 API 打太快被封鎖（<strong>Wait 節點</strong>）。做完，你的 workflow 才算「真的可以放著跑」。</p>
+      <h1>Error handling: error workflow / retry / wait</h1>
+      <p class="lead">A live workflow fails overnight and <strong>nobody tells you automatically</strong> — unless you strung a net under it beforehand. This chapter covers three things: getting a Slack message when a whole workflow dies (<strong>Error workflow</strong>), letting a single node retry itself when it fails for a moment (<strong>Retry on fail</strong>), and pausing on purpose so you do not call an API fast enough to get blocked (<strong>the Wait node</strong>). Do all three and your workflow finally counts as one you can "just leave running".</p>
     </div>
 
-    <section id="why" data-nav="為什麼要學這個">
-      <h2 data-icon="why">為什麼上線前一定要接錯誤處理</h2>
-      <p><a href="ch10_triggers.html">第 10 章</a>教你把 workflow 從 Manual 換成 Schedule，讓它每天早上 8:00 自動跑；<a href="ch16_merge_split.html">第 16 章</a>教你分流、合流、切批次。看起來 workflow 已經很聰明——直到某一天你發現：</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why error handling has to be in place before you go live</h2>
+      <p><a href="ch10_triggers.html">Chapter 10</a> showed you how to switch a workflow from Manual to Schedule so it runs by itself at 8:00 every morning; <a href="ch16_merge_split.html">Chapter 16</a> showed you how to split, merge and batch. Your workflows look clever by now — until the day you notice:</p>
       <ul>
-        <li><strong>週一早上 9 點</strong>：老闆問「上週的日報怎麼沒發？」你打開一看，Schedule 上禮拜三就悄悄失敗了，沒人知道。</li>
-        <li><strong>發薪日</strong>：workflow 一次呼叫外部 API 100 次，被對方判 rate limit 擋掉一半，結果一半的人沒收到通知。</li>
-        <li><strong>某個星期六凌晨</strong>：對方系統打嗝 30 秒，你的 workflow 剛好那時候跑，一次失敗——但其實只要重試一次就會成功。</li>
+        <li><strong>Monday, 9 am</strong>: your boss asks "why didn't last week's daily report go out?" You open it and find the schedule failed quietly last Wednesday, and nobody knew.</li>
+        <li><strong>Payday</strong>: the workflow calls an outside API 100 times at once, the other side rate-limits half of them, and half the staff never get their notification.</li>
+        <li><strong>Early one Saturday</strong>: the other system hiccups for 30 seconds, your workflow happens to run right then and fails once — when a single retry would have made it work.</li>
       </ul>
-      <p>這三種情境，n8n 都有現成的解法：Error workflow 接第一種、Retry 接第三種、Wait 接第二種。它們不是三選一，是 <strong>Production workflow 該同時有的三層保險</strong>——通知你錯了、單點自救、避免打死對方。這章一次講完，之後你的 workflow 才算「上線 grade」。</p>
-      <div class="callout"><strong>觀念：</strong>錯誤處理不是「等真的出錯再說」，而是<em>寫 workflow 的當下就順手加</em>。你事後才想要補 Error workflow，通常已經漏了三次通知了。</div>
+      <p>n8n has a ready answer for each of the three: an error workflow covers the first, retry covers the third, wait covers the second. They are not an either/or — they are <strong>three layers of insurance a production workflow should have at the same time</strong>: tell you it broke, let a single point rescue itself, avoid hammering the other side. This chapter covers all three, and only after it are your workflows what you would call production grade.</p>
+      <div class="callout"><strong>Concept:</strong> Error handling is not something you deal with "once it actually breaks" — you <em>add it while you are writing the workflow</em>. By the time you go back to bolt an error workflow on, you have usually missed three alerts already.</div>
     </section>
 
-    <section id="concept" data-nav="三種錯誤處理">
-      <h2 data-icon="concept">三種錯誤處理各管什麼</h2>
-      <p>先把三張牌攤開——名字很像，管的層級完全不同：</p>
+    <section id="concept" data-nav="Three layers">
+      <h2 data-icon="concept">What each of the three error-handling layers covers</h2>
+      <p>Lay the three cards on the table first — the names look alike, but they work at completely different levels:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>機制</th><th>接住什麼層級的錯</th><th>做什麼</th><th>什麼時候用</th></tr>
+          <tr><th>Mechanism</th><th>Which level of failure it catches</th><th>What it does</th><th>When to use it</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Error workflow</strong></td>
-            <td>整條 workflow 掛（任何節點死到底）</td>
-            <td>觸發另一條專門處理錯誤的 workflow（例：Slack 通知你）</td>
-            <td>每一條 production workflow 都該綁</td>
+            <td>The whole workflow dies (any node fails for good)</td>
+            <td>Triggers another workflow built to handle errors (Slack you, for example)</td>
+            <td>Every production workflow should be bound to one</td>
           </tr>
           <tr>
-            <td><strong>Retry on fail</strong>（節點層）</td>
-            <td>單一節點失敗（例：某個 HTTP Request 掛）</td>
-            <td>該節點自動重試 N 次，中間隔一段時間</td>
-            <td>API 偶爾抽風、網路 blip、輕微 rate limit</td>
+            <td><strong>Retry on fail</strong> (node level)</td>
+            <td>One node fails (an HTTP Request dies, say)</td>
+            <td>That node retries itself N times, with a gap between tries</td>
+            <td>An API that acts up now and then, a network blip, mild rate limiting</td>
           </tr>
           <tr>
-            <td><strong>Wait 節點</strong></td>
-            <td>不是接錯——是<em>預防</em>錯</td>
-            <td>workflow 停在這裡等 X 秒／等到某個時間／等外部 callback</td>
-            <td>避免打太快被 rate limit、要間隔通知、等對方系統處理完</td>
+            <td><strong>The Wait node</strong></td>
+            <td>It does not catch failures — it <em>prevents</em> them</td>
+            <td>The workflow stops here for X seconds / until a given time / until an external callback</td>
+            <td>Avoiding a rate limit from calling too fast, spacing out notifications, waiting for the other system to finish</td>
           </tr>
         </tbody>
       </table>
 
-      <p>三者關係：Wait 是<strong>事前預防</strong>、Retry 是<strong>事中自救</strong>、Error workflow 是<strong>事後補救</strong>。一條上線的 workflow 三個都該有，缺一個就少一層防線。</p>
+      <p>How they relate: Wait is <strong>prevention beforehand</strong>, Retry is <strong>self-rescue in the moment</strong>, and the error workflow is <strong>recovery afterwards</strong>. A live workflow should have all three; drop one and you lose a line of defense.</p>
 
-      <div class="callout tip"><strong>提示：</strong>初學者常搞混：Retry 是「這一個節點自己重試」；Error workflow 是「整條 workflow 已經放棄了才觸發」。Retry 5 次都失敗 → workflow 掛 → Error workflow 才會被叫起來。</div>
+      <div class="callout tip"><strong>Tip:</strong> Beginners mix these up. Retry means "this one node tries again by itself"; an error workflow means "the whole workflow has already given up". Five failed retries → the workflow dies → only then is the error workflow called.</div>
     </section>
 
-    <section id="what" data-nav="Error workflow 是什麼">
-      <h2 data-icon="what">Error workflow 是什麼——一條專門接錯誤的 workflow</h2>
-      <p>Error workflow 是<strong>另外一條獨立的 workflow</strong>——不是設定，是一整條 workflow。它跟你平常的 workflow 一樣，只是它的第一個節點必須是 <strong>Error Trigger</strong>。</p>
+    <section id="what" data-nav="What it is">
+      <h2 data-icon="what">What an error workflow is — a workflow built to catch failures</h2>
+      <p>An error workflow is <strong>a separate, standalone workflow</strong> — not a setting, a whole workflow. It looks like any other workflow of yours, except its first node has to be an <strong>Error Trigger</strong>.</p>
 
-      <p>運作邏輯是這樣的：</p>
+      <p>Here is how it works:</p>
       <ol class="steps">
         <li>
-          <h3>你先做一條 Error workflow</h3>
-          <p>用 Error Trigger 當第一個節點，後面接 Slack / Email / Discord / 資料庫，做「發生錯誤時要通知誰／記到哪」。</p>
+          <h3>You build an error workflow first</h3>
+          <p>Put an Error Trigger first, then wire Slack / email / Discord / a database behind it to answer "who gets told when something breaks, and where does it get logged".</p>
         </li>
         <li>
-          <h3>其他 workflow 各自「指定」用這一條當 Error workflow</h3>
-          <p>每條 production workflow 在 Settings 裡選 Error Workflow = 剛剛那條。</p>
+          <h3>Every other workflow "points at" this one as its error workflow</h3>
+          <p>In each production workflow's Settings, set Error Workflow to the one you just built.</p>
         </li>
         <li>
-          <h3>某條 workflow 出錯 → n8n 自動觸發 Error workflow</h3>
-          <p>Error Trigger 節點會收到<strong>出錯 workflow 的名字、時間、錯誤訊息、掛在哪一個節點</strong>等資料，交給下游節點處理。</p>
+          <h3>A workflow fails → n8n triggers the error workflow automatically</h3>
+          <p>The Error Trigger node receives <strong>the failed workflow's name, the time, the error message and which node died</strong>, and hands it to the nodes downstream.</p>
         </li>
       </ol>
 
-      <p>Error Trigger 節點會把錯誤資訊塞到 <code>$json</code>，常用欄位：</p>
+      <p>The Error Trigger node puts the error information into <code>$json</code>. The fields you will use most:</p>
       <table class="data-table">
         <thead>
-          <tr><th>欄位</th><th>意思</th><th>Expression 寫法</th></tr>
+          <tr><th>Field</th><th>What it means</th><th>Expression</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>出錯的 workflow 名字</td>
-            <td>是哪條 workflow 掛了</td>
+            <td>The failed workflow's name</td>
+            <td>Which workflow died</td>
             <td><code>{{ $json.workflow.name }}</code></td>
           </tr>
           <tr>
-            <td>出錯的 workflow ID</td>
-            <td>方便點連結進去看</td>
+            <td>The failed workflow's ID</td>
+            <td>Handy for linking straight into it</td>
             <td><code>{{ $json.workflow.id }}</code></td>
           </tr>
           <tr>
-            <td>錯誤訊息</td>
-            <td>n8n 給的錯誤描述</td>
+            <td>The error message</td>
+            <td>n8n's own description of the error</td>
             <td><code>{{ $json.execution.error.message }}</code></td>
           </tr>
           <tr>
-            <td>掛在哪一個節點</td>
-            <td>是哪個節點死的</td>
+            <td>Which node it died at</td>
+            <td>The node that failed</td>
             <td><code>{{ $json.execution.lastNodeExecuted }}</code></td>
           </tr>
           <tr>
             <td>Execution URL</td>
-            <td>直接點進去看該次執行紀錄</td>
+            <td>Click straight through to that execution record</td>
             <td><code>{{ $json.execution.url }}</code></td>
           </tr>
         </tbody>
       </table>
 
-      <div class="callout warn"><strong>注意：</strong>Error Trigger 節點<em>只會</em>因為「別條 <strong>自動觸發</strong> workflow 掛」而被叫起（Schedule／Webhook／Event Trigger）；你按 Execute Workflow 手動跑 Error workflow、或手動跑的主 workflow 掛，都<em>不會</em>啟動 Error Trigger（官方明說「You can't test error workflows when running workflows manually」）。要測試，先把一條「一定會錯」的 workflow 設 Active + Schedule 讓它自動跑一次掛。</div>
+      <div class="callout warn"><strong>Warning:</strong> The Error Trigger node fires <em>only</em> because another <strong>automatically triggered</strong> workflow died (Schedule / Webhook / Event Trigger). Running the error workflow yourself with Execute Workflow, or a manually run parent workflow failing, does <em>not</em> start the Error Trigger (the docs say it outright: "You can't test error workflows when running workflows manually"). To test it, take a workflow that is certain to fail, set it Active with a Schedule, and let it run and die on its own.</div>
 
-      <div class="callout tip"><strong>隱藏 default：</strong>官方文件補了一條容易忽略的行為——「If a workflow contains the Error Trigger node, by default, the workflow uses itself as the error workflow」。意思是：<em>含 Error Trigger 節點的 workflow，如果它自己也 Active 且會被自動觸發，它出錯時預設會呼叫自己</em>。所以你的 Error Handler workflow 不要再放 Schedule／Webhook Trigger（會造成 self-reference 混亂）——只留 Error Trigger 一個 trigger 就好。</div>
+      <div class="callout tip"><strong>The hidden default:</strong> The docs add one behavior that is easy to miss — "If a workflow contains the Error Trigger node, by default, the workflow uses itself as the error workflow". In other words: <em>a workflow that contains an Error Trigger node, if it is Active and gets triggered automatically itself, calls itself by default when it fails</em>. So do not put a Schedule or Webhook Trigger in your Error Handler workflow (that creates a confusing self-reference) — leave the Error Trigger as its only trigger.</div>
     </section>
 
-    <section id="steps" data-nav="建 Error workflow">
-      <h2 data-icon="steps">動手做：建一條全公司共用的 Error workflow</h2>
-      <p>目標：做一條 <code>Error Handler</code> workflow，出錯時自動貼一則訊息到 Slack 的 <code>#alerts</code> 頻道。設一次，之後所有 workflow 都用它。</p>
+    <section id="steps" data-nav="Build one">
+      <h2 data-icon="steps">Hands-on: build one error workflow for the whole company</h2>
+      <p>The goal: an <code>Error Handler</code> workflow that automatically posts a message to the Slack <code>#alerts</code> channel when something fails. Set it up once and every workflow after that uses it.</p>
 
       <ol class="steps">
         <li>
-          <h3>建新 workflow，命名 <code>Error Handler</code></h3>
-          <p>左側 Workflows → <strong>+ Add workflow</strong>。畫布空白後，先按 <kbd>Ctrl</kbd>+<kbd>S</kbd> 存檔，名字打 <code>Error Handler</code>——名字取有辨識度的，之後在 Settings 下拉才找得到。</p>
+          <h3>Create a new workflow and name it <code>Error Handler</code></h3>
+          <p>Workflows in the left sidebar → <strong>+ Add workflow</strong>. With the canvas still blank, press <kbd>Ctrl</kbd>+<kbd>S</kbd> to save and type the name <code>Error Handler</code> — pick something recognizable, or you will not find it later in the Settings dropdown.</p>
         </li>
         <li>
-          <h3>加 Error Trigger 節點</h3>
-          <p>Canvas 空白處按 <kbd>Tab</kbd>（或左上 + 號）叫出節點抽屜 → 搜尋 <code>Error Trigger</code> → 選它。它會落到 canvas 上，作為這條 workflow 的起點。<strong>Error Trigger 沒有任何參數要設</strong>，放上去就好。</p>
+          <h3>Add the Error Trigger node</h3>
+          <p>Press <kbd>Tab</kbd> on an empty part of the canvas (or the + in the top left) to open the nodes panel → search for <code>Error Trigger</code> → pick it. It lands on the canvas as this workflow's starting point. <strong>The Error Trigger has no parameters to set</strong>; dropping it in is all you do.</p>
         </li>
         <li>
-          <h3>加 Slack 節點接在後面</h3>
-          <p>Error Trigger 右邊拖出線，落點放開叫節點抽屜 → 搜尋 <code>Slack</code> → 選 <strong>Send a message</strong> action。<a href="ch7_node_types.html">第 7 章</a>如果還沒設過 Slack credential 就先設一個（OAuth 授權 Slack workspace）。</p>
+          <h3>Add a Slack node behind it</h3>
+          <p>Drag a connection out of the Error Trigger's right side and let go to open the nodes panel → search for <code>Slack</code> → pick the <strong>Send a message</strong> action. If you have not set up a Slack credential since <a href="ch7_node_types.html">Chapter 7</a>, create one now (OAuth authorization for your Slack workspace).</p>
         </li>
         <li>
-          <h3>Slack 節點參數：Channel 填 <code>#alerts</code></h3>
-          <p>Channel 欄可以用 By Name 選現有頻道，或直接打 <code>#alerts</code>。這個頻道要先在 Slack 建好，並且把 n8n bot 邀請進去（Slack 頻道 → Integrations → Add App）。</p>
+          <h3>Slack node parameters: set Channel to <code>#alerts</code></h3>
+          <p>The Channel field lets you pick an existing channel By Name, or you can type <code>#alerts</code> straight in. Create the channel in Slack first and invite the n8n bot into it (Slack channel → Integrations → Add App).</p>
         </li>
         <li>
-          <h3>Slack 訊息內容（用 Expression 塞錯誤資料）</h3>
-          <p>Text 欄切到 Expression 模式（點欄位右上的 fx），貼上：</p>
+          <h3>The Slack message body (an expression fills in the error data)</h3>
+          <p>Switch the Text field to Expression mode (the fx button at the top right of the field) and paste in:</p>
           <pre class="code-block"><code>⚠️ Workflow 錯誤通知
 Workflow: {{ $json.workflow.name }}
 掛在節點: {{ $json.execution.lastNodeExecuted }}
 錯誤訊息: {{ $json.execution.error.message }}
 時間: {{ $json.execution.startedAt }}
 點這裡看: {{ $json.execution.url }}</code></pre>
-          <p>底下的 preview 會顯示假資料樣本，看起來對就 OK。</p>
+          <p>The preview underneath shows a sample filled with dummy data; if it looks right, you are done.</p>
         </li>
         <li>
-          <h3>Save，然後把右上 Active toggle 拉成綠色</h3>
-          <p>按 <kbd>Ctrl</kbd>+<kbd>S</kbd> → Active toggle ON。<strong>Error workflow 沒 Active 是不會被觸發的</strong>——這是第一名踩雷。</p>
+          <h3>Save, then flip the Active toggle in the top right to green</h3>
+          <p>Press <kbd>Ctrl</kbd>+<kbd>S</kbd> → Active toggle ON. <strong>An error workflow that is not Active never fires</strong> — this is the number-one gotcha.</p>
         </li>
         <li>
-          <h3>做完了——這條之後全公司共用</h3>
-          <p>Error Handler workflow 設完就放著，不用天天管。它只在別條 workflow 出錯時<em>被叫起來</em>執行一次，沒事的時候完全不佔資源。</p>
+          <h3>That is it — this one is now shared across the company</h3>
+          <p>Once the Error Handler workflow is set up you leave it alone; there is nothing to tend day to day. It <em>is called</em> and runs once only when another workflow fails, and takes no resources at all the rest of the time.</p>
         </li>
       </ol>
 
-      <div class="callout tip"><strong>提示：</strong>如果你的團隊有 PagerDuty / Opsgenie / Email，可以在 Slack 節點後面再串 Email 或用 IF 節點判斷「嚴重度」——特定 workflow（例：計費相關）出錯就同時打電話、其他 workflow 出錯只發 Slack。這條 Error Handler 就是你的錯誤中央處理室，愛加什麼都行。</div>
+      <div class="callout tip"><strong>Tip:</strong> If your team has PagerDuty / Opsgenie / email, wire an email node behind the Slack node, or use an IF node to judge "severity" — certain workflows (billing, say) also place a phone call when they fail, while everything else only posts to Slack. This Error Handler is your central error desk; add whatever you like to it.</div>
     </section>
 
-    <section id="assign" data-nav="每條 workflow 綁定">
-      <h2 data-icon="assign">每條 workflow 綁定 Error workflow</h2>
-      <p>Error Handler 建好之後，還要<strong>逐一去每一條 production workflow 指定它</strong>——不指定的話出錯還是沒人管。</p>
+    <section id="assign" data-nav="Bind every workflow">
+      <h2 data-icon="assign">Point every workflow at the error workflow</h2>
+      <p>Once the Error Handler exists you still have to <strong>go into every production workflow one by one and point it at the handler</strong> — without that, a failure still goes unattended.</p>
 
       <ol class="steps">
         <li>
-          <h3>打開你要監控的 workflow</h3>
-          <p>從 Workflows 清單點進去，畫布會展開。</p>
+          <h3>Open the workflow you want to watch</h3>
+          <p>Click into it from the Workflows list and the canvas opens.</p>
         </li>
         <li>
-          <h3>右上角三點選單 → Settings（或按 <kbd>Ctrl</kbd>+<kbd>,</kbd>）</h3>
-          <p>會彈出 Workflow Settings 面板，裡面有 Timezone、Save Failed Executions、Error Workflow 等選項。</p>
+          <h3>The three-dot menu in the top right → Settings (or press <kbd>Ctrl</kbd>+<kbd>,</kbd>)</h3>
+          <p>The Workflow Settings panel opens, with options such as Timezone, Save Failed Executions and Error Workflow.</p>
         </li>
         <li>
-          <h3>Error Workflow 下拉選 <code>Error Handler</code></h3>
-          <p>下拉會列出你這個 instance 上所有<em>包含 Error Trigger 節點</em>的 workflow。找到 <code>Error Handler</code> 點下去。</p>
+          <h3>In the Error Workflow dropdown, pick <code>Error Handler</code></h3>
+          <p>The dropdown lists every workflow on your instance that <em>contains an Error Trigger node</em>. Find <code>Error Handler</code> and click it.</p>
         </li>
         <li>
           <h3>Save Settings</h3>
-          <p>面板右下 Save。之後這條 workflow 出錯就會自動觸發 Error Handler。</p>
+          <p>Save is at the bottom right of the panel. From now on this workflow triggers Error Handler automatically when it fails.</p>
         </li>
         <li>
-          <h3>把所有 production workflow 都設一遍</h3>
-          <p>不會自動套用——每條 workflow 都要各自指定。可以列個清單一次做完，之後新增的 workflow 也記得順手設。</p>
+          <h3>Do this for every production workflow</h3>
+          <p>It is not applied automatically — every workflow needs its own setting. Make a list and work through it in one sitting, and set it on new workflows as you create them.</p>
         </li>
       </ol>
 
-      <div class="callout warn"><strong>注意：</strong>Error workflow 是「<strong>被指定的那條 workflow</strong> 出錯時才觸發」；Error Handler 這條 workflow<em>自己</em>出錯，是不會遞迴觸發自己的（不然就無窮迴圈了）。所以 Error Handler 內部的節點失敗，是完全沒人接的——把 Error Handler 做得簡單、少依賴，是很重要的守則。</div>
+      <div class="callout warn"><strong>Warning:</strong> An error workflow fires only when <strong>the workflow that points at it</strong> fails. If the Error Handler workflow <em>itself</em> fails, it does not trigger itself recursively (that would be an infinite loop). So a node failing inside Error Handler is caught by nobody — keeping Error Handler simple, with few dependencies, is an important rule.</div>
     </section>
 
-    <section id="advanced" data-nav="節點層 Retry">
-      <h2 data-icon="advanced">節點層 Retry on fail：讓單一節點自己重試</h2>
-      <p>Retry on fail 是設在<strong>單一節點</strong>上的自動重試機制——這個節點失敗時，n8n 會等一下再打一次、再等一下再打一次，重試次數用完才判定失敗。適合對付「短暫性錯誤」（transient error）：API 暫時 503、網路抖一下、對方系統重啟中。</p>
+    <section id="advanced" data-nav="Node-level retry">
+      <h2 data-icon="advanced">Retry on fail at the node level: let one node retry itself</h2>
+      <p>Retry on fail is an automatic retry set on <strong>a single node</strong> — when that node fails, n8n waits a moment and calls again, waits and calls again, and only declares failure once the tries run out. It suits transient errors: an API returning 503 for a while, a network wobble, the other system restarting.</p>
 
-      <h3>怎麼設</h3>
+      <h3>How to set it</h3>
       <ol class="steps">
         <li>
-          <h3>打開你想重試的節點面板</h3>
-          <p>例：HTTP Request 節點、Slack 節點、Google Sheets 節點——任何節點都能設。</p>
+          <h3>Open the panel of the node you want to retry</h3>
+          <p>For example the HTTP Request node, the Slack node, the Google Sheets node — any node can have it.</p>
         </li>
         <li>
-          <h3>切到 Settings tab</h3>
-          <p>節點面板頂端有 Parameters / Settings 兩個 tab，點 Settings。</p>
+          <h3>Switch to the Settings tab</h3>
+          <p>The top of the node panel has two tabs, Parameters and Settings; click Settings.</p>
         </li>
         <li>
-          <h3>Retry On Fail 切成 ON</h3>
-          <p>會展開兩個新欄位：Max Tries 與 Wait Between Tries。</p>
+          <h3>Turn Retry On Fail ON</h3>
+          <p>Two new fields appear: Max Tries and Wait Between Tries.</p>
         </li>
         <li>
-          <h3>Max Tries 填重試次數（含首次執行）</h3>
-          <p>常用值 <code>3</code>—<code>5</code>。填 <code>3</code> 代表最多打三次（第 1 次失敗、等一下、第 2 次失敗、等一下、第 3 次失敗才判死）。</p>
+          <h3>Max Tries takes the number of attempts (the first run included)</h3>
+          <p>Common values are <code>3</code>—<code>5</code>. <code>3</code> means at most three attempts (the 1st fails, wait, the 2nd fails, wait, and only the 3rd failure is fatal).</p>
         </li>
         <li>
-          <h3>Wait Between Tries 填毫秒數</h3>
-          <p>常用值 <code>1000</code>（1 秒）到 <code>5000</code>（5 秒）。太短沒等對方系統喘息、太長 workflow 拖很久。API rate limit 錯誤建議 <code>5000</code> 以上。</p>
+          <h3>Wait Between Tries takes milliseconds</h3>
+          <p>Common values run from <code>1000</code> (1 second) to <code>5000</code> (5 seconds). Too short and the other system gets no breathing room; too long and the workflow drags. For API rate-limit errors, use <code>5000</code> or more.</p>
         </li>
       </ol>
 
-      <h3>什麼場景適合開 Retry</h3>
+      <h3>When retry is worth turning on</h3>
       <table class="data-table">
         <thead>
-          <tr><th>場景</th><th>適不適合 Retry</th><th>為什麼</th></tr>
+          <tr><th>Scenario</th><th>Good candidate for retry</th><th>Why</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>API 回 <strong>503 Service Unavailable</strong></td>
-            <td>非常適合</td>
-            <td>對方服務暫時掛掉，過幾秒通常會恢復</td>
+            <td>The API returns <strong>503 Service Unavailable</strong></td>
+            <td>Ideal</td>
+            <td>Their service is down for a moment and usually comes back within seconds</td>
           </tr>
           <tr>
-            <td>API 回 <strong>429 Too Many Requests</strong>（rate limit）</td>
-            <td>適合（配合 Wait Between Tries 拉長）</td>
-            <td>等一下就解鎖</td>
+            <td>The API returns <strong>429 Too Many Requests</strong> (rate limit)</td>
+            <td>Yes (with a longer Wait Between Tries)</td>
+            <td>The block lifts after a wait</td>
           </tr>
           <tr>
-            <td><strong>Network timeout</strong>／連線失敗</td>
-            <td>適合</td>
-            <td>網路 blip 通常瞬間就過</td>
+            <td><strong>Network timeout</strong> / connection failure</td>
+            <td>Yes</td>
+            <td>A network blip is usually over in an instant</td>
           </tr>
           <tr>
-            <td>API 回 <strong>401 Unauthorized</strong>（credential 過期）</td>
-            <td>不適合</td>
-            <td>再打 100 次也一樣過期，浪費時間；該去重新授權 credential</td>
+            <td>The API returns <strong>401 Unauthorized</strong> (the credential expired)</td>
+            <td>No</td>
+            <td>It is just as expired on the hundredth call, and you waste time; go re-authorize the credential</td>
           </tr>
           <tr>
-            <td>API 回 <strong>404 Not Found</strong>（資料真的不存在）</td>
-            <td>不適合</td>
-            <td>資料就是沒有，重試也生不出來</td>
+            <td>The API returns <strong>404 Not Found</strong> (the data really is not there)</td>
+            <td>No</td>
+            <td>The data does not exist, and retrying will not conjure it up</td>
           </tr>
           <tr>
-            <td>你的 Expression 寫錯（undefined 之類）</td>
-            <td>不適合</td>
-            <td>邏輯錯誤不會因為重試就變對</td>
+            <td>You wrote the expression wrong (undefined and the like)</td>
+            <td>No</td>
+            <td>A logic error does not turn correct because you repeat it</td>
           </tr>
         </tbody>
       </table>
 
-      <div class="callout warn"><strong>注意：</strong>Retry 會<strong>把該節點的操作重複執行</strong>——如果那個節點是「寄信」「建立訂單」「扣款」，Retry 就會<em>重複寄／重複建／重複扣</em>。這叫做「非冪等（non-idempotent）」問題。開 Retry 前先想：「這個操作再做一次會不會有副作用？」有副作用的節點，要嘛不開 Retry、要嘛用「先查在不在、不在才建」的守衛邏輯。</div>
+      <div class="callout warn"><strong>Warning:</strong> Retry <strong>repeats that node's operation</strong> — if the node sends mail, creates an order or charges a card, retrying <em>sends, creates or charges again</em>. This is the non-idempotent problem. Before you turn retry on, ask: "does doing this a second time have a side effect?" For nodes that do, either leave retry off or add guard logic that checks whether the record exists and only creates it if it does not.</div>
     </section>
 
-    <section id="modes" data-nav="Wait 節點">
-      <h2 data-icon="modes">Wait 節點：故意停一段時間</h2>
-      <p>Wait 節點做一件很簡單的事——<strong>讓 workflow 停在這裡</strong>，時間到了才往下走。用來降速、對齊時間、或等外部系統回話。</p>
+    <section id="modes" data-nav="Wait node">
+      <h2 data-icon="modes">The Wait node: pausing on purpose</h2>
+      <p>The Wait node does one very simple thing — <strong>it stops the workflow here</strong> and only moves on when the time is up. Use it to slow things down, line up with a clock, or wait for an outside system to answer.</p>
 
-      <h3>Wait 有三種模式</h3>
+      <h3>Wait has three modes</h3>
       <table class="data-table">
         <thead>
-          <tr><th>Resume 模式</th><th>什麼時候繼續</th><th>典型場景</th></tr>
+          <tr><th>Resume mode</th><th>When it resumes</th><th>Typical scenario</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>After Time Interval</strong></td>
-            <td>等 X 秒／分／小時／天</td>
-            <td>每一批間隔 1 秒避免打太快、發通知後等 10 分鐘再檢查狀態</td>
+            <td>Waits X seconds / minutes / hours / days</td>
+            <td>1 second between batches so you do not call too fast; wait 10 minutes after an alert, then check the status</td>
           </tr>
           <tr>
             <td><strong>At Specified Time</strong></td>
-            <td>等到某個特定日期時間（例：2026-08-20 09:00）</td>
-            <td>「明天早上 9:00 再繼續」「下個月 1 號才發帳單」</td>
+            <td>Waits until a specific date and time (2026-08-20 09:00, say)</td>
+            <td>"Carry on at 9:00 tomorrow morning", "do not send the invoice until the 1st of next month"</td>
           </tr>
           <tr>
             <td><strong>On Webhook Call</strong></td>
-            <td>等外部系統打 webhook 回來才繼續</td>
-            <td>發送簽核連結 → 等對方點了才繼續；發起金流 → 等對方 callback 才確認</td>
+            <td>Waits until an outside system calls the webhook back</td>
+            <td>Send an approval link → carry on only after they click it; start a payment → confirm only after their callback</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>最常用的 pattern：Wait 配 Split In Batches 避免 rate limit</h3>
-      <p>假設你要對 500 筆資料呼叫外部 API，一次全打會被 rate limit 擋。改成：Split In Batches（batch size = 10）→ HTTP Request → <strong>Wait 1 second</strong> → 回到 Split In Batches 下一批。這樣每秒 10 個 request，通常都在對方 rate limit 允許範圍內。<a href="ch16_merge_split.html">第 16 章</a>有完整例子。</p>
+      <h3>The most common pattern: Wait with Split In Batches to avoid a rate limit</h3>
+      <p>Say you have to call an outside API for 500 records; firing them all at once gets you rate-limited. Do this instead: Split In Batches (batch size = 10) → HTTP Request → <strong>Wait 1 second</strong> → back to Split In Batches for the next batch. That is 10 requests a second, which usually sits inside what the other side allows. <a href="ch16_merge_split.html">Chapter 16</a> has the full example.</p>
 
-      <div class="callout"><strong>觀念：</strong>Wait 期間 workflow 是「掛著」的——不佔 CPU、只佔一點記憶體。所以 Wait 幾小時、幾天都不會爆你的伺服器。它跟「用 setTimeout 卡在 code 裡」不一樣，是 n8n 內建的 pause 機制。</div>
+      <div class="callout"><strong>Concept:</strong> During a Wait the workflow is suspended — no CPU, only a little memory. Waiting hours or days will not blow up your server. It is not the same as blocking inside code with setTimeout; it is n8n's built-in pause.</div>
 
-      <div class="callout warn"><strong>釐清一個常見誤解（65 秒不是上限）：</strong>網路上有人講「Wait 最多 65 秒」——<em>錯的</em>。官方文件的原話是「wait times less than 65 seconds, the workflow doesn't offload execution data to the database」，意思是<strong>65 秒是「切換執行機制」的門檻，不是最大值</strong>：&lt; 65 秒 workflow 掛在記憶體、不寫 DB；≥ 65 秒 n8n 把 execution 序列化存進 DB，時間到再喚醒。Community 版一樣支援 Wait 幾小時、幾天，甚至 At Specified Time 等到下個月。<strong>唯一風險</strong>：超過 65 秒改走 DB 路徑後，如果 n8n 只用預設 SQLite，重啟或 DB 損毀會遺失待喚醒 execution——長 Wait 建議搭配 Postgres／MySQL 外部 DB。</div>
+      <div class="callout warn"><strong>Clearing up a common misreading (65 seconds is not a ceiling):</strong> People online say "Wait maxes out at 65 seconds" — <em>that is wrong</em>. What the docs actually say is "wait times less than 65 seconds, the workflow doesn't offload execution data to the database", which means <strong>65 seconds is the threshold where the mechanism switches, not a maximum</strong>: under 65 seconds the workflow is held in memory and nothing is written to the DB; at 65 seconds or more n8n serializes the execution into the DB and wakes it when the time comes. Community supports waits of hours or days just the same, and At Specified Time can wait until next month. <strong>The one risk</strong>: once you are past 65 seconds and on the DB path, an n8n running on the default SQLite loses pending executions if it restarts or the DB is corrupted — for long waits, pair it with an external Postgres / MySQL database.</div>
 
-      <div class="callout tip"><strong>補充第四個模式：</strong>Wait 節點還有一個 <strong>On Form Submitted</strong> 模式——workflow 停在這裡等使用者送出 n8n 產生的表單才繼續（審核／收集資料場景）。上表列的是最常用三個，Form 屬進階，熟 Webhook 後再學。</div>
+      <div class="callout tip"><strong>One more mode:</strong> The Wait node also has an <strong>On Form Submitted</strong> mode — the workflow stops here until someone submits a form that n8n generated (approval or data-collection cases). The table above lists the three you will use most; Form is advanced, so learn it once you are comfortable with Webhook.</div>
     </section>
 
-    <section id="records" data-nav="Executions 紀錄與 debug">
-      <h2 data-icon="records">Executions 紀錄與 debug</h2>
-      <p>錯誤處理接住了、通知發出去了——接下來你要做的事是<strong>打開 Executions 頁面看到底是哪個節點、什麼原因掛的</strong>。Executions 頁是你 debug workflow 的主戰場。</p>
+    <section id="records" data-nav="Executions and debug">
+      <h2 data-icon="records">Execution records and debugging</h2>
+      <p>The error was caught and the alert went out — next you <strong>open the Executions page and find out which node failed and why</strong>. The Executions page is where you do most of your debugging.</p>
 
-      <h3>Executions 頁在哪</h3>
+      <h3>Where the Executions page is</h3>
       <ul>
-        <li><strong>全域</strong>：左側主導覽 <strong>Executions</strong>，看整個 instance 所有 workflow 的執行紀錄。</li>
-        <li><strong>單一 workflow</strong>：進入某條 workflow → 頂端 <strong>Executions</strong> tab，只看這條的。</li>
+        <li><strong>Instance-wide</strong>: <strong>Executions</strong> in the main sidebar, showing the execution records of every workflow on the instance.</li>
+        <li><strong>One workflow</strong>: open a workflow → the <strong>Executions</strong> tab at the top, showing only that one.</li>
       </ul>
 
-      <h3>怎麼讀紀錄</h3>
+      <h3>How to read a record</h3>
       <table class="data-table">
         <thead>
-          <tr><th>顏色／圖示</th><th>意思</th></tr>
+          <tr><th>Color / icon</th><th>What it means</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>綠色 Success</td>
-            <td>所有節點都跑完，沒錯</td>
+            <td>Green Success</td>
+            <td>Every node ran through, no errors</td>
           </tr>
           <tr>
-            <td>紅色 Error</td>
-            <td>中途有節點掛了，workflow 沒跑完</td>
+            <td>Red Error</td>
+            <td>A node died partway and the workflow did not finish</td>
           </tr>
           <tr>
-            <td>橘／黃色 Running</td>
-            <td>正在跑（例：Wait 節點在等）</td>
+            <td>Orange / yellow Running</td>
+            <td>Running right now (a Wait node waiting, for example)</td>
           </tr>
           <tr>
-            <td>灰色 Waiting</td>
-            <td>Waiting for webhook 或 At Specified Time 等外部條件</td>
+            <td>Gray Waiting</td>
+            <td>Waiting for webhook, or At Specified Time — some external condition</td>
           </tr>
         </tbody>
       </table>
 
-      <p>點任一筆紅色 Execution 進去 → 會看到 canvas 樣的視覺化：<strong>失敗的節點會被紅框 highlight</strong>，點該節點就看到當時的 input / output / error 訊息。這是找 bug 最快的方式。</p>
+      <p>Click into any red execution → you get a canvas-style view: <strong>the failed node is highlighted with a red border</strong>, and clicking it shows the input / output / error message from that run. This is the fastest way to find a bug.</p>
       <figure class="shot">
-        <img src="../assets/screenshots/ch17/01_executions_page.png" alt="Executions 頁面顯示成功與失敗的執行紀錄" />
-        <figcaption><strong>圖 17-1</strong>Executions 頁面：綠色是成功、<strong>紅色是失敗</strong>，點紅色那筆進去就能看到掛在哪個節點跟錯誤訊息。</figcaption>
+        <img src="../assets/screenshots/ch17/01_executions_page.png" alt="The Executions page showing both successful and failed execution records" />
+        <figcaption><strong>Figure 17-1</strong>The Executions page: green is a success, <strong>red is a failure</strong>. Click into a red one and you see which node died and what the error said.</figcaption>
       </figure>
 
-      <h3>Pin data：測試時很好用的省 API 次數招</h3>
-      <p>開發時每改一個節點就重跑一次 workflow，會不斷打真的 API（Gmail、Slack、Sheets），既慢又浪費 quota。<strong>Pin data</strong> 可以讓你把某個節點的一次成功 output <em>釘住</em>，之後 workflow 重跑到那個節點時，會直接吃 pin 住的資料，<em>不會真的打 API</em>。</p>
-      <p>用法：跑一次成功 → 點該節點的 output → 上面有個「圖釘」icon → 按下去，output 就固定了。改完下游要看效果，重跑 workflow，pinned 節點會直接吐 pinned 資料。開發完取消 pin 再上線。</p>
+      <h3>Pin data: a handy way to save API calls while testing</h3>
+      <p>Rerunning the workflow after every node change while you build keeps hitting the real APIs (Gmail, Slack, Sheets) — slow, and a waste of quota. <strong>Pin data</strong> lets you <em>pin</em> one successful output of a node; on later reruns the workflow takes the pinned data at that node and <em>does not call the API for real</em>.</p>
+      <p>How to use it: get one successful run → click that node's output → there is a pin icon above it → press it and the output is fixed. When you want to see what a downstream change did, rerun the workflow and the pinned node hands back the pinned data. Unpin it once you are done building, before you go live.</p>
 
-      <div class="callout tip"><strong>提示：</strong>Executions 頁只保留最近幾天（依 Instance 的 <code>EXECUTIONS_DATA_MAX_AGE</code> 環境變數，預設 336 小時 = 14 天）。想留久一點請找 IT 調；或者你在 Error Handler 裡順手把錯誤寫到 Google Sheets / DB，就永久留底了。</div>
+      <div class="callout tip"><strong>Tip:</strong> The Executions page only keeps the last few days (set by the instance's <code>EXECUTIONS_DATA_MAX_AGE</code> environment variable, 336 hours = 14 days by default). Ask IT to raise it if you want longer; or have Error Handler write the errors into Google Sheets / a database at the same time, and you keep them for good.</div>
     </section>
 
-    <section id="compare" data-nav="常見錯誤情境對照">
-      <h2 data-icon="compare">常見錯誤情境對照</h2>
-      <p>把最常遇到的錯誤跟建議做法列個對照，你之後看到某個錯誤訊息可以直接查怎麼救：</p>
+    <section id="compare" data-nav="Failure scenarios">
+      <h2 data-icon="compare">Common failure scenarios at a glance</h2>
+      <p>Here are the errors you meet most often against what to do about them, so that next time a message comes up you can look up the fix directly:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>錯誤情境</th><th>該用什麼</th><th>做法</th></tr>
+          <tr><th>Failure scenario</th><th>What to use</th><th>Approach</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>429 Too Many Requests</strong>（打太快）</td>
+            <td><strong>429 Too Many Requests</strong> (calling too fast)</td>
             <td>Wait + Retry</td>
-            <td>Wait 節點降速；該節點 Retry on fail 開，Wait Between Tries 拉到 5000ms 以上</td>
+            <td>A Wait node to slow down; turn Retry on fail on for that node and push Wait Between Tries to 5000ms or more</td>
           </tr>
           <tr>
-            <td><strong>503 Service Unavailable</strong> / 短暫網路錯</td>
+            <td><strong>503 Service Unavailable</strong> / a brief network error</td>
             <td>Retry</td>
-            <td>Max Tries = 3~5，Wait Between Tries = 2000ms</td>
+            <td>Max Tries = 3~5, Wait Between Tries = 2000ms</td>
           </tr>
           <tr>
-            <td><strong>401 Unauthorized</strong>（credential 過期）</td>
-            <td>Error workflow（通知你手動處理）</td>
-            <td>Retry 沒用；靠 Error workflow 通知 → 你去 Credentials 頁面重新授權</td>
+            <td><strong>401 Unauthorized</strong> (the credential expired)</td>
+            <td>Error workflow (so you are told to handle it by hand)</td>
+            <td>Retry is useless here; let the error workflow tell you → go to the Credentials page and re-authorize</td>
           </tr>
           <tr>
             <td><strong>Network timeout</strong></td>
             <td>Retry + Wait</td>
-            <td>Retry on fail + Wait 5s，避免立刻再打一次時對方還沒恢復</td>
+            <td>Retry on fail plus a 5s wait, so you do not call again before the other side is back</td>
           </tr>
           <tr>
-            <td><strong>資料格式錯</strong>（Expression <code>undefined</code>）</td>
-            <td>前面加 Set 或 IF 節點驗證</td>
-            <td>Retry 沒用（邏輯錯），要在資料進來時就用 Set 給預設值、或 IF 過濾</td>
+            <td><strong>Bad data format</strong> (an expression returns <code>undefined</code>)</td>
+            <td>A Set or IF node upstream to validate</td>
+            <td>Retry is useless (it is a logic error); give a default value with Set, or filter with IF, as the data comes in</td>
           </tr>
           <tr>
             <td><strong>Sub-workflow not found</strong></td>
-            <td>Error workflow 通知</td>
-            <td>Sub-workflow 被刪或 ID 改了；通知你去修 Execute Workflow 節點的引用</td>
+            <td>An error workflow alert</td>
+            <td>The sub-workflow was deleted or its ID changed; the alert tells you to fix the reference in the Execute Workflow node</td>
           </tr>
           <tr>
-            <td><strong>Webhook Trigger 沒收到</strong></td>
-            <td>Error workflow 抓不到（不算錯）+ 主動 Schedule 檢查</td>
-            <td>Webhook 沒被打不會觸發任何錯誤；加一條 Schedule workflow 每小時檢查「上小時應該有幾筆」</td>
+            <td><strong>The Webhook Trigger never arrives</strong></td>
+            <td>An error workflow cannot catch this (nothing failed) + a scheduled check of your own</td>
+            <td>A webhook nobody calls raises no error at all; add a Schedule workflow that checks every hour how many entries the last hour should have had</td>
           </tr>
           <tr>
-            <td><strong>Gmail Trigger poll 太慢</strong></td>
-            <td>不是錯，是設計問題</td>
-            <td>把 Poll Times 改成 Every Minute；真要即時就找有 push webhook 的服務</td>
+            <td><strong>The Gmail Trigger polls too slowly</strong></td>
+            <td>Not an error, a design issue</td>
+            <td>Change Poll Times to Every Minute; if you truly need it instant, find a service with a push webhook</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="troubleshoot" data-nav="常見卡關">
-      <h2 data-icon="troubleshoot">錯誤處理常見卡關</h2>
-      <p>設完錯誤處理，你可能會遇到「明明設了但沒動」的狀況。這幾種對照一下八成能自己救：</p>
+    <section id="troubleshoot" data-nav="Common pitfalls">
+      <h2 data-icon="troubleshoot">Common error-handling pitfalls</h2>
+      <p>Once error handling is set up you may hit the "I set it up and nothing happened" case. Work through these and you can usually rescue it yourself:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>症狀</th><th>可能原因</th><th>怎麼救</th></tr>
+          <tr><th>Symptom</th><th>Likely cause</th><th>How to fix it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>workflow 掛了但 Error workflow 沒觸發</td>
-            <td>(1) 該 workflow 的 Settings 沒指定 Error Workflow<br>(2) Error Handler 這條 workflow 沒 Active</td>
-            <td>回到出錯 workflow → Settings → Error Workflow 下拉選 Error Handler；再去 Error Handler workflow 確認右上 Active 是綠的</td>
+            <td>The workflow died but the error workflow never fired</td>
+            <td>(1) That workflow's Settings has no Error Workflow set<br>(2) The Error Handler workflow is not Active</td>
+            <td>Go back to the failing workflow → Settings → pick Error Handler in the Error Workflow dropdown; then open Error Handler and check that Active in the top right is green</td>
           </tr>
           <tr>
-            <td>Retry 5 次還是全部失敗</td>
-            <td>錯誤根本不是暫時性的（credential 過期、資料本來就不對、邏輯錯）</td>
-            <td>Retry 只延遲失敗、不會解決根本問題。看 Executions 的錯誤訊息，是 <code>401</code>／<code>400</code>／<code>404</code>／JS error 就別靠 Retry，去修根本原因</td>
+            <td>Five retries and every one of them failed</td>
+            <td>The error was never transient (an expired credential, data that was wrong to begin with, a logic error)</td>
+            <td>Retry only postpones the failure; it solves nothing at the root. Read the error message in Executions — if it is <code>401</code> / <code>400</code> / <code>404</code> / a JS error, stop leaning on retry and fix the cause</td>
           </tr>
           <tr>
-            <td>Wait 節點 workflow 一直停不動</td>
-            <td>(1) On Webhook Call 模式但對方沒打 URL 回來、(2) 超過 65 秒 Wait 用 SQLite 遇到重啟遺失了、(3) At Specified Time 時區設錯（跟 workflow Settings 的 Timezone 差 8 小時）</td>
-            <td>檢查給對方的 webhook URL 是否正確、對方端有沒有真的觸發 callback；長 Wait 換 Postgres 外部 DB；At Specified Time 對照 Settings → Timezone</td>
+            <td>The workflow sits at the Wait node and never moves</td>
+            <td>(1) On Webhook Call mode, but the other side never called the URL, (2) a wait over 65 seconds on SQLite was lost in a restart, (3) At Specified Time has the wrong timezone (8 hours off the Timezone in the workflow's Settings)</td>
+            <td>Check that the webhook URL you gave them is correct and that they really fire the callback; move long waits to an external Postgres database; check At Specified Time against Settings → Timezone</td>
           </tr>
           <tr>
-            <td>Executions 頁看不到剛剛跑的紀錄</td>
-            <td>(1) 頁面沒 refresh、(2) workflow 剛 Active 但 Schedule 還沒到、(3) Executions 保留天數已過</td>
-            <td>按瀏覽器 F5；確認 Schedule 下次時間到了沒；管理員看 <code>EXECUTIONS_DATA_MAX_AGE</code> 是不是被調短</td>
+            <td>The Executions page does not show the run you just did</td>
+            <td>(1) The page was not refreshed, (2) the workflow was only just made Active and the schedule has not come round, (3) the execution retention window has passed</td>
+            <td>Press F5 in the browser; check whether the schedule's next time has arrived; have an admin check whether <code>EXECUTIONS_DATA_MAX_AGE</code> was shortened</td>
           </tr>
           <tr>
-            <td>Error workflow Slack 訊息內容都是 undefined</td>
-            <td>Expression 打錯欄位路徑</td>
-            <td>Error Trigger 節點跑一次（用一條真的會錯的 workflow 觸發），看 output 面板實際 <code>$json</code> 長什麼樣，照著抄欄位</td>
+            <td>Every value in the error workflow's Slack message is undefined</td>
+            <td>The expression has the wrong field path</td>
+            <td>Run the Error Trigger node once (trigger it with a workflow that really fails), look at what <code>$json</code> actually contains in the output panel, and copy the field names from there</td>
           </tr>
           <tr>
-            <td>Error workflow 自己也掛了（Slack 節點失敗）</td>
-            <td>Error Handler 沒有再上一層錯誤處理（本來就不會遞迴）</td>
-            <td>Error Handler 保持簡單、少依賴（避免用容易掛的 API）；重要用途可以在 Error Handler 內加第二種通知（例：Slack 失敗就寄 Email backup）</td>
+            <td>The error workflow died too (the Slack node failed)</td>
+            <td>Error Handler has no layer above it (it never recurses, by design)</td>
+            <td>Keep Error Handler simple with few dependencies (stay away from APIs that fail easily); where it matters, add a second alert inside Error Handler (email as a backup when Slack fails)</td>
           </tr>
           <tr>
-            <td>開了 Retry 之後發現重複寄了 3 封信</td>
-            <td>該節點是非冪等操作，重試 = 重複執行副作用</td>
-            <td>寄信／建單這類節點<em>關掉 Retry</em>，改在前面加一個「先查有沒有」的節點；或該節點失敗就整條 workflow 失敗，走 Error workflow 通知你手動處理</td>
+            <td>You turned retry on and 3 copies of the email went out</td>
+            <td>That node is a non-idempotent operation, so a retry repeats the side effect</td>
+            <td><em>Turn retry off</em> on nodes that send mail or create records, and put a "check whether it exists first" node in front instead; or let that node's failure fail the whole workflow and have the error workflow tell you to handle it by hand</td>
           </tr>
           <tr>
-            <td>Error Workflow 下拉是空的，找不到 Error Handler</td>
-            <td>你的 Error Handler workflow 裡沒有 Error Trigger 節點</td>
-            <td>回去 Error Handler，確認第一個節點是 Error Trigger（不是 Manual、不是 Webhook）。n8n 只把「含 Error Trigger 節點」的 workflow 列在下拉裡</td>
+            <td>The Error Workflow dropdown is empty and Error Handler is not in it</td>
+            <td>Your Error Handler workflow has no Error Trigger node in it</td>
+            <td>Go back to Error Handler and check that the first node is an Error Trigger (not Manual, not Webhook). n8n only lists workflows that contain an Error Trigger node in that dropdown</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
 
       <details class="faq">
-        <summary>一定要有 Error workflow 嗎？</summary>
-        <div class="body">Production（正式上線、有人依賴的）workflow <strong>強烈建議一定要有</strong>，不然出錯真的沒人知道；開發／測試階段可以先跳過，你在 canvas 上手動跑就會馬上看到錯。判斷準則：<em>這條 workflow 掛掉會不會影響到其他人？</em>——會，就綁 Error workflow；只是自己一次性任務，Manual Trigger 手動跑，掛就掛，可以先跳過。</div>
+        <summary>Do I have to have an error workflow?</summary>
+        <div class="body">For production workflows (live, with people depending on them) <strong>we strongly recommend one</strong>, otherwise a failure genuinely goes unnoticed. While you are building or testing you can skip it — running by hand on the canvas shows you the error straight away. The test: <em>does a failure of this workflow land on anyone else?</em> If yes, bind an error workflow. If it is a one-off task of your own that you run by hand with a Manual Trigger, letting it die is fine and you can skip it for now.</div>
       </details>
 
       <details class="faq">
-        <summary>Retry 會不會導致重複執行、產生副作用（例：寄兩封信、扣兩次款）？</summary>
-        <div class="body">會！這是最常被忽略的坑。Retry 是<strong>從失敗的那個節點原封不動再打一次</strong>——如果那個節點是「寄信」「建訂單」「扣款」，Retry 就會重複做。專業術語叫「非冪等（non-idempotent）」問題。<strong>設計原則：</strong>只在對方 API 本身冪等（同一份 request 打幾次結果都一樣，例如「查資料」「更新資料」）時才開 Retry；「建立資料」「觸發動作」類的節點，要嘛不開 Retry，要嘛前面加「先查在不在」的守衛節點。</div>
+        <summary>Can retry cause repeated execution and side effects (two emails, two charges)?</summary>
+        <div class="body">It can, and this is the trap people miss most. Retry <strong>calls the failed node again exactly as it was</strong> — if that node sends mail, creates an order or charges a card, it does it again. The technical term is the non-idempotent problem. <strong>Design rule:</strong> only turn retry on when the API itself is idempotent (the same request gives the same result however often you send it — reads and updates, for example). For nodes that create records or trigger actions, either leave retry off or put a guard node in front that checks whether the thing already exists.</div>
       </details>
 
       <details class="faq">
-        <summary>Wait 節點消耗資源嗎？可以 Wait 一整天嗎？</summary>
-        <div class="body">很省。Wait 期間 workflow 是「掛起」的，不佔 CPU、只佔一點記憶體（execution 上下文序列化存在 DB）。Wait 一整天甚至一週都沒問題。<strong>但注意：</strong>n8n 重啟時（更新版本、伺服器重開機），存活中的 Wait 執行會被恢復繼續等——前提是 n8n 有正常寫 DB。self-hosted 沒設 external DB 只用 SQLite 的話，Wait 幾天以上遇到重啟風險比較高，重要用途建議用 At Specified Time 模式，或改成「存資料到外部 DB + 另一條 Schedule 掃」。</div>
+        <summary>Does the Wait node use resources? Can I wait a whole day?</summary>
+        <div class="body">It costs very little. During a Wait the workflow is suspended: no CPU, only a little memory (the execution context is serialized into the DB). A whole day, even a week, is fine. <strong>One thing to watch:</strong> when n8n restarts (a version update, a server reboot) the waiting executions are restored and carry on waiting — as long as n8n is writing to the DB properly. On a self-hosted instance with no external DB, running on SQLite alone, waits of several days carry more risk across a restart; where it matters, use At Specified Time mode, or switch to "write the data to an external DB and let a separate Schedule sweep it".</div>
       </details>
 
       <details class="faq">
-        <summary>多條 workflow 能共用同一個 Error workflow 嗎？</summary>
-        <div class="body">可以，強烈推薦。你不需要每條 workflow 各做一個 Error workflow——一個 Error Handler 服務全公司 100 條 workflow 都沒問題。訊息裡用 <code>{{ $json.workflow.name }}</code> 就能顯示是哪條掛的。<strong>唯一例外：</strong>如果某類 workflow 的錯誤要通知不同的人（例：計費 workflow 通知財務、營運 workflow 通知客服），可以做兩三條 Error workflow 分別綁不同對象。</div>
+        <summary>Can several workflows share one error workflow?</summary>
+        <div class="body">Yes, and we strongly recommend it. You do not need one error workflow per workflow — a single Error Handler serving 100 workflows across the company is fine. <code>{{ $json.workflow.name }}</code> in the message shows which one died. <strong>The one exception:</strong> if one class of workflow has to alert different people (billing workflows tell finance, operations workflows tell customer support), build two or three error workflows and bind each to its own audience.</div>
       </details>
 
       <details class="faq">
-        <summary>Error workflow 自己掛了會怎樣？</summary>
-        <div class="body">會安靜地掛掉，<strong>沒有人接</strong>（n8n 不會遞迴觸發 Error workflow 自己的錯誤，不然就無窮迴圈）。所以 Error Handler 要做得盡量簡單、少依賴脆弱的第三方 API。想更保險的做法：Error Handler 裡放兩種通知（Slack + Email），任一種通道故障另一種還能救。或者你另外設一條 Schedule 「每天早上 8:00 檢查昨天有沒有錯誤紀錄」，作為 backup 兜底。</div>
+        <summary>What happens if the error workflow itself dies?</summary>
+        <div class="body">It dies quietly and <strong>nobody catches it</strong> (n8n does not recursively trigger an error workflow for the error workflow's own failure, or you would have an infinite loop). So keep Error Handler as simple as you can and avoid depending on fragile third-party APIs. For more safety: put two alerts in Error Handler (Slack + email), so if one channel is broken the other still gets through. Or set up a separate Schedule that "checks every day at 8:00 am whether yesterday produced any error records" as a backstop.</div>
       </details>
 
       <details class="faq">
-        <summary>「Continue On Fail」是什麼？跟 Retry 有什麼不一樣？</summary>
-        <div class="body">節點 Settings 除了 Retry On Fail，還有一個 <strong>On Error</strong> 選項（舊版叫 Continue On Fail），意思是：這個節點失敗時，<em>不要讓整條 workflow 掛</em>，而是繼續往下跑。三個選項：<code>Stop Workflow</code>（預設，會掛）、<code>Continue</code>（節點掛但吐空資料繼續走）、<code>Continue (using error output)</code>（節點多長一條 error 分支，錯誤資料走那條）。<strong>Continue On Fail 適合「這個節點失敗沒關係，可以繼續」的場景</strong>——例：批次處理 100 個客戶，其中 3 個失敗，剩下 97 個還是要處理完。跟 Retry 可以並用：先 Retry 3 次還是失敗，再走 Continue 繼續下一批。</div>
+        <summary>What is "Continue On Fail", and how does it differ from retry?</summary>
+        <div class="body">Besides Retry On Fail, a node's Settings has an <strong>On Error</strong> option (older versions called it Continue On Fail), which means: when this node fails, <em>do not let the whole workflow die</em> — carry on down the line. Three choices: <code>Stop Workflow</code> (the default, it dies), <code>Continue</code> (the node fails but emits empty data and the run carries on), <code>Continue (using error output)</code> (the node grows an extra error branch and the failed data goes down it). <strong>Continue On Fail suits the case where one node failing is acceptable and you want to keep going</strong> — batch-processing 100 customers, 3 of them fail, and the other 97 still have to be finished. It combines with retry: 3 retries, still failing, then Continue moves on to the next batch.</div>
       </details>
 
       <details class="faq">
-        <summary>Error workflow 只在 Active workflow 觸發嗎？我手動 Execute Workflow 掛也算嗎？</summary>
-        <div class="body">官方文件講得很直接：「<strong>You can't test error workflows when running workflows manually. The Error Trigger only runs when an automatic workflow errors.</strong>」——手動 Execute Workflow 掛<em>絕對不會</em>觸發 Error Trigger，這不是選項、是硬規則。所以要測試 Error workflow，一定要：(1) 把主 workflow 設成 Active、(2) 用 Schedule／Webhook／Event Trigger 讓它「自動」跑起來、(3) 讓它真的失敗。這是刻意設計避免開發時被 Slack 轟炸，但也代表你沒辦法在 canvas 上按按鈕測 Error workflow——只能靠一條真的會錯的 Active workflow 觸發它。</div>
+        <summary>Does an error workflow only fire for Active workflows? Does a failure from my own Execute Workflow count?</summary>
+        <div class="body">The docs are blunt about it: "<strong>You can't test error workflows when running workflows manually. The Error Trigger only runs when an automatic workflow errors.</strong>" A failure from a manual Execute Workflow <em>never</em> starts the Error Trigger; this is not an option, it is a hard rule. So to test an error workflow you have to: (1) set the parent workflow to Active, (2) let a Schedule / Webhook / Event Trigger start it "automatically", (3) make it genuinely fail. The design is deliberate — it keeps Slack from being carpet-bombed while you build — but it also means you cannot test an error workflow by pressing a button on the canvas. Only a real, failing Active workflow triggers it.</div>
       </details>
 
       <details class="faq">
-        <summary>Wait 節點的 On Webhook Call 模式怎麼用？</summary>
-        <div class="body">用來做「等外部確認」的 workflow。設定後 Wait 節點會產生一個 URL（Test 與 Production 各一），workflow 跑到這裡會停下來等這個 URL 被打。典型場景：workflow 發送簽核連結 email，email 裡的按鈕連到 Wait 的 URL——主管點按鈕 → Wait 節點收到 webhook → workflow 繼續往下跑「已簽核」的邏輯。這是進階用法，一般人先熟 After Time Interval 就夠；細節可以搭配<a href="ch22_webhook.html">第 22 章</a>的 Webhook 概念一起讀。</div>
+        <summary>How do I use the Wait node's On Webhook Call mode?</summary>
+        <div class="body">It is for workflows that wait for outside confirmation. Once set, the Wait node produces a URL (one for Test, one for Production), and the workflow stops here until that URL is called. The classic case: the workflow emails an approval link and the button in the email points at the Wait node's URL — your manager clicks the button → the Wait node receives the webhook → the workflow carries on into the "approved" logic. This is advanced; After Time Interval is enough for most people to start with. For the details, read it alongside the webhook material in <a href="ch22_webhook.html">Chapter 22</a>.</div>
       </details>
 
       <details class="faq">
-        <summary>錯誤處理設完之後還要做什麼？</summary>
-        <div class="body">兩件事：<strong>(1) 定期看 Executions 頁</strong>——就算 Error workflow 有通知，紅色紀錄還是要定期看趨勢（是不是某個節點反覆失敗？是不是某段時間 rate limit 特別多？）。<strong>(2) 建錯誤清單常識庫</strong>——遇到某個特殊錯誤解決之後，把「錯誤訊息 → 原因 → 解法」記下來，下次同樣錯直接查。附錄的<a href="appendix_errors.html">錯誤訊息速查</a>就是幫你整理常見錯誤的參考。</div>
+        <summary>What is left to do once error handling is set up?</summary>
+        <div class="body">Two things: <strong>(1) read the Executions page regularly</strong> — even with error-workflow alerts, you still want to watch the red records for trends (is one node failing over and over? is there a stretch of the day thick with rate limits?). <strong>(2) Build a knowledge base of errors</strong> — after you solve an unusual one, write down "error message → cause → fix" so the next occurrence is a lookup. The <a href="appendix_errors.html">error message quick reference</a> in the appendices is exactly that, collected for the common cases.</div>
       </details>
     </section>
 

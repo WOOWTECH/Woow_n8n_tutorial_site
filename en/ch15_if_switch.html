@@ -70,16 +70,16 @@
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
-      <a href="#why">為什麼要學這個</a>
+      <a href="#why">Why this matters</a>
       <a href="#concept">IF vs Switch</a>
-      <a href="#steps">加第一個 IF 節點</a>
-      <a href="#what">Condition 型別</a>
-      <a href="#advanced">多條件 AND / OR</a>
-      <a href="#modes">Switch 節點詳解</a>
-      <a href="#tips">常見實例</a>
-      <a href="#compare">巢狀分支</a>
-      <a href="#troubleshoot">常見卡關</a>
-      <a href="#faq">常見問題</a>
+      <a href="#steps">Your first IF</a>
+      <a href="#what">Condition types</a>
+      <a href="#advanced">AND / OR</a>
+      <a href="#modes">Switch node</a>
+      <a href="#tips">Common cases</a>
+      <a href="#compare">Nested branches</a>
+      <a href="#troubleshoot">Common pitfalls</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="toc-in-chapter">
       <h2>Appendices</h2>
@@ -93,383 +93,383 @@
     <div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch15_if_switch.html" hreflang="zh-Hant">Open the Chinese version</a></div>
     <div class="chapter-header">
       <div class="kicker">Chapter 15</div>
-      <h1>IF / Switch：條件分支</h1>
-      <p class="lead">workflow 不會每次都做同一件事。「金額大於 1,000 才通知經理」「客戶是 VIP 才寄致謝信」「表單有勾同意才存資料」——這種「看資料再決定走哪條路」的能力，n8n 靠兩個節點做到：<strong>IF</strong>（二選一）跟 <strong>Switch</strong>（多選一）。這章把兩個節點的差別、設定方式、常見坑一次講清楚，讓你以後看到「有時候要 A、有時候要 B」的需求，腦袋自動浮出解法。</p>
+      <h1>IF / Switch: conditional branching</h1>
+      <p class="lead">A workflow does not do the same thing every run. "Notify the manager only when the amount is over 1,000", "email a thank-you note only to VIP customers", "save the data only when the consent box is ticked" — n8n gets this "read the data, then decide which way to go" ability from two nodes: <strong>IF</strong> (one of two) and <strong>Switch</strong> (one of many). This chapter lays out how the two differ, how you set each one up and where people trip, so that next time you meet a "sometimes A, sometimes B" requirement the answer comes to you on its own.</p>
     </div>
 
-    <section id="why" data-nav="為什麼要學這個">
-      <h2 data-icon="why">為什麼要學條件分支</h2>
-      <p>到<a href="ch14_expressions.html">第 14 章</a>為止，你會用 <code>{{ $json.amount }}</code> 把上一個節點的資料塞進下一個節點——不錯，但這只是「原封不動地往下傳」。真實的自動化幾乎每一條都會有「岔路」：</p>
+    <section id="why" data-nav="Why this matters">
+      <h2 data-icon="why">Why you need conditional branches</h2>
+      <p>Up to <a href="ch14_expressions.html">Chapter 14</a> you can use <code>{{ $json.amount }}</code> to push data from one node into the next — useful, but that is only passing it along untouched. Almost every real automation has a fork in it:</p>
       <ul>
-        <li>訂單來了：金額 <strong>大於 1,000</strong> 通知經理，其他丟到日常清單就好。</li>
-        <li>客戶名單進來：VIP 走「寄致謝信＋建 Slack 頻道」，普通客戶只寄自動回覆。</li>
-        <li>表單提交：勾了同意條款才存資料庫，沒勾就寄「請重新填」的信。</li>
-        <li>系統告警：等級 <strong>critical</strong> 打電話、<strong>warning</strong> 發 Slack、<strong>info</strong> 只寫 log。</li>
+        <li>An order arrives: if the amount is <strong>over 1,000</strong>, notify the manager; everything else just goes on the daily list.</li>
+        <li>A customer list comes in: VIPs go down the "thank-you email + a new Slack channel" path, ordinary customers only get the auto-reply.</li>
+        <li>A form is submitted: store it in the database only if the terms box was ticked; if it was not, send a "please fill it in again" email.</li>
+        <li>A system alert: <strong>critical</strong> makes a phone call, <strong>warning</strong> posts to Slack, <strong>info</strong> only writes a log line.</li>
       </ul>
-      <p>這些「看資料決定走哪條路」的邏輯就叫<strong>條件分支（conditional branching）</strong>，寫程式的人會用 <code>if / else</code> 或 <code>switch / case</code>；在 n8n 裡，你不寫程式，直接放 <strong>IF 節點</strong>或 <strong>Switch 節點</strong>，用視覺化的方式拉線接下游——資料進來、節點判斷、走上面或下面（IF）或走哪一號 output（Switch）。</p>
-      <div class="callout"><strong>觀念：</strong>IF 跟 Switch 都是 n8n 的 <strong>Core 節點</strong>（<a href="ch7_node_types.html">第 7 章</a>講過三大類：Trigger / Action / Core）。它們不呼叫任何外部 API、不吃你的 SaaS 額度，純粹在 workflow 內部做流程控制，執行速度幾乎是零成本。</p>
+      <p>This "read the data, then pick a path" logic is called <strong>conditional branching</strong>. Programmers write it as <code>if / else</code> or <code>switch / case</code>; in n8n you write no code at all — you drop in an <strong>IF node</strong> or a <strong>Switch node</strong> and draw the connections downstream visually: data comes in, the node decides, and the item leaves through the top or the bottom (IF) or through a numbered output (Switch).</p>
+      <div class="callout"><strong>Concept:</strong> IF and Switch are both n8n <strong>Core nodes</strong> (<a href="ch7_node_types.html">Chapter 7</a> covered the three families: Trigger / Action / Core). They call no outside API and use none of your SaaS quota; they do flow control inside the workflow, and running them costs practically nothing.</p>
     </section>
 
     <section id="concept" data-nav="IF vs Switch">
-      <h2 data-icon="concept">IF vs Switch：哪個時候用哪個</h2>
-      <p>兩個節點都在做「判斷 → 分路」，選錯不會壞，但用對會讓 canvas 乾淨很多。一句話對照：</p>
+      <h2 data-icon="concept">IF vs Switch: which one to use when</h2>
+      <p>Both nodes do the same job — decide, then route. Picking the wrong one breaks nothing, but the right one keeps the canvas much cleaner. One line each:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>特徵</th><th>IF 節點</th><th>Switch 節點</th></tr>
+          <tr><th>Characteristic</th><th>IF node</th><th>Switch node</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>幾個 output</td>
-            <td><strong>固定兩個</strong>：true（上）、false（下）</td>
-            <td><strong>可自訂多個</strong>（Rules 模式官方沒硬性上限，實務常見 3–10 條；Expression 模式由 <code>Number of Outputs</code> 決定）</td>
+            <td>How many outputs</td>
+            <td><strong>Always two</strong>: true (top), false (bottom)</td>
+            <td><strong>As many as you define</strong> (Rules mode has no documented hard limit; 3–10 is common in practice. In Expression mode <code>Number of Outputs</code> decides)</td>
           </tr>
           <tr>
-            <td>回答的問題</td>
-            <td>一個 yes/no（例：「金額 &gt; 1000 嗎？」）</td>
-            <td>一個資料對應多種可能（例：「tier 是 gold、silver 還是 bronze？」）</td>
+            <td>The question it answers</td>
+            <td>One yes/no (for example, "is the amount &gt; 1000?")</td>
+            <td>One field with several possible values (for example, "is tier gold, silver or bronze?")</td>
           </tr>
           <tr>
-            <td>心智模型</td>
-            <td>程式的 <code>if / else</code></td>
-            <td>程式的 <code>switch / case</code>；像大樓電梯，按幾樓去幾樓</td>
+            <td>Mental model</td>
+            <td>A program's <code>if / else</code></td>
+            <td>A program's <code>switch / case</code>; like an elevator, you press a floor and it takes you there</td>
           </tr>
           <tr>
-            <td>條件寫法</td>
-            <td>可加多個條件，用 AND / OR 組合</td>
-            <td>每個 output 各自寫條件（Rules 模式）或直接用一個 Expression 決定去哪號（Expression 模式）</td>
+            <td>How you write the condition</td>
+            <td>Add several conditions and combine them with AND / OR</td>
+            <td>Each output gets its own condition (Rules mode), or one expression decides which number it goes to (Expression mode)</td>
           </tr>
           <tr>
-            <td>該怎麼挑</td>
-            <td>只有「要 / 不要」兩條路走時</td>
-            <td>三條路以上、或明顯的分類（等級、狀態、來源）</td>
+            <td>How to choose</td>
+            <td>When there are only two paths: yes or no</td>
+            <td>Three paths or more, or an obvious category (tier, status, source)</td>
           </tr>
         </tbody>
       </table>
 
-      <div class="callout tip"><strong>提示：</strong>「三種以上分類」不是硬規則。你可以疊三個 IF 節點（第一個判 gold、下面接第二個判 silver…），但這會讓 canvas 變成階梯狀，讀起來很累。同一個欄位的多種可能，一律用 Switch 才漂亮。</div>
+      <div class="callout tip"><strong>Tip:</strong> "three categories or more" is not a hard rule. You can stack three IF nodes (the first tests gold, the one below it tests silver…), but that turns the canvas into a staircase and makes it tiring to read. When one field has several possible values, always reach for Switch.</div>
     </section>
 
-    <section id="steps" data-nav="加第一個 IF 節點">
-      <h2 data-icon="steps">動手做：加第一個 IF 節點</h2>
-      <p>我們拿一個具體情境：<strong>訂單金額大於 1,000 就往「通知經理」走，否則往「日常紀錄」走</strong>。假設你的上游節點（可能是 Webhook、Google Sheets、Airtable）已經把訂單以 <code>{ "amount": 1500, "customer": "台北文具行" }</code> 這種 JSON 傳下來。</p>
+    <section id="steps" data-nav="Your first IF">
+      <h2 data-icon="steps">Hands-on: add your first IF node</h2>
+      <p>Take a concrete case: <strong>an order over 1,000 goes down the "notify the manager" path, everything else goes to the "daily log" path</strong>. Assume your upstream node (a Webhook, Google Sheets, Airtable) already hands the order down as JSON like <code>{ "amount": 1500, "customer": "台北文具行" }</code>.</p>
 
       <ol class="steps">
         <li>
-          <h3>在 canvas 上加 IF 節點</h3>
-          <p>在上游節點右邊的 <strong>+</strong> 圖示點一下（或空白處按 <kbd>Tab</kbd>）叫出節點抽屜 → 搜尋框輸入 <code>if</code> → 點 <strong>If</strong>（在 Flow 分類底下）。節點會落到 canvas 上，自動連好上游。</p>
+          <h3>Add an IF node to the canvas</h3>
+          <p>Click the <strong>+</strong> icon to the right of the upstream node (or press <kbd>Tab</kbd> on an empty spot) to open the nodes panel → type <code>if</code> in the search box → click <strong>If</strong> (under the Flow category). The node drops onto the canvas, already connected upstream.</p>
         </li>
         <li>
-          <h3>設第一個 Condition</h3>
-          <p>雙擊 IF 節點打開右邊面板。你會看到一個 <strong>Conditions</strong> 區塊，預設有一列空的比較。三個欄位由左到右填：</p>
+          <h3>Set the first condition</h3>
+          <p>Double-click the IF node to open the panel on the right. You will see a <strong>Conditions</strong> block with one empty comparison row. Fill in its three fields, left to right:</p>
           <ul>
-            <li><strong>Value 1</strong>（左值）：點欄位進入 Expression 模式，寫 <code>{{ $json.amount }}</code>——這是從上游拿 <code>amount</code> 欄位。</li>
-            <li><strong>Operator</strong>（中間）：先在下拉左邊選型別 <code>Number</code>，右邊再選 <code>is greater than</code>（官方 v2 IF 節點的正式名稱，不是 <code>larger</code>）。</li>
-            <li><strong>Value 2</strong>（右值）：填 <code>1000</code>（純數字，不用引號）。</li>
+            <li><strong>Value 1</strong> (the left side): click the field to switch to Expression mode and write <code>{{ $json.amount }}</code> — that pulls the <code>amount</code> field from upstream.</li>
+            <li><strong>Operator</strong> (the middle): pick the type <code>Number</code> in the left dropdown first, then <code>is greater than</code> on the right (the official name in the v2 IF node, not <code>larger</code>).</li>
+            <li><strong>Value 2</strong> (the right side): enter <code>1000</code> (a plain number, no quotes).</li>
           </ul>
         </li>
         <li>
-          <h3>看節點右邊多了兩條 output 線</h3>
-          <p>設好 condition 後，IF 節點右側會分出兩條 output：上面標 <strong>true</strong>（綠色）、下面標 <strong>false</strong>（紅色）。這就是你可以拉線的兩條路。</p>
+          <h3>Watch two output lines appear on the right of the node</h3>
+          <p>Once the condition is set, the IF node splits into two outputs on its right: <strong>true</strong> on top (green) and <strong>false</strong> below (red). Those are the two paths you can draw connections from.</p>
         </li>
         <li>
-          <h3>分別接不同下游節點</h3>
-          <p>從 <strong>true</strong> 那個圓點拖一條線出去，接你的「通知經理」節點（例：Slack 傳訊息到 #manager 頻道）。再從 <strong>false</strong> 拖一條線出去，接「日常紀錄」節點（例：Google Sheets Append Row）。canvas 現在會分岔成兩條路。</p>
+          <h3>Wire each output to a different downstream node</h3>
+          <p>Drag a connection out of the <strong>true</strong> dot into your "notify the manager" node (Slack posting to the #manager channel, say). Drag another out of <strong>false</strong> into the "daily log" node (Google Sheets Append Row, say). The canvas now forks into two paths.</p>
         </li>
         <li>
-          <h3>存檔＋按 Execute Workflow 測</h3>
-          <p><kbd>Ctrl</kbd>+<kbd>S</kbd> 存檔。canvas 右上按 <strong>Execute Workflow</strong>。IF 節點跑完會用<strong>綠框</strong>標示它走的是哪條 output——你看訂單金額 1500 &gt; 1000，理應走 true，實際看到 Slack 節點也跟著亮起來就對了。</p>
+          <h3>Save, then test with Execute Workflow</h3>
+          <p><kbd>Ctrl</kbd>+<kbd>S</kbd> to save. Click <strong>Execute Workflow</strong> at the top right of the canvas. When the IF node finishes it marks the output it took with a <strong>green border</strong> — the order amount is 1500 &gt; 1000, so it should take true, and seeing the Slack node light up too means it worked.</p>
         </li>
         <li>
-          <h3>再測一次「應該走 false」的資料</h3>
-          <p>把上游 mock 資料改成 <code>amount: 800</code> 再跑一次，這次應該只有 Google Sheets Append 那條亮，Slack 那條沒動。兩條都測過，這個 IF 才算真的驗證完。</p>
+          <h3>Test once more with data that should go false</h3>
+          <p>Change the upstream mock data to <code>amount: 800</code> and run it again. This time only the Google Sheets Append path should light up and the Slack path should stay quiet. The IF is only really verified once you have tested both paths.</p>
         </li>
       </ol>
     </section>
 
-    <section id="what" data-nav="Condition 型別">
-      <h2 data-icon="what">IF 節點的四種資料型別 Condition</h2>
-      <p>IF 節點的 <strong>Operator</strong> 下拉分兩層：左邊先挑<strong>資料型別</strong>，右邊才會顯示對應的比較運算子。挑對型別很重要——挑錯的話「看起來對，跑起來永遠是 false」，是新手第一名踩雷。</p>
+    <section id="what" data-nav="Condition types">
+      <h2 data-icon="what">The IF node's four data-type conditions</h2>
+      <p>The IF node's <strong>Operator</strong> dropdown has two levels: pick the <strong>data type</strong> on the left, and the matching comparison operators appear on the right. Picking the right type matters — get it wrong and the condition looks right but always comes out false, the number-one thing beginners trip over.</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>型別</th><th>常見 Operator</th><th>Value 2 要填什麼</th><th>例子</th></tr>
+          <tr><th>Type</th><th>Common operators</th><th>What goes in Value 2</th><th>Example</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>String</strong>（字串）</td>
+            <td><strong>String</strong></td>
             <td>exists / does not exist / is empty / is not empty / is equal to / is not equal to / contains / does not contain / starts with / does not start with / ends with / does not end with / matches regex / does not match regex</td>
-            <td>字串（可含 Expression）</td>
-            <td>Value 1 <code>{{ $json.status }}</code>、Operator <code>is equal to</code>、Value 2 <code>paid</code></td>
+            <td>A string (an expression is allowed)</td>
+            <td>Value 1 <code>{{ $json.status }}</code>, Operator <code>is equal to</code>, Value 2 <code>paid</code></td>
           </tr>
           <tr>
-            <td><strong>Number</strong>（數字）</td>
+            <td><strong>Number</strong></td>
             <td>exists / does not exist / is empty / is not empty / is equal to / is not equal to / is greater than / is less than / is greater than or equal to / is less than or equal to</td>
-            <td>純數字（不加引號）</td>
-            <td>Value 1 <code>{{ $json.amount }}</code>、Operator <code>is greater than</code>、Value 2 <code>1000</code></td>
+            <td>A plain number (no quotes)</td>
+            <td>Value 1 <code>{{ $json.amount }}</code>, Operator <code>is greater than</code>, Value 2 <code>1000</code></td>
           </tr>
           <tr>
-            <td><strong>Boolean</strong>（布林）</td>
+            <td><strong>Boolean</strong></td>
             <td>exists / does not exist / is empty / is not empty / is true / is false / is equal to / is not equal to</td>
-            <td>對 is true / is false 不用填；is equal to 填 <code>true</code> 或 <code>false</code></td>
-            <td>Value 1 <code>{{ $json.consent }}</code>、Operator <code>is true</code></td>
+            <td>Nothing at all for is true / is false; for is equal to, enter <code>true</code> or <code>false</code></td>
+            <td>Value 1 <code>{{ $json.consent }}</code>, Operator <code>is true</code></td>
           </tr>
           <tr>
-            <td><strong>Date &amp; Time</strong>（日期）</td>
+            <td><strong>Date &amp; Time</strong></td>
             <td>exists / does not exist / is empty / is not empty / is equal to / is not equal to / is after / is before / is after or equal to / is before or equal to</td>
-            <td>ISO 日期字串或 Expression（例：<code>{{ $now }}</code>）</td>
-            <td>Value 1 <code>{{ $json.createdAt }}</code>、Operator <code>is after</code>、Value 2 <code>2026-01-01</code></td>
+            <td>An ISO date string or an expression (for example <code>{{ $now }}</code>)</td>
+            <td>Value 1 <code>{{ $json.createdAt }}</code>, Operator <code>is after</code>, Value 2 <code>2026-01-01</code></td>
           </tr>
         </tbody>
       </table>
 
-      <p>另外還有 <strong>Array</strong>（陣列，例 <code>contains</code>、<code>length equal to</code>、<code>length greater than</code>）跟 <strong>Object</strong>（物件，僅 <code>exists</code> / <code>does not exist</code> / <code>is empty</code> / <code>is not empty</code>），比較少用，這裡先跳過。注意 <strong>Date &amp; Time 沒有 <code>is between</code> 這個 operator</strong>——要判「在兩個時間之間」得寫兩個 condition（<code>is after</code> A 且 <code>is before</code> B）再用 AND 組合。</p>
+      <p>There are also <strong>Array</strong> (with <code>contains</code>, <code>length equal to</code>, <code>length greater than</code>) and <strong>Object</strong> (only <code>exists</code> / <code>does not exist</code> / <code>is empty</code> / <code>is not empty</code>), which come up less often, so skip them for now. Note that <strong>Date &amp; Time has no <code>is between</code> operator</strong> — to test "between two times" you write two conditions (<code>is after</code> A and <code>is before</code> B) and combine them with AND.</p>
 
-      <div class="callout warn"><strong>注意（第一名踩雷）：</strong>資料明明是字串 <code>"1500"</code>，你選了 <code>Number → is greater than → 1000</code>——結果永遠是 false。因為<em>字串 1500</em> 不是<em>數字 1500</em>，n8n 不會幫你自動轉。修法：Value 1 改成 <code>{{ Number($json.amount) }}</code> 強制轉型，或者上游用 <a href="ch14_expressions.html">Expression</a> / <a href="ch18_set_function.html">Set 節點</a>先轉好。看到「條件應該對卻走 false」，八成就是這個坑。</div>
+      <div class="callout warn"><strong>Warning (the number-one gotcha):</strong> the data is plainly the string <code>"1500"</code> and you picked <code>Number → is greater than → 1000</code> — the result is false every time. <em>The string 1500</em> is not <em>the number 1500</em>, and n8n does not convert it for you. The fix: change Value 1 to <code>{{ Number($json.amount) }}</code> to force the type, or convert it upstream with an <a href="ch14_expressions.html">expression</a> or a <a href="ch18_set_function.html">Set node</a>. Whenever a condition should match yet goes false, this is nearly always why.</div>
     </section>
 
-    <section id="advanced" data-nav="多條件 AND / OR">
-      <h2 data-icon="advanced">多條件組合：AND / OR</h2>
-      <p>一個 IF 節點裡可以放<strong>好幾個 condition</strong>，然後決定它們的組合方式。當你加第二列 condition 後，兩列<strong>之間</strong>會出現一個 <strong>AND / OR</strong> 下拉（官方 UI 就直接叫 AND / OR，沒有 <em>Combinator</em> 這個 label），兩個選項：</p>
+    <section id="advanced" data-nav="AND / OR">
+      <h2 data-icon="advanced">Combining conditions: AND / OR</h2>
+      <p>One IF node can hold <strong>several conditions</strong>, and you decide how they combine. Once you add a second condition row, an <strong>AND / OR</strong> dropdown appears <strong>between</strong> the two rows (the UI calls it exactly that; there is no <em>Combinator</em> label), with two options:</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>Combinator</th><th>意思</th><th>什麼時候用</th></tr>
+          <tr><th>Combinator</th><th>What it means</th><th>When to use it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>AND</strong>（且）</td>
-            <td>官方說法：「Keep data when it meets all conditions」——所有 condition 都要為 true 才算 true</td>
-            <td>「金額大 <em>而且</em> 付款狀態是 paid 才通知」</td>
+            <td><strong>AND</strong></td>
+            <td>The official wording is "Keep data when it meets all conditions" — every condition has to be true for the result to be true</td>
+            <td>"Notify only when the amount is large <em>and</em> the payment status is paid"</td>
           </tr>
           <tr>
-            <td><strong>OR</strong>（或）</td>
-            <td>官方說法：「Keep data when it meets any of the conditions」——任一 condition 為 true 就算 true</td>
-            <td>「客戶是 VIP <em>或</em> 訂單超過 5,000 都要通知經理」</td>
+            <td><strong>OR</strong></td>
+            <td>The official wording is "Keep data when it meets any of the conditions" — one condition being true is enough</td>
+            <td>"Notify the manager when the customer is a VIP <em>or</em> the order is over 5,000"</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>範例：訂單金額大於 1,000 AND 付款狀態是 paid</h3>
-      <p>需求是「不只要金額大，還得真的收到錢才通知經理」。開 IF 節點，加兩個 condition：</p>
+      <h3>Example: amount over 1,000 AND payment status is paid</h3>
+      <p>The requirement is "a big amount is not enough — the money has to have arrived before the manager is notified". Open the IF node and add two conditions:</p>
       <ul>
-        <li>Condition 1：Value 1 <code>{{ $json.amount }}</code>、Operator <code>Number is greater than</code>、Value 2 <code>1000</code></li>
-        <li>Condition 2：Value 1 <code>{{ $json.status }}</code>、Operator <code>String equals</code>、Value 2 <code>paid</code></li>
-        <li>Combine：<code>AND</code></li>
+        <li>Condition 1: Value 1 <code>{{ $json.amount }}</code>, Operator <code>Number is greater than</code>, Value 2 <code>1000</code></li>
+        <li>Condition 2: Value 1 <code>{{ $json.status }}</code>, Operator <code>String equals</code>, Value 2 <code>paid</code></li>
+        <li>Combine: <code>AND</code></li>
       </ul>
-      <p>兩個都滿足才走 true。如果 status 是 <code>pending</code>，即使金額 5,000 也會走 false。</p>
+      <p>Both have to hold before the item goes true. If status is <code>pending</code>, even an amount of 5,000 goes false.</p>
 
-      <h3>範例：VIP 客戶 OR 高額訂單</h3>
-      <p>需求是「特別關照」——只要滿足其一就走 true：</p>
+      <h3>Example: VIP customer OR large order</h3>
+      <p>The requirement is special attention — either one on its own sends the item down true:</p>
       <ul>
-        <li>Condition 1：Value 1 <code>{{ $json.tier }}</code>、Operator <code>String equals</code>、Value 2 <code>vip</code></li>
-        <li>Condition 2：Value 1 <code>{{ $json.amount }}</code>、Operator <code>Number is greater than</code>、Value 2 <code>5000</code></li>
-        <li>Combine：<code>OR</code></li>
+        <li>Condition 1: Value 1 <code>{{ $json.tier }}</code>, Operator <code>String equals</code>, Value 2 <code>vip</code></li>
+        <li>Condition 2: Value 1 <code>{{ $json.amount }}</code>, Operator <code>Number is greater than</code>, Value 2 <code>5000</code></li>
+        <li>Combine: <code>OR</code></li>
       </ul>
 
-      <div class="callout tip"><strong>提示：</strong>要「A AND (B OR C)」這種混合邏輯，一個 IF 節點的 Combinator 是全域套用（要嘛全 AND 要嘛全 OR），做不出來。這時候有兩招：(1) 串兩個 IF 節點（第一個判 A，true 那條再接第二個 IF 判 B OR C）；(2) Value 1 改用 Expression 寫一整段 JS 判斷式，例 <code>{{ $json.a && ($json.b || $json.c) }}</code>，Operator 選 <code>Boolean is true</code>。第二招比較優雅，但要會寫一點 JS。</div>
+      <div class="callout tip"><strong>Tip:</strong> mixed logic like "A AND (B OR C)" is out of reach for one IF node, because its combinator applies to the whole node (all AND or all OR). Two ways around it: (1) chain two IF nodes (the first tests A, and its true output feeds a second IF that tests B OR C); (2) put a whole JS test in Value 1, for example <code>{{ $json.a && ($json.b || $json.c) }}</code>, and set Operator to <code>Boolean is true</code>. The second is tidier, but you need a little JS.</div>
     </section>
 
-    <section id="modes" data-nav="Switch 節點詳解">
-      <h2 data-icon="modes">Switch 節點詳解：兩種模式</h2>
-      <p>Switch 節點打開來會先問你 <strong>Mode</strong>：<code>Rules</code> 還是 <code>Expression</code>。這是 Switch 跟 IF 最大的差別，兩種模式的思維完全不一樣。</p>
+    <section id="modes" data-nav="Switch node">
+      <h2 data-icon="modes">The Switch node in detail: two modes</h2>
+      <p>Open the Switch node and the first thing it asks is <strong>Mode</strong>: <code>Rules</code> or <code>Expression</code>. This is the biggest difference between Switch and IF, and the two modes ask you to think in completely different ways.</p>
 
-      <h3>Mode 1：Rules（規則模式，最常用）</h3>
-      <p>像很多個 IF 疊起來——每個 <strong>Rule</strong> 都有自己的 condition（跟 IF 節點一樣的 Operator 系統），滿足哪個 Rule 就走對應那個 output。加 Rule 的方法：面板上按 <strong>Add Routing Rule</strong>，就多出一個 output（節點右邊會多一個圓點）。</p>
+      <h3>Mode 1: Rules (the one you will use most)</h3>
+      <p>It works like a stack of IF nodes — every <strong>Rule</strong> has its own condition (the same operator system as the IF node), and an item leaves through the output of whichever rule it matches. To add one: click <strong>Add Routing Rule</strong> in the panel, and you get one more output (another dot on the right of the node).</p>
 
-      <p><strong>例子</strong>：客戶等級分三種，不同下游處理。上游丟下來的 item 是 <code>{ "tier": "gold", ... }</code>。設 Switch 節點：</p>
+      <p><strong>Example</strong>: three customer tiers, each handled differently downstream. The item coming from upstream is <code>{ "tier": "gold", ... }</code>. Set the Switch node up like this:</p>
       <ul>
-        <li>Rule 0：Value 1 <code>{{ $json.tier }}</code>、Operator <code>String equals</code>、Value 2 <code>gold</code> → output 0 接「寄致謝信＋通知業務」</li>
-        <li>Rule 1：Value 1 <code>{{ $json.tier }}</code>、Operator <code>String equals</code>、Value 2 <code>silver</code> → output 1 接「寄折扣券」</li>
-        <li>Rule 2：Value 1 <code>{{ $json.tier }}</code>、Operator <code>String equals</code>、Value 2 <code>bronze</code> → output 2 接「寄一般歡迎信」</li>
+        <li>Rule 0: Value 1 <code>{{ $json.tier }}</code>, Operator <code>String equals</code>, Value 2 <code>gold</code> → output 0 goes to "send a thank-you email + notify sales"</li>
+        <li>Rule 1: Value 1 <code>{{ $json.tier }}</code>, Operator <code>String equals</code>, Value 2 <code>silver</code> → output 1 goes to "send a discount voucher"</li>
+        <li>Rule 2: Value 1 <code>{{ $json.tier }}</code>, Operator <code>String equals</code>, Value 2 <code>bronze</code> → output 2 goes to "send the standard welcome email"</li>
       </ul>
-      <p>Rules 底下有一個 <strong>Fallback Output</strong> 下拉，官方三個選項：<code>None</code>（預設，未對到就直接丟掉）、<code>Extra Output</td>（多開一條 output 專收未對到的 item，最常用）、<code>Output 0</code>（未對到就走跟第一條 Rule 一樣的 output）。想要有「未分類」下游，選 <code>Extra Output</code>。</p>
-      <p>另外還有一個 <strong>Send data to all matching outputs</strong> 開關（預設關）：關的時候一筆 item 只會走<em>第一條</em>對到的 Rule；打開的話同時對到兩條 Rule 就會兩條都送——選這個要小心 items 被複製走多條分支的效果。</p>
+      <p>Below the rules sits a <strong>Fallback Output</strong> dropdown with three official options: <code>None</code> (the default: an unmatched item is dropped), <code>Extra Output</td>（多開一條 output 專收未對到的 item，最常用）、<code>Output 0</code> (an unmatched item leaves through the same output as the first rule). When you want an "unclassified" path downstream, pick <code>Extra Output</code>.</p>
+      <p>There is also a <strong>Send data to all matching outputs</strong> toggle (off by default): with it off, an item goes down only the <em>first</em> rule it matches; with it on, an item that matches two rules is sent down both — turn it on carefully, because items then get duplicated across branches.</p>
 
-      <h3>Mode 2：Expression（表達式模式，進階）</h3>
-      <p>直接寫一個 Expression 回傳<strong>要走 output 幾號</strong>（從 0 開始數）。這比 Rules 模式簡潔，但需要你會用 Expression。</p>
+      <h3>Mode 2: Expression (advanced)</h3>
+      <p>Write one expression that returns <strong>which output number to take</strong> (counting from 0). It is shorter than Rules mode, but you have to be comfortable with expressions.</p>
 
-      <p><strong>同上例</strong>用 Expression 模式：</p>
+      <p><strong>The same example</strong> in Expression mode:</p>
       <pre class="code-block"><code>{{ { "gold": 0, "silver": 1, "bronze": 2 }[$json.tier] }}</code></pre>
-      <p>意思是「查表：<code>tier</code> 是 gold 走 output 0、silver 走 output 1、bronze 走 output 2」。回傳的數字對應 canvas 右側從上到下第幾條輸出線。<strong>Number of Outputs</strong> 欄位要先設好（例：3），節點才會有那麼多條線可以接。</p>
+      <p>It reads as a lookup table: <code>tier</code> gold takes output 0, silver output 1, bronze output 2. The number it returns picks the output line on the right of the canvas, counted from the top. Set the <strong>Number of Outputs</strong> field first (3 here) so the node has that many lines to connect.</p>
 
-      <div class="callout"><strong>觀念：</strong>Rules 模式對新手友善，看 canvas 就能猜出邏輯；Expression 模式對進階者省設定時間，尤其分類很多、規則單純（一對一映射）的時候。兩種都能達成一樣的效果，選你順手的即可。</div>
+      <div class="callout"><strong>Concept:</strong> Rules mode is friendlier for beginners, because you can read the logic off the canvas; Expression mode saves an experienced user setup time, especially when there are many categories and the rule is simple (a one-to-one mapping). Both get you the same result, so use whichever feels natural.</div>
     </section>
 
-    <section id="tips" data-nav="常見實例">
-      <h2 data-icon="tips">常見實例對照表</h2>
-      <p>把 IF / Switch 常見用法整成一張表，看你的需求對到哪一列，直接抄就好：</p>
+    <section id="tips" data-nav="Common cases">
+      <h2 data-icon="tips">Common cases at a glance</h2>
+      <p>Here are the common IF / Switch uses in one table. Find the row that matches your requirement and copy it as-is:</p>
       <figure class="shot">
-        <img src="../assets/screenshots/ch15/01_if_workflow.png" alt="BNI MCP workflow 13 節點含 IF 條件分支" />
-        <figcaption><strong>圖 15-1</strong>BNI MCP 實例：一條 13 節點的 workflow 用 IF 節點把流量依條件分成兩路，示範條件分支在真實整合流程裡的定位。</figcaption>
+        <img src="../assets/screenshots/ch15/01_if_workflow.png" alt="A 13-node BNI MCP workflow with an IF conditional branch" />
+        <figcaption><strong>Figure 15-1</strong>A worked BNI MCP example: a 13-node workflow that uses an IF node to split the traffic into two paths by condition, showing where conditional branching sits in a real integration.</figcaption>
       </figure>
 
       <table class="data-table">
         <thead>
-          <tr><th>情境</th><th>用哪個節點</th><th>條件設定</th><th>下游怎麼接</th></tr>
+          <tr><th>Situation</th><th>Which node</th><th>Condition</th><th>How to wire the outputs</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>新表單來 → 有勾同意才存 Sheet，沒勾就寄「請重新填」</td>
+            <td>A new form arrives → store it in the sheet only if consent was ticked, otherwise send the "please fill it in again" mail</td>
             <td>IF</td>
-            <td>Value 1 <code>{{ $json.consent }}</code>、Operator <code>Boolean is true</code></td>
-            <td>true → Google Sheets Append；false → Gmail Send Message</td>
+            <td>Value 1 <code>{{ $json.consent }}</code>, Operator <code>Boolean is true</code></td>
+            <td>true → Google Sheets Append; false → Gmail Send Message</td>
           </tr>
           <tr>
-            <td>訂單金額分級通知：&lt;1000 助理、1000-5000 組長、&gt;5000 經理</td>
-            <td>Switch（Rules）</td>
-            <td>Rule 0 <code>amount &lt; 1000</code>、Rule 1 兩個 condition AND：<code>amount &gt;= 1000</code> 且 <code>amount &lt;= 5000</code>、Rule 2 <code>amount &gt; 5000</code>（Number operator 沒有 <code>is between</code>，得拆成兩條）</td>
-            <td>各接一個 Slack 節點，target 頻道不同</td>
+            <td>Tiered order notifications: &lt;1000 the assistant, 1000-5000 the team lead, &gt;5000 the manager</td>
+            <td>Switch (Rules)</td>
+            <td>Rule 0 <code>amount &lt; 1000</code>, Rule 1 two conditions with AND: <code>amount &gt;= 1000</code> and <code>amount &lt;= 5000</code>, Rule 2 <code>amount &gt; 5000</code> (the Number operators have no <code>is between</code>, so it takes two conditions)</td>
+            <td>One Slack node on each, every one posting to a different channel</td>
           </tr>
           <tr>
-            <td>Gmail Trigger 收信 → 依寄件人 domain 分流到不同資料夾</td>
-            <td>Switch（Rules）</td>
-            <td>Value 1 <code>{{ $json.from.split('@')[1] }}</code>、每個 Rule String equals 一個 domain</td>
-            <td>各接 Gmail Add Label 或 Move Message</td>
+            <td>Gmail Trigger receives mail → route it into different folders by the sender's domain</td>
+            <td>Switch (Rules)</td>
+            <td>Value 1 <code>{{ $json.from.split('@')[1] }}</code>, one String equals rule per domain</td>
+            <td>Each one goes to a Gmail Add Label or Move Message</td>
           </tr>
           <tr>
-            <td>系統告警：等級 critical 打電話、warning 發 Slack、info 只寫 log</td>
-            <td>Switch（Expression）</td>
-            <td>Expression：<code>{{ { critical: 0, warning: 1, info: 2 }[$json.level] }}</code></td>
-            <td>output 0 → HTTP Request 打電話 API；output 1 → Slack；output 2 → HTTP Request 寫 log</td>
+            <td>System alerts: critical makes a phone call, warning posts to Slack, info only writes a log line</td>
+            <td>Switch (Expression)</td>
+            <td>Expression: <code>{{ { critical: 0, warning: 1, info: 2 }[$json.level] }}</code></td>
+            <td>output 0 → HTTP Request to the phone API; output 1 → Slack; output 2 → HTTP Request that writes the log</td>
           </tr>
           <tr>
-            <td>訂單狀態 = paid 且金額 &gt; 1000 才通知經理</td>
-            <td>IF（多條件 AND）</td>
-            <td>兩個 condition：status equals paid、amount &gt; 1000；Combine AND</td>
-            <td>true → Slack 通知經理；false → 不接任何節點（沒動作）</td>
+            <td>Notify the manager only when order status = paid and the amount is &gt; 1000</td>
+            <td>IF (several conditions, AND)</td>
+            <td>Two conditions: status equals paid, amount &gt; 1000; Combine AND</td>
+            <td>true → Slack notifies the manager; false → nothing connected (no action)</td>
           </tr>
           <tr>
-            <td>Webhook 收 payload → 依 <code>event_type</code> 走不同流程</td>
-            <td>Switch（Rules）</td>
-            <td>每個 Rule 一個 event_type 字串</td>
-            <td>各自接對應的處理節點鏈；記得打開 Fallback 接一個「未知事件」告警</td>
+            <td>A webhook receives a payload → a different path per <code>event_type</code></td>
+            <td>Switch (Rules)</td>
+            <td>One event_type string per rule</td>
+            <td>Each goes to its own chain of handling nodes; remember to turn the fallback on and wire an "unknown event" alert to it</td>
           </tr>
         </tbody>
       </table>
 
-      <div class="callout tip"><strong>提示：</strong>IF 節點的 false output 如果<em>不需要</em>做任何事，可以直接不接任何節點——item 走到那裡就自然停下，不會報錯，也不會影響 true 那條。這是很常見的「什麼都不做」寫法。</div>
+      <div class="callout tip"><strong>Tip:</strong> if the IF node's false output <em>does not need</em> to do anything, simply leave it unconnected — items that go that way stop there, with no error and no effect on the true path. Leaving one output empty is a very common way of saying "do nothing".</div>
     </section>
 
-    <section id="compare" data-nav="巢狀分支">
-      <h2 data-icon="compare">IF 後面又接 IF：巢狀分支可以，但要克制</h2>
-      <p>n8n 沒有規定分支不能再分支——IF 的 true 那條下游接一個 Switch，Switch 的某個 output 又接一個 IF，都合法。但視覺上會變成很多岔路，過幾個月你自己回來看都會頭大。</p>
+    <section id="compare" data-nav="Nested branches">
+      <h2 data-icon="compare">IF inside IF: nesting works, but keep it shallow</h2>
+      <p>n8n does not stop a branch from branching again — a Switch below the IF's true output, and another IF below one of that Switch's outputs, are both legal. Visually, though, you end up with forks everywhere, and a few months later even you will struggle to read it.</p>
 
-      <h3>什麼時候可以放心巢狀</h3>
+      <h3>When nesting is safe</h3>
       <ul>
-        <li>兩層以內、每層都很單純（例：先 IF 判 VIP，VIP 那條再 Switch 依國家分區）——canvas 還讀得懂。</li>
-        <li>下游動作只有兩三步就結束，不是又拉一大串。</li>
+        <li>Two levels at most, each of them simple (an IF for VIP first, then a Switch by country on the VIP path) — the canvas is still readable.</li>
+        <li>The downstream work ends after two or three steps instead of running on into a long chain.</li>
       </ul>
 
-      <h3>什麼時候該抽 Sub-workflow</h3>
+      <h3>When to pull it into a sub-workflow</h3>
       <ul>
-        <li>三層以上的巢狀分支——canvas 變成樹狀圖，肉眼難以追。</li>
-        <li>同一個判斷邏輯在好幾條 workflow 都出現（例：「這個客戶是不是 VIP」）——抽成 sub-workflow，一改全改，<a href="ch19_subworkflow.html">第 19 章</a>會講。</li>
-        <li>某個分支下游超過 5 個節點——這條分支自成一個小工作流，抽出來單獨測比較好。</li>
+        <li>Three levels of nesting or more — the canvas turns into a tree diagram that no one can follow by eye.</li>
+        <li>The same decision shows up in several workflows ("is this customer a VIP") — pull it into a sub-workflow and one edit covers them all, as <a href="ch19_subworkflow.html">Chapter 19</a> explains.</li>
+        <li>One branch has more than 5 nodes below it — that branch is a small workflow of its own, and it is easier to pull out and test on its own.</li>
       </ul>
 
-      <div class="callout warn"><strong>注意：</strong>巢狀 IF 每一層都會拆一次 items 陣列（走 true 的 items 跟走 false 的 items 各自往下）。如果你上游有很多筆資料，最後每一條分支拿到的 items 數量可能都不一樣，下游節點要小心處理「沒有 item」的情況——這常常導致「上游明明有 100 筆，最後 Slack 只發了 3 則」的困惑。</div>
+      <div class="callout warn"><strong>Warning:</strong> every level of a nested IF splits the array of items once more (the true items and the false items each go their own way). If a lot of data comes in from upstream, each branch can end up with a different item count, so downstream nodes have to handle "no items at all" carefully — this is the usual reason behind "there were 100 records upstream and Slack only sent 3".</div>
     </section>
 
-    <section id="troubleshoot" data-nav="常見卡關">
-      <h2 data-icon="troubleshoot">IF / Switch 常見卡關</h2>
-      <p>條件分支不動、走錯邊、分不出來——把下面對照一次，八成能自己救。</p>
+    <section id="troubleshoot" data-nav="Common pitfalls">
+      <h2 data-icon="troubleshoot">Common IF / Switch pitfalls</h2>
+      <p>A branch that does not fire, goes the wrong way or refuses to split — work down the table below and you can usually fix it yourself.</p>
 
       <table class="data-table">
         <thead>
-          <tr><th>症狀</th><th>可能原因</th><th>怎麼救</th></tr>
+          <tr><th>Symptom</th><th>Likely cause</th><th>How to fix it</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>「兩條分支都走了」</td>
-            <td><strong>不會發生</strong>。IF 是 XOR，每一筆 item 只會走 true 或 false 其中一條。你看到兩邊都亮綠，是因為<em>上游有多筆 items</em>，其中一部分走 true、一部分走 false，兩條下游各拿到自己那份。</td>
-            <td>點 IF 節點看每條 output 的 items 數，加起來應該等於上游 items 總數</td>
+            <td>"Both branches ran"</td>
+            <td><strong>It cannot happen.</strong> IF is exclusive: each item goes either true or false, never both. Both sides light up green because <em>several items came in from upstream</em>, some of them going true and some false, and each downstream path got its own share.</td>
+            <td>Click the IF node and read the item count on each output; the two should add up to the upstream total</td>
           </tr>
           <tr>
-            <td>「條件應該對，卻永遠走 false」</td>
-            <td>資料型別跟 Operator 型別不符（例：資料是字串 <code>"1500"</code>，你選 Number is greater than）</td>
-            <td>Value 1 加轉型：<code>{{ Number($json.amount) }}</code>、<code>{{ String($json.status) }}</code>；或上游用 Set 節點先轉好</td>
+            <td>"The condition should match, yet it always goes false"</td>
+            <td>The data type does not match the operator type (the data is the string <code>"1500"</code> and you picked Number is greater than)</td>
+            <td>Convert in Value 1: <code>{{ Number($json.amount) }}</code>, <code>{{ String($json.status) }}</code>; or convert it upstream with a Set node</td>
           </tr>
           <tr>
-            <td>「Switch 有些 item 消失了」</td>
-            <td>那些 item 沒對到任何 Rule，且你沒開 Fallback Output——n8n 就把它們丟掉了</td>
-            <td>面板 <strong>Fallback Output</strong> 下拉從 <code>None</code> 改成 <code>Extra Output</code>，節點會多長一條 output，接一個「未分類」節點（例：Slack 通知你、Sheet 記一筆）</td>
+            <td>"Some items disappear in the Switch"</td>
+            <td>Those items matched no rule and you never turned on Fallback Output, so n8n dropped them</td>
+            <td>Change the <strong>Fallback Output</strong> dropdown in the panel from <code>None</code> to <code>Extra Output</code>; the node grows one more output, which you wire to an "unclassified" node (Slack notifying you, or a row in a sheet)</td>
           </tr>
           <tr>
-            <td>「分支之後想合起來，讓下游只寫一遍」</td>
-            <td>這是正常需求，但需要 Merge 節點</td>
-            <td>兩條分支的末端拉去接同一個 <strong>Merge</strong> 節點（<a href="ch16_merge_split.html">第 16 章</a>整章講合流）</td>
+            <td>"I want to rejoin the branches so the downstream is written once"</td>
+            <td>A perfectly normal requirement, but it needs a Merge node</td>
+            <td>Connect the end of both branches to the same <strong>Merge</strong> node (<a href="ch16_merge_split.html">Chapter 16</a> is a whole chapter on rejoining)</td>
           </tr>
           <tr>
-            <td>「Expression 模式的 Switch 顯示 output 編號無效」</td>
-            <td>Expression 回傳的數字超出 Number of Outputs 範圍（例設 3 個 output 卻回 5）</td>
-            <td>Expression 用查表或 clamp 保底：<code>{{ ({a:0,b:1,c:2}[$json.type]) ?? 0 }}</code>，找不到走 0</td>
+            <td>"The Switch in Expression mode says the output number is invalid"</td>
+            <td>The expression returned a number outside the Number of Outputs range (3 outputs are set, but it returned 5)</td>
+            <td>Give the expression a lookup table or a clamp as a floor: <code>{{ ({a:0,b:1,c:2}[$json.type]) ?? 0 }}</code>, so anything unmatched goes to 0</td>
           </tr>
           <tr>
-            <td>「IF 節點打開沒有 Conditions 區塊，只有一個空白面板」</td>
-            <td>版本差異或節點沒 load 完</td>
-            <td>把節點刪了重新加一次；或關掉 canvas 分頁重開 workflow</td>
+            <td>"The IF node opens with no Conditions block, just an empty panel"</td>
+            <td>A version difference, or the node did not finish loading</td>
+            <td>Delete the node and add it again; or close the canvas tab and reopen the workflow</td>
           </tr>
           <tr>
-            <td>「用 String contains 沒對到，明明看得到字串裡有」</td>
-            <td>大小寫敏感（<code>contains</code> 是 case-sensitive）；或欄位前後有空白</td>
-            <td>Value 1 加 <code>{{ $json.text.toLowerCase().trim() }}</code>，Value 2 也用小寫</td>
+            <td>"String contains does not match, even though the text is plainly in there"</td>
+            <td>Case sensitivity (<code>contains</code> is case-sensitive), or whitespace around the field</td>
+            <td>Put <code>{{ $json.text.toLowerCase().trim() }}</code> in Value 1, and use lowercase in Value 2 too</td>
           </tr>
           <tr>
-            <td>「Date is before/after 判斷永遠走 false」</td>
-            <td>Value 1 拿到的是字串日期，不是 Date 物件；n8n 有時候能自動轉、有時不能</td>
-            <td>Value 1 改成 <code>{{ DateTime.fromISO($json.createdAt) }}</code> 明確轉成 Luxon DateTime</td>
+            <td>"A Date is before/after test always goes false"</td>
+            <td>Value 1 holds a date as a string, not a Date object; n8n converts it sometimes and sometimes not</td>
+            <td>Change Value 1 to <code>{{ DateTime.fromISO($json.createdAt) }}</code> to convert it explicitly into a Luxon DateTime</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
 
       <details class="faq">
-        <summary>IF 之後我想「兩條都繼續走原本的流程」，怎麼寫？</summary>
-        <div class="body">如果兩條之後<strong>要做的事完全一樣</strong>，那你根本不需要 IF——直接讓上游接下游就好。IF 存在的目的就是「兩條要做不一樣的事」。如果你的需求是「兩條之後都要做同一件事、只是想加個標籤區分」，正確做法是：不用 IF，改用 <a href="ch18_set_function.html">Set 節點</a>加一個欄位（例 <code>tag = "vip"</code> 或 <code>"normal"</code>），下游再依這個欄位處理。這樣資料流不分岔，也保留了分類資訊。</div>
+        <summary>After an IF I want both paths to carry on with the original flow. How do I write that?</summary>
+        <div class="body">If both paths <strong>do exactly the same thing</strong>, you do not need an IF at all — connect the upstream node straight to the downstream one. An IF exists precisely because the two paths do different things. If what you want is "both paths do the same work, I only want a label telling them apart", the right move is to drop the IF and add a field with a <a href="ch18_set_function.html">Set node</a> (<code>tag = "vip"</code> or <code>"normal"</code>), then let the downstream nodes work from that field. The data flow stays in one piece and you keep the classification.</div>
       </details>
 
       <details class="faq">
-        <summary>一個 workflow 太多 IF 會不會拖慢速度？</summary>
-        <div class="body">幾乎不會。IF / Switch 是純運算，不呼叫外部 API、不做 I/O，一個 IF 執行時間通常是<strong>毫秒級</strong>甚至更短。真正拖慢 workflow 的是 API 呼叫（Gmail、Sheets、HTTP Request 這些）跟大量 items 的迴圈。放 50 個 IF 都比多打一次 Gmail API 快。所以：需要幾個就放幾個，別為了節點少而硬把邏輯塞進 Code node。</div>
+        <summary>Do too many IF nodes in one workflow slow it down?</summary>
+        <div class="body">Barely. IF / Switch are pure computation: no outside API, no I/O, and one IF usually runs in <strong>milliseconds</strong> or less. What really slows a workflow down is API calls (Gmail, Sheets, HTTP Request and the like) and loops over large numbers of items. Fifty IF nodes are still faster than one extra call to the Gmail API. So use as many as you need, and do not cram the logic into a Code node just to keep the node count down.</div>
       </details>
 
       <details class="faq">
-        <summary>條件太複雜、UI 拉不出來，怎麼辦？</summary>
-        <div class="body">改用 <strong>Expression 模式</strong>——IF 節點的 Value 1 直接寫一整段 JavaScript 判斷式回傳 true/false，然後 Operator 選 <code>Boolean is true</code>。例子：<code>{{ $json.amount > 1000 && ($json.tier === "vip" || $json.paid) && !$json.blocked }}</code>——這種 A AND (B OR C) AND NOT D 混合邏輯，用 Expression 一行搞定。當然，能寫成清楚可讀的更好；真的很複雜就抽到 <a href="ch20_code_node.html">Code node</a> 裡處理，回傳 <code>{ shouldNotify: true }</code>，IF 再判 <code>{{ $json.shouldNotify }}</code>。</div>
+        <summary>The condition is too complex to build in the UI. What do I do?</summary>
+        <div class="body">Switch to <strong>Expression mode</strong> — write a whole JavaScript test in the IF node's Value 1 that returns true/false, then set Operator to <code>Boolean is true</code>. For example: <code>{{ $json.amount > 1000 && ($json.tier === "vip" || $json.paid) && !$json.blocked }}</code> — mixed logic of the A AND (B OR C) AND NOT D kind fits on one expression line. Something clear and readable is still better, of course; when it really is complicated, move it into a <a href="ch20_code_node.html">Code node</a> that returns <code>{ shouldNotify: true }</code>, and let the IF test <code>{{ $json.shouldNotify }}</code>.</div>
       </details>
 
       <details class="faq">
-        <summary>IF 節點跑一次算一個 execution 嗎？會吃我的額度嗎？</summary>
-        <div class="body">「execution」有兩個層級，別搞混：(1) <strong>workflow-level execution</strong>：一次 Trigger 到底跑完算一次，跟裡面有幾個節點無關，這是 n8n Cloud 版計費的單位。(2) <strong>node-level execution</strong>：每個節點跑一次算它自己的一次，會出現在 Executions 詳情頁，方便你除錯。IF 節點<strong>只算 node-level</strong>，不會多花 workflow-level 額度。而且 IF 也<em>完全不呼叫任何 SaaS API</em>（不像 Gmail Send 會用一次 Gmail 配額），所以放再多都不會踩到外部服務的 rate limit。Woow n8n 是 self-host 版，兩種都不計費。</div>
+        <summary>Does one IF run count as an execution? Does it eat my quota?</summary>
+        <div class="body">"Execution" has two levels; do not mix them up: (1) a <strong>workflow-level execution</strong>: one trigger running through to the end counts as one, no matter how many nodes are inside, and this is what n8n Cloud bills you for. (2) a <strong>node-level execution</strong>: each node run counts as one of its own and shows up on the execution detail page, which helps you debug. An IF node <strong>counts only at the node level</strong> and spends no workflow-level quota. It also <em>calls no SaaS API whatsoever</em> (unlike Gmail Send, which uses one Gmail quota unit), so no number of them will hit an outside service's rate limit. Woow n8n is self-hosted, and neither level is billed.</div>
       </details>
 
       <details class="faq">
-        <summary>Switch 最多能有幾個 output？IF 能有三個 output 嗎？</summary>
-        <div class="body">官方文件<strong>沒有</strong>對 Switch 的 Rule 數量寫死上限——按 <strong>Add Routing Rule</strong> 可以一直加，實務上 3–10 條都很常見（加上 Fallback 就是 4–11 條 output）。Expression 模式的 <strong>Number of Outputs</strong> 你自己填，也沒有官方硬性上限，但 10 個以上通常就該考慮抽 sub-workflow 了。IF 節點<strong>永遠只有 2 個 output</strong>（true / false），這是設計上的定義——想要三條路就直接用 Switch，不要用「IF 接 IF」硬湊，會很亂。</div>
+        <summary>What is the maximum number of Switch outputs? Can an IF have three?</summary>
+        <div class="body">The documentation sets <strong>no</strong> hard limit on the number of Switch rules — click <strong>Add Routing Rule</strong> and you can keep adding; in practice 3–10 is very common (4–11 outputs once you count the fallback). In Expression mode you fill in <strong>Number of Outputs</strong> yourself, with no documented ceiling either, but past 10 it is usually time to consider a sub-workflow. An IF node <strong>always has exactly 2 outputs</strong> (true / false), which is what it is by definition — for three paths use a Switch, and do not force it with "IF into IF", which gets messy.</div>
       </details>
 
       <details class="faq">
-        <summary>可以在 IF / Switch 之後再合流嗎？</summary>
-        <div class="body">可以，但要用 <strong>Merge 節點</strong>（<a href="ch16_merge_split.html">第 16 章</a>整章講）。直接把兩條分支拉去接同一個下游節點，n8n 會把兩條的 items <em>合併</em>塞給下游——但要小心：合起來的順序不保證、欄位可能不一致。用 Merge 節點的 <code>Append</code> 或 <code>Combine</code> 模式明確控制怎麼合，比較保險。</div>
+        <summary>Can I rejoin the paths after an IF / Switch?</summary>
+        <div class="body">Yes, but with a <strong>Merge node</strong> (<a href="ch16_merge_split.html">Chapter 16</a> is a whole chapter on it). If you simply connect both branches to the same downstream node, n8n <em>merges</em> the items from both and hands them over — but be careful: the order is not guaranteed and the fields may not line up. Using the Merge node's <code>Append</code> or <code>Combine</code> mode to state exactly how they join is safer.</div>
       </details>
 
       <details class="faq">
-        <summary>Switch 的 Rules 從上到下順序有影響嗎？</summary>
-        <div class="body">預設<strong>有影響</strong>——當一筆 item 同時滿足多個 Rule，Switch 依 UI 上從上到下的順序走<strong>第一個對到的 Rule</strong>，其他跳過。所以把「最嚴格」放上面、「最寬鬆」放下面，才不會被寬鬆的先撈走。<br><br>但 Switch 節點有一個 <strong>Send data to all matching outputs</strong> 開關（Options 底下，預設關）：打開後同一筆 item 只要對到就送，多條 Rule 都會拿到——這時順序就不影響「有沒有走到」，但仍影響 output 編號的視覺。若要徹底不用管順序，把每條 Rule 寫成互斥（例：<code>amount &gt;= 100 AND amount &lt; 1000</code>、<code>amount &gt;= 1000 AND amount &lt; 5000</code>、<code>amount &gt;= 5000</code>，用兩個 condition + AND 拼出區間；Number 沒有 <code>is between</code> operator）。</div>
+        <summary>Does the top-to-bottom order of the Switch rules matter?</summary>
+        <div class="body">By default it <strong>does</strong>. When one item satisfies several rules, Switch follows the top-to-bottom order in the UI and takes <strong>the first rule that matches</strong>, skipping the rest. So put the strictest rule at the top and the loosest at the bottom, or the loose one scoops everything up first.<br><br>The Switch node does have a <strong>Send data to all matching outputs</strong> toggle (under Options, off by default): with it on, an item is sent everywhere it matches and several rules can receive it — order then no longer decides whether a rule fires, though it still decides the output numbering you see. To stop caring about order entirely, write the rules so they exclude each other (<code>amount &gt;= 100 AND amount &lt; 1000</code>, <code>amount &gt;= 1000 AND amount &lt; 5000</code>, <code>amount &gt;= 5000</code>, building each range from two conditions plus AND; Number has no <code>is between</code> operator).</div>
       </details>
 
       <details class="faq">
-        <summary>IF 節點的條件可以取上上一個節點的資料嗎？</summary>
-        <div class="body">可以。用 <code>{{ $node['節點名稱'].json.欄位 }}</code>——這是 <a href="ch14_expressions.html">第 14 章</a>教過的跨節點取值語法。例：<code>{{ $node['Webhook'].json.body.customer_id }}</code>。條件裡跨節點取值很常見（例：現在的節點是「查詢客戶」的結果，但你想用「Webhook 觸發時的原始 payload」做判斷）。注意節點名稱區分大小寫、中間有空白要保留。</div>
+        <summary>Can an IF condition read data from two nodes back?</summary>
+        <div class="body">Yes. Use <code>{{ $node['節點名稱'].json.欄位 }}</code> — the cross-node syntax <a href="ch14_expressions.html">Chapter 14</a> taught you. For example: <code>{{ $node['Webhook'].json.body.customer_id }}</code>. Reading another node inside a condition is common (the current node holds the result of a customer lookup, but you want to decide on the original payload the webhook was triggered with). Note that node names are case-sensitive, and spaces inside them have to be kept.</div>
       </details>
 
       <details class="faq">
-        <summary>可以動態決定分支數量嗎（例：依上游資料才知道要幾條）？</summary>
-        <div class="body">不能。canvas 上的 output 數量是<em>設計時</em>寫死的，不會執行時才長出來。如果你的分類是動態的（例：「有幾種 tier 我事先不知道」），正確做法是：用 <a href="ch16_merge_split.html">Split In Batches 或 Item Lists</a> 把資料按 tier 分組，然後對每一組跑同一段下游邏輯（可能塞進 <a href="ch19_subworkflow.html">Sub-workflow</a>）——這比動態長 output 有彈性得多，也比較符合資料處理的思維。</div>
+        <summary>Can the number of branches be decided dynamically (only the upstream data knows how many)?</summary>
+        <div class="body">No. The number of outputs on the canvas is fixed at <em>design time</em>; they do not grow while the workflow runs. If your categories are dynamic ("I do not know in advance how many tiers there are"), the right approach is to group the data by tier with <a href="ch16_merge_split.html">Split In Batches or Item Lists</a> and then run the same downstream logic on each group (possibly inside a <a href="ch19_subworkflow.html">sub-workflow</a>) — far more flexible than growing outputs at run time, and much closer to how data processing is meant to work.</div>
       </details>
     </section>
 

@@ -1,0 +1,45 @@
+{
+  "file": "ch14_expressions.html",
+  "entries": [
+    {
+      "unit": "#concept",
+      "zh": "<code>新訂單 {{ $json.orderId }}</code>",
+      "en": "<code>New order {{ $json.orderId }}</code>"
+    },
+    {
+      "unit": "#strings",
+      "zh": "<code>{{ `Hi ${$json.name}, 訂單 ${$json.orderId}` }}</code>",
+      "en": "<code>{{ `Hi ${$json.name}, order ${$json.orderId}` }}</code>"
+    },
+    {
+      "unit": "#strings",
+      "zh": "<code>Hi Elmo, 訂單 1042</code>",
+      "en": "<code>Hi Elmo, order 1042</code>"
+    },
+    {
+      "unit": "#strings",
+      "zh": "<code>.replace('舊', '新')</code>",
+      "en": "<code>.replace('old', 'new')</code>"
+    },
+    {
+      "unit": "#use_cases",
+      "zh": "<code>{{ `新訂單 #${$json.orderId}｜客戶 ${$json.customer}｜金額 $${$json.amount}` }}</code>",
+      "en": "<code>{{ `New order #${$json.orderId} | Customer ${$json.customer} | Amount $${$json.amount}` }}</code>"
+    },
+    {
+      "unit": "#use_cases",
+      "zh": "<code>{{ '銷售日報 - ' + $now.toFormat('yyyy-MM-dd') }}</code>",
+      "en": "<code>{{ 'Daily sales report - ' + $now.toFormat('yyyy-MM-dd') }}</code>"
+    },
+    {
+      "unit": "#use_cases",
+      "zh": "<code>銷售日報 - 2026-08-16</code>",
+      "en": "<code>Daily sales report - 2026-08-16</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>$('上一節點').item.json.field</code>",
+      "en": "<code>$('Previous Node').item.json.field</code>"
+    }
+  ]
+}

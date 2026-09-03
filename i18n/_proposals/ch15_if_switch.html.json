@@ -1,0 +1,20 @@
+{
+  "file": "ch15_if_switch.html",
+  "entries": [
+    {
+      "unit": "#steps",
+      "zh": "<code>{ \"amount\": 1500, \"customer\": \"台北文具行\" }</code>",
+      "en": "<code>{ \"amount\": 1500, \"customer\": \"Taipei Stationery Store\" }</code>"
+    },
+    {
+      "unit": "#modes",
+      "zh": "<code>Extra Output</td>（多開一條 output 專收未對到的 item，最常用）、<code>Output 0</code>",
+      "en": "<code>Extra Output</td> (an extra output that catches unmatched items — the common choice), <code>Output 0</code>"
+    },
+    {
+      "unit": "#faq",
+      "zh": "<code>{{ $node['節點名稱'].json.欄位 }}</code>",
+      "en": "<code>{{ $node['Node Name'].json.field }}</code>"
+    }
+  ]
+}
