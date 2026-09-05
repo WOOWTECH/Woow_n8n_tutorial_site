@@ -7,6 +7,12 @@
   <meta name="description" content="Woow n8n 的四本手冊集中地：22 章入住教學、給客戶的銷售手冊、給 AI agent 建 workflow 用的提示詞庫、community node 與 MCP server 的 skill 手冊。三本手冊提供單檔 HTML 下載，離線可讀。" />
   <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://n8n-guide.woowtech.io/" />
+  <!-- i18n:alternates -->
+  <link rel="alternate" hreflang="zh-Hant" href="https://n8n-guide.woowtech.io/" />
+  <link rel="alternate" hreflang="zh" href="https://n8n-guide.woowtech.io/" />
+  <link rel="alternate" hreflang="en" href="https://n8n-guide.woowtech.io/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://n8n-guide.woowtech.io/en/" />
+  <!-- /i18n:alternates -->
   <meta name="robots" content="index, follow" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Woow n8n 入住指南" />
@@ -19,6 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- i18n:css --><link rel="stylesheet" href="assets/css/i18n.css" /><!-- /i18n:css -->
   <style>
     /* hub 專用（index.html 由人手維護，build_nav 不碰這一頁） */
     .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
@@ -59,6 +66,9 @@
 <body>
   <main class="home">
     <div class="hero">
+      <!-- i18n:switch -->
+      <nav class="lang-switch" aria-label="語言"><a class="active" href="index.html" lang="zh-Hant" aria-current="page">中文</a><a href="en/" lang="en" hreflang="en">EN</a></nav>
+      <!-- /i18n:switch -->
       <span class="kicker-script">automate the boring stuff</span>
       <div class="kicker">WoowTech · Woow n8n</div>
       <h1>n8n 資源總覽</h1>
